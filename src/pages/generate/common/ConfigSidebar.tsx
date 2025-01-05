@@ -1,4 +1,5 @@
 import { Sparkle as IconSparkle } from "@phosphor-icons/react";
+import { Link } from "react-router";
 
 export function ConfigSidebar() {
   return (
@@ -49,13 +50,14 @@ export function ConfigSidebar() {
           <button className='btn flex-1 btn-solid-secondary'>6</button>
         </div>
       </div>
-      <button
+      <Link
+        to="/generate/pick"
         type='button'
         className='btn w-full bg-gradient-to-r py-6 from-pink-600 to-blue-500 mt-8 gap-x-2'
       >
         <IconSparkle size={24} weight="fill" />
         <strong className="text-white text-[1.01rem]">Generate</strong>
-      </button>
+      </Link>
     </div>
   );
 }

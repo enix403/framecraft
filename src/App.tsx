@@ -27,7 +27,7 @@ export function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
-          <Route path='/generate' element={<GeneratePage />} />
+          <Route path='/generate/*' element={<GeneratePage />} />
           <Route path='/edit' element={<EditDesignPage />} />
           <Route path='/render' element={<ViewRenderPage />} />
           <Route path='/my-designs' element={<MyDesignsPage />} />

@@ -75,7 +75,7 @@ export function EditDesignPage() {
           <strong>Render 3D Model</strong>
         </Link>
         <Link
-          to='/generate'
+          to='/generate/pick'
           type='button'
           className='btn w-full max-w-2xl btn-solid-error py-6 gap-x-2 mt-auto'
         >

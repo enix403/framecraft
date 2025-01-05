@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, Route, Routes } from "react-router";
 import { ConfigSidebar } from "./common/ConfigSidebar";
 import { DesignPreview } from "./common/DesignPreview";
 import { GenerationAppLayout } from "./layout/GenerationAppLayout";
@@ -57,8 +57,10 @@ export function GeneratePage() {
     <GenerationAppLayout>
       <ConfigSidebar />
 
-      {/* <GenerateDesign /> */}
-      <PickDesign />
+      <Routes>
+        <Route index element={<GenerateDesign />} />
+        <Route path='/pick' element={<PickDesign />} />
+      </Routes>
     </GenerationAppLayout>
   );
 }
