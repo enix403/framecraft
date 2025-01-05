@@ -7,7 +7,7 @@ export function MyDesignsPage() {
   return (
     <GenerationAppLayout>
       <div className='p-10 max-h-full overflow-y-auto flex-1'>
-        <div className='mb-12 text-4xl font-semibold'>My Generations</div>
+        <div className='mb-12 text-4xl font-semibold'>My Plans</div>
 
         <div
           className={clsx(

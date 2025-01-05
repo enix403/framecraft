@@ -41,7 +41,7 @@ function UserDropdown() {
               "flex w-full rounded-lg py-1.5 px-3 data-[focus]:bg-white/10"
             )}
           >
-            My Designs
+            My Plans
           </Link>
         </MenuItem>
         <div className='my-1 h-px bg-[#4f4f4f]/40' />
