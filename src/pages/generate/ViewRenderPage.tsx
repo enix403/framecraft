@@ -15,7 +15,7 @@ export function ViewRenderPage() {
           type='button'
           className='btn w-full max-w-2xl btn-solid py-6 gap-x-2'
         >
-          <IconArrowLeft size={22} weight='bold' />
+          <IconArrowLeft />
           Go Back
         </Link>
       </div>

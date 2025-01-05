@@ -19,7 +19,7 @@ export function EditDesignPage() {
           {/* Length */}
           <div className='form-control relative flex-1'>
             <span className='absolute inset-y-0 left-4 inline-flex items-center text-content3'>
-              <IconPencilLine size={18} weight='bold' />
+              <IconPencilLine size={18} />
             </span>
             <input
               className='input w-full max-w-full px-10'
@@ -63,7 +63,7 @@ export function EditDesignPage() {
           type='button'
           className='btn w-full max-w-2xl btn-secondary py-6 gap-x-2'
         >
-          <IconPackage size={22} weight='bold' />
+          <IconPackage />
           <strong>Export</strong>
         </button>
         <Link
@@ -71,7 +71,7 @@ export function EditDesignPage() {
           type='button'
           className='btn w-full max-w-2xl btn-success py-6 gap-x-2'
         >
-          <IconSphere size={22} weight='bold' />
+          <IconSphere />
           <strong>Render 3D Model</strong>
         </Link>
         <Link
@@ -79,7 +79,7 @@ export function EditDesignPage() {
           type='button'
           className='btn w-full max-w-2xl btn-solid-error py-6 gap-x-2 mt-auto'
         >
-          <IconArrowLeft size={22} weight='bold' />
+          <IconArrowLeft />
           Discard and go back
         </Link>
       </div>

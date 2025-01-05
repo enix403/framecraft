@@ -2,6 +2,8 @@ import "./styles/reset.css";
 import "./styles/load-fonts";
 import "./styles/global.css";
 
+import { IconContext } from "@phosphor-icons/react";
+
 import { BrowserRouter, Routes, Route } from "react-router";
 
 import { HomePage } from "./pages/home/HomePage";
@@ -14,16 +16,23 @@ import { MyDesignsPage } from "./pages/generate/MyDesignsPage";
 
 export function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/generate' element={<GeneratePage />} />
-        <Route path='/edit' element={<EditDesignPage />} />
-        <Route path='/render' element={<ViewRenderPage />} />
-        <Route path='/my-designs' element={<MyDesignsPage />} />
-      </Routes>
-    </BrowserRouter>
+    <IconContext.Provider
+      value={{
+        size: 22,
+        weight: "bold"
+      }}
+    >
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
+          <Route path='/generate' element={<GeneratePage />} />
+          <Route path='/edit' element={<EditDesignPage />} />
+          <Route path='/render' element={<ViewRenderPage />} />
+          <Route path='/my-designs' element={<MyDesignsPage />} />
+        </Routes>
+      </BrowserRouter>
+    </IconContext.Provider>
   );
 }

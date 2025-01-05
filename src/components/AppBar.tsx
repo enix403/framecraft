@@ -43,7 +43,7 @@ function UserDropdown() {
             )}
           >
             Logout
-            <IconSignOut size={18} weight="bold" />
+            <IconSignOut size={18} />
           </Link>
         </MenuItem>
       </MenuItems>

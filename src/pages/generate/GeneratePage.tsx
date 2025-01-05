@@ -11,7 +11,7 @@ function GenerateDesign() {
         <img src="/gen_neutral.svg" className="w-[500px]" />
       </div>
       <div className="alert alert-success max-w-lg mt-10">
-        <IconSliders size={28} weight="bold" className="text-success" />
+        <IconSliders size={28} className="text-success" />
         <div className="flex flex-col">
           <span className="text-content2">
             Tweak the settings to your liking, and hit "Generate"
@@ -46,7 +46,7 @@ function PickDesign() {
         className='btn w-full max-w-2xl btn-secondary py-6 mt-12 gap-x-2'
       >
         <strong>Continue with this design</strong>
-        <IconArrowRight size={22} weight="bold" />
+        <IconArrowRight />
       </Link>
     </div>
   );
