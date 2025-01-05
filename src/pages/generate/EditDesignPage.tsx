@@ -1,6 +1,13 @@
 import { Link } from "react-router";
 import { GenerationAppLayout } from "./layout/GenerationAppLayout";
 
+import {
+  ArrowLeft as IconArrowLeft,
+  Package as IconPackage,
+  PencilLine as IconPencilLine,
+  Sphere as IconSphere
+} from "@phosphor-icons/react";
+
 export function EditDesignPage() {
   return (
     <GenerationAppLayout>
@@ -12,7 +19,7 @@ export function EditDesignPage() {
           {/* Length */}
           <div className='form-control relative flex-1'>
             <span className='absolute inset-y-0 left-4 inline-flex items-center text-content3'>
-              {/* <IconEdit size={20} /> */}
+              <IconPencilLine size={18} weight='bold' />
             </span>
             <input
               className='input w-full max-w-full px-10'
@@ -56,23 +63,23 @@ export function EditDesignPage() {
           type='button'
           className='btn w-full max-w-2xl btn-secondary py-6 gap-x-2'
         >
-          {/* <IconPackages /> */}
+          <IconPackage size={22} weight='bold' />
           <strong>Export</strong>
         </button>
         <Link
-          to="/render"
+          to='/render'
           type='button'
           className='btn w-full max-w-2xl btn-success py-6 gap-x-2'
         >
-          {/* <IconChartScatter3d /> */}
+          <IconSphere size={22} weight='bold' />
           <strong>Render 3D Model</strong>
         </Link>
         <Link
-          to="/generate"
+          to='/generate'
           type='button'
           className='btn w-full max-w-2xl btn-solid-error py-6 gap-x-2 mt-auto'
         >
-          {/* <IconArrowLeft /> */}
+          <IconArrowLeft size={22} weight='bold' />
           Discard and go back
         </Link>
       </div>
