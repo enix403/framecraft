@@ -9,7 +9,7 @@ import { LoginPage } from "./pages/auth/LoginPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
 import { GeneratePage } from "./pages/generate/GeneratePage";
 import { EditDesignPage } from "./pages/generate/EditDesignPage";
-// import ViewRender from "./pages/generate/ViewRender";
+import { ViewRenderPage } from "./pages/generate/ViewRenderPage";
 // import MyDesigns from "./pages/generate/MyDesigns";
 
 export function App() {
@@ -21,8 +21,8 @@ export function App() {
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/generate' element={<GeneratePage />} />
         <Route path='/edit' element={<EditDesignPage />} />
+        <Route path='/render' element={<ViewRenderPage />} />
         {/*
-        <Route path="/render" element={<ViewRender />} />
         <Route path="/my-designs" element={<MyDesigns />} />
         */}
       </Routes>

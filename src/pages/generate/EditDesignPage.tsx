@@ -58,20 +58,22 @@ export function EditDesignPage() {
           {/* <IconPackages /> */}
           <strong>Export</strong>
         </button>
-        <button
+        <a
+          href="/render"
           type='button'
           className='btn w-full max-w-2xl btn-success py-6 gap-x-2'
         >
           {/* <IconChartScatter3d /> */}
           <strong>Render 3D Model</strong>
-        </button>
-        <button
+        </a>
+        <a
+          href="/generate"
           type='button'
           className='btn w-full max-w-2xl btn-solid-error py-6 gap-x-2 mt-auto'
         >
           {/* <IconArrowLeft /> */}
           Discard and go back
-        </button>
+        </a>
       </div>
     </GenerationAppLayout>
   );
