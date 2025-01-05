@@ -1,3 +1,53 @@
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import clsx from "clsx";
+
+import { SignOut } from "@phosphor-icons/react";
+
+function UserDropdown() {
+  return (
+    <Menu>
+      <MenuButton>
+        <div className='avatar avatar-ring-secondary'>
+          <img src='https://i.pravatar.cc/150?img=57' alt='avatar' />
+        </div>
+      </MenuButton>
+      <MenuItems
+        transition
+        anchor='bottom end'
+        className={clsx(
+          "w-52 origin-top-right",
+          "p-1",
+          "[--anchor-gap:var(--spacing-1)]",
+          "transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0",
+          "bg-[#272424] text-sm/6",
+          "rounded-xl border-2 border-[#4f4f4f] focus:outline-none"
+        )}
+      >
+        <MenuItem>
+          <button
+            className={clsx(
+              "flex w-full rounded-lg py-1.5 px-3 data-[focus]:bg-white/10"
+            )}
+          >
+            My Designs
+          </button>
+        </MenuItem>
+        <div className='my-1 h-px bg-[#4f4f4f]/40' />
+        <MenuItem>
+          <button
+            className={clsx(
+              "flex items-center w-full justify-between gap-2 rounded-lg py-1.5 px-3 text-[#FE6369] data-[focus]:bg-[#FE6369]/10"
+            )}
+          >
+            Logout
+            <SignOut size={18} weight="bold" />
+          </button>
+        </MenuItem>
+      </MenuItems>
+    </Menu>
+  );
+}
+
 export function AppBar() {
   return (
     <nav className='border-0 border-b-2 border-border'>
@@ -12,9 +62,7 @@ export function AppBar() {
             FrameCraft
           </span>
         </a>
-        <div className='avatar avatar-ring-secondary'>
-          <img src='https://i.pravatar.cc/150?img=57' alt='avatar' />
-        </div>
+        <UserDropdown />
       </div>
     </nav>
   );
