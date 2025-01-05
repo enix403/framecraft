@@ -2,6 +2,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import clsx from "clsx";
 
 import { SignOut } from "@phosphor-icons/react";
+import { Link } from "react-router";
 
 function UserDropdown() {
   return (
@@ -24,24 +25,26 @@ function UserDropdown() {
         )}
       >
         <MenuItem>
-          <button
+          <Link
+            to="/my-designs"
             className={clsx(
               "flex w-full rounded-lg py-1.5 px-3 data-[focus]:bg-white/10"
             )}
           >
             My Designs
-          </button>
+          </Link>
         </MenuItem>
         <div className='my-1 h-px bg-[#4f4f4f]/40' />
         <MenuItem>
-          <button
+          <Link
+            to="/login"
             className={clsx(
               "flex items-center w-full justify-between gap-2 rounded-lg py-1.5 px-3 text-[#FE6369] data-[focus]:bg-[#FE6369]/10"
             )}
           >
             Logout
             <SignOut size={18} weight="bold" />
-          </button>
+          </Link>
         </MenuItem>
       </MenuItems>
     </Menu>
