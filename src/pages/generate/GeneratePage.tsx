@@ -38,13 +38,14 @@ function PickDesign() {
         <DesignPreview />
       </div>
 
-      <button
+      <a
+        href="/edit"
         type='button'
         className='btn w-full max-w-2xl btn-secondary py-6 mt-12 gap-x-2'
       >
         <strong>Continue with this design</strong>
         {/* <IconArrowRight /> */}
-      </button>
+      </a>
     </div>
   );
 }
