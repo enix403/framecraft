@@ -2,8 +2,8 @@ import { Link } from "react-router";
 
 export function RegisterPage() {
   return (
-    <div className='flex rounded-xl overflow-hidden m-10 border border-border flex-1'>
-      <form className='flex w-full max-w-lg flex-col bg-backgroundSecondary sm:p-10'>
+    <div className='flex rounded-xl overflow-hidden md:m-10 border border-border flex-1'>
+      <form className='flex w-full lg:max-w-lg flex-col bg-backgroundSecondary p-6 sm:p-10 max-lg:flex-1'>
         <div className='flex w-full flex-col gap-2'>
           <p>Sign in with</p>
           <div className='flex w-full flex-col gap-2'>
@@ -101,12 +101,13 @@ export function RegisterPage() {
           </div>
           <div className='form-field pt-5'>
             <div className='form-control justify-between'>
-              <button
+              <Link
+                to="/generate"
                 type='button'
                 className='btn btn-primary w-full bg-gradient-to-r from-pink-600 to-purple-500'
               >
                 Create your account
-              </button>
+              </Link>
             </div>
           </div>
           <div className='form-field'>
@@ -118,7 +119,7 @@ export function RegisterPage() {
           </div>
         </div>
       </form>
-      <div className='flex-1'>
+      <div className='flex-1 max-lg:hidden'>
         <img
           src='/hero3.jpg'
           className='w-full max-w-full h-full object-cover'
