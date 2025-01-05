@@ -6,6 +6,8 @@ import { IconContext } from "@phosphor-icons/react";
 
 import { BrowserRouter, Routes, Route } from "react-router";
 
+import { NotFound } from "./pages/NotFound";
+
 import { HomePage } from "./pages/home/HomePage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
@@ -31,6 +33,7 @@ export function App() {
           <Route path='/edit' element={<EditDesignPage />} />
           <Route path='/render' element={<ViewRenderPage />} />
           <Route path='/my-designs' element={<MyDesignsPage />} />
+          <Route path='/*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </IconContext.Provider>
