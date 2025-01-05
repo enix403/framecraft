@@ -20,13 +20,13 @@ export function DesignPreview({ selected = false }: { selected?: boolean }) {
         <div className='relative bg-black'>
           <img className='h-auto max-w-full' src='/plan1.jpg' alt='' />
 
-          <div className='absolute inset-0'>
+          {/* <div className='absolute inset-0'>
             <div className='w-full h-full p-2 flex flex-col items-end'>
               <button className='btn btn-circle bg-black/40'>
                 <IconEye size={20} />
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </button>
