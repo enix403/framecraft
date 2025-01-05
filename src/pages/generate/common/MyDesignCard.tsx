@@ -29,7 +29,7 @@ export function MyDesignCard({ name }: { name: string }) {
           </table>
         </div>
         <div className='card-footer mt-4'>
-          <button className='btn-secondary btn w-full'>View</button>
+          <a href="/edit" className='btn-secondary btn w-full'>View</a>
         </div>
       </div>
     </div>
