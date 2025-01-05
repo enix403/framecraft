@@ -1,13 +1,20 @@
+import clsx from "clsx";
+
 import { GenerationAppLayout } from "./layout/GenerationAppLayout";
 import { MyDesignCard } from "./common/MyDesignCard";
 
 export function MyDesignsPage() {
   return (
     <GenerationAppLayout>
-      <div className='p-10 max-h-full overflow-y-auto'>
+      <div className='p-10 max-h-full overflow-y-auto flex-1'>
         <div className='mb-12 text-4xl font-semibold'>My Generations</div>
 
-        <div className='grid grid-cols-5 gap-x-6 gap-y-8'>
+        <div
+          className={clsx(
+            "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5",
+            "gap-x-6 gap-y-8"
+          )}
+        >
           <MyDesignCard name='Design 1' />
           <MyDesignCard name='Design 2' />
           <MyDesignCard name='Design 3' />

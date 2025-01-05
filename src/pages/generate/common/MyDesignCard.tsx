@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 export function MyDesignCard({ name }: { name: string }) {
   return (
-    <div className='card card-image-cover'>
+    <div className='card card-image-cover max-w-none'>
       <img src='/plan1.jpg' alt='' />
       <div className='card-body px-6 pb-8 pt-4'>
         <h2 className='card-header'>{name}</h2>
