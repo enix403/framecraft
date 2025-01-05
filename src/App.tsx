@@ -10,7 +10,7 @@ import { RegisterPage } from "./pages/auth/RegisterPage";
 import { GeneratePage } from "./pages/generate/GeneratePage";
 import { EditDesignPage } from "./pages/generate/EditDesignPage";
 import { ViewRenderPage } from "./pages/generate/ViewRenderPage";
-// import MyDesigns from "./pages/generate/MyDesigns";
+import { MyDesignsPage } from "./pages/generate/MyDesignsPage";
 
 export function App() {
   return (
@@ -22,9 +22,7 @@ export function App() {
         <Route path='/generate' element={<GeneratePage />} />
         <Route path='/edit' element={<EditDesignPage />} />
         <Route path='/render' element={<ViewRenderPage />} />
-        {/*
-        <Route path="/my-designs" element={<MyDesigns />} />
-        */}
+        <Route path='/my-designs' element={<MyDesignsPage />} />
       </Routes>
     </BrowserRouter>
   );
