@@ -2,15 +2,16 @@ import { Link } from "react-router";
 import { ConfigSidebar } from "./common/ConfigSidebar";
 import { DesignPreview } from "./common/DesignPreview";
 import { GenerationAppLayout } from "./layout/GenerationAppLayout";
+import { ArrowRight as IconArrowRight, Sliders as IconSliders } from "@phosphor-icons/react";
 
 function GenerateDesign() {
   return (
-    <div className="flex-1 flex flex-col items-center pt-32">
+    <div className="flex-1 flex flex-col items-center pt-28">
       <div className="opacity-50">
         <img src="/gen_neutral.svg" className="w-[500px]" />
       </div>
       <div className="alert alert-success max-w-lg mt-10">
-        {/* <IconTools size={28} className="text-success" /> */}
+        <IconSliders size={28} weight="bold" className="text-success" />
         <div className="flex flex-col">
           <span className="text-content2">
             Tweak the settings to your liking, and hit "Generate"
@@ -45,7 +46,7 @@ function PickDesign() {
         className='btn w-full max-w-2xl btn-secondary py-6 mt-12 gap-x-2'
       >
         <strong>Continue with this design</strong>
-        {/* <IconArrowRight /> */}
+        <IconArrowRight size={22} weight="bold" />
       </Link>
     </div>
   );

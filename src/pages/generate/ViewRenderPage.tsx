@@ -1,6 +1,8 @@
 import { Link } from "react-router";
 import { GenerationAppLayout } from "./layout/GenerationAppLayout";
 
+import { ArrowLeft as IconArrowLeft } from "@phosphor-icons/react";
+
 export function ViewRenderPage() {
   return (
     <GenerationAppLayout>
@@ -9,11 +11,11 @@ export function ViewRenderPage() {
       </div>
       <div className='flex w-full max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0'>
         <Link
-          to="/edit"
+          to='/edit'
           type='button'
           className='btn w-full max-w-2xl btn-solid py-6 gap-x-2'
         >
-          {/* <IconArrowLeft /> */}
+          <IconArrowLeft size={22} weight='bold' />
           Go Back
         </Link>
       </div>

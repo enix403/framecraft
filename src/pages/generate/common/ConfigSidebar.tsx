@@ -1,3 +1,5 @@
+import { Sparkle as IconSparkle } from "@phosphor-icons/react";
+
 export function ConfigSidebar() {
   return (
     <div className='flex w-full max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0'>
@@ -51,8 +53,8 @@ export function ConfigSidebar() {
         type='button'
         className='btn w-full bg-gradient-to-r py-6 from-pink-600 to-blue-500 mt-8 gap-x-2'
       >
-        {/* <IconSparkles /> */}
-        <strong>Generate</strong>
+        <IconSparkle size={24} weight="fill" />
+        <strong className="text-white text-[1.01rem]">Generate</strong>
       </button>
     </div>
   );

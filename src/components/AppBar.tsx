@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import clsx from "clsx";
 
-import { SignOut } from "@phosphor-icons/react";
+import { SignOut as IconSignOut } from "@phosphor-icons/react";
 import { Link } from "react-router";
 
 function UserDropdown() {
@@ -43,7 +43,7 @@ function UserDropdown() {
             )}
           >
             Logout
-            <SignOut size={18} weight="bold" />
+            <IconSignOut size={18} weight="bold" />
           </Link>
         </MenuItem>
       </MenuItems>

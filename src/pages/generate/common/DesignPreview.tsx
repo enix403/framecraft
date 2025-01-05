@@ -1,5 +1,7 @@
 import clsx from "clsx";
 
+import { Eye as IconEye } from "@phosphor-icons/react";
+
 export function DesignPreview({ selected = false }: { selected?: boolean }) {
   return (
     <button className='relative group cursor-pointer'>
@@ -21,7 +23,7 @@ export function DesignPreview({ selected = false }: { selected?: boolean }) {
           <div className='absolute inset-0'>
             <div className='w-full h-full p-2 flex flex-col items-end'>
               <button className='btn btn-circle bg-black/40'>
-                {/* <IconEye /> */}
+                <IconEye size={20} />
               </button>
             </div>
           </div>
