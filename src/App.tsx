@@ -5,8 +5,8 @@ import "./styles/global.css";
 import { BrowserRouter, Routes, Route } from "react-router";
 
 import { HomePage } from "./pages/home/HomePage";
-// import Login from "./pages/auth/Login";
-// import Register from "./pages/auth/Register";
+import { LoginPage } from "./pages/auth/LoginPage";
+import { RegisterPage } from "./pages/auth/RegisterPage";
 // import Generate from "./pages/generate/Generate";
 // import EditDesign from "./pages/generate/EditDesign";
 // import ViewRender from "./pages/generate/ViewRender";
@@ -16,10 +16,10 @@ export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path='/' element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         {/*
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/generate" element={<Generate />} />
         <Route path="/edit" element={<EditDesign />} />
         <Route path="/render" element={<ViewRender />} />
@@ -28,4 +28,4 @@ export function App() {
       </Routes>
     </BrowserRouter>
   );
-};
+}
