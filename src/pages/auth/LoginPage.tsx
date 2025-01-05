@@ -89,15 +89,15 @@ export function LoginPage() {
           </div>
           <div className='form-field'>
             <div className='form-control justify-between'>
-              <div className='flex gap-2'>
+              <label className='flex gap-2 select-none cursor-pointer'>
                 <input type='checkbox' className='checkbox' />
                 Remember me
-              </div>
-              <label className='form-label'>
+              </label>
+              {/* <label className='form-label'>
                 <a href="#" className='link link-underline-hover link-secondary text-sm'>
                   Forgot your password?
                 </a>
-              </label>
+              </label> */}
             </div>
           </div>
           <div className='form-field pt-5'>

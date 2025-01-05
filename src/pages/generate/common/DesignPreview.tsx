@@ -1,13 +1,19 @@
 import clsx from "clsx";
 
-import { Eye as IconEye } from "@phosphor-icons/react";
+import { CheckCircle, Eye as IconEye } from "@phosphor-icons/react";
 
-export function DesignPreview({ selected = false }: { selected?: boolean }) {
+export function DesignPreview({
+  selected = false,
+  onSelect
+}: {
+  selected?: boolean;
+  onSelect?: () => void;
+}) {
   return (
-    <button className='relative group cursor-pointer'>
+    <button className='relative group cursor-pointer' onClick={onSelect}>
       <div
         className={clsx(
-          "absolute -inset-1 bg-gradient-to-r from-red-600 to-violet-600 rounded-lg blur",
+          "absolute -inset-1 bg-gradient-to-r from-red-600 to-violet-600 rounded-lg blur transition-all",
           selected ? "opacity-100" : "opacity-25"
         )}
       ></div>
@@ -19,6 +25,17 @@ export function DesignPreview({ selected = false }: { selected?: boolean }) {
       >
         <div className='relative bg-black'>
           <img className='h-auto max-w-full' src='/plan1.jpg' alt='' />
+
+          <div
+            className={clsx(
+              "absolute inset-0 transition-all pointer-events-none",
+              selected ? "opacity-100" : "opacity-0"
+            )}
+          >
+            <div className='w-full h-full bg-black/60 flex items-center justify-center'>
+              <CheckCircle size={84} weight='fill' className='text-[#b4db40]' />
+            </div>
+          </div>
 
           {/* <div className='absolute inset-0'>
             <div className='w-full h-full p-2 flex flex-col items-end'>
