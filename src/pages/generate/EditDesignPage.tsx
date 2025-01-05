@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { GenerationAppLayout } from "./layout/GenerationAppLayout";
 
 export function EditDesignPage() {
@@ -58,22 +59,22 @@ export function EditDesignPage() {
           {/* <IconPackages /> */}
           <strong>Export</strong>
         </button>
-        <a
-          href="/render"
+        <Link
+          to="/render"
           type='button'
           className='btn w-full max-w-2xl btn-success py-6 gap-x-2'
         >
           {/* <IconChartScatter3d /> */}
           <strong>Render 3D Model</strong>
-        </a>
-        <a
-          href="/generate"
+        </Link>
+        <Link
+          to="/generate"
           type='button'
           className='btn w-full max-w-2xl btn-solid-error py-6 gap-x-2 mt-auto'
         >
           {/* <IconArrowLeft /> */}
           Discard and go back
-        </a>
+        </Link>
       </div>
     </GenerationAppLayout>
   );

@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export function RegisterPage() {
   return (
     <div className='flex rounded-xl overflow-hidden m-10 border border-border flex-1'>
@@ -109,9 +111,9 @@ export function RegisterPage() {
           </div>
           <div className='form-field'>
             <div className='form-control'>
-              <a href="/login" className='link link-underline-hover link-secondary text-sm'>
+              <Link to="/login" className='link link-underline-hover link-secondary text-sm'>
                 Already have an account? Sign in
-              </a>
+              </Link>
             </div>
           </div>
         </div>

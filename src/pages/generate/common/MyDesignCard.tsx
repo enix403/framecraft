@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export function MyDesignCard({ name }: { name: string }) {
   return (
     <div className='card card-image-cover'>
@@ -29,7 +31,7 @@ export function MyDesignCard({ name }: { name: string }) {
           </table>
         </div>
         <div className='card-footer mt-4'>
-          <a href="/edit" className='btn-secondary btn w-full'>View</a>
+          <Link to="/edit" className='btn-secondary btn w-full'>View</Link>
         </div>
       </div>
     </div>

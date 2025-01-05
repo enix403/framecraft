@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { GenerationAppLayout } from "./layout/GenerationAppLayout";
 
 export function ViewRenderPage() {
@@ -7,14 +8,14 @@ export function ViewRenderPage() {
         <img src='/render1.jpg' className='w-full h-full' />
       </div>
       <div className='flex w-full max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0'>
-        <a
-          href="/edit"
+        <Link
+          to="/edit"
           type='button'
           className='btn w-full max-w-2xl btn-solid py-6 gap-x-2'
         >
           {/* <IconArrowLeft /> */}
           Go Back
-        </a>
+        </Link>
       </div>
     </GenerationAppLayout>
   );

@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { ConfigSidebar } from "./common/ConfigSidebar";
 import { DesignPreview } from "./common/DesignPreview";
 import { GenerationAppLayout } from "./layout/GenerationAppLayout";
@@ -38,14 +39,14 @@ function PickDesign() {
         <DesignPreview />
       </div>
 
-      <a
-        href="/edit"
+      <Link
+        to="/edit"
         type='button'
         className='btn w-full max-w-2xl btn-secondary py-6 mt-12 gap-x-2'
       >
         <strong>Continue with this design</strong>
         {/* <IconArrowRight /> */}
-      </a>
+      </Link>
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export function LoginPage() {
   return (
     <div className='flex rounded-xl overflow-hidden m-10 border border-border flex-1'>
@@ -89,10 +91,10 @@ export function LoginPage() {
             <div className='form-control justify-between'>
               <div className='flex gap-2'>
                 <input type='checkbox' className='checkbox' />
-                <a href='#'>Remember me</a>
+                Remember me
               </div>
               <label className='form-label'>
-                <a className='link link-underline-hover link-secondary text-sm'>
+                <a href="#" className='link link-underline-hover link-secondary text-sm'>
                   Forgot your password?
                 </a>
               </label>
@@ -100,24 +102,24 @@ export function LoginPage() {
           </div>
           <div className='form-field pt-5'>
             <div className='form-control justify-between'>
-              <a href="/generate" className="block w-full">
+              <Link to="/generate" className="block w-full">
                 <button
                   type='button'
                   className='btn btn-primary w-full bg-gradient-to-r from-pink-600 to-purple-500'
                 >
                   Sign in
                 </button>
-              </a>
+              </Link>
             </div>
           </div>
           <div className='form-field'>
             <div className='form-control'>
-              <a
-                href='/register'
+              <Link
+                to='/register'
                 className='link link-underline-hover link-secondary text-sm'
               >
                 Don't have an account? Sign up
-              </a>
+              </Link>
             </div>
           </div>
         </div>
