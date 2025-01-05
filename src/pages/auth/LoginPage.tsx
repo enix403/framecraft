@@ -100,17 +100,22 @@ export function LoginPage() {
           </div>
           <div className='form-field pt-5'>
             <div className='form-control justify-between'>
-              <button
-                type='button'
-                className='btn btn-primary w-full bg-gradient-to-r from-pink-600 to-purple-500'
-              >
-                Sign in
-              </button>
+              <a href="/generate" className="block w-full">
+                <button
+                  type='button'
+                  className='btn btn-primary w-full bg-gradient-to-r from-pink-600 to-purple-500'
+                >
+                  Sign in
+                </button>
+              </a>
             </div>
           </div>
           <div className='form-field'>
             <div className='form-control'>
-              <a href="/register" className='link link-underline-hover link-secondary text-sm'>
+              <a
+                href='/register'
+                className='link link-underline-hover link-secondary text-sm'
+              >
                 Don't have an account? Sign up
               </a>
             </div>
