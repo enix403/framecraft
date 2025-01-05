@@ -1,50 +1,125 @@
-# React + TypeScript + Vite
+# FrameCraft Prototype
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the frontend of the FrameCraft prototype, a web application built using **Vite**, **React**, and **TypeScript**. This setup ensures a fast development experience, modern JavaScript features, and type safety.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Visit the app at [https://framecraft-prototype.vercel.app](https://framecraft-prototype.vercel.app)
 
-## Expanding the ESLint configuration
+## Table of Contents
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Scripts](#scripts)
+- [Development](#development)
+- [Building and Previewing](#building-and-previewing)
+- [Code Quality](#code-quality)
+- [Folder Structure](#folder-structure)
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname
-    }
-  }
-});
+Follow the instructions below to set up and run the project locally.
+
+### Prerequisites
+
+Ensure you have the following installed on your system:
+
+- [Node.js](https://nodejs.org/) (v20 or newer recommended)
+- `npm`, `yarn` or `pnpm`
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/enix403/framecraft-prototype/
+   cd framecraft-prototype
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+## Scripts
+
+The `package.json` includes several scripts to streamline development and deployment:
+
+- `dev`: Starts the development server with hot module reloading.
+  ```bash
+  npm run dev
+  ```
+
+- `build`: Builds the project for production. This script also runs TypeScript type checks before building.
+  ```bash
+  npm run build
+  ```
+
+- `preview`: Previews the production build locally.
+  ```bash
+  npm run preview
+  ```
+
+- `format`: Formats the codebase using Prettier.
+  ```bash
+  npm run format
+  ```
+
+## Development
+
+To start the development server:
+
+```bash
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+This will start the Vite development server, which supports hot module reloading and fast builds. Open the application in your browser at the URL provided in the terminal output (currently `http://localhost:3000`).
 
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
+## Building and Previewing
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules
-  }
-});
+To create a production build:
+
+```bash
+npm run build
+```
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## Code Quality
+
+### TypeScript Type Checking
+
+Ensure type correctness across the codebase by running:
+
+```bash
+npm run typecheck
+```
+
+### Formatting
+
+Format all files in the project using Prettier:
+
+```bash
+npm run format
+```
+
+## Folder Structure
+
+Below is an overview of the folder structure:
+
+```
+framecraft-prototype/
+├── public/              # Static assets
+├── src/                 # Source files
+│   ├── components/      # React components
+│   ├── pages/           # Pages
+│   ├── styles/          # CSS files
+│   ├── App.tsx          # React app root
+│   └── main.tsx         # Application entry point
 ```
