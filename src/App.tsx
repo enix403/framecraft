@@ -4,7 +4,7 @@ import "./styles/global.css";
 
 import { BrowserRouter, Routes, Route } from "react-router";
 
-// import Home from "./pages/home/Home";
+import { HomePage } from "./pages/home/HomePage";
 // import Login from "./pages/auth/Login";
 // import Register from "./pages/auth/Register";
 // import Generate from "./pages/generate/Generate";
@@ -12,12 +12,12 @@ import { BrowserRouter, Routes, Route } from "react-router";
 // import ViewRender from "./pages/generate/ViewRender";
 // import MyDesigns from "./pages/generate/MyDesigns";
 
-const App = () => {
+export function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<HomePage />} />
         {/*
-        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/generate" element={<Generate />} />
@@ -29,5 +29,3 @@ const App = () => {
     </BrowserRouter>
   );
 };
-
-export default App;
