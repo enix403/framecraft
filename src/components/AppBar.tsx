@@ -26,7 +26,17 @@ function UserDropdown() {
       >
         <MenuItem>
           <Link
-            to="/my-designs"
+            to='/generate'
+            className={clsx(
+              "flex w-full rounded-lg py-1.5 px-3 data-[focus]:bg-white/10"
+            )}
+          >
+            Start Generation
+          </Link>
+        </MenuItem>
+        <MenuItem>
+          <Link
+            to='/my-designs'
             className={clsx(
               "flex w-full rounded-lg py-1.5 px-3 data-[focus]:bg-white/10"
             )}
@@ -37,7 +47,7 @@ function UserDropdown() {
         <div className='my-1 h-px bg-[#4f4f4f]/40' />
         <MenuItem>
           <Link
-            to="/login"
+            to='/login'
             className={clsx(
               "flex items-center w-full justify-between gap-2 rounded-lg py-1.5 px-3 text-[#FE6369] data-[focus]:bg-[#FE6369]/10"
             )}
