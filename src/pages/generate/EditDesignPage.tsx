@@ -10,11 +10,11 @@ import {
 
 export function EditDesignPage() {
   return (
-    <GenerationAppLayout>
+    <GenerationAppLayout allowScroll>
       <div className='max-h-full flex items-center justify-center flex-1'>
         <img src='/plan2.jpg' className='h-[700px]' />
       </div>
-      <div className='flex w-full max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0'>
+      <div className='flex w-full lg:max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0'>
         <div className='flex gap-4'>
           {/* Length */}
           <div className='form-control relative flex-1'>
@@ -61,7 +61,7 @@ export function EditDesignPage() {
         </div>
         <button
           type='button'
-          className='btn w-full max-w-2xl btn-secondary py-6 gap-x-2'
+          className='btn w-full btn-secondary py-6 gap-x-2'
         >
           <IconPackage />
           <strong>Export</strong>
@@ -69,7 +69,7 @@ export function EditDesignPage() {
         <Link
           to='/render'
           type='button'
-          className='btn w-full max-w-2xl btn-success py-6 gap-x-2'
+          className='btn w-full btn-success py-6 gap-x-2'
         >
           <IconSphere />
           <strong>Render 3D Model</strong>
@@ -77,7 +77,7 @@ export function EditDesignPage() {
         <Link
           to='/generate/pick'
           type='button'
-          className='btn w-full max-w-2xl btn-solid-error py-6 gap-x-2 mt-auto'
+          className='btn w-full btn-solid-error py-6 gap-x-2 mt-auto'
         >
           <IconArrowLeft />
           Discard and go back
