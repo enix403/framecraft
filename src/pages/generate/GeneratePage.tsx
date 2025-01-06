@@ -51,7 +51,7 @@ function PickDesign() {
         </button>
       </Link>
 
-      <div className="flex gap-y-12 flex-col max-lg:flex-col-reverse items-stretch lg:items-center">
+      <div className="flex gap-y-12 flex-col max-lg:flex-col-reverse items-stretch lg:items-center max-lg:pb-44">
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 max-w-4xl'>
           {repeatNode(6, index => {
             const isSelected = selectedIndex === index;
