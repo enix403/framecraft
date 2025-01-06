@@ -1,6 +1,7 @@
 import { Sparkle as IconSparkle } from "@phosphor-icons/react";
-import { KeyboardEvent } from "react";
-import { Link } from "react-router";
+import clsx from "clsx";
+import { motion } from "framer-motion";
+import { Link, useLocation } from "react-router";
 import { OptionsBar } from "~/components/OptionsBar";
 
 /* function validateNumKey(event: KeyboardEvent<HTMLInputElement>) {
@@ -10,8 +11,20 @@ import { OptionsBar } from "~/components/OptionsBar";
 } */
 
 export function ConfigSidebar() {
+  const location = useLocation();
+
+  const isPickStage = location.pathname.includes("generate/pick");
+  const isGenerateStage = !isPickStage;
+
   return (
-    <div className='flex w-full max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0'>
+    <motion.div
+      className={clsx(
+        "w-full flex-col gap-6 bg-backgroundSecondary p-8 shrink-0 overflow-hidden",
+        "lg:max-w-sm",
+        isPickStage ? "hidden lg:flex" : "flex",
+      )}
+    >
+      <h2 className='text-lg font-bold'>Generate New Design</h2>
       {/* Plot Dimension s*/}
       <div>
         <label className='form-label mb-2'>Plot Dimensions</label>
@@ -72,6 +85,6 @@ export function ConfigSidebar() {
         <IconSparkle size={24} weight='fill' />
         <strong className='text-white text-[1.01rem]'>Generate</strong>
       </Link>
-    </div>
+    </motion.div>
   );
 }

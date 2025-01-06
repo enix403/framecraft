@@ -4,14 +4,18 @@ import { DesignPreview } from "./common/DesignPreview";
 import { GenerationAppLayout } from "./layout/GenerationAppLayout";
 import {
   ArrowRight as IconArrowRight,
-  Sliders as IconSliders
+  Sliders as IconSliders,
+  X as IconX
 } from "@phosphor-icons/react";
 import { useState } from "react";
 import { repeatNode } from "~/utils/markup";
+import clsx from "clsx";
 
 function GenerateDesign() {
   return (
-    <div className='flex-1 flex flex-col items-center pt-28'>
+    <div
+      className={clsx("flex-1 flex-col items-center pt-28", "hidden lg:flex")}
+    >
       <div className='opacity-50'>
         <img src='/gen_neutral.svg' className='w-[500px]' />
       </div>
@@ -33,34 +37,43 @@ function PickDesign() {
   const canContinue = selectedIndex !== -1;
 
   return (
-    <div className='p-10 pt-8 overflow-y-auto max-h-full flex flex-col items-center w-full'>
-      <div className='mb-12 text-4xl font-semibold'>
+    <div className='p-10 pt-24 overflow-y-auto max-h-full flex flex-col items-center w-full relative'>
+      <div className='mb-8 text-4xl font-semibold max-lg:self-start'>
         <h1 className='bg-gradient-to-r from-pink-600 via-purple-400 to-blue-500 inline-block text-transparent bg-clip-text'>
           Pick a design to get started
         </h1>
       </div>
 
-      <div className='grid grid-cols-3 gap-x-6 gap-y-8 max-w-4xl'>
-        {repeatNode(6, index => {
-          const isSelected = selectedIndex === index;
-          return (
-            <DesignPreview
-              selected={isSelected}
-              onSelect={() => setSelectedIndex(isSelected ? -1 : index)}
-            />
-          );
-        })}
-      </div>
-
-      <Link to={canContinue ? "/edit" : "#"} className='w-full max-w-2xl'>
-        <button
-          disabled={!canContinue}
-          className='btn w-full btn-secondary py-6 mt-12 gap-x-2'
-        >
-          <strong>Continue with this design</strong>
-          <IconArrowRight />
+      <Link to='/generate' className='absolute -top-0 left-10'>
+        <button className='btn w-full btn-solid-error py-6 mt-6 gap-x-2'>
+          <IconX />
+          <strong>Cancel</strong>
         </button>
       </Link>
+
+      <div className="flex gap-y-12 flex-col max-lg:flex-col-reverse items-stretch lg:items-center">
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 max-w-4xl'>
+          {repeatNode(6, index => {
+            const isSelected = selectedIndex === index;
+            return (
+              <DesignPreview
+                selected={isSelected}
+                onSelect={() => setSelectedIndex(isSelected ? -1 : index)}
+              />
+            );
+          })}
+        </div>
+
+        <Link to={canContinue ? "/edit" : "#"} className='w-full lg:max-w-2xl'>
+          <button
+            disabled={!canContinue}
+            className='btn w-full btn-secondary py-6 gap-x-2'
+          >
+            <strong>Continue with this design</strong>
+            <IconArrowRight />
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
