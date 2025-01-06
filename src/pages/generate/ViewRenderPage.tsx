@@ -9,7 +9,7 @@ export function ViewRenderPage() {
       <div className='max-h-full flex items-center justify-center flex-1'>
         <img src='/render1.jpg' className='w-full h-full object-cover' />
       </div>
-      <div className='flex w-full lg:max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0'>
+      <div className='flex w-full lg:max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0 max-lg:pb-44'>
         <Link
           to='/edit'
           type='button'

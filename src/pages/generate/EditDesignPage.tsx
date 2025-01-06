@@ -14,7 +14,7 @@ export function EditDesignPage() {
       <div className='max-h-full flex items-center justify-center flex-1'>
         <img src='/plan2.jpg' className='h-[700px]' />
       </div>
-      <div className='flex w-full lg:max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0'>
+      <div className='flex w-full lg:max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0 max-lg:pb-44'>
         <div className='flex gap-4'>
           {/* Length */}
           <div className='form-control relative flex-1'>
