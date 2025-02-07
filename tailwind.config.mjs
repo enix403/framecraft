@@ -4,10 +4,20 @@ export default {
   theme: {
     extend: {}
   },
-  plugins: [
-    require("rippleui")({
-      // defaultStyle: false,
-      // removeThemes: ['dark']
-    })
-  ]
+  plugins: [require("rippleui")],
+  /** @type {import('rippleui').Config} */
+  rippleui: {
+    // defaultStyle: false,
+    // removeThemes: ['dark']
+    themes: [
+      {
+        themeName: "dark",
+        colorScheme: "dark",
+        colors: {
+          backgroundPrimary: "#171717",
+          content1: "#ffffff"
+        }
+      }
+    ]
+  }
 };
