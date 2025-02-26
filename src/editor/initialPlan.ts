@@ -2,9 +2,10 @@ import planJsonRaw from "./plan.json";
 (window as any).planJsonRaw = planJsonRaw;
 
 export function getInitialPlan() {
-  const { shape, rooms, walls, doors } = planJsonRaw;
+  const { shape, rooms, walls, doors, scale } = planJsonRaw;
 
   const [canvasRows, canvasCols] = shape;
+  const [scaleRows, scaleCols] = scale;
 
   let wallsN = walls.map((wall, index) => ({
     id: `wall-${index}`,
@@ -29,10 +30,10 @@ export function getInitialPlan() {
 
     for (let i = 0; i < flatRects.length; i += 4) {
       rects.push([
-        3 * flatRects[i],
-        3 * flatRects[i + 1],
-        3 * flatRects[i + 2],
-        3 * flatRects[i + 3]
+        scaleRows * flatRects[i],
+        scaleCols * flatRects[i + 1],
+        scaleCols * flatRects[i + 2],
+        scaleRows * flatRects[i + 3]
       ]);
     }
 
