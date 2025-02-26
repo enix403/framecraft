@@ -51,34 +51,34 @@ const FloorPlanEditor = () => {
 
       stage.content.addEventListener("wheel", e => {
         // if (e.shiftKey) {
-          e.preventDefault();
-          const oldScale = stage.scaleX();
-          const pointer = stage.getPointerPosition();
-          if (!pointer) return;
+        e.preventDefault();
+        const oldScale = stage.scaleX();
+        const pointer = stage.getPointerPosition();
+        if (!pointer) return;
 
-          const mousePointTo = {
-            x: (pointer.x - stage.x()) / oldScale,
-            y: (pointer.y - stage.y()) / oldScale
-          };
+        const mousePointTo = {
+          x: (pointer.x - stage.x()) / oldScale,
+          y: (pointer.y - stage.y()) / oldScale
+        };
 
-          const newScale = Math.max(
-            0.5,
-            Math.min(5, oldScale - e.deltaY * 0.001)
-          );
-          stage.scale({ x: newScale, y: newScale });
+        const newScale = Math.max(
+          0.5,
+          Math.min(5, oldScale - e.deltaY * 0.001)
+        );
+        stage.scale({ x: newScale, y: newScale });
 
-          const newPos = {
-            x: pointer.x - mousePointTo.x * newScale,
-            y: pointer.y - mousePointTo.y * newScale
-          };
+        const newPos = {
+          x: pointer.x - mousePointTo.x * newScale,
+          y: pointer.y - mousePointTo.y * newScale
+        };
 
-          stage.position(newPos);
-          setViewport(prev => ({
-            ...prev,
-            scale: newScale,
-            x: -newPos.x,
-            y: -newPos.y
-          }));
+        stage.position(newPos);
+        setViewport(prev => ({
+          ...prev,
+          scale: newScale,
+          x: -newPos.x,
+          y: -newPos.y
+        }));
         // }
       });
     }
@@ -87,28 +87,39 @@ const FloorPlanEditor = () => {
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
 
-  const pushToHistory = newPlan => {
-    setUndoStack(prev => [...prev, plan]);
+  const pushToHistory = (newPlan, affectedItem) => {
+    setUndoStack(prev => [...prev, { plan, selectedOnUndoRedo: affectedItem }]);
     setRedoStack([]); // Clear redo stack on a new action
     setPlan(newPlan);
+    setSelectedItem(affectedItem); // Ensure the item stays selected
   };
 
   useEffect(() => {
     const handleKeyDown = e => {
       if (e.ctrlKey && e.key === "z" && undoStack.length > 0) {
-        setRedoStack(prev => [plan, ...prev]);
-        setPlan(undoStack[undoStack.length - 1]);
+        const lastState = undoStack[undoStack.length - 1];
+        setRedoStack(prev => [
+          { plan, selectedOnUndoRedo: selectedItem },
+          ...prev
+        ]);
+        setPlan(lastState.plan);
+        setSelectedItem(lastState.selectedOnUndoRedo); // Auto-select the affected item
         setUndoStack(prev => prev.slice(0, -1));
       }
       if (e.ctrlKey && e.key === "y" && redoStack.length > 0) {
-        setUndoStack(prev => [...prev, plan]);
-        setPlan(redoStack[0]);
+        const nextState = redoStack[0];
+        setUndoStack(prev => [
+          ...prev,
+          { plan, selectedOnUndoRedo: selectedItem }
+        ]);
+        setPlan(nextState.plan);
+        setSelectedItem(nextState.selectedOnUndoRedo); // Auto-select the affected item
         setRedoStack(prev => prev.slice(1));
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [undoStack, redoStack, plan]);
+  }, [undoStack, redoStack, plan, selectedItem]);
 
   return (
     <div style={{ display: "flex" }}>
@@ -189,18 +200,21 @@ const FloorPlanEditor = () => {
               onDragEnd={e => {
                 const newX = snapToGrid(e.target.x());
                 const newY = snapToGrid(e.target.y());
-                pushToHistory(prev => ({
-                  ...prev,
-                  walls: prev.walls.map(wall =>
-                    wall.id === id
-                      ? {
-                          ...wall,
-                          col: newX / CELL_SIZE,
-                          row: newY / CELL_SIZE
-                        }
-                      : wall
-                  )
-                }));
+                pushToHistory(
+                  prev => ({
+                    ...prev,
+                    walls: prev.walls.map(wall =>
+                      wall.id === id
+                        ? {
+                            ...wall,
+                            col: newX / CELL_SIZE,
+                            row: newY / CELL_SIZE
+                          }
+                        : wall
+                    )
+                  }),
+                  { type: "Wall", id }
+                );
               }}
               onClick={e => {
                 e.cancelBubble = true;
