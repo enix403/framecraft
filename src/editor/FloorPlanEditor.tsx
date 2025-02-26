@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Rect, Line, Text } from "react-konva";
 
 import { getInitialPlan } from "./initialPlan";
+import { useMeasure } from "@uidotdev/usehooks";
 (window as any).getInitialPlan = getInitialPlan;
 
 // const initialPlan = {
@@ -25,17 +26,21 @@ import { getInitialPlan } from "./initialPlan";
 const initialPlan = getInitialPlan();
 
 const CELL_SIZE = 5;
-const VIEWPORT_SIZE = 800;
+
+// const BG_COLOR = "#37424E";
+// const WALL_COLOR = "#C9246A";
+
+const BG_COLOR = "#26102b";
+const WALL_COLOR = "#CAC0C9";
+const ACTIVE_COLOR = "#1c5ce8";
 
 const snapToGrid = value => Math.round(value / CELL_SIZE) * CELL_SIZE;
 
 const FloorPlanEditor = () => {
+  const [containerRef, containerSize] = useMeasure();
+
   const [plan, setPlan] = useState(initialPlan);
   const [viewport, setViewport] = useState({
-    x: 0,
-    y: 0,
-    width: VIEWPORT_SIZE,
-    height: VIEWPORT_SIZE,
     scale: 1
   });
   const [selectedItem, setSelectedItem] = useState(null);
@@ -44,18 +49,18 @@ const FloorPlanEditor = () => {
   useEffect(() => {
     const stage = stageRef.current;
     if (stage) {
-      stage.on("dragmove", () => {
-        const pos = stage.position();
-        setViewport(prev => ({ ...prev, x: -pos.x, y: -pos.y }));
-      });
+      // stage.on("dragmove", () => {
+      //   const pos = stage.position();
+      //   setViewport(prev => ({ ...prev, x: -pos.x, y: -pos.y }));
+      // });
 
       stage.content.addEventListener("wheel", e => {
-        // if (e.shiftKey) {
         e.preventDefault();
-        const oldScale = stage.scaleX();
+
         const pointer = stage.getPointerPosition();
         if (!pointer) return;
 
+        const oldScale = stage.scaleX();
         const mousePointTo = {
           x: (pointer.x - stage.x()) / oldScale,
           y: (pointer.y - stage.y()) / oldScale
@@ -75,11 +80,8 @@ const FloorPlanEditor = () => {
         stage.position(newPos);
         setViewport(prev => ({
           ...prev,
-          scale: newScale,
-          x: -newPos.x,
-          y: -newPos.y
+          scale: newScale
         }));
-        // }
       });
     }
   }, []);
@@ -122,31 +124,15 @@ const FloorPlanEditor = () => {
   }, [undoStack, redoStack, plan, selectedItem]);
 
   return (
-    <div style={{ display: "flex" }}>
-      <div style={{ width: "200px", padding: "10px", background: "#ddd" }}>
-        <h3>Selected Item</h3>
-        {selectedItem ? (
-          <div>
-            <p>
-              <strong>Type:</strong> {selectedItem.type}
-            </p>
-            <p>
-              <strong>ID:</strong> {selectedItem.id}
-            </p>
-          </div>
-        ) : (
-          <p>No item selected</p>
-        )}
-      </div>
+    <div ref={containerRef} className='w-full max-w-full h-full max-h-full'>
       <Stage
-        // Size of outer shell in device units
-        width={VIEWPORT_SIZE}
-        height={VIEWPORT_SIZE}
+        width={containerSize.width}
+        height={containerSize.height}
         draggable
         ref={stageRef}
         scaleX={viewport.scale}
         scaleY={viewport.scale}
-        style={{ background: "#f0f0f0" }}
+        style={{ background: BG_COLOR }}
         onClick={() => setSelectedItem(null)}
       >
         <Layer>
@@ -176,7 +162,7 @@ const FloorPlanEditor = () => {
                   y={(row + height / 2) * CELL_SIZE - 10}
                   text={room.label}
                   fontSize={12}
-                  fill='black'
+                  fill={"#ffffff"}
                 />
               </>
             ))
@@ -192,8 +178,8 @@ const FloorPlanEditor = () => {
               height={
                 direction === "v" ? length * CELL_SIZE : width * CELL_SIZE
               }
-              fill='black'
-              stroke={selectedItem?.id === id ? "pink" : "black"}
+              fill={WALL_COLOR}
+              stroke={selectedItem?.id === id ? ACTIVE_COLOR : WALL_COLOR}
               strokeWidth={selectedItem?.id === id ? 3 : 1}
               draggable
               onDragStart={e => {

@@ -6,11 +6,11 @@ import FloorPlanEditor from './FloorPlanEditor';
 
 export function EditorPage() {
   return (
-    <div className={clsx(
-      'w-full max-w-full h-full max-h-full',
-    )}>
+    // <div className={clsx(
+      // 'w-full max-w-full h-full max-h-full',
+    // )}>
       <FloorPlanEditor />
-    </div>
+    // </div>
   );
 }
 
