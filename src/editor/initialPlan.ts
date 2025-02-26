@@ -11,8 +11,7 @@ export function getInitialPlan() {
     row: wall[0] as number,
     col: wall[1] as number,
     length: wall[2] as number,
-    // direction: wall[3] as "h" | "v",
-    direction: wall[3] == "h" ? "v" : "h",
+    direction: wall[3] as "h" | "v",
     width: 1
   }));
 
