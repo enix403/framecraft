@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Rect, Line, Text } from "react-konva";
 
-import { getInitialPlan } from './initialPlan';
+import { getInitialPlan } from "./initialPlan";
 (window as any).getInitialPlan = getInitialPlan;
 
 // const initialPlan = {
@@ -27,11 +27,17 @@ const initialPlan = getInitialPlan();
 const CELL_SIZE = 5;
 const VIEWPORT_SIZE = 800;
 
-const snapToGrid = (value) => Math.round(value / CELL_SIZE) * CELL_SIZE;
+const snapToGrid = value => Math.round(value / CELL_SIZE) * CELL_SIZE;
 
 const FloorPlanEditor = () => {
   const [plan, setPlan] = useState(initialPlan);
-  const [viewport, setViewport] = useState({ x: 0, y: 0, width: VIEWPORT_SIZE, height: VIEWPORT_SIZE, scale: 1 });
+  const [viewport, setViewport] = useState({
+    x: 0,
+    y: 0,
+    width: VIEWPORT_SIZE,
+    height: VIEWPORT_SIZE,
+    scale: 1
+  });
   const [selectedItem, setSelectedItem] = useState(null);
   const stageRef = useRef(null);
 
@@ -40,11 +46,11 @@ const FloorPlanEditor = () => {
     if (stage) {
       stage.on("dragmove", () => {
         const pos = stage.position();
-        setViewport((prev) => ({ ...prev, x: -pos.x, y: -pos.y }));
+        setViewport(prev => ({ ...prev, x: -pos.x, y: -pos.y }));
       });
 
-      stage.content.addEventListener("wheel", (e) => {
-        if (e.shiftKey) {
+      stage.content.addEventListener("wheel", e => {
+        // if (e.shiftKey) {
           e.preventDefault();
           const oldScale = stage.scaleX();
           const pointer = stage.getPointerPosition();
@@ -52,23 +58,57 @@ const FloorPlanEditor = () => {
 
           const mousePointTo = {
             x: (pointer.x - stage.x()) / oldScale,
-            y: (pointer.y - stage.y()) / oldScale,
+            y: (pointer.y - stage.y()) / oldScale
           };
 
-          const newScale = Math.max(0.5, Math.min(2, oldScale - e.deltaY * 0.001));
+          const newScale = Math.max(
+            0.5,
+            Math.min(5, oldScale - e.deltaY * 0.001)
+          );
           stage.scale({ x: newScale, y: newScale });
 
           const newPos = {
             x: pointer.x - mousePointTo.x * newScale,
-            y: pointer.y - mousePointTo.y * newScale,
+            y: pointer.y - mousePointTo.y * newScale
           };
 
           stage.position(newPos);
-          setViewport((prev) => ({ ...prev, scale: newScale, x: -newPos.x, y: -newPos.y }));
-        }
+          setViewport(prev => ({
+            ...prev,
+            scale: newScale,
+            x: -newPos.x,
+            y: -newPos.y
+          }));
+        // }
       });
     }
   }, []);
+
+  const [undoStack, setUndoStack] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
+
+  const pushToHistory = newPlan => {
+    setUndoStack(prev => [...prev, plan]);
+    setRedoStack([]); // Clear redo stack on a new action
+    setPlan(newPlan);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.ctrlKey && e.key === "z" && undoStack.length > 0) {
+        setRedoStack(prev => [plan, ...prev]);
+        setPlan(undoStack[undoStack.length - 1]);
+        setUndoStack(prev => prev.slice(0, -1));
+      }
+      if (e.ctrlKey && e.key === "y" && redoStack.length > 0) {
+        setUndoStack(prev => [...prev, plan]);
+        setPlan(redoStack[0]);
+        setRedoStack(prev => prev.slice(1));
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [undoStack, redoStack, plan]);
 
   return (
     <div style={{ display: "flex" }}>
@@ -76,8 +116,12 @@ const FloorPlanEditor = () => {
         <h3>Selected Item</h3>
         {selectedItem ? (
           <div>
-            <p><strong>Type:</strong> {selectedItem.type}</p>
-            <p><strong>ID:</strong> {selectedItem.id}</p>
+            <p>
+              <strong>Type:</strong> {selectedItem.type}
+            </p>
+            <p>
+              <strong>ID:</strong> {selectedItem.id}
+            </p>
           </div>
         ) : (
           <p>No item selected</p>
@@ -104,8 +148,8 @@ const FloorPlanEditor = () => {
                   y={row * CELL_SIZE}
                   width={width * CELL_SIZE}
                   height={height * CELL_SIZE}
-                  fill="rgba(0, 255, 0, 0.3)"
-                  stroke="green"
+                  fill='rgba(0, 255, 0, 0.3)'
+                  stroke='green'
                   strokeWidth={1}
                 />
                 <Text
@@ -113,7 +157,7 @@ const FloorPlanEditor = () => {
                   y={(row + height / 2) * CELL_SIZE - 10}
                   text={room.label}
                   fontSize={12}
-                  fill="black"
+                  fill='black'
                 />
               </>
             ))
@@ -126,28 +170,39 @@ const FloorPlanEditor = () => {
               x={snapToGrid(col * CELL_SIZE)}
               y={snapToGrid(row * CELL_SIZE)}
               width={direction === "h" ? length * CELL_SIZE : width * CELL_SIZE}
-              height={direction === "v" ? length * CELL_SIZE : width * CELL_SIZE}
-              fill="black"
+              height={
+                direction === "v" ? length * CELL_SIZE : width * CELL_SIZE
+              }
+              fill='black'
               stroke={selectedItem?.id === id ? "pink" : "black"}
               strokeWidth={selectedItem?.id === id ? 3 : 1}
               draggable
-              onDragMove={(e) => {
+              onDragStart={e => {
+                setSelectedItem({ type: "Wall", id });
+              }}
+              onDragMove={e => {
                 const newX = snapToGrid(e.target.x());
                 const newY = snapToGrid(e.target.y());
                 e.target.x(newX);
                 e.target.y(newY);
               }}
-              onDragEnd={(e) => {
+              onDragEnd={e => {
                 const newX = snapToGrid(e.target.x());
                 const newY = snapToGrid(e.target.y());
-                setPlan((prev) => ({
+                pushToHistory(prev => ({
                   ...prev,
-                  walls: prev.walls.map((wall) =>
-                    wall.id === id ? { ...wall, col: newX / CELL_SIZE, row: newY / CELL_SIZE } : wall
-                  ),
+                  walls: prev.walls.map(wall =>
+                    wall.id === id
+                      ? {
+                          ...wall,
+                          col: newX / CELL_SIZE,
+                          row: newY / CELL_SIZE
+                        }
+                      : wall
+                  )
                 }));
               }}
-              onClick={(e) => {
+              onClick={e => {
                 e.cancelBubble = true;
                 setSelectedItem({ type: "Wall", id });
               }}
