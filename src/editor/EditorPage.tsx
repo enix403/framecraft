@@ -4,9 +4,6 @@ import clsx from 'clsx';
 
 import FloorPlanEditor from './FloorPlanEditor';
 
-// import planJson from './plan.json';
-// (window as any).planJson = planJson;
-
 export function EditorPage() {
   return (
     <div className={clsx(

@@ -2,22 +2,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Rect, Line, Text } from "react-konva";
 
-const initialPlan = {
-  canvasRows: 192,
-  canvasCols: 192,
-  walls: [
-    { id: "wall-1", row: 5, col: 10, length: 5, direction: "h", width: 1 },
-    { id: "wall-2", row: 12, col: 8, length: 3, direction: "v", width: 1 },
-  ],
-  doors: [
-    { id: "door-1", row: 5, col: 10, length: 2, direction: "h" },
-    { id: "door-2", row: 12, col: 8, length: 1, direction: "v" },
-  ],
-  rooms: [
-    { label: "Living Room", rects: [[2, 2, 50, 40]] },
-    { label: "Bedroom", rects: [[100, 50, 40, 60]] },
-  ],
-};
+import { getInitialPlan } from './initialPlan';
+(window as any).getInitialPlan = getInitialPlan;
+
+// const initialPlan = {
+//   canvasRows: 192,
+//   canvasCols: 192,
+//   walls: [
+//     { id: "wall-1", row: 5, col: 10, length: 5, direction: "h", width: 1 },
+//     { id: "wall-2", row: 12, col: 8, length: 3, direction: "v", width: 1 },
+//   ],
+//   doors: [
+//     { id: "door-1", row: 5, col: 10, length: 2, direction: "h" },
+//     { id: "door-2", row: 12, col: 8, length: 1, direction: "v" },
+//   ],
+//   rooms: [
+//     { label: "Living Room", rects: [[2, 2, 50, 40]] },
+//     { label: "Bedroom", rects: [[100, 50, 40, 60]] },
+//   ],
+// };
+
+const initialPlan = getInitialPlan();
 
 const CELL_SIZE = 5;
 const VIEWPORT_SIZE = 800;
