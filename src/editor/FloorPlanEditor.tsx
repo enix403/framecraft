@@ -31,6 +31,8 @@ const CELL_SIZE = 5;
 // const WALL_COLOR = "#C9246A";
 
 const BG_COLOR = "#26102b";
+const ROOM_COLOR = 'rgba(107, 30, 189, 0.3)';
+
 const WALL_COLOR = "#CAC0C9";
 const ACTIVE_COLOR = "#1c5ce8";
 
@@ -147,16 +149,17 @@ const FloorPlanEditor = () => {
           {plan.rooms.map((room, i) =>
             room.rects.map(([row, col, width, height], j) => (
               <>
-                {/*<Rect
+                <Rect
                   key={`room-${i}-${j}`}
                   x={col * CELL_SIZE}
                   y={row * CELL_SIZE}
                   width={width * CELL_SIZE}
                   height={height * CELL_SIZE}
-                  // fill='rgba(0, 255, 0, 0.3)'
+                  // fill='rgba(245, 118, 236, 0.3)'
+                  fill={ROOM_COLOR}
                   // stroke='green'
                   // strokeWidth={1}
-                />*/}
+                />
                 <Text
                   x={(col + width / 2) * CELL_SIZE - 20}
                   y={(row + height / 2) * CELL_SIZE - 10}
