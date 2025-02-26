@@ -62,7 +62,7 @@ const FloorPlanEditor = () => {
         };
 
         const newScale = Math.max(
-          0.5,
+          0.1,
           Math.min(5, oldScale - e.deltaY * 0.001)
         );
         stage.scale({ x: newScale, y: newScale });
@@ -139,6 +139,7 @@ const FloorPlanEditor = () => {
         )}
       </div>
       <Stage
+        // Size of outer shell in device units
         width={VIEWPORT_SIZE}
         height={VIEWPORT_SIZE}
         draggable
@@ -149,20 +150,27 @@ const FloorPlanEditor = () => {
         onClick={() => setSelectedItem(null)}
       >
         <Layer>
+          {/* <Rect
+            x={-10 * CELL_SIZE}
+            width={10 * CELL_SIZE}
+            y={0}
+            height={10 * CELL_SIZE}
+            fill='rgba(0, 255, 0, 0.3)'
+          /> */}
           {/* Draw Rooms First */}
           {plan.rooms.map((room, i) =>
             room.rects.map(([row, col, width, height], j) => (
               <>
-                <Rect
+                {/*<Rect
                   key={`room-${i}-${j}`}
                   x={col * CELL_SIZE}
                   y={row * CELL_SIZE}
                   width={width * CELL_SIZE}
                   height={height * CELL_SIZE}
-                  fill='rgba(0, 255, 0, 0.3)'
-                  stroke='green'
-                  strokeWidth={1}
-                />
+                  // fill='rgba(0, 255, 0, 0.3)'
+                  // stroke='green'
+                  // strokeWidth={1}
+                />*/}
                 <Text
                   x={(col + width / 2) * CELL_SIZE - 20}
                   y={(row + height / 2) * CELL_SIZE - 10}
