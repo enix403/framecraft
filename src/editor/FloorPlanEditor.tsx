@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Rect, Line, Text } from "react-konva";
 
 const initialPlan = {
-  canvasRows: 800,
-  canvasCols: 800,
+  canvasRows: 192,
+  canvasCols: 192,
   walls: [
     { id: "wall-1", row: 5, col: 10, length: 5, direction: "h", width: 1 },
     { id: "wall-2", row: 12, col: 8, length: 3, direction: "v", width: 1 },
