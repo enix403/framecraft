@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { Stage, Layer, Rect, Line, Text } from "react-konva";
 
 import { getInitialPlan } from "./initialPlan";
@@ -87,6 +87,57 @@ const FloorPlanEditor = () => {
       });
     }
   }, []);
+
+  const firstPlaced = useRef(false);
+  useLayoutEffect(() => {
+    if (firstPlaced.current) {
+      return;
+    }
+
+    const stage = stageRef.current;
+
+    if (!stage) return;
+
+    if (plan.rooms.length === 0) return;
+    if (!containerSize.width || !containerSize.height) return;
+
+    firstPlaced.current = true;
+
+    let minRow = Infinity, minCol = Infinity;
+    let maxRow = -Infinity, maxCol = -Infinity;
+
+    // Find bounding box of all room rects
+    plan.rooms.forEach((room) => {
+      room.rects.forEach(([row, col, width, height]) => {
+        minRow = Math.min(minRow, row);
+        minCol = Math.min(minCol, col);
+        maxRow = Math.max(maxRow, row + height);
+        maxCol = Math.max(maxCol, col + width);
+      });
+    });
+
+    // Compute center of bounding box
+    const centerX = (minCol + maxCol) / 2 * CELL_SIZE;
+    const centerY = (minRow + maxRow) / 2 * CELL_SIZE;
+
+    // Compute new viewport offset to center it
+    const screenCenterX = containerSize.width / 2;
+    const screenCenterY = containerSize.height / 2;
+
+    const newPos = {
+      x: screenCenterX - centerX,
+      y: screenCenterY - centerY,
+    };
+
+    stage.position(newPos);
+
+    // setViewport((prev) => ({
+    //   ...prev,
+    //   // x: screenCenterX - centerX,
+    //   // y: screenCenterY - centerY,
+    // }));
+  }, [containerSize]);
+
 
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
@@ -227,20 +278,4 @@ const FloorPlanEditor = () => {
 
 export default FloorPlanEditor;
 
-/*
 
-Great. Now I want you to implement some other editing features. Note that all of these are very interactive and you might need to do some serious code refactoring for this.
-
-Editing Features
-  - walls can be moved around interactively (without breaking contact with other wall joints)
-  - walls endpoints can be extended and shortend interactively (without breaking contact with other wall joints)
-
-I also noticed a bug. The things should be rendered in this order room -> walls -> doors, otherwise the events do not correctly flow and get blocked. Fix this too.
-
-
-  - new walls can added (independently or by "extruding" an orthognal existing wall from some point)
-  - wall width can be changed (individual per wall)
-
-
-
-*/
