@@ -31,7 +31,7 @@ const CELL_SIZE = 5;
 // const WALL_COLOR = "#C9246A";
 
 const BG_COLOR = "#26102b";
-const ROOM_COLOR = 'rgba(107, 30, 189, 0.3)';
+const ROOM_COLOR = "rgba(107, 30, 189, 0.3)";
 
 const WALL_COLOR = "#CAC0C9";
 const ACTIVE_COLOR = "#1c5ce8";
@@ -103,11 +103,13 @@ const FloorPlanEditor = () => {
 
     firstPlaced.current = true;
 
-    let minRow = Infinity, minCol = Infinity;
-    let maxRow = -Infinity, maxCol = -Infinity;
+    let minRow = Infinity,
+      minCol = Infinity;
+    let maxRow = -Infinity,
+      maxCol = -Infinity;
 
     // Find bounding box of all room rects
-    plan.rooms.forEach((room) => {
+    plan.rooms.forEach(room => {
       room.rects.forEach(([row, col, width, height]) => {
         minRow = Math.min(minRow, row);
         minCol = Math.min(minCol, col);
@@ -116,28 +118,33 @@ const FloorPlanEditor = () => {
       });
     });
 
+    // Convert to pixel dimensions
+    const boundingWidth = (maxCol - minCol) * CELL_SIZE;
+    const boundingHeight = (maxRow - minRow) * CELL_SIZE;
+
+    const paddingFactor = 0.9; // Leave 10% padding around the plan
+    const scaleX = (containerSize.width / boundingWidth) * paddingFactor;
+    const scaleY = (containerSize.height / boundingHeight) * paddingFactor;
+    const scale = Math.min(scaleX, scaleY); // Fit to the smaller dimension
+
     // Compute center of bounding box
-    const centerX = (minCol + maxCol) / 2 * CELL_SIZE;
-    const centerY = (minRow + maxRow) / 2 * CELL_SIZE;
+    const centerX = ((minCol + maxCol) / 2) * CELL_SIZE;
+    const centerY = ((minRow + maxRow) / 2) * CELL_SIZE;
 
     // Compute new viewport offset to center it
     const screenCenterX = containerSize.width / 2;
     const screenCenterY = containerSize.height / 2;
 
-    const newPos = {
-      x: screenCenterX - centerX,
-      y: screenCenterY - centerY,
+    const initialPos = {
+      x: screenCenterX - centerX * scale,
+      y: screenCenterY - centerY * scale
     };
 
-    stage.position(newPos);
+    const initialScale = { x: scale, y: scale };
 
-    // setViewport((prev) => ({
-    //   ...prev,
-    //   // x: screenCenterX - centerX,
-    //   // y: screenCenterY - centerY,
-    // }));
+    stage.position(initialPos);
+    stage.scale(initialScale);
   }, [containerSize]);
-
 
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
@@ -277,5 +284,3 @@ const FloorPlanEditor = () => {
 };
 
 export default FloorPlanEditor;
-
-
