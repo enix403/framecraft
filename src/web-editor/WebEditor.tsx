@@ -7,8 +7,13 @@ import {
 } from "@/components/ui/resizable";
 
 import {
+  Apple,
+  BedDouble,
   Box,
   ChevronDownIcon,
+  Droplet,
+  Eclipse,
+  Grape,
   Map,
   Search,
   Settings,
@@ -97,17 +102,29 @@ export function WebEditor() {
           </div>
 
           <div className='-mx-4 mt-4'>
-            <button className='w-full flex items-center gap-x-2 px-4 py-4 hover:bg-accent'>
-              <Tv className='text-red-400' strokeWidth={3} />
+            <button className='w-full flex items-center gap-x-2 px-4 py-3 hover:bg-accent'>
+              <Tv className='text-[#EE4D4D]' strokeWidth={3} />
               <span>Living Room</span>
             </button>
-            <button className='w-full flex items-center gap-x-2 bg-[#DDEDFE] px-4 py-4'>
-              <Tv className='text-red-400' strokeWidth={3} />
-              <span>Living Room</span>
+            <button className='w-full flex items-center gap-x-2 bg-[#DDEDFE] px-4 py-3'>
+              <BedDouble className='text-[#a808c5]' strokeWidth={3} />
+              <span>Bedroom 1</span>
             </button>
-            <button className='w-full flex items-center gap-x-2 px-4 py-4 hover:bg-accent'>
-              <Tv className='text-red-400' strokeWidth={3} />
-              <span>Living Room</span>
+            <button className='w-full flex items-center gap-x-2 px-4 py-3 hover:bg-accent'>
+              <BedDouble className='text-[#a808c5]' strokeWidth={3} />
+              <span>Bedroom 2</span>
+            </button>
+            <button className='w-full flex items-center gap-x-2 px-4 py-3 hover:bg-accent'>
+              <Droplet className='text-[#BEBEBE]' strokeWidth={3} />
+              <span>Bathroom</span>
+            </button>
+            <button className='w-full flex items-center gap-x-2 px-4 py-3 hover:bg-accent'>
+              <Grape className='text-[#6ce244]' strokeWidth={3} />
+              <span>Kitchen</span>
+            </button>
+            <button className='w-full flex items-center gap-x-2 px-4 py-3 hover:bg-accent'>
+              <Eclipse className='text-[#f9e909]' strokeWidth={3} />
+              <span>Balcony</span>
             </button>
           </div>
 
