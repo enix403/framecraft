@@ -2,175 +2,85 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import {
-  BlocksIcon,
-  BrainIcon,
-  ChevronDownIcon,
-  CpuIcon,
-  DatabaseIcon,
-  GlobeIcon,
-  LayoutIcon,
-  LineChartIcon,
-  NetworkIcon,
-  SearchIcon,
-  ServerIcon,
-} from "lucide-react";
+import { CircleAlertIcon } from "lucide-react";
 import { useId, useState } from "react";
 
-const items = [
-  {
-    value: "analytics platform",
-    label: "Analytics Platform",
-    icon: LineChartIcon,
-    number: 2451,
-  },
-  {
-    value: "ai services",
-    label: "AI Services",
-    icon: BrainIcon,
-    number: 1832,
-  },
-  {
-    value: "database systems",
-    label: "Database Systems",
-    icon: DatabaseIcon,
-    number: 1654,
-  },
-  {
-    value: "compute resources",
-    label: "Compute Resources",
-    icon: CpuIcon,
-    number: 943,
-  },
-  {
-    value: "network services",
-    label: "Network Services",
-    icon: NetworkIcon,
-    number: 832,
-  },
-  {
-    value: "web services",
-    label: "Web Services",
-    icon: GlobeIcon,
-    number: 654,
-  },
-  {
-    value: "monitoring tools",
-    label: "Monitoring Tools",
-    icon: SearchIcon,
-    number: 432,
-  },
-  {
-    value: "server management",
-    label: "Server Management",
-    icon: ServerIcon,
-    number: 321,
-  },
-  {
-    value: "infrastructure",
-    label: "Infrastructure",
-    icon: BlocksIcon,
-    number: 234,
-  },
-  {
-    value: "frontend services",
-    label: "Frontend Services",
-    icon: LayoutIcon,
-    number: 123,
-  },
-];
+const PROJECT_NAME = "Origin UI";
 
 export default function Component() {
   const id = useId();
-  const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState("");
 
   return (
-    <div className="*:not-first:mt-2">
-      <Label htmlFor={id}>Options with icon and number</Label>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            id={id}
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant='outline'>Delete project</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <div className='flex flex-col items-center gap-2'>
+          <div
+            className='flex size-9 shrink-0 items-center justify-center rounded-full border'
+            aria-hidden='true'
           >
-            {value ? (
-              <span className="flex min-w-0 items-center gap-2">
-                {(() => {
-                  const selectedItem = items.find((item) => item.value === value);
-                  if (selectedItem) {
-                    const Icon = selectedItem.icon;
-                    return <Icon className="text-muted-foreground size-4" />;
-                  }
-                  return null;
-                })()}
-                <span className="truncate">
-                  {items.find((item) => item.value === value)?.label}
-                </span>
-              </span>
-            ) : (
-              <span className="text-muted-foreground">Select service category</span>
-            )}
-            <ChevronDownIcon
-              size={16}
-              className="text-muted-foreground/80 shrink-0"
-              aria-hidden="true"
+            <CircleAlertIcon className='opacity-80' size={16} />
+          </div>
+          <DialogHeader>
+            <DialogTitle className='sm:text-center'>
+              Final confirmation
+            </DialogTitle>
+            <DialogDescription className='sm:text-center'>
+              This action cannot be undone. To confirm, please enter the project
+              name <span className='text-foreground'>Origin UI</span>.
+            </DialogDescription>
+          </DialogHeader>
+        </div>
+
+        <form className='space-y-5'>
+          <div className='*:not-first:mt-2'>
+            <Label htmlFor={id}>Project name</Label>
+            <Input
+              id={id}
+              type='text'
+              placeholder='Type Origin UI to confirm'
+              value={inputValue}
+              onChange={e => setInputValue(e.target.value)}
             />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="border-input w-full min-w-[var(--radix-popper-anchor-width)] p-0"
-          align="start"
-        >
-          <Command>
-            <CommandInput placeholder="Search services..." />
-            <CommandList>
-              <CommandEmpty>No service found.</CommandEmpty>
-              <CommandGroup>
-                {items.map((item) => (
-                  <CommandItem
-                    key={item.value}
-                    value={item.value}
-                    onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue);
-                      setOpen(false);
-                    }}
-                    className="flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-2">
-                      <item.icon className="text-muted-foreground size-4" />
-                      {item.label}
-                    </div>
-                    <span className="text-muted-foreground text-xs">
-                      {item.number.toLocaleString()}
-                    </span>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type='button' variant='outline' className='flex-1'>
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button
+              type='button'
+              className='flex-1'
+              disabled={inputValue !== PROJECT_NAME}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
 
 export function WebEditor() {
   return (
-    <div className="p-10">
-  <Component />
+    <div className='p-10'>
+      <Component />
     </div>
   );
 }
