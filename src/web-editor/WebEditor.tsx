@@ -1,86 +1,26 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { CircleAlertIcon } from "lucide-react";
-import { useId, useState } from "react";
 
-const PROJECT_NAME = "Origin UI";
-
-export default function Component() {
-  const id = useId();
-  const [inputValue, setInputValue] = useState("");
-
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant='outline'>Delete project</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <div className='flex flex-col items-center gap-2'>
-          <div
-            className='flex size-9 shrink-0 items-center justify-center rounded-full border'
-            aria-hidden='true'
-          >
-            <CircleAlertIcon className='opacity-80' size={16} />
-          </div>
-          <DialogHeader>
-            <DialogTitle className='sm:text-center'>
-              Final confirmation
-            </DialogTitle>
-            <DialogDescription className='sm:text-center'>
-              This action cannot be undone. To confirm, please enter the project
-              name <span className='text-foreground'>Origin UI</span>.
-            </DialogDescription>
-          </DialogHeader>
-        </div>
-
-        <form className='space-y-5'>
-          <div className='*:not-first:mt-2'>
-            <Label htmlFor={id}>Project name</Label>
-            <Input
-              id={id}
-              type='text'
-              placeholder='Type Origin UI to confirm'
-              value={inputValue}
-              onChange={e => setInputValue(e.target.value)}
-            />
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type='button' variant='outline' className='flex-1'>
-                Cancel
-              </Button>
-            </DialogClose>
-            <Button
-              type='button'
-              className='flex-1'
-              disabled={inputValue !== PROJECT_NAME}
-            >
-              Delete
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
-}
+import { ChevronDownIcon, Sparkle } from "lucide-react";
 
 export function WebEditor() {
   return (
-    <div className='p-10'>
-      <Component />
+    <div className='flex items-center border-b px-2 py-4'>
+      <Button variant='secondary' className='h-auto w-auto py-3'>
+        <Sparkle className='!h-5 !w-5' />
+        <ChevronDownIcon className='opacity-60' aria-hidden='true' />
+      </Button>
+
+      <Button variant='ghost' className='ml-4 py-6'>
+        <p className='max-w-40 overflow-hidden text-ellipsis'>
+          <span className="text-gray-500">Projects / </span>
+          My Plan 1
+        </p>
+        <ChevronDownIcon
+          className='-me-1 opacity-60'
+          size={16}
+          aria-hidden='true'
+        />
+      </Button>
     </div>
   );
 }
