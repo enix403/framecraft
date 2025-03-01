@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup
+} from "@/components/ui/resizable";
 
 import {
   Box,
@@ -12,7 +17,7 @@ import {
 
 function TopNav() {
   return (
-    <nav className='flex border-b px-2 py-4'>
+    <nav className='flex border-b px-4 py-4'>
       <div className='flex flex-1 items-center'>
         <Button variant='secondary' className='h-auto w-auto py-3'>
           <Sparkle className='!h-5 !w-5' />
@@ -64,6 +69,21 @@ function TopNav() {
 
 export function WebEditor() {
   return (
-    <TopNav />
+    <div className='flex h-full max-h-full flex-col overflow-hidden'>
+      <TopNav />
+      <ResizablePanelGroup direction='horizontal'>
+        <ResizablePanel minSize={10} defaultSize={18}>
+          One
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel minSize={40}>Two</ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel minSize={10} defaultSize={15}>
+          Three
+        </ResizablePanel>
+      </ResizablePanelGroup>
+      {/* <div className="flex-1">
+      </div> */}
+    </div>
   );
 }
