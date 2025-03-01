@@ -77,6 +77,7 @@ export function WebEditor() {
       <TopNav />
       <ResizablePanelGroup direction='horizontal'>
         <ResizablePanel minSize={10} defaultSize={18} className='p-4'>
+          <h2 className="mb-2 font-semibold">Rooms</h2>
           <div className='relative'>
             <div className='pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50'>
               <Search size={16} aria-hidden='true' />
@@ -88,7 +89,7 @@ export function WebEditor() {
               type='search'
             />
             <div className='pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-2 text-muted-foreground'>
-              <kbd className='inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70 bg-primary-foreground'>
+              <kbd className='inline-flex h-5 max-h-full items-center rounded border bg-primary-foreground px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70'>
                 ⌘K
               </kbd>
             </div>
