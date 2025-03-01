@@ -5,7 +5,7 @@ import "./styles/global.css";
 import { IconContext } from "@phosphor-icons/react";
 import { BrowserRouter, Routes, Route } from "react-router";
 
-import { EditorPage } from "./editor/EditorPage.tsx";
+import { WebEditor } from "./web-editor/WebEditor";
 
 export function App() {
   return (
@@ -17,7 +17,7 @@ export function App() {
     >
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<EditorPage />} />
+          <Route path='/' element={<WebEditor />} />
         </Routes>
       </BrowserRouter>
     </IconContext.Provider>
