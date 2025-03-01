@@ -13,6 +13,7 @@ import {
   Search,
   Settings,
   Sparkle,
+  Tv,
   Waypoints
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -77,7 +78,7 @@ export function WebEditor() {
       <TopNav />
       <ResizablePanelGroup direction='horizontal'>
         <ResizablePanel minSize={10} defaultSize={18} className='p-4'>
-          <h2 className="mb-2 font-semibold">Rooms</h2>
+          <h2 className='mb-2 font-semibold'>Rooms</h2>
           <div className='relative'>
             <div className='pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50'>
               <Search size={16} aria-hidden='true' />
@@ -94,6 +95,22 @@ export function WebEditor() {
               </kbd>
             </div>
           </div>
+
+          <div className='-mx-4 mt-4'>
+            <button className='w-full flex items-center gap-x-2 px-4 py-4 hover:bg-accent'>
+              <Tv className='text-red-400' strokeWidth={3} />
+              <span>Living Room</span>
+            </button>
+            <button className='w-full flex items-center gap-x-2 bg-[#DDEDFE] px-4 py-4'>
+              <Tv className='text-red-400' strokeWidth={3} />
+              <span>Living Room</span>
+            </button>
+            <button className='w-full flex items-center gap-x-2 px-4 py-4 hover:bg-accent'>
+              <Tv className='text-red-400' strokeWidth={3} />
+              <span>Living Room</span>
+            </button>
+          </div>
+
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel minSize={40}>Two</ResizablePanel>
