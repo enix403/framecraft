@@ -80,7 +80,7 @@ export function ConfigSidebar() {
       <Link
         to='/generate/pick'
         type='button'
-        className='btn w-full bg-gradient-to-r py-6 from-pink-600 to-blue-500 mt-8 gap-x-2'
+        className='btn w-full bg-linear-to-r py-6 from-pink-600 to-blue-500 mt-8 gap-x-2'
       >
         <IconSparkle size={24} weight='fill' />
         <strong className='text-white text-[1.01rem]'>Generate</strong>

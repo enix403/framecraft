@@ -13,7 +13,7 @@ export function DesignPreview({
     <button className='relative group cursor-pointer' onClick={onSelect}>
       <div
         className={clsx(
-          "absolute -inset-1 bg-gradient-to-r from-red-600 to-violet-600 rounded-lg blur transition-all",
+          "absolute -inset-1 bg-linear-to-r from-red-600 to-violet-600 rounded-lg blur-sm transition-all",
           selected ? "opacity-100" : "opacity-25"
         )}
       ></div>

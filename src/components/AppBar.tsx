@@ -19,16 +19,16 @@ function UserDropdown() {
           "w-52 origin-top-right",
           "p-1",
           "[--anchor-gap:var(--spacing-1)]",
-          "transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0",
+          "transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0",
           "bg-[#272424] text-sm/6",
-          "rounded-xl border-2 border-[#4f4f4f] focus:outline-none"
+          "rounded-xl border-2 border-[#4f4f4f] focus:outline-hidden"
         )}
       >
         <MenuItem>
           <Link
             to='/generate'
             className={clsx(
-              "flex w-full rounded-lg py-1.5 px-3 data-[focus]:bg-white/10"
+              "flex w-full rounded-lg px-3 py-1.5 data-focus:bg-white/10"
             )}
           >
             Start Generation
@@ -38,7 +38,7 @@ function UserDropdown() {
           <Link
             to='/my-designs'
             className={clsx(
-              "flex w-full rounded-lg py-1.5 px-3 data-[focus]:bg-white/10"
+              "flex w-full rounded-lg px-3 py-1.5 data-focus:bg-white/10"
             )}
           >
             My Plans
@@ -49,7 +49,7 @@ function UserDropdown() {
           <Link
             to='/login'
             className={clsx(
-              "flex items-center w-full justify-between gap-2 rounded-lg py-1.5 px-3 text-[#FE6369] data-[focus]:bg-[#FE6369]/10"
+              "flex w-full items-center justify-between gap-2 rounded-lg px-3 py-1.5 text-[#FE6369] data-focus:bg-[#FE6369]/10"
             )}
           >
             Logout
@@ -63,7 +63,7 @@ function UserDropdown() {
 
 export function AppBar() {
   return (
-    <nav className='border-0 border-b-2 border-border'>
+    <nav className='border-border border-0 border-b-2'>
       <div className='flex flex-wrap items-center justify-between p-4'>
         <a href='#' className='flex items-center space-x-3 rtl:space-x-reverse'>
           {/* <img

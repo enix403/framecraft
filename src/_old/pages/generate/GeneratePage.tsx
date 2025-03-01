@@ -39,7 +39,7 @@ function PickDesign() {
   return (
     <div className='p-10 pt-24 overflow-y-auto max-h-full flex flex-col items-center w-full relative'>
       <div className='mb-8 text-4xl font-semibold max-lg:self-start'>
-        <h1 className='bg-gradient-to-r from-pink-600 via-purple-400 to-blue-500 inline-block text-transparent bg-clip-text'>
+        <h1 className='bg-linear-to-r from-pink-600 via-purple-400 to-blue-500 inline-block text-transparent bg-clip-text'>
           Pick a design to get started
         </h1>
       </div>

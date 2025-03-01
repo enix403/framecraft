@@ -105,7 +105,7 @@ export function LoginPage() {
               <Link to="/generate" className="block w-full">
                 <button
                   type='button'
-                  className='btn btn-primary w-full bg-gradient-to-r from-pink-600 to-purple-500'
+                  className='btn btn-primary w-full bg-linear-to-r from-pink-600 to-purple-500'
                 >
                   Sign in
                 </button>

@@ -104,7 +104,7 @@ export function RegisterPage() {
               <Link
                 to="/generate"
                 type='button'
-                className='btn btn-primary w-full bg-gradient-to-r from-pink-600 to-purple-500'
+                className='btn btn-primary w-full bg-linear-to-r from-pink-600 to-purple-500'
               >
                 Create your account
               </Link>
