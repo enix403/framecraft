@@ -10,10 +10,13 @@ import {
   Box,
   ChevronDownIcon,
   Map,
+  Search,
   Settings,
   Sparkle,
   Waypoints
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { useId } from "react";
 
 function TopNav() {
   return (
@@ -68,12 +71,28 @@ function TopNav() {
 }
 
 export function WebEditor() {
+  const id = useId();
   return (
     <div className='flex h-full max-h-full flex-col overflow-hidden'>
       <TopNav />
       <ResizablePanelGroup direction='horizontal'>
-        <ResizablePanel minSize={10} defaultSize={18}>
-          One
+        <ResizablePanel minSize={10} defaultSize={18} className='p-4'>
+          <div className='relative'>
+            <div className='pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50'>
+              <Search size={16} aria-hidden='true' />
+            </div>
+            <Input
+              id={id}
+              className='bg-muted ps-9 pe-11'
+              placeholder='Search...'
+              type='search'
+            />
+            <div className='pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-2 text-muted-foreground'>
+              <kbd className='inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70 bg-primary-foreground'>
+                ⌘K
+              </kbd>
+            </div>
+          </div>
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel minSize={40}>Two</ResizablePanel>
