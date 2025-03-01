@@ -1,4 +1,3 @@
-import "./styles/reset.css";
 import "./styles/load-fonts";
 import "./styles/global.css";
 
