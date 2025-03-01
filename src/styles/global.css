@@ -40,15 +40,6 @@ body {
   margin: 0;
 }
 
-label {
-  display: block;
-  user-select: none;
-}
-
-button {
-  display: block;
-}
-
 strong {
   font-weight: 600;
 }
