@@ -26,7 +26,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(----app-color-border, currentColor);
+    border-color: var(--app-color-border, currentColor);
   }
 
   button:not(:disabled),

@@ -1,7 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { ChevronDownIcon, Settings, Sparkle } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-export function WebEditor() {
+import {
+  Box,
+  ChevronDownIcon,
+  Map,
+  Settings,
+  Sparkle,
+  Waypoints
+} from "lucide-react";
+
+function TopNav() {
   return (
     <nav className='flex border-b px-2 py-4'>
       <div className='flex flex-1 items-center'>
@@ -22,8 +31,27 @@ export function WebEditor() {
           />
         </Button>
       </div>
+      <div className='flex flex-1 items-center justify-center'>
+        <ToggleGroup
+          defaultValue='2d'
+          variant='outline'
+          size='lg'
+          className='inline-flex'
+          type='single'
+        >
+          <ToggleGroupItem value='layout'>
+            Layout Graph <Waypoints />
+          </ToggleGroupItem>
+          <ToggleGroupItem value='2d'>
+            2D View <Map />
+          </ToggleGroupItem>
+          <ToggleGroupItem value='3d'>
+            3D View <Box />
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
       <div className='flex flex-1 items-center justify-end'>
-        <Button size='lg' className="mr-2">
+        <Button size='lg' className='mr-2'>
           Export
         </Button>
         <Button variant='outline' size='icon'>
@@ -31,5 +59,11 @@ export function WebEditor() {
         </Button>
       </div>
     </nav>
+  );
+}
+
+export function WebEditor() {
+  return (
+    <TopNav />
   );
 }
