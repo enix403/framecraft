@@ -1,81 +1,176 @@
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useId } from "react";
+"use client";
 
-function StatusDot({ className }: { className?: string }) {
-  return (
-    <svg
-      width="8"
-      height="8"
-      fill="currentColor"
-      viewBox="0 0 8 8"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="4" cy="4" r="4" />
-    </svg>
-  );
-}
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  BlocksIcon,
+  BrainIcon,
+  ChevronDownIcon,
+  CpuIcon,
+  DatabaseIcon,
+  GlobeIcon,
+  LayoutIcon,
+  LineChartIcon,
+  NetworkIcon,
+  SearchIcon,
+  ServerIcon,
+} from "lucide-react";
+import { useId, useState } from "react";
+
+const items = [
+  {
+    value: "analytics platform",
+    label: "Analytics Platform",
+    icon: LineChartIcon,
+    number: 2451,
+  },
+  {
+    value: "ai services",
+    label: "AI Services",
+    icon: BrainIcon,
+    number: 1832,
+  },
+  {
+    value: "database systems",
+    label: "Database Systems",
+    icon: DatabaseIcon,
+    number: 1654,
+  },
+  {
+    value: "compute resources",
+    label: "Compute Resources",
+    icon: CpuIcon,
+    number: 943,
+  },
+  {
+    value: "network services",
+    label: "Network Services",
+    icon: NetworkIcon,
+    number: 832,
+  },
+  {
+    value: "web services",
+    label: "Web Services",
+    icon: GlobeIcon,
+    number: 654,
+  },
+  {
+    value: "monitoring tools",
+    label: "Monitoring Tools",
+    icon: SearchIcon,
+    number: 432,
+  },
+  {
+    value: "server management",
+    label: "Server Management",
+    icon: ServerIcon,
+    number: 321,
+  },
+  {
+    value: "infrastructure",
+    label: "Infrastructure",
+    icon: BlocksIcon,
+    number: 234,
+  },
+  {
+    value: "frontend services",
+    label: "Frontend Services",
+    icon: LayoutIcon,
+    number: 123,
+  },
+];
 
 export default function Component() {
   const id = useId();
+  const [open, setOpen] = useState<boolean>(false);
+  const [value, setValue] = useState<string>("");
+
   return (
     <div className="*:not-first:mt-2">
-      <Label htmlFor={id}>Status select</Label>
-      <Select defaultValue="1">
-        <SelectTrigger
-          id={id}
-          className="[&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0"
+      <Label htmlFor={id}>Options with icon and number</Label>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            id={id}
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
+          >
+            {value ? (
+              <span className="flex min-w-0 items-center gap-2">
+                {(() => {
+                  const selectedItem = items.find((item) => item.value === value);
+                  if (selectedItem) {
+                    const Icon = selectedItem.icon;
+                    return <Icon className="text-muted-foreground size-4" />;
+                  }
+                  return null;
+                })()}
+                <span className="truncate">
+                  {items.find((item) => item.value === value)?.label}
+                </span>
+              </span>
+            ) : (
+              <span className="text-muted-foreground">Select service category</span>
+            )}
+            <ChevronDownIcon
+              size={16}
+              className="text-muted-foreground/80 shrink-0"
+              aria-hidden="true"
+            />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          className="border-input w-full min-w-[var(--radix-popper-anchor-width)] p-0"
+          align="start"
         >
-          <SelectValue placeholder="Select status" />
-        </SelectTrigger>
-        <SelectContent className="[&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]>span>svg]:shrink-0">
-          <SelectItem value="1">
-            <span className="flex items-center gap-2">
-              <StatusDot className="text-emerald-600" />
-              <span className="truncate">Completed</span>
-            </span>
-          </SelectItem>
-          <SelectItem value="2">
-            <span className="flex items-center gap-2">
-              <StatusDot className="text-blue-500" />
-              <span className="truncate">In Progress</span>
-            </span>
-          </SelectItem>
-          <SelectItem value="3">
-            <span className="flex items-center gap-2">
-              <StatusDot className="text-amber-500" />
-              <span className="truncate">Pending</span>
-            </span>
-          </SelectItem>
-          <SelectItem value="4">
-            <span className="flex items-center gap-2">
-              <StatusDot className="text-gray-500" />
-              <span className="truncate">Cancelled</span>
-            </span>
-          </SelectItem>
-          <SelectItem value="5">
-            <span className="flex items-center gap-2">
-              <StatusDot className="text-red-500" />
-              <span className="truncate">Failed</span>
-            </span>
-          </SelectItem>
-        </SelectContent>
-      </Select>
+          <Command>
+            <CommandInput placeholder="Search services..." />
+            <CommandList>
+              <CommandEmpty>No service found.</CommandEmpty>
+              <CommandGroup>
+                {items.map((item) => (
+                  <CommandItem
+                    key={item.value}
+                    value={item.value}
+                    onSelect={(currentValue) => {
+                      setValue(currentValue === value ? "" : currentValue);
+                      setOpen(false);
+                    }}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <item.icon className="text-muted-foreground size-4" />
+                      {item.label}
+                    </div>
+                    <span className="text-muted-foreground text-xs">
+                      {item.number.toLocaleString()}
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }
 
-
 export function WebEditor() {
   return (
+    <div className="p-10">
   <Component />
+    </div>
   );
 }
