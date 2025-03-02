@@ -4,6 +4,7 @@ import { Stage, Layer, Rect, Line } from "react-konva";
 
 import { polygon, featureCollection } from "@turf/helpers";
 import { union } from "@turf/union";
+import { repeatNode } from "@/utils/markup";
 
 (window as any).polygon = polygon;
 (window as any).featureCollection = featureCollection;
@@ -21,7 +22,7 @@ interface Rect {
 
 export function RectPreview({
   rectangles,
-  hintWidth = 180,
+  hintWidth = 150,
   hintHeight = 150,
   fillColor = "#b2dd98",
   inStrokeColor = fillColor,
@@ -39,7 +40,8 @@ export function RectPreview({
   const [scaledRects, setScaledRects] = useState<Rect[]>([]);
   const [canvasHeight, setCanvasHeight] = useState(0);
   const [canvasWidth, setCanvasWidth] = useState(0);
-  const [outline, setOutline] = useState<number[]>([]);
+  // const [outline, setOutline] = useState<number[]>([]);
+  const [outline, setOutline] = useState<any>([]);
 
   useEffect(() => {
     if (rectangles.length === 0) return;
@@ -93,14 +95,14 @@ export function RectPreview({
     const outlinePoly = union(featureCollection(polys));
 
     if (outlinePoly) {
-      const coords = outlinePoly.geometry.coordinates.flat(2) as number[];
+      let coords = outlinePoly.geometry.coordinates.flat(2) as number[];
       setOutline(coords);
     }
   }, [rectangles, canvasHeight]);
 
   return (
     <div className={clsx("flex overflow-x-auto pb-2", className)}>
-      <Stage className='mx-auto' width={canvasWidth} height={canvasHeight}>
+      <Stage className='mx-auto' globalCompositeOperation="destination-out"  width={canvasWidth} height={canvasHeight}>
         <Layer>
           {scaledRects.map((r, i) => (
             <Rect
@@ -115,20 +117,19 @@ export function RectPreview({
               strokeWidth={inStrokeWidth}
             />
           ))}
-          <Line
-            points={outline}
-            stroke={"black"}
-            strokeWidth={2}
-            // closed
-          />
-          {/* {outline.length > 0 && (
+
+          {outline.length > 0 && (
             <Line
               points={outline}
-              stroke={outStrokeColor}
-              strokeWidth={outStrokeWidth}
+              stroke={"black"}
+              strokeWidth={4}
               closed
+              perfectDrawEnabled={false}
+              lineJoin='round' // or 'bevel' or 'miter'
+              lineCap='round' // or 'butt' or 'square'
+              strokeScaleEnabled={false}
             />
-          )} */}
+          )}
         </Layer>
       </Stage>
     </div>
