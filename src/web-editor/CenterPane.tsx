@@ -5,10 +5,19 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { ResizablePanel } from "@/components/ui/resizable";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 import {
   Binoculars,
   ChevronDownIcon,
@@ -19,6 +28,7 @@ import {
   Undo,
   ZoomIn
 } from "lucide-react";
+import { useState } from "react";
 
 function ZoomControl() {
   return (
@@ -58,13 +68,35 @@ function ZoomControl() {
   );
 }
 
+function UnitControl() {
+  const [unit, setUnit] = useState("ft");
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size='icon' variant='ghost'>
+          <DraftingCompass size={22} />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuRadioGroup value={unit} onValueChange={setUnit}>
+          <DropdownMenuRadioItem value='ft'>Feet</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value='m'>Meters</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value='in'>Inches</DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 function Toolbar() {
   return (
     <nav className='flex border-b px-4 py-2'>
       <div className='flex flex-1 items-center gap-x-1'>
-        <Button size='icon' variant='ghost'>
+        {/* <Button size='icon' variant='ghost'>
           <DraftingCompass size={22} />
-        </Button>
+        </Button> */}
+        <UnitControl />
         <Button size='icon' variant='ghost'>
           <Layers size={22} />
         </Button>
