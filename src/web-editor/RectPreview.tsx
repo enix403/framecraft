@@ -1,6 +1,13 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { Stage, Layer, Rect } from "react-konva";
+import { Stage, Layer, Rect, Line } from "react-konva";
+
+import { polygon, featureCollection } from "@turf/helpers";
+import { union } from "@turf/union";
+
+(window as any).polygon = polygon;
+(window as any).featureCollection = featureCollection;
+(window as any).union = union;
 
 interface Rect {
   left: number;
@@ -32,6 +39,7 @@ export function RectPreview({
   const [scaledRects, setScaledRects] = useState<Rect[]>([]);
   const [canvasHeight, setCanvasHeight] = useState(0);
   const [canvasWidth, setCanvasWidth] = useState(0);
+  const [outline, setOutline] = useState<number[]>([]);
 
   useEffect(() => {
     if (rectangles.length === 0) return;
@@ -62,13 +70,32 @@ export function RectPreview({
     setCanvasWidth(originalWidth * scale);
     setCanvasHeight(originalHeight * scale);
 
-    const transformedRects = rectangles.map(r => ({
+    const scaledRects = rectangles.map(r => ({
       left: (r.left - minX) * scale,
       top: (r.top - minY) * scale,
       width: r.width * scale,
       height: r.height * scale
     }));
-    setScaledRects(transformedRects);
+    setScaledRects(scaledRects);
+
+    const polys = scaledRects.map(r =>
+      polygon([
+        [
+          [r.left, r.top],
+          [r.left + r.width, r.top],
+          [r.left + r.width, r.top + r.height],
+          [r.left, r.top + r.height],
+          [r.left, r.top]
+        ]
+      ])
+    );
+
+    const outlinePoly = union(featureCollection(polys));
+
+    if (outlinePoly) {
+      const coords = outlinePoly.geometry.coordinates.flat(2) as number[];
+      setOutline(coords);
+    }
   }, [rectangles, canvasHeight]);
 
   return (
@@ -88,6 +115,12 @@ export function RectPreview({
               strokeWidth={inStrokeWidth}
             />
           ))}
+          <Line
+            points={outline}
+            stroke={"black"}
+            strokeWidth={2}
+            // closed
+          />
           {/* {outline.length > 0 && (
             <Line
               points={outline}
@@ -101,3 +134,36 @@ export function RectPreview({
     </div>
   );
 }
+
+/*
+
+https://www.npmjs.com/package/@turf/union
+
+const scaledRects = [
+  {
+    "left": 0,
+    "top": 0,
+    "width": 90,
+    "height": 140
+  },
+  {
+    "left": 0,
+    "top": 140,
+    "width": 50,
+    "height": 10
+  }
+]
+
+const polys = scaledRects.map(r => polygon([
+  [
+    [r.left, r.top],
+    [r.left + r.width, r.top],
+    [r.left + r.width, r.top + r.height],
+    [r.left, r.top + r.height],
+    [r.left, r.top],
+  ]
+]));
+
+const outlinePoly = union(featureCollection(polys))
+
+*/
