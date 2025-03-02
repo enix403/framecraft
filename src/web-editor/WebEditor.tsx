@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup
 } from "@/components/ui/resizable";
 
-import { LeftPane } from "./LeftPane";
 import { TopNav } from "./TopNav";
+import { LeftPane } from "./LeftPane";
 import { RightPane } from "./RightPane";
+import { CenterPane } from "./CenterPane";
 
 export function WebEditor() {
   return (
@@ -16,7 +16,7 @@ export function WebEditor() {
       <ResizablePanelGroup direction='horizontal' className='flex-1-fix'>
         <LeftPane />
         <ResizableHandle />
-        <ResizablePanel minSize={40} className="bg-[#F6F6F6]"></ResizablePanel>
+        <CenterPane />
         <ResizableHandle />
         <RightPane />
       </ResizablePanelGroup>
