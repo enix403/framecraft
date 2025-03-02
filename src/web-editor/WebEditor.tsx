@@ -7,6 +7,7 @@ import {
 
 import { LeftPane } from "./LeftPane";
 import { TopNav } from "./TopNav";
+import { RightPane } from "./RightPane";
 
 export function WebEditor() {
   return (
@@ -17,9 +18,7 @@ export function WebEditor() {
         <ResizableHandle />
         <ResizablePanel minSize={40}>Two</ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel minSize={10} defaultSize={15}>
-          Three
-        </ResizablePanel>
+        <RightPane />
       </ResizablePanelGroup>
     </div>
   );
