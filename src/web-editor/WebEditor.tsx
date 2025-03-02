@@ -16,7 +16,7 @@ export function WebEditor() {
       <ResizablePanelGroup direction='horizontal' className='flex-1-fix'>
         <LeftPane />
         <ResizableHandle />
-        <ResizablePanel minSize={40}>Two</ResizablePanel>
+        <ResizablePanel minSize={40} className="bg-[#F6F6F6]"></ResizablePanel>
         <ResizableHandle />
         <RightPane />
       </ResizablePanelGroup>
