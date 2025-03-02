@@ -31,7 +31,7 @@ function RoomList() {
         {repeatNode(50, index => (
           <button
             key={index}
-            className='flex w-full items-center gap-x-2 px-4 py-3 last:mb-8 hover:bg-accent'
+            className='flex w-full items-center gap-x-2 px-4 py-3 last:mb-8 hover:bg-accent-foreground/[0.07]'
           >
             <Eclipse className='text-[#f9e909]' strokeWidth={3} />
             <span>Balcony {index + 1}</span>
@@ -46,7 +46,7 @@ export function LeftPane() {
   return (
     <ResizablePanel minSize={10} defaultSize={18} className='flex flex-col'>
       <RoomList />
-      <div className='shrink-0 border-t p-4 pb-40'>
+      <div className='shrink-0 border-t p-4 pb-16'>
         <h2 className='mb-4 font-semibold'>Plot Details</h2>
 
         <RectPreview
@@ -79,7 +79,6 @@ export function LeftPane() {
             //   "width": 2,
             //   "height": 3
             // }
-
           ]}
           // hintWidth={180}
           // hintHeight={150}
