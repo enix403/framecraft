@@ -47,13 +47,14 @@ export function LeftPane() {
     <ResizablePanel minSize={10} defaultSize={18} className='flex flex-col'>
       <RoomList />
       <div className='shrink-0 border-t p-4 pb-40'>
-        <h2 className='mb-2 font-semibold'>Plot Details</h2>
+        <h2 className='mb-4 font-semibold'>Plot Details</h2>
 
         <RectPreview
+          className='mb-4'
           rectangles={[
-            { x: 20,  y: 10, width:  80, height: 50 },
-            { x: 100, y: 10, width:  50, height: 50 },
-            { x: 20,  y: 60, width: 130, height: 40 }
+            { x: 20, y: 10, width: 80, height: 50 },
+            { x: 100, y: 10, width: 50, height: 50 },
+            { x: 20, y: 60, width: 130, height: 40 }
           ]}
           canvasHeight={150}
         />
@@ -65,3 +66,16 @@ export function LeftPane() {
     </ResizablePanel>
   );
 }
+
+/*
+
+[3, 24, 46, 12, 8],
+[3, 48, 5, 24, 5],
+[3, 39, 29, 9, 14, 53, 29, 5, 1],
+[4, 16, 41, 17, 8, 21, 39, 2, 3],
+[1, 6, 3, 8, 18],
+[2, 6, 28, 11, 18, 6, 39, 2, 15],
+[2, 36, 5, 24, 12],
+[0, 32, 38, 20, 20],
+[2, 24, 5, 33, 12, 36, 29, 9, 3]
+*/

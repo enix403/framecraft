@@ -15,11 +15,11 @@ export function RectPreview({
   rectangles,
   canvasHeight = 150,
   className,
-  fillColor = "red",
-  inStrokeColor = "blue",
+  fillColor = "#E6DBF3",
+  inStrokeColor = fillColor,
   inStrokeWidth = 1,
-  outStrokeColor = "green",
-  outStrokeWidth = 8
+  outStrokeColor = "#a055f7",
+  outStrokeWidth = 4
 }: {
   rectangles: Rect[];
   canvasHeight?: number;
