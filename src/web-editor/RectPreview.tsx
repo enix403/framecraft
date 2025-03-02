@@ -14,11 +14,22 @@ interface Rect {
 export function RectPreview({
   rectangles,
   canvasHeight = 150,
-  className
+  className,
+  fillColor = "red",
+  inStrokeColor = "blue",
+  inStrokeWidth = 1,
+  outStrokeColor = "green",
+  outStrokeWidth = 8
 }: {
   rectangles: Rect[];
   canvasHeight?: number;
   className?: string;
+
+  fillColor?: string;
+  inStrokeColor?: string;
+  outStrokeColor?: string;
+  inStrokeWidth?: number;
+  outStrokeWidth?: number;
 }) {
   const [scaledRects, setScaledRects] = useState<Rect[]>([]);
   const [outline, setOutline] = useState<number[]>([]);
@@ -48,12 +59,15 @@ export function RectPreview({
     setScaledRects(transformedRects);
 
     // Compute outer border using d3.polygonHull
-    const points = rectangles.flatMap(r => [
-      [r.x, r.y],
-      [r.x + r.width, r.y],
-      [r.x, r.y + r.height],
-      [r.x + r.width, r.y + r.height]
-    ] as [number, number][]);
+    const points = rectangles.flatMap(
+      r =>
+        [
+          [r.x, r.y],
+          [r.x + r.width, r.y],
+          [r.x, r.y + r.height],
+          [r.x + r.width, r.y + r.height]
+        ] as [number, number][]
+    );
 
     const hull = polygonHull(points)?.map(([x, y]) => [
       mapRange(x, minX, maxX, 0, width),
@@ -82,13 +96,19 @@ export function RectPreview({
               y={r.y}
               width={r.width}
               height={r.height}
-              fill='lightblue'
-              stroke='blue'
-              strokeWidth={1}
+              // fill='lightblue'
+              fill={fillColor}
+              stroke={inStrokeColor}
+              strokeWidth={inStrokeWidth}
             />
           ))}
           {outline.length > 0 && (
-            <Line points={outline} stroke='black' strokeWidth={2} closed />
+            <Line
+              points={outline}
+              stroke={outStrokeColor}
+              strokeWidth={outStrokeWidth}
+              closed
+            />
           )}
         </Layer>
       </Stage>
