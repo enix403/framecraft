@@ -4,9 +4,12 @@ import { Stage, Layer, Rect, Line } from "react-konva";
 import { mapRange } from "canvas-sketch-util/math";
 import { polygonHull } from "d3-polygon";
 
+(window as any).polygonHull = polygonHull;
+(window as any).mapRange = mapRange;
+
 interface Rect {
-  x: number;
-  y: number;
+  left: number;
+  top: number;
   width: number;
   height: number;
 }
@@ -32,16 +35,16 @@ export function RectPreview({
   outStrokeWidth?: number;
 }) {
   const [scaledRects, setScaledRects] = useState<Rect[]>([]);
-  const [outline, setOutline] = useState<number[]>([]);
+  // const [outline, setOutline] = useState<number[]>([]);
 
   useEffect(() => {
     if (rectangles.length === 0) return;
 
     // Compute bounding box of all rectangles
-    const minX = Math.min(...rectangles.map(r => r.x));
-    const maxX = Math.max(...rectangles.map(r => r.x + r.width));
-    const minY = Math.min(...rectangles.map(r => r.y));
-    const maxY = Math.max(...rectangles.map(r => r.y + r.height));
+    const minX = Math.min(...rectangles.map(r => r.left));
+    const maxX = Math.max(...rectangles.map(r => r.left + r.width));
+    const minY = Math.min(...rectangles.map(r => r.top));
+    const maxY = Math.max(...rectangles.map(r => r.top + r.height));
     const originalWidth = maxX - minX;
     const originalHeight = maxY - minY;
 
@@ -51,21 +54,23 @@ export function RectPreview({
 
     // Scale and translate rectangles
     const transformedRects = rectangles.map(r => ({
-      x: (r.x - minX) * scale,
-      y: (r.y - minY) * scale,
+      left: (r.left - minX) * scale,
+      top: (r.top - minY) * scale,
       width: r.width * scale,
       height: r.height * scale
     }));
     setScaledRects(transformedRects);
 
+    return;
+
     // Compute outer border using d3.polygonHull
     const points = rectangles.flatMap(
       r =>
         [
-          [r.x, r.y],
-          [r.x + r.width, r.y],
-          [r.x, r.y + r.height],
-          [r.x + r.width, r.y + r.height]
+          [r.left, r.top],
+          [r.left + r.width, r.top],
+          [r.left + r.width, r.top + r.height],
+          [r.left, r.top + r.height],
         ] as [number, number][]
     );
 
@@ -74,7 +79,7 @@ export function RectPreview({
       mapRange(y, minY, maxY, 0, canvasHeight)
     ]) as number[][];
 
-    setOutline(hull ? hull.flat() : []);
+    // setOutline(hull ? hull.flat() : []);
   }, [rectangles, canvasHeight]);
 
   return (
@@ -83,7 +88,7 @@ export function RectPreview({
         className='mx-auto'
         width={
           scaledRects.length > 0
-            ? scaledRects.reduce((max, r) => Math.max(max, r.x + r.width), 0)
+            ? scaledRects.reduce((max, r) => Math.max(max, r.left + r.width), 0)
             : 0
         }
         height={canvasHeight}
@@ -92,8 +97,8 @@ export function RectPreview({
           {scaledRects.map((r, i) => (
             <Rect
               key={i}
-              x={r.x}
-              y={r.y}
+              x={r.left}
+              y={r.top}
               width={r.width}
               height={r.height}
               // fill='lightblue'
@@ -102,14 +107,14 @@ export function RectPreview({
               strokeWidth={inStrokeWidth}
             />
           ))}
-          {outline.length > 0 && (
+          {/* {outline.length > 0 && (
             <Line
               points={outline}
               stroke={outStrokeColor}
               strokeWidth={outStrokeWidth}
               closed
             />
-          )}
+          )} */}
         </Layer>
       </Stage>
     </div>

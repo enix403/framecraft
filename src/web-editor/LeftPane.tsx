@@ -56,14 +56,14 @@ export function LeftPane() {
             // { x: 100, y: 10, width: 50, height: 50 },
             // { x: 20, y: 60, width: 130, height: 40 }
             {
-              "x": 29,
-              "y": 39,
+              "left": 29,
+              "top": 39,
               "width": 9,
               "height": 14
             },
             {
-              "x": 29,
-              "y": 53,
+              "left": 29,
+              "top": 53,
               "width": 5,
               "height": 1
             }
@@ -110,96 +110,56 @@ export function LeftPane() {
 [
   [
     {
-      "x": 46,
-      "y": 24,
-      "width": 12,
-      "height": 8
-    }
-  ],
-  [
-    {
-      "x": 5,
-      "y": 48,
-      "width": 24,
-      "height": 5
-    }
-  ],
-  [
-    {
-      "x": 29,
-      "y": 39,
+      "left": 29,
+      "top": 39,
       "width": 9,
       "height": 14
     },
     {
-      "x": 29,
-      "y": 53,
+      "left": 29,
+      "top": 53,
       "width": 5,
       "height": 1
     }
   ],
   [
     {
-      "x": 41,
-      "y": 16,
+      "left": 41,
+      "top": 16,
       "width": 17,
       "height": 8
     },
     {
-      "x": 39,
-      "y": 21,
+      "left": 39,
+      "top": 21,
       "width": 2,
       "height": 3
     }
   ],
   [
     {
-      "x": 3,
-      "y": 6,
-      "width": 8,
-      "height": 18
-    }
-  ],
-  [
-    {
-      "x": 28,
-      "y": 6,
+      "left": 28,
+      "top": 6,
       "width": 11,
       "height": 18
     },
     {
-      "x": 39,
-      "y": 6,
+      "left": 39,
+      "top": 6,
       "width": 2,
       "height": 15
     }
   ],
   [
     {
-      "x": 5,
-      "y": 36,
-      "width": 24,
-      "height": 12
-    }
-  ],
-  [
-    {
-      "x": 38,
-      "y": 32,
-      "width": 20,
-      "height": 20
-    }
-  ],
-  [
-    {
-      "x": 5,
-      "y": 24,
+      "left": 5,
+      "top": 24,
       "width": 33,
       "height": 12
     },
     {
-      "x": 29,
-      "y": 36,
+      "left": 29,
+      "top": 36,
       "width": 9,
       "height": 3
     }
