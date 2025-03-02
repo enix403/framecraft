@@ -49,7 +49,7 @@ export function LeftPane() {
       <div className='shrink-0 border-t p-4 pb-40'>
         <h2 className='mb-2 font-semibold'>Plot Details</h2>
 
-        <div className='flex overflow-x-auto pb-2'>
+        <div className='flex overflow-x-auto pb-2 mb-4'>
           <RectPreview
             rectangles={[
               { top: 10, left: 20, width: 80, height: 50 },

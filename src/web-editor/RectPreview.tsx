@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Stage, Layer, Rect, Line } from "react-konva";
 import { mapRange } from "canvas-sketch-util/math";
 import { polygonHull } from "d3-polygon";
@@ -64,7 +64,7 @@ export const RectPreview = ({ rectangles, height = 500 }) => {
             width={r.width}
             height={r.height}
             fill='lightblue'
-            stroke='black'
+            stroke='blue'
             strokeWidth={1}
           />
         ))}
