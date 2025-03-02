@@ -4,6 +4,9 @@ import { ResizablePanel } from "@/components/ui/resizable";
 import { repeatNode } from "@/utils/markup";
 import { Eclipse, Search } from "lucide-react";
 
+import { RectPreview } from "./RectPreview";
+
+// #F4F8F9
 function RoomList() {
   return (
     <div className='flex flex-1 flex-col p-4 pb-0'>
@@ -13,7 +16,7 @@ function RoomList() {
           <Search size={16} aria-hidden='true' />
         </div>
         <Input
-          className='bg-muted ps-9 pe-11'
+          className='bg-[#F4F8F9] ps-9 pe-11'
           placeholder='Search...'
           type='search'
         />
@@ -24,7 +27,7 @@ function RoomList() {
         </div>
       </div>
 
-      <div className='-mx-4 flex-1-y mt-2'>
+      <div className='-mx-4 mt-2 flex-1-y'>
         {repeatNode(50, index => (
           <button
             key={index}
@@ -45,9 +48,21 @@ export function LeftPane() {
       <RoomList />
       <div className='shrink-0 border-t p-4 pb-40'>
         <h2 className='mb-2 font-semibold'>Plot Details</h2>
-        <Stat label="Length" value="32 ft." />
-        <Stat label="Width" value="26 ft." />
-        <Stat label="Area" value="832 ft. sq" />
+
+        <div className='flex overflow-x-auto pb-2'>
+          <RectPreview
+            rectangles={[
+              { top: 10, left: 20, width: 80, height: 50 },
+              { top: 10, left: 100, width: 50, height: 50 },
+              { top: 60, left: 20, width: 130, height: 40 }
+            ]}
+            height={150}
+          />
+        </div>
+
+        <Stat label='Length' value='32 ft.' />
+        <Stat label='Width' value='26 ft.' />
+        <Stat label='Area' value='832 ft. sq' />
       </div>
     </ResizablePanel>
   );
