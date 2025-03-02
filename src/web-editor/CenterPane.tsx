@@ -12,8 +12,9 @@ import { ResizablePanel } from "@/components/ui/resizable";
 import {
   Binoculars,
   ChevronDownIcon,
-  CopyPlusIcon,
-  Fullscreen,
+  DraftingCompass,
+  Layers,
+  Palette,
   Redo,
   Undo,
   ZoomIn
@@ -43,14 +44,12 @@ function ZoomControl() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuItem>70%</DropdownMenuItem>
           <DropdownMenuItem>80%</DropdownMenuItem>
           <DropdownMenuItem>100%</DropdownMenuItem>
           <DropdownMenuItem>110%</DropdownMenuItem>
           <DropdownMenuItem>120%</DropdownMenuItem>
-          <DropdownMenuItem>130%</DropdownMenuItem>
           <DropdownMenuItem>140%</DropdownMenuItem>
-          <DropdownMenuItem>150%</DropdownMenuItem>
-          <DropdownMenuItem>160%</DropdownMenuItem>
           <DropdownMenuItem>180%</DropdownMenuItem>
           <DropdownMenuItem>200%</DropdownMenuItem>
         </DropdownMenuGroup>
@@ -62,12 +61,23 @@ function ZoomControl() {
 function Toolbar() {
   return (
     <nav className='flex border-b px-4 py-2'>
-      <div className='flex flex-1 items-center justify-end'>
+      <div className='flex flex-1 items-center gap-x-1'>
         <Button size='icon' variant='ghost'>
-          <Undo />
+          <DraftingCompass size={22} />
         </Button>
         <Button size='icon' variant='ghost'>
-          <Redo />
+          <Layers size={22} />
+        </Button>
+        <Button size='icon' variant='ghost'>
+          <Palette size={22} />
+        </Button>
+      </div>
+      <div className='flex flex-1 items-center justify-end'>
+        <Button size='icon' variant='ghost'>
+          <Undo size={20} />
+        </Button>
+        <Button size='icon' variant='ghost'>
+          <Redo size={20} />
         </Button>
         <div className='ml-3'>
           <ZoomControl />
