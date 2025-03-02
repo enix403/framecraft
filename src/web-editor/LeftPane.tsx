@@ -49,16 +49,14 @@ export function LeftPane() {
       <div className='shrink-0 border-t p-4 pb-40'>
         <h2 className='mb-2 font-semibold'>Plot Details</h2>
 
-        <div className='flex overflow-x-auto pb-2 mb-4'>
-          <RectPreview
-            rectangles={[
-              { top: 10, left: 20, width: 80, height: 50 },
-              { top: 10, left: 100, width: 50, height: 50 },
-              { top: 60, left: 20, width: 130, height: 40 }
-            ]}
-            height={150}
-          />
-        </div>
+        <RectPreview
+          rectangles={[
+            { x: 20,  y: 10, width:  80, height: 50 },
+            { x: 100, y: 10, width:  50, height: 50 },
+            { x: 20,  y: 60, width: 130, height: 40 }
+          ]}
+          canvasHeight={150}
+        />
 
         <Stat label='Length' value='32 ft.' />
         <Stat label='Width' value='26 ft.' />
