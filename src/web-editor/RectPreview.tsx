@@ -1,11 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { Stage, Layer, Rect, Line } from "react-konva";
-import { mapRange } from "canvas-sketch-util/math";
-import { polygonHull } from "d3-polygon";
-
-(window as any).polygonHull = polygonHull;
-(window as any).mapRange = mapRange;
+import { Stage, Layer, Rect } from "react-konva";
 
 interface Rect {
   left: number;
@@ -14,15 +9,16 @@ interface Rect {
   height: number;
 }
 
+// fillColor = "#E6DBF3",
+// fillColor = "#b898dd",
+
 export function RectPreview({
   rectangles,
   canvasHeight = 150,
   className,
-  fillColor = "#E6DBF3",
+  fillColor = "#b2dd98",
   inStrokeColor = fillColor,
   inStrokeWidth = 1,
-  outStrokeColor = "#a055f7",
-  outStrokeWidth = 4
 }: {
   rectangles: Rect[];
   canvasHeight?: number;
@@ -30,12 +26,9 @@ export function RectPreview({
 
   fillColor?: string;
   inStrokeColor?: string;
-  outStrokeColor?: string;
   inStrokeWidth?: number;
-  outStrokeWidth?: number;
 }) {
   const [scaledRects, setScaledRects] = useState<Rect[]>([]);
-  // const [outline, setOutline] = useState<number[]>([]);
 
   useEffect(() => {
     if (rectangles.length === 0) return;
@@ -45,12 +38,12 @@ export function RectPreview({
     const maxX = Math.max(...rectangles.map(r => r.left + r.width));
     const minY = Math.min(...rectangles.map(r => r.top));
     const maxY = Math.max(...rectangles.map(r => r.top + r.height));
-    const originalWidth = maxX - minX;
+    // const originalWidth = maxX - minX;
     const originalHeight = maxY - minY;
 
     // Compute scale to fit fixed height while maintaining aspect ratio
     const scale = canvasHeight / originalHeight;
-    const width = originalWidth * scale;
+    // const width = originalWidth * scale;
 
     // Scale and translate rectangles
     const transformedRects = rectangles.map(r => ({
@@ -60,26 +53,6 @@ export function RectPreview({
       height: r.height * scale
     }));
     setScaledRects(transformedRects);
-
-    return;
-
-    // Compute outer border using d3.polygonHull
-    const points = rectangles.flatMap(
-      r =>
-        [
-          [r.left, r.top],
-          [r.left + r.width, r.top],
-          [r.left + r.width, r.top + r.height],
-          [r.left, r.top + r.height],
-        ] as [number, number][]
-    );
-
-    const hull = polygonHull(points)?.map(([x, y]) => [
-      mapRange(x, minX, maxX, 0, width),
-      mapRange(y, minY, maxY, 0, canvasHeight)
-    ]) as number[][];
-
-    // setOutline(hull ? hull.flat() : []);
   }, [rectangles, canvasHeight]);
 
   return (
