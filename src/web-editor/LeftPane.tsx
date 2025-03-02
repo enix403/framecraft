@@ -66,9 +66,23 @@ export function LeftPane() {
               "top": 53,
               "width": 5,
               "height": 1
-            }
+            },
+            // {
+            //   "left": 41,
+            //   "top": 16,
+            //   "width": 17,
+            //   "height": 8
+            // },
+            // {
+            //   "left": 39,
+            //   "top": 21,
+            //   "width": 2,
+            //   "height": 3
+            // }
+
           ]}
-          canvasHeight={150}
+          // hintWidth={180}
+          // hintHeight={150}
         />
 
         <Stat label='Length' value='32 ft.' />

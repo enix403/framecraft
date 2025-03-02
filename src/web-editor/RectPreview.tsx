@@ -14,21 +14,24 @@ interface Rect {
 
 export function RectPreview({
   rectangles,
-  canvasHeight = 150,
-  className,
+  hintWidth = 180,
+  hintHeight = 150,
   fillColor = "#b2dd98",
   inStrokeColor = fillColor,
   inStrokeWidth = 1,
+  className
 }: {
   rectangles: Rect[];
-  canvasHeight?: number;
-  className?: string;
-
+  hintWidth?: number;
+  hintHeight?: number;
   fillColor?: string;
   inStrokeColor?: string;
   inStrokeWidth?: number;
+  className?: string;
 }) {
   const [scaledRects, setScaledRects] = useState<Rect[]>([]);
+  const [canvasHeight, setCanvasHeight] = useState(0);
+  const [canvasWidth, setCanvasWidth] = useState(0);
 
   useEffect(() => {
     if (rectangles.length === 0) return;
@@ -38,14 +41,27 @@ export function RectPreview({
     const maxX = Math.max(...rectangles.map(r => r.left + r.width));
     const minY = Math.min(...rectangles.map(r => r.top));
     const maxY = Math.max(...rectangles.map(r => r.top + r.height));
-    // const originalWidth = maxX - minX;
+
+    const originalWidth = maxX - minX;
     const originalHeight = maxY - minY;
 
-    // Compute scale to fit fixed height while maintaining aspect ratio
-    const scale = canvasHeight / originalHeight;
-    // const width = originalWidth * scale;
+    const aspectRatio = originalWidth / originalHeight;
 
-    // Scale and translate rectangles
+    let scale = 1;
+
+    if (aspectRatio < 1) {
+      // more taller than wide
+      // fit height
+      scale = hintHeight / originalHeight;
+    } else {
+      // more wider than tall
+      // fit width
+      scale = hintWidth / originalWidth;
+    }
+
+    setCanvasWidth(originalWidth * scale);
+    setCanvasHeight(originalHeight * scale);
+
     const transformedRects = rectangles.map(r => ({
       left: (r.left - minX) * scale,
       top: (r.top - minY) * scale,
@@ -57,15 +73,7 @@ export function RectPreview({
 
   return (
     <div className={clsx("flex overflow-x-auto pb-2", className)}>
-      <Stage
-        className='mx-auto'
-        width={
-          scaledRects.length > 0
-            ? scaledRects.reduce((max, r) => Math.max(max, r.left + r.width), 0)
-            : 0
-        }
-        height={canvasHeight}
-      >
+      <Stage className='mx-auto' width={canvasWidth} height={canvasHeight}>
         <Layer>
           {scaledRects.map((r, i) => (
             <Rect
