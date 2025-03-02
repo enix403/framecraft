@@ -21,6 +21,11 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
+import {
   Binoculars,
   BoltIcon,
   ChevronDownIcon,
@@ -34,7 +39,7 @@ import {
   Undo,
   ZoomIn
 } from "lucide-react";
-import { ReactNode, useState } from "react";
+import { PropsWithChildren, ReactNode, useState } from "react";
 
 function ZoomControl() {
   return (
@@ -159,10 +164,26 @@ function ViewModeControl() {
         <DropdownMenuLabel>Select View Mode</DropdownMenuLabel>
         <DropdownMenuRadioGroup value={viewMode} onValueChange={setViewMode}>
           <DropdownMenuRadioItem value='color'>Color</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value='wireframe'>Wireframe</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value='wireframe'>
+            Wireframe
+          </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+function TooltipWrapper({
+  children,
+  tip
+}: PropsWithChildren & { tip: ReactNode }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipContent side="bottom" className='dark px-2 py-1 text-xs' showArrow={true}>
+        {tip}
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -171,22 +192,20 @@ function Toolbar() {
     <nav className='flex border-b px-4 py-2'>
       <div className='flex flex-1 items-center gap-x-1'>
         <UnitControl />
-        {/* <Button size='icon' variant='ghost'>
-          <Layers size={22} />
-        </Button> */}
         <FeatureTogglesControl />
-        {/* <Button size='icon' variant='ghost'>
-          <Palette size={22} />
-        </Button> */}
         <ViewModeControl />
       </div>
       <div className='flex flex-1 items-center justify-end'>
-        <Button size='icon' variant='ghost'>
-          <Undo size={20} />
-        </Button>
-        <Button size='icon' variant='ghost'>
-          <Redo size={20} />
-        </Button>
+        <TooltipWrapper tip='Undo'>
+          <Button size='icon' variant='ghost'>
+            <Undo size={20} />
+          </Button>
+        </TooltipWrapper>
+        <TooltipWrapper tip='Redo'>
+          <Button size='icon' variant='ghost'>
+            <Redo size={20} />
+          </Button>
+        </TooltipWrapper>
         <div className='ml-3'>
           <ZoomControl />
         </div>
