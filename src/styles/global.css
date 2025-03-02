@@ -44,6 +44,22 @@
   @apply bg-red-500;
 }
 
+/* overflow x */
+@utility flex-1-x {
+  @apply flex-[1_1_0] overflow-x-auto shrink-0;
+}
+
+/* overflow y */
+@utility flex-1-y {
+  @apply flex-[1_1_0] overflow-y-auto shrink-0;
+}
+
+/* Do not overflow */
+@utility flex-1-fix {
+  @apply flex-[1_1_0] shrink-0 overflow-hidden;
+}
+
+
 html,
 body {
   padding: 0;
