@@ -106,7 +106,7 @@ function FeatureToggle({
   onChange: (val: boolean) => void;
 }) {
   return (
-    <DropdownMenuItem asChild>
+    <DropdownMenuItem onSelect={e => e.preventDefault()} asChild>
       <Label className='justify-between'>
         <p className='mr-10'>{label}</p>
         <Switch checked={enabled} onCheckedChange={onChange} />
@@ -145,6 +145,27 @@ function FeatureTogglesControl() {
   );
 }
 
+function ViewModeControl() {
+  const [viewMode, setViewMode] = useState("color");
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size='icon' variant='ghost'>
+          <Palette size={22} />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Select View Mode</DropdownMenuLabel>
+        <DropdownMenuRadioGroup value={viewMode} onValueChange={setViewMode}>
+          <DropdownMenuRadioItem value='color'>Color</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value='wireframe'>Wireframe</DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 function Toolbar() {
   return (
     <nav className='flex border-b px-4 py-2'>
@@ -154,9 +175,10 @@ function Toolbar() {
           <Layers size={22} />
         </Button> */}
         <FeatureTogglesControl />
-        <Button size='icon' variant='ghost'>
+        {/* <Button size='icon' variant='ghost'>
           <Palette size={22} />
-        </Button>
+        </Button> */}
+        <ViewModeControl />
       </div>
       <div className='flex flex-1 items-center justify-end'>
         <Button size='icon' variant='ghost'>
