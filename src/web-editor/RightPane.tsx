@@ -7,12 +7,13 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
+  SelectGroup, SelectLabel
 } from "@/components/ui/select";
 import { RectPreview } from "./RectPreview";
 import { ComponentType, useState } from "react";
 import { BedDouble, Droplet, Eclipse, Grape, Tv } from "lucide-react";
-import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
+// import {  } from "@radix-ui/react-select";
 
 interface RoomType {
   id: string;
@@ -80,7 +81,7 @@ function RoomName() {
 
         <SelectContent className='[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]>span>svg]:shrink-0'>
           <SelectGroup>
-            <SelectLabel className='ps-2 mb-2 font-semibold text-muted-foreground/80 text-sm'>Select Room Type</SelectLabel>
+            <SelectLabel>Select Room Type</SelectLabel>
 
             {roomTypeIds.map(roomTypeId => {
               const typeInfo = roomTypes[roomTypeId];

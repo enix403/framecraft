@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
 import { ResizablePanel } from "@/components/ui/resizable";
 import {
   Select,
@@ -18,17 +19,22 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import {
   Binoculars,
+  BoltIcon,
   ChevronDownIcon,
   DraftingCompass,
+  FilesIcon,
   Layers,
+  Layers2Icon,
   Palette,
   Redo,
+  TrashIcon,
   Undo,
   ZoomIn
 } from "lucide-react";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 function ZoomControl() {
   return (
@@ -79,6 +85,7 @@ function UnitControl() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        <DropdownMenuLabel>Select Unit</DropdownMenuLabel>
         <DropdownMenuRadioGroup value={unit} onValueChange={setUnit}>
           <DropdownMenuRadioItem value='ft'>Feet</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value='m'>Meters</DropdownMenuRadioItem>
@@ -89,17 +96,64 @@ function UnitControl() {
   );
 }
 
+function FeatureToggle({
+  label,
+  enabled,
+  onChange
+}: {
+  label: ReactNode;
+  enabled: boolean;
+  onChange: (val: boolean) => void;
+}) {
+  return (
+    <DropdownMenuItem asChild>
+      <Label className='justify-between'>
+        <p className='mr-10'>{label}</p>
+        <Switch checked={enabled} onCheckedChange={onChange} />
+      </Label>
+    </DropdownMenuItem>
+  );
+}
+
+function FeatureTogglesControl() {
+  const [wallMeasurements, setWallMeasurements] = useState(true);
+  const [roomLabels, setRoomLabels] = useState(true);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size='icon' variant='ghost'>
+          <Layers size={22} />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Toggle Features</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <FeatureToggle
+            label='Wall Measurements'
+            enabled={wallMeasurements}
+            onChange={setWallMeasurements}
+          />
+          <FeatureToggle
+            label='Room Labels'
+            enabled={roomLabels}
+            onChange={setRoomLabels}
+          />
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 function Toolbar() {
   return (
     <nav className='flex border-b px-4 py-2'>
       <div className='flex flex-1 items-center gap-x-1'>
-        {/* <Button size='icon' variant='ghost'>
-          <DraftingCompass size={22} />
-        </Button> */}
         <UnitControl />
-        <Button size='icon' variant='ghost'>
+        {/* <Button size='icon' variant='ghost'>
           <Layers size={22} />
-        </Button>
+        </Button> */}
+        <FeatureTogglesControl />
         <Button size='icon' variant='ghost'>
           <Palette size={22} />
         </Button>
