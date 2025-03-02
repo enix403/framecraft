@@ -52,9 +52,21 @@ export function LeftPane() {
         <RectPreview
           className='mb-4'
           rectangles={[
-            { x: 20, y: 10, width: 80, height: 50 },
-            { x: 100, y: 10, width: 50, height: 50 },
-            { x: 20, y: 60, width: 130, height: 40 }
+            // { x: 20, y: 10, width: 80, height: 50 },
+            // { x: 100, y: 10, width: 50, height: 50 },
+            // { x: 20, y: 60, width: 130, height: 40 }
+            {
+              "x": 29,
+              "y": 39,
+              "width": 9,
+              "height": 14
+            },
+            {
+              "x": 29,
+              "y": 53,
+              "width": 5,
+              "height": 1
+            }
           ]}
           canvasHeight={150}
         />
@@ -69,13 +81,128 @@ export function LeftPane() {
 
 /*
 
-[3, 24, 46, 12, 8],
-[3, 48, 5, 24, 5],
-[3, 39, 29, 9, 14, 53, 29, 5, 1],
-[4, 16, 41, 17, 8, 21, 39, 2, 3],
-[1, 6, 3, 8, 18],
-[2, 6, 28, 11, 18, 6, 39, 2, 15],
-[2, 36, 5, 24, 12],
-[0, 32, 38, 20, 20],
-[2, 24, 5, 33, 12, 36, 29, 9, 3]
+[
+  [24, 46, 12, 8],
+  [48, 5, 24, 5],
+  [39, 29, 9, 14, 53, 29, 5, 1],
+  [16, 41, 17, 8, 21, 39, 2, 3],
+  [6, 3, 8, 18],
+  [6, 28, 11, 18, 6, 39, 2, 15],
+  [36, 5, 24, 12],
+  [32, 38, 20, 20],
+  [24, 5, 33, 12, 36, 29, 9, 3]
+].map((room, index) => {
+  let [...flatRects] = room;
+  let rects = [];
+
+  for (let i = 0; i < flatRects.length; i += 4) {
+    rects.push({
+      x: flatRects[i + 1],
+      y: flatRects[i],
+      width: flatRects[i + 2],
+      height: flatRects[i + 3]
+    });
+  }
+
+  return rects;
+})
+
+[
+  [
+    {
+      "x": 46,
+      "y": 24,
+      "width": 12,
+      "height": 8
+    }
+  ],
+  [
+    {
+      "x": 5,
+      "y": 48,
+      "width": 24,
+      "height": 5
+    }
+  ],
+  [
+    {
+      "x": 29,
+      "y": 39,
+      "width": 9,
+      "height": 14
+    },
+    {
+      "x": 29,
+      "y": 53,
+      "width": 5,
+      "height": 1
+    }
+  ],
+  [
+    {
+      "x": 41,
+      "y": 16,
+      "width": 17,
+      "height": 8
+    },
+    {
+      "x": 39,
+      "y": 21,
+      "width": 2,
+      "height": 3
+    }
+  ],
+  [
+    {
+      "x": 3,
+      "y": 6,
+      "width": 8,
+      "height": 18
+    }
+  ],
+  [
+    {
+      "x": 28,
+      "y": 6,
+      "width": 11,
+      "height": 18
+    },
+    {
+      "x": 39,
+      "y": 6,
+      "width": 2,
+      "height": 15
+    }
+  ],
+  [
+    {
+      "x": 5,
+      "y": 36,
+      "width": 24,
+      "height": 12
+    }
+  ],
+  [
+    {
+      "x": 38,
+      "y": 32,
+      "width": 20,
+      "height": 20
+    }
+  ],
+  [
+    {
+      "x": 5,
+      "y": 24,
+      "width": 33,
+      "height": 12
+    },
+    {
+      "x": 29,
+      "y": 36,
+      "width": 9,
+      "height": 3
+    }
+  ]
+]
 */
