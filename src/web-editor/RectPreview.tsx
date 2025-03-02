@@ -24,9 +24,11 @@ export function RectPreview({
   rectangles,
   hintWidth = 150,
   hintHeight = 150,
-  fillColor = "#b2dd98",
+  fillColor = "#E6DBF3",
   inStrokeColor = fillColor,
   inStrokeWidth = 1,
+  outStrokeColor = "#843cd6",
+  outStrokeWidth = 4,
   className
 }: {
   rectangles: Rect[];
@@ -35,6 +37,8 @@ export function RectPreview({
   fillColor?: string;
   inStrokeColor?: string;
   inStrokeWidth?: number;
+  outStrokeColor?: string;
+  outStrokeWidth?: number;
   className?: string;
 }) {
   const [scaledRects, setScaledRects] = useState<Rect[]>([]);
@@ -121,8 +125,8 @@ export function RectPreview({
           {outline.length > 0 && (
             <Line
               points={outline}
-              stroke={"black"}
-              strokeWidth={4}
+              stroke={outStrokeColor}
+              strokeWidth={outStrokeWidth}
               closed
               perfectDrawEnabled={false}
               lineJoin='round' // or 'bevel' or 'miter'
