@@ -2,19 +2,14 @@ import Konva from "konva";
 import { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Rect, Text, Line } from "react-konva";
 
-import { getInitialPlan } from "./initialPlan";
 import { useMeasure } from "@uidotdev/usehooks";
-import { useWheelZoomListener, useZoomLevel } from "./zoom";
-import { useRecenter } from "./recenter";
-import { CELL_SIZE, roomInfoFromNodeType, snapToGrid } from "./common";
+import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
+import { useRecenter } from "./hooks/useRecenter";
+import { CELL_SIZE, snapToGrid } from "./common";
+import { roomInfoFromNodeType } from "../plan/rooms";
 import { eventSubject, useSettings } from "./settings";
-import { PlanContext, usePlan } from "./PlanProvider";
-import { CELL_PHYSICAL_LENGTH, unitFactor } from "./units";
-
-/* ============================================= */
-
-(window as any).getInitialPlan = getInitialPlan;
-const initialPlan = getInitialPlan();
+import { usePlan } from "../PlanProvider";
+import { CELL_PHYSICAL_LENGTH, unitFactor } from "../plan/units";
 
 /* ============================================= */
 
@@ -176,28 +171,19 @@ function RenderWallMeasures() {
 function RenderDoors() {
   const plan = usePlan();
 
-  return plan.doors.map(
-    ({ id, row, col, length, direction, width: thickness }) => {
-      const { x, y, width, height } = calcLineRect(
-        row,
-        col,
-        length,
-        direction,
-        thickness
-      );
+  return plan.doors.map(({ id, row, col, length, direction }) => {
+    const { x, y, width, height } = calcLineRect(
+      row,
+      col,
+      length,
+      direction,
+      1
+    );
 
-      return (
-        <Rect
-          key={id}
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-          fill='#F6F6F6'
-        />
-      );
-    }
-  );
+    return (
+      <Rect key={id} x={x} y={y} width={width} height={height} fill='#F6F6F6' />
+    );
+  });
 }
 
 function RenderRoomLabels() {
@@ -254,17 +240,11 @@ function RenderRooms() {
   });
 }
 
-const plan = initialPlan;
-
-export function EditorView2D() {
+export function World2DEditor() {
   const [containerRef, containerSize] = useMeasure();
   const stageRef = useRef<Konva.Stage | null>(null);
 
-  const { forceRecenter, baseScale } = useRecenter(
-    stageRef,
-    plan,
-    containerSize
-  );
+  const { forceRecenter, baseScale } = useRecenter(stageRef, containerSize);
   useWheelZoomListener(stageRef, baseScale);
 
   useEffect(() => {
@@ -285,26 +265,22 @@ export function EditorView2D() {
   const settings = useSettings();
 
   return (
-    <PlanContext.Provider value={plan}>
-      <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
-        <Stage
-          ref={stageRef}
-          width={containerSize.width || 0}
-          height={containerSize.height || 0}
-          draggable
-          // scaleX={scale}
-          // scaleY={scale}
-          style={{ background: "#F6F6F6" }}
-        >
-          <Layer>
-            {settings.viewMode === "color" && <RenderRooms />}
-            <RenderWalls />
-            <RenderDoors />
-            {settings.enableRoomLabels && <RenderRoomLabels />}
-            {settings.enableWallMeasure && <RenderWallMeasures />}
-          </Layer>
-        </Stage>
-      </div>
-    </PlanContext.Provider>
+    <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
+      <Stage
+        ref={stageRef}
+        width={containerSize.width || 0}
+        height={containerSize.height || 0}
+        draggable
+        style={{ background: "#F6F6F6" }}
+      >
+        <Layer>
+          {settings.viewMode === "color" && <RenderRooms />}
+          <RenderWalls />
+          <RenderDoors />
+          {settings.enableRoomLabels && <RenderRoomLabels />}
+          {settings.enableWallMeasure && <RenderWallMeasures />}
+        </Layer>
+      </Stage>
+    </div>
   );
 }

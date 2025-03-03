@@ -1,193 +1,18 @@
-import { Subject } from "rxjs";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { Label } from "@/components/ui/label";
 import { ResizablePanel } from "@/components/ui/resizable";
-import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
 } from "@/components/ui/tooltip";
-import {
-  Binoculars,
-  ChevronDownIcon,
-  DraftingCompass,
-  Layers,
-  LocateFixed,
-  Palette,
-  Redo,
-  Undo,
-  ZoomIn
-} from "lucide-react";
+import { Redo, Undo } from "lucide-react";
 import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
-import { EditorView2D } from "./EditorView2D/EditorView2D";
-import {
-  eventSubject,
-  useSetSettings,
-  useSettings
-} from "./EditorView2D/settings";
-import { useSetZoomLevel, useZoomLevel } from "./EditorView2D/zoom";
-
-function ZoomControl() {
-  const zoomLevel = useZoomLevel();
-  const setZoomLevel = useSetZoomLevel();
-
-  function applyZoom(value: number) {
-    setZoomLevel(value / 100);
-    eventSubject.next("set-zoom:" + value);
-  }
-
-  const selectableZoomLevels = [70, 80, 100, 110, 120, 140, 180, 200];
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant='secondary'>
-          <ZoomIn className='me-1' size={18} />
-          <p className="w-10">
-          {Math.round(zoomLevel * 100)}%
-          </p>
-          <ChevronDownIcon
-            className='-me-1 opacity-60'
-            size={16}
-            aria-hidden='true'
-          />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Zoom</DropdownMenuLabel>
-        <DropdownMenuGroup>
-          <DropdownMenuItem onSelect={() => applyZoom(100)}>
-            <Binoculars size={16} className='opacity-60' aria-hidden='true' />
-            Reset
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          {selectableZoomLevels.map((level, index) => (
-            <DropdownMenuItem key={index} onSelect={() => applyZoom(level)}>
-              {level}%
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-function UnitControl() {
-  const { unit } = useSettings();
-  const setSettings = useSetSettings();
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size='icon' variant='ghost'>
-          <DraftingCompass size={22} />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Select Unit</DropdownMenuLabel>
-        <DropdownMenuRadioGroup
-          value={unit}
-          onValueChange={unit => setSettings({ unit: unit as any })}
-        >
-          <DropdownMenuRadioItem value='ft'>Feet</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value='m'>Meters</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value='in'>Inches</DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-function FeatureToggle({
-  label,
-  enabled,
-  onChange
-}: {
-  label: ReactNode;
-  enabled: boolean;
-  onChange: (val: boolean) => void;
-}) {
-  return (
-    <DropdownMenuItem onSelect={e => e.preventDefault()} asChild>
-      <Label className='justify-between'>
-        <p className='mr-10'>{label}</p>
-        <Switch checked={enabled} onCheckedChange={onChange} />
-      </Label>
-    </DropdownMenuItem>
-  );
-}
-
-function FeatureTogglesControl() {
-  const { enableWallMeasure, enableRoomLabels } = useSettings();
-  const setSettings = useSetSettings();
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size='icon' variant='ghost'>
-          <Layers size={22} />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Toggle Features</DropdownMenuLabel>
-        <DropdownMenuGroup>
-          <FeatureToggle
-            label='Wall Measurements'
-            enabled={enableWallMeasure}
-            onChange={enable => setSettings({ enableWallMeasure: enable })}
-          />
-          <FeatureToggle
-            label='Room Labels'
-            enabled={enableRoomLabels}
-            onChange={enable => setSettings({ enableRoomLabels: enable })}
-          />
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-function ViewModeControl() {
-  const { viewMode } = useSettings();
-
-  const setSettings = useSetSettings();
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size='icon' variant='ghost'>
-          <Palette size={22} />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Select View Mode</DropdownMenuLabel>
-        <DropdownMenuRadioGroup
-          value={viewMode}
-          onValueChange={viewMode => setSettings({ viewMode: viewMode as any })}
-        >
-          <DropdownMenuRadioItem value='color'>Color</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value='wireframe'>
-            Wireframe
-          </DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
+import { World2DEditor } from "./world2d/World2DEditor";
+import { UnitControl } from "./world2d/controls/UnitControl";
+import { FeatureTogglesControl } from "./world2d/controls/FeatureTogglesControl";
+import { ViewModeControl } from "./world2d/controls/ViewModeControl";
+import { ZoomControl } from "./world2d/controls/ZoomControl";
+import { RecenterButton } from "./world2d/controls/RecenterButton";
 
 function TooltipWrapper({
   children,
@@ -238,32 +63,18 @@ function Toolbar() {
   );
 }
 
-function RecenterButton() {
-  return (
-    <div className='absolute bottom-6 left-6'>
-      <TooltipWrapper tip='Recenter' side='top'>
-        <Button
-          onClick={() => {
-            eventSubject.next("recenter");
-          }}
-          size='icon'
-          className='rounded-full bg-white p-4 text-black shadow-2xl shadow-black hover:bg-accent/90 active:bg-accent/70'
-        >
-          <LocateFixed size={30} />
-        </Button>
-      </TooltipWrapper>
-    </div>
-  );
-}
-
 export function CenterPane() {
   return (
     <ResizablePanel minSize={40} className='relative flex flex-col'>
       <Toolbar />
       <div className='flex-1-fix bg-[#F6F6F6]'>
-        <EditorView2D />
+        <World2DEditor />
       </div>
-      <RecenterButton />
+      <div className='absolute bottom-6 left-6'>
+        <TooltipWrapper tip='Recenter' side='top'>
+          <RecenterButton />
+        </TooltipWrapper>
+      </div>
     </ResizablePanel>
   );
 }

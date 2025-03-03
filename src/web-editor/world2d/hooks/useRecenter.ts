@@ -3,15 +3,17 @@ import { useRef, useLayoutEffect, RefObject, useState } from "react";
 
 import { CELL_SIZE } from "../common";
 import { useSetZoomLevel } from "../settings";
+import { usePlan } from "@/web-editor/PlanProvider";
 
 export function useRecenter(
   stageRef: RefObject<Konva.Stage | null>,
-  plan: any,
   containerSize: {
     width: number | null;
     height: number | null;
   }
 ) {
+  const plan = usePlan();
+
   const setZoomLevel = useSetZoomLevel();
   const firstPlaced = useRef(false);
 
