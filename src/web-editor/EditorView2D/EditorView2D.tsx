@@ -9,6 +9,7 @@ import { useRecenter } from "./recenter";
 import { CELL_SIZE, roomInfoFromNodeType, snapToGrid } from "./common";
 import { eventSubject, useSettings } from "./settings";
 import { PlanContext, usePlan } from "./PlanProvider";
+import { CELL_PHYSICAL_LENGTH, unitFactor } from "./units";
 
 /* ============================================= */
 
@@ -73,7 +74,16 @@ function RenderWalls() {
   );
 }
 
-function WallMeasure({ side, x, y, width, height, gap = 8, textGap = 8 }) {
+function WallMeasure({
+  side,
+  x,
+  y,
+  width,
+  height,
+  length,
+  gap = 8,
+  textGap = 8
+}) {
   const { unit } = useSettings();
 
   let points: any[] = [];
@@ -108,11 +118,15 @@ function WallMeasure({ side, x, y, width, height, gap = 8, textGap = 8 }) {
     rot = -90;
   }
 
+  const physicalLength = Math.round(
+    length * CELL_PHYSICAL_LENGTH * (unitFactor[unit] || 1)
+  );
+
   return (
     <>
       <Line points={points} stroke='#AAAAAA' />
       <Text
-        text={`1000 ${unit}`}
+        text={`${physicalLength} ${unit}`}
         fontSize={16}
         fill='#848484'
         x={lineCenterX}
@@ -151,6 +165,7 @@ function RenderWallMeasures() {
           y={y}
           width={width}
           height={height}
+          length={length}
           side={direction === "h" ? "top" : "right"}
         />
       );

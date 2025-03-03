@@ -50,7 +50,8 @@ export function getInitialPlan() {
     canvasCols,
     walls: wallsN,
     doors: doorsN,
-    rooms: roomsN
+    rooms: roomsN,
+    scale
   };
 }
 
