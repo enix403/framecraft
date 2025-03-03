@@ -2,6 +2,7 @@ import Konva from "konva";
 import { useRef, useLayoutEffect, RefObject, useState } from "react";
 
 import { CELL_SIZE } from "./common";
+import { useSetZoomLevel } from "./zoom";
 
 export function useRecenter(
   stageRef: RefObject<Konva.Stage | null>,
@@ -11,6 +12,7 @@ export function useRecenter(
     height: number | null;
   }
 ) {
+  const setZoomLevel = useSetZoomLevel();
   const firstPlaced = useRef(false);
 
   const [baseScale, setBaseScale] = useState(1);
@@ -68,6 +70,7 @@ export function useRecenter(
 
     stage.position(initialPos);
     stage.scale(initialScale);
+    setZoomLevel(1);
   }
 
   useLayoutEffect(() => {

@@ -1,23 +1,34 @@
+import { atom, useAtomValue, useSetAtom } from "jotai";
 import Konva from "konva";
 import { useState, useEffect, RefObject } from "react";
 
 const MIN_SCALE_REL = 0.5;
 const MAX_SCALE_REL = 4;
 
-export function useStageZoom(
+const zoomLevelAtom = atom(1);
+
+export function useZoomLevel() {
+  return useAtomValue(zoomLevelAtom);
+}
+
+export function useSetZoomLevel() {
+  return useSetAtom(zoomLevelAtom);
+}
+
+export function useWheelZoomListener(
   stageRef: RefObject<Konva.Stage | null>,
   baseScale: number
 ) {
-  const [scale, setScale] = useState(1);
+  const setZoomLevel = useSetZoomLevel();
 
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
 
-    setScale(stage.scaleX() / baseScale);
-
     const minScale = MIN_SCALE_REL * baseScale;
     const maxScale = MAX_SCALE_REL * baseScale;
+
+    setZoomLevel(stage.scaleX() / baseScale);
 
     function onWheelImpl(stage: Konva.Stage, e: WheelEvent) {
       e.preventDefault();
@@ -36,6 +47,7 @@ export function useStageZoom(
         Math.min(maxScale, oldScale - e.deltaY * 0.001)
       );
       stage.scale({ x: newScale, y: newScale });
+      setZoomLevel(newScale / baseScale);
 
       const newPos = {
         x: pointer.x - mousePointTo.x * newScale,
@@ -43,7 +55,8 @@ export function useStageZoom(
       };
 
       stage.position(newPos);
-      setScale(newScale / baseScale);
+
+
     }
 
     function onWheel(e: WheelEvent) {
@@ -56,6 +69,4 @@ export function useStageZoom(
       stage.content.removeEventListener("wheel", onWheel);
     };
   }, [baseScale]);
-
-  return { scale };
 }

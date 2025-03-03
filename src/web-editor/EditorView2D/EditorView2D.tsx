@@ -4,7 +4,7 @@ import { Stage, Layer, Rect, Text, Line } from "react-konva";
 
 import { getInitialPlan } from "./initialPlan";
 import { useMeasure } from "@uidotdev/usehooks";
-import { useStageZoom } from "./zoom";
+import { useWheelZoomListener, useZoomLevel } from "./zoom";
 import { useRecenter } from "./recenter";
 import { CELL_SIZE, roomInfoFromNodeType, snapToGrid } from "./common";
 import { eventSubject, useSettings } from "./settings";
@@ -250,7 +250,7 @@ export function EditorView2D() {
     plan,
     containerSize
   );
-  const { scale } = useStageZoom(stageRef, baseScale);
+  useWheelZoomListener(stageRef, baseScale);
 
   useEffect(() => {
     const subscription = eventSubject.subscribe(event => {
@@ -263,10 +263,7 @@ export function EditorView2D() {
   }, [forceRecenter]);
 
   const settings = useSettings();
-
-  useEffect(() => {
-    console.log(scale);
-  }, [scale]);
+  // const zoomLevel = useZoomLevel();
 
   return (
     <PlanContext.Provider value={plan}>
