@@ -6,22 +6,17 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { WebEditor } from "./web-editor/WebEditor";
+import { Scratch } from "./scratch/Scratch";
 
 export function App() {
   return (
-    // <IconContext.Provider
-    //   value={{
-    //     size: 22,
-    //     weight: "bold"
-    //   }}
-    // >
     <TooltipProvider delayDuration={0}>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<WebEditor />} />
+          <Route path='/s' element={<Scratch />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
-    // </IconContext.Provider>
   );
 }
