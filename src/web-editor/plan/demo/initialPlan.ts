@@ -3,11 +3,11 @@ import planJsonRaw from "./planA.json";
 import { roomInfoFromNodeType } from "../rooms";
 
 export type RoomRect = [
-  number, /* row */
-  number, /* col */
-  number, /* width */
-  number, /* height */
-]
+  number /* row */,
+  number /* col */,
+  number /* width */,
+  number /* height */
+];
 
 export function getInitialPlan() {
   const { shape, rooms, walls, doors, scale } = planJsonRaw;

@@ -45,8 +45,6 @@ export function useWheelZoomListener(
       };
 
       stage.position(newPos);
-
-
     }
 
     function onWheel(e: WheelEvent) {
