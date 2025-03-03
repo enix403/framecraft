@@ -246,9 +246,9 @@ export function EditorView2D() {
   const [containerRef, containerSize] = useMeasure();
 
   const stageRef = useRef<Konva.Stage | null>(null);
-  const { forceRecenter } = useInitialRecenter(stageRef, plan, containerSize);
+  const { forceRecenter, baseScale } = useInitialRecenter(stageRef, plan, containerSize);
 
-  const { scale } = useStageZoom(stageRef);
+  const { scale } = useStageZoom(stageRef, baseScale);
   const settings = useSettings();
 
   useEffect(() => {
@@ -261,6 +261,8 @@ export function EditorView2D() {
     return () => subscription.unsubscribe();
   }, [forceRecenter]);
 
+
+
   return (
     <PlanContext.Provider value={plan}>
       <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
@@ -269,8 +271,8 @@ export function EditorView2D() {
           width={containerSize.width || 0}
           height={containerSize.height || 0}
           draggable
-          scaleX={scale}
-          scaleY={scale}
+          // scaleX={scale}
+          // scaleY={scale}
           style={{ background: "#F6F6F6" }}
         >
           <Layer>
