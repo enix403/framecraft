@@ -74,6 +74,8 @@ function calcLineRect(
   return { x, y, width, height };
 }
 
+function RectSizeLabel({ side, x, y, width, height }) {}
+
 function WallMeasure({ side, x, y, width, height, gap }) {
   // let points: any[] = [];
   let mx = 0;
@@ -105,38 +107,27 @@ function WallMeasure({ side, x, y, width, height, gap }) {
 
   const isHoriz = side === "top" || side === "bottom";
 
+  if (isHoriz) {
+    return null;
+  }
 
   return (
     <>
+      <Rect x={0} y={0} stroke='red' width={100} height={100} />
       <Text
         text='1000ft'
         fontSize={13}
         fill='blue'
-
-        x={mx}
-        y={my}
-        width={mw}
-        height={mh}
-        align="center"
-        verticalAlign="middle"
-        rotationDeg={isHoriz ? 0 : 90}
+        x={0}
+        y={0}
+        width={1000}
+        height={1000}
+        offsetX={500}
+        offsetY={500}
+        align='center'
+        verticalAlign='middle'
+        rotationDeg={90}
       />
-      {/* <Line points={points} stroke='blue' />
-      <Text
-        text={"1000 ft"}
-        fontSize={13}
-        fill={"black"}
-
-        x={lineCenterX}
-        y={lineCenterY}
-
-        width={isHoriz ? width : undefined}
-        height={isVert ? height : undefined}
-        align="center"
-
-        rotationDeg={isVert ? 90 : 0}
-
-      /> */}
     </>
   );
 }
