@@ -1,5 +1,7 @@
 import planJsonRaw from "./planA.json";
 
+import { roomInfoFromNodeType } from "../rooms";
+
 export type RoomRect = [
   number, /* row */
   number, /* col */
@@ -46,6 +48,7 @@ export function getInitialPlan() {
     return {
       type,
       id: `room-${index}`,
+      label: roomInfoFromNodeType(type)?.title ?? "Room",
       rects
     };
   });

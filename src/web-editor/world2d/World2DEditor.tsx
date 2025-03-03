@@ -205,7 +205,7 @@ function RenderRoomLabels() {
 
     let [row, col, width, height] = room.rects[largestRectIndex];
 
-    const label = roomInfoFromNodeType(room.type)?.title;
+    const label = room.label;
 
     if (!label) return;
 
