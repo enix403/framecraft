@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -31,7 +32,7 @@ import {
 } from "lucide-react";
 import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
 import { EditorView2D } from "./EditorView2D/EditorView2D";
-import { useSetSettings, useSettings } from "./EditorView2D/settings";
+import { eventSubject, useSetSettings, useSettings } from "./EditorView2D/settings";
 
 function ZoomControl() {
   return (
@@ -223,12 +224,14 @@ function Toolbar() {
   );
 }
 
-function RecenterButton({ onClick }: { onClick?: () => void }) {
+function RecenterButton() {
   return (
     <div className='absolute bottom-6 left-6'>
       <TooltipWrapper tip='Recenter' side='top'>
         <Button
-          onClick={onClick}
+          onClick={() => {
+            eventSubject.next("recenter");
+          }}
           size='icon'
           className='rounded-full bg-white p-4 text-black shadow-2xl shadow-black hover:bg-accent/90 active:bg-accent/70'
         >

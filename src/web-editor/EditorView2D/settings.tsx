@@ -1,4 +1,5 @@
 import { atom, useAtomValue, useSetAtom } from "jotai";
+import { Subject } from "rxjs";
 
 export type EditorSettings = {
   unit: "ft" | "in" | "m";
@@ -27,3 +28,9 @@ export function useSetSettings() {
     }));
   };
 }
+
+/* ================= */
+
+type EventNames = "recenter";
+
+export const eventSubject = new Subject<EventNames>();
