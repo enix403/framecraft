@@ -14,7 +14,6 @@ export function useInitialRecenter(
   const firstPlaced = useRef(false);
 
   function performRecenter() {
-
     const stage = stageRef.current;
 
     if (!stage) return;
@@ -63,8 +62,6 @@ export function useInitialRecenter(
 
     const initialScale = { x: scale, y: scale };
 
-    console.log(initialScale, initialPos);
-
     stage.position(initialPos);
     stage.scale(initialScale);
   }
@@ -74,7 +71,7 @@ export function useInitialRecenter(
       return;
     }
     performRecenter();
-  }, [containerSize]);
+  }, [containerSize, performRecenter]);
 
   return {
     forceRecenter: performRecenter

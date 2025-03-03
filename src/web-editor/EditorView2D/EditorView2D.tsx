@@ -241,6 +241,7 @@ function RenderRooms() {
 
 const plan = initialPlan;
 
+
 export function EditorView2D() {
   const [containerRef, containerSize] = useMeasure();
 
@@ -258,7 +259,7 @@ export function EditorView2D() {
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [forceRecenter]);
 
   return (
     <PlanContext.Provider value={plan}>
