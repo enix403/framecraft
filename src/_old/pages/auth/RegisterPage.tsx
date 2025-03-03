@@ -2,12 +2,12 @@ import { Link } from "react-router";
 
 export function RegisterPage() {
   return (
-    <div className='flex rounded-xl overflow-hidden md:m-10 border border-border flex-1'>
-      <form className='flex w-full lg:max-w-lg flex-col bg-backgroundSecondary p-6 sm:p-10 max-lg:flex-1'>
+    <div className='flex flex-1 overflow-hidden rounded-xl border border-border md:m-10'>
+      <form className='bg-backgroundSecondary flex w-full flex-col p-6 max-lg:flex-1 sm:p-10 lg:max-w-lg'>
         <div className='flex w-full flex-col gap-2'>
           <p>Sign in with</p>
           <div className='flex w-full flex-col gap-2'>
-            <button type='button' className='btn gap-2 bg-gray-5'>
+            <button type='button' className='btn bg-gray-5 gap-2'>
               <svg
                 stroke='currentColor'
                 fill='currentColor'
@@ -37,7 +37,7 @@ export function RegisterPage() {
               </svg>
               <span>Sign up with Google</span>
             </button>
-            <button type='button' className='btn gap-2 bg-gray-5'>
+            <button type='button' className='btn bg-gray-5 gap-2'>
               <svg
                 width={21}
                 aria-hidden='true'
@@ -58,7 +58,7 @@ export function RegisterPage() {
             </button>
           </div>
         </div>
-        <div className='divider my-6 text-xs text-content2'>
+        <div className='divider text-content2 my-6 text-xs'>
           or continue with
         </div>
         <div className='form-group'>
@@ -102,7 +102,7 @@ export function RegisterPage() {
           <div className='form-field pt-5'>
             <div className='form-control justify-between'>
               <Link
-                to="/generate"
+                to='/generate'
                 type='button'
                 className='btn btn-primary w-full bg-linear-to-r from-pink-600 to-purple-500'
               >
@@ -112,7 +112,10 @@ export function RegisterPage() {
           </div>
           <div className='form-field'>
             <div className='form-control'>
-              <Link to="/login" className='link link-underline-hover link-secondary text-sm'>
+              <Link
+                to='/login'
+                className='link link-underline-hover link-secondary text-sm'
+              >
                 Already have an account? Sign in
               </Link>
             </div>
@@ -122,7 +125,7 @@ export function RegisterPage() {
       <div className='flex-1 max-lg:hidden'>
         <img
           src='/hero3.jpg'
-          className='w-full max-w-full h-full object-cover'
+          className='h-full w-full max-w-full object-cover'
         />
       </div>
     </div>

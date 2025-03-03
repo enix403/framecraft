@@ -10,16 +10,16 @@ export function DesignPreview({
   onSelect?: () => void;
 }) {
   return (
-    <button className='relative group cursor-pointer' onClick={onSelect}>
+    <button className='group relative cursor-pointer' onClick={onSelect}>
       <div
         className={clsx(
-          "absolute -inset-1 bg-linear-to-r from-red-600 to-violet-600 rounded-lg blur-sm transition-all",
+          "absolute -inset-1 rounded-lg bg-linear-to-r from-red-600 to-violet-600 blur-sm transition-all",
           selected ? "opacity-100" : "opacity-25"
         )}
       ></div>
       <div
         className={clsx(
-          "relative bg-white rounded-2xl border-4 overflow-hidden",
+          "relative overflow-hidden rounded-2xl border-4 bg-white",
           selected ? "border-pink-400" : ""
         )}
       >
@@ -28,11 +28,11 @@ export function DesignPreview({
 
           <div
             className={clsx(
-              "absolute inset-0 transition-all pointer-events-none",
+              "pointer-events-none absolute inset-0 transition-all",
               selected ? "opacity-100" : "opacity-0"
             )}
           >
-            <div className='w-full h-full bg-black/60 flex items-center justify-center'>
+            <div className='flex h-full w-full items-center justify-center bg-black/60'>
               <CheckCircle size={84} weight='fill' className='text-[#b4db40]' />
             </div>
           </div>

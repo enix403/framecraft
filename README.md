@@ -48,16 +48,19 @@ Ensure you have the following installed on your system:
 The `package.json` includes several scripts to streamline development and deployment:
 
 - `dev`: Starts the development server with hot module reloading.
+
   ```bash
   npm run dev
   ```
 
 - `build`: Builds the project for production. This script also runs TypeScript type checks before building.
+
   ```bash
   npm run build
   ```
 
 - `preview`: Previews the production build locally.
+
   ```bash
   npm run preview
   ```

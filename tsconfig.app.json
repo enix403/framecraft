@@ -24,8 +24,8 @@
     "noUncheckedSideEffectImports": false,
 
     "paths": {
-      "@/*": ["./src/*"],
-    },
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src"]
 }

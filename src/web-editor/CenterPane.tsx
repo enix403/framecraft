@@ -174,7 +174,7 @@ function ViewModeControl() {
 function TooltipWrapper({
   children,
   tip,
-  side = 'bottom'
+  side = "bottom"
 }: PropsWithChildren & {
   tip: ReactNode;
   side?: ComponentProps<typeof TooltipContent>["side"];
@@ -229,10 +229,10 @@ export function CenterPane() {
           <EditorView2D />
         </div>
         <div className='absolute bottom-6 left-6'>
-          <TooltipWrapper tip='Recenter' side="top">
+          <TooltipWrapper tip='Recenter' side='top'>
             <Button
               size='icon'
-              className='rounded-full bg-white p-4 text-black hover:bg-accent/90 active:bg-accent/70'
+              className='rounded-full bg-white p-4 text-black shadow-2xl shadow-black hover:bg-accent/90 active:bg-accent/70'
             >
               <LocateFixed size={30} />
             </Button>

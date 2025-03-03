@@ -6,8 +6,8 @@ import {
 
 export function NotFound() {
   return (
-    <div className='flex items-center justify-center min-h-screen'>
-      <div className='text-center space-y-8'>
+    <div className='flex min-h-screen items-center justify-center'>
+      <div className='space-y-8 text-center'>
         <h1 className='text-9xl font-extrabold tracking-widest text-white'>
           <span className='sr-only'>Error</span>
           <span className='inline-block animate-pulse'>4</span>
@@ -24,18 +24,18 @@ export function NotFound() {
             4
           </span>
         </h1>
-        <div className='text-2xl font-semibold md:text-3xl mb-8'>
+        <div className='mb-8 text-2xl font-semibold md:text-3xl'>
           <IconSmiley
             weight='duotone'
-            className='inline-block w-8 h-8 mr-2 align-middle text-yellow-500'
+            className='mr-2 inline-block h-8 w-8 align-middle text-yellow-500'
           />
           <span className='align-middle'>Oops! Page not found</span>
         </div>
-        <p className='text-gray-400 font-medium text-lg md:text-xl max-w-lg mx-auto'>
+        <p className='mx-auto max-w-lg text-lg font-medium text-gray-400 md:text-xl'>
           The page you're looking for doesn't exist or has been moved.
         </p>
         <Link to='/' className='btn btn-secondary'>
-          <IconArrowLeft weight='bold' className='w-5 h-5 mr-2' />
+          <IconArrowLeft weight='bold' className='mr-2 h-5 w-5' />
           Go back home
         </Link>
       </div>

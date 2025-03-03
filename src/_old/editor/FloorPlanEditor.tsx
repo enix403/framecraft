@@ -184,7 +184,7 @@ const FloorPlanEditor = () => {
   }, [undoStack, redoStack, plan, selectedItem]);
 
   return (
-    <div ref={containerRef} className='w-full max-w-full h-full max-h-full'>
+    <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
       <Stage
         width={containerSize.width}
         height={containerSize.height}

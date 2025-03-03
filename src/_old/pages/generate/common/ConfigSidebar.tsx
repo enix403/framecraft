@@ -19,9 +19,9 @@ export function ConfigSidebar() {
   return (
     <motion.div
       className={clsx(
-        "w-full flex-col gap-6 bg-backgroundSecondary p-8 shrink-0 overflow-hidden",
+        "bg-backgroundSecondary w-full shrink-0 flex-col gap-6 overflow-hidden p-8",
         "lg:max-w-sm",
-        isPickStage ? "hidden lg:flex" : "flex",
+        isPickStage ? "hidden lg:flex" : "flex"
       )}
     >
       <h2 className='text-lg font-bold'>Generate New Design</h2>
@@ -36,7 +36,7 @@ export function ConfigSidebar() {
               placeholder='Length'
               // onInput={validateNumKey}
             />
-            <span className='absolute inset-y-0 right-4 inline-flex items-center text-content3'>
+            <span className='text-content3 absolute inset-y-0 right-4 inline-flex items-center'>
               (in)
             </span>
           </div>
@@ -47,7 +47,7 @@ export function ConfigSidebar() {
               placeholder='Width'
               // onKeyDown={validateNumKey}
             />
-            <span className='absolute inset-y-0 right-4 inline-flex items-center text-content3'>
+            <span className='text-content3 absolute inset-y-0 right-4 inline-flex items-center'>
               (in)
             </span>
           </div>
@@ -64,13 +64,13 @@ export function ConfigSidebar() {
       </div>
       <div>
         <label className='form-label mb-2'>Generation Mode</label>
-        <div className='flex mt-2 gap-x-2'>
+        <div className='mt-2 flex gap-x-2'>
           <OptionsBar options={["Quality", "Fast"]} defaultSelected='Quality' />
         </div>
       </div>
       <div>
         <label className='form-label mb-2'>Number of maps</label>
-        <div className='flex mt-2 gap-x-2'>
+        <div className='mt-2 flex gap-x-2'>
           <OptionsBar
             options={["1", "2", "3", "4", "5", "6"]}
             defaultSelected='1'
@@ -80,10 +80,10 @@ export function ConfigSidebar() {
       <Link
         to='/generate/pick'
         type='button'
-        className='btn w-full bg-linear-to-r py-6 from-pink-600 to-blue-500 mt-8 gap-x-2'
+        className='btn mt-8 w-full gap-x-2 bg-linear-to-r from-pink-600 to-blue-500 py-6'
       >
         <IconSparkle size={24} weight='fill' />
-        <strong className='text-white text-[1.01rem]'>Generate</strong>
+        <strong className='text-[1.01rem] text-white'>Generate</strong>
       </Link>
     </motion.div>
   );

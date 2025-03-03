@@ -6,14 +6,14 @@ import { ArrowLeft as IconArrowLeft } from "@phosphor-icons/react";
 export function ViewRenderPage() {
   return (
     <GenerationAppLayout allowScroll>
-      <div className='max-h-full flex items-center justify-center flex-1'>
-        <img src='/render1.jpg' className='w-full h-full object-cover' />
+      <div className='flex max-h-full flex-1 items-center justify-center'>
+        <img src='/render1.jpg' className='h-full w-full object-cover' />
       </div>
-      <div className='flex w-full lg:max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0 max-lg:pb-44'>
+      <div className='bg-backgroundSecondary flex w-full shrink-0 flex-col gap-6 p-8 max-lg:pb-44 lg:max-w-sm'>
         <Link
           to='/edit'
           type='button'
-          className='btn w-full btn-solid py-6 gap-x-2'
+          className='btn btn-solid w-full gap-x-2 py-6'
         >
           <IconArrowLeft />
           Go Back

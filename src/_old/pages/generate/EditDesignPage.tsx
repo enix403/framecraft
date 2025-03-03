@@ -11,14 +11,14 @@ import {
 export function EditDesignPage() {
   return (
     <GenerationAppLayout allowScroll>
-      <div className='max-h-full flex items-center justify-center flex-1'>
+      <div className='flex max-h-full flex-1 items-center justify-center'>
         <img src='/plan2.jpg' className='h-[700px]' />
       </div>
-      <div className='flex w-full lg:max-w-sm flex-col gap-6 bg-backgroundSecondary p-8 shrink-0 max-lg:pb-44'>
+      <div className='bg-backgroundSecondary flex w-full shrink-0 flex-col gap-6 p-8 max-lg:pb-44 lg:max-w-sm'>
         <div className='flex gap-4'>
           {/* Length */}
           <div className='form-control relative flex-1'>
-            <span className='absolute inset-y-0 left-4 inline-flex items-center text-content3'>
+            <span className='text-content3 absolute inset-y-0 left-4 inline-flex items-center'>
               <IconPencilLine size={18} />
             </span>
             <input
@@ -32,7 +32,7 @@ export function EditDesignPage() {
           </button>
         </div>
         <div className='flex w-full overflow-x-auto'>
-          <table className='table table-compact table-zebra max-w-full'>
+          <table className='table-compact table-zebra table max-w-full'>
             <thead>
               <tr>
                 <th>Room</th>
@@ -59,17 +59,14 @@ export function EditDesignPage() {
             </tbody>
           </table>
         </div>
-        <button
-          type='button'
-          className='btn w-full btn-secondary py-6 gap-x-2'
-        >
+        <button type='button' className='btn btn-secondary w-full gap-x-2 py-6'>
           <IconPackage />
           <strong>Export</strong>
         </button>
         <Link
           to='/render'
           type='button'
-          className='btn w-full btn-success py-6 gap-x-2'
+          className='btn btn-success w-full gap-x-2 py-6'
         >
           <IconSphere />
           <strong>Render 3D Model</strong>
@@ -77,7 +74,7 @@ export function EditDesignPage() {
         <Link
           to='/generate/pick'
           type='button'
-          className='btn w-full btn-solid-error py-6 gap-x-2 mt-auto'
+          className='btn btn-solid-error mt-auto w-full gap-x-2 py-6'
         >
           <IconArrowLeft />
           Discard and go back

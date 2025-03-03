@@ -63,7 +63,7 @@ function UserDropdown() {
 
 export function AppBar() {
   return (
-    <nav className='border-border border-0 border-b-2'>
+    <nav className='border-0 border-b-2 border-border'>
       <div className='flex flex-wrap items-center justify-between p-4'>
         <a href='#' className='flex items-center space-x-3 rtl:space-x-reverse'>
           {/* <img

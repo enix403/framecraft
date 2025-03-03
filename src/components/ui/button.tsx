@@ -9,27 +9,30 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+        default:
+          "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         outline:
           "border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-        ghost: "hover:bg-accent active:bg-accent/70 hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+        ghost:
+          "hover:bg-accent active:bg-accent/70 hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline"
       },
       size: {
         default: "px-4 py-2",
         sm: "rounded-md px-3 py-2 text-xs",
         lg: "rounded-md px-8 py-2.5",
-        icon: "px-2 py-2",
-      },
+        icon: "px-2 py-2"
+      }
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
-    },
-  },
+      size: "default"
+    }
+  }
 );
 
 function Button({
@@ -46,7 +49,7 @@ function Button({
 
   return (
     <Comp
-      data-slot="button"
+      data-slot='button'
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />

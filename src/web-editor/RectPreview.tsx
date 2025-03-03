@@ -106,7 +106,12 @@ export function RectPreview({
 
   return (
     <div className={clsx("flex overflow-x-auto pb-2", className)}>
-      <Stage className='mx-auto' globalCompositeOperation="destination-out"  width={canvasWidth} height={canvasHeight}>
+      <Stage
+        className='mx-auto'
+        globalCompositeOperation='destination-out'
+        width={canvasWidth}
+        height={canvasHeight}
+      >
         <Layer>
           {scaledRects.map((r, i) => (
             <Rect

@@ -8,7 +8,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectGroup, SelectLabel
+  SelectGroup,
+  SelectLabel
 } from "@/components/ui/select";
 import { RectPreview } from "./RectPreview";
 import { ComponentType, useState } from "react";
@@ -99,7 +100,7 @@ function RoomName() {
         className='-ms-px rounded-s-none shadow-none focus-visible:z-10'
         placeholder='Room Name'
         type='text'
-        defaultValue="Living Room"
+        defaultValue='Living Room'
       />
     </div>
   );

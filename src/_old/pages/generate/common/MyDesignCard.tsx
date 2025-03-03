@@ -4,10 +4,10 @@ export function MyDesignCard({ name }: { name: string }) {
   return (
     <div className='card card-image-cover max-w-none'>
       <img src='/plan1.jpg' alt='' />
-      <div className='card-body px-6 pb-8 pt-4'>
+      <div className='card-body px-6 pt-4 pb-8'>
         <h2 className='card-header'>{name}</h2>
         <div className='flex w-full overflow-x-auto'>
-          <table className='table table-compact table-zebra max-w-full'>
+          <table className='table-compact table-zebra table max-w-full'>
             <tbody>
               <tr>
                 <th>Plot Dimension</th>
@@ -31,7 +31,9 @@ export function MyDesignCard({ name }: { name: string }) {
           </table>
         </div>
         <div className='card-footer mt-4'>
-          <Link to="/edit" className='btn-secondary btn w-full'>View</Link>
+          <Link to='/edit' className='btn-secondary btn w-full'>
+            View
+          </Link>
         </div>
       </div>
     </div>

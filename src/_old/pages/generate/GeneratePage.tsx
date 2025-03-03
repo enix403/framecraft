@@ -19,7 +19,7 @@ function GenerateDesign() {
       <div className='opacity-50'>
         <img src='/gen_neutral.svg' className='w-[500px]' />
       </div>
-      <div className='alert alert-success max-w-lg mt-10'>
+      <div className='alert alert-success mt-10 max-w-lg'>
         <IconSliders size={28} className='text-success' />
         <div className='flex flex-col'>
           <span className='text-content2'>
@@ -37,22 +37,22 @@ function PickDesign() {
   const canContinue = selectedIndex !== -1;
 
   return (
-    <div className='p-10 pt-24 overflow-y-auto max-h-full flex flex-col items-center w-full relative'>
+    <div className='relative flex max-h-full w-full flex-col items-center overflow-y-auto p-10 pt-24'>
       <div className='mb-8 text-4xl font-semibold max-lg:self-start'>
-        <h1 className='bg-linear-to-r from-pink-600 via-purple-400 to-blue-500 inline-block text-transparent bg-clip-text'>
+        <h1 className='inline-block bg-linear-to-r from-pink-600 via-purple-400 to-blue-500 bg-clip-text text-transparent'>
           Pick a design to get started
         </h1>
       </div>
 
       <Link to='/generate' className='absolute -top-0 left-10'>
-        <button className='btn w-full btn-solid-error py-6 mt-6 gap-x-2'>
+        <button className='btn btn-solid-error mt-6 w-full gap-x-2 py-6'>
           <IconX />
           <strong>Cancel</strong>
         </button>
       </Link>
 
-      <div className="flex gap-y-12 flex-col max-lg:flex-col-reverse items-stretch lg:items-center max-lg:pb-44">
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 max-w-4xl'>
+      <div className='flex flex-col items-stretch gap-y-12 max-lg:flex-col-reverse max-lg:pb-44 lg:items-center'>
+        <div className='grid max-w-4xl grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3'>
           {repeatNode(6, index => {
             const isSelected = selectedIndex === index;
             return (
@@ -67,7 +67,7 @@ function PickDesign() {
         <Link to={canContinue ? "/edit" : "#"} className='w-full lg:max-w-2xl'>
           <button
             disabled={!canContinue}
-            className='btn w-full btn-secondary py-6 gap-x-2'
+            className='btn btn-secondary w-full gap-x-2 py-6'
           >
             <strong>Continue with this design</strong>
             <IconArrowRight />

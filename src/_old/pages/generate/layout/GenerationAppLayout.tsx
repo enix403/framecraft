@@ -5,7 +5,7 @@ import { AppBar } from "~/components/AppBar";
 
 export function GenerationAppLayout({
   children,
-  allowScroll = false,
+  allowScroll = false
 }: PropsWithChildren & {
   allowScroll?: boolean;
 }) {
@@ -14,8 +14,10 @@ export function GenerationAppLayout({
       <AppBar />
       <div
         className={clsx(
-          "flex flex-1 max-h-full",
-          allowScroll ? "overflow-y-auto max-lg:flex-col gap-y-6" : "overflow-hidden"
+          "flex max-h-full flex-1",
+          allowScroll
+            ? "gap-y-6 overflow-y-auto max-lg:flex-col"
+            : "overflow-hidden"
         )}
       >
         {children}
