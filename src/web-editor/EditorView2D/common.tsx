@@ -22,14 +22,14 @@ export const roomTypes = {
   } as RoomType,
   bedroom: {
     id: "bedroom",
-    title: "Bedroom Room",
+    title: "Bedroom",
     color: "#a808c5",
     Icon: BedDouble,
     rectColor: "#f2e3b9"
   } as RoomType,
   bathroom: {
     id: "bathroom",
-    title: "Bathroom Room",
+    title: "Bathroom",
     color: "#BEBEBE",
     Icon: Droplet,
     rectColor: "#caf2aa"
@@ -61,6 +61,6 @@ export const nodeTypeToRoomType: Record<number, RoomTypeIds> = {
   4: "balcony"
 };
 
-export function getRectColor(nodeType: number) {
-  return roomTypes[nodeTypeToRoomType[nodeType]]?.rectColor || "#ff0000";
+export function roomInfoFromNodeType(nodeType: number) {
+  return roomTypes[nodeTypeToRoomType[nodeType]];
 }

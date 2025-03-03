@@ -6,7 +6,7 @@ import { getInitialPlan } from "./initialPlan";
 import { useMeasure } from "@uidotdev/usehooks";
 import { useStageZoom } from "./zoom";
 import { useInitialRecenter } from "./recenter";
-import { CELL_SIZE, getRectColor, snapToGrid } from "./common";
+import { CELL_SIZE, roomInfoFromNodeType, snapToGrid } from "./common";
 import { useSettings } from "./settings";
 import { PlanContext, usePlan } from "./PlanProvider";
 
@@ -204,12 +204,17 @@ function RenderRoomLabels() {
 
     let [row, col, width, height] = room.rects[largestRectIndex];
 
+    const label = roomInfoFromNodeType(room.type)?.title;
+
+    if (!label)
+      return;
+
     return (
       <Text
         key={room.id}
         x={(col + width / 2) * CELL_SIZE - 20}
         y={(row + height / 2) * CELL_SIZE - 10}
-        text={room.label}
+        text={label}
         fontSize={13}
         fill={"black"}
       />
@@ -220,7 +225,7 @@ function RenderRoomLabels() {
 function RenderRooms() {
   const plan = usePlan();
   return plan.rooms.map((room, i) => {
-    const color = getRectColor(room.type);
+    const color = roomInfoFromNodeType(room.type)?.rectColor || "#ff0000"
     return room.rects.map(([row, col, width, height], j) => (
       <Rect
         key={`room-${i}-${j}`}
