@@ -1,287 +1,260 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import Konva from "konva";
-import { Stage, Layer, Rect, Line, Text } from "react-konva";
+import { useRef } from "react";
+import { Stage, Layer, Rect, Text, Line } from "react-konva";
 
 import { getInitialPlan } from "./initialPlan";
 import { useMeasure } from "@uidotdev/usehooks";
+import { useStageZoom } from "./zoom";
+import { useInitialRecenter } from "./recenter";
+import {
+  CELL_SIZE,
+  getRectColor,
+  snapToGrid,
+} from "./common";
+
+/* ============================================= */
+
 (window as any).getInitialPlan = getInitialPlan;
-
-// const initialPlan = {
-//   canvasRows: 192,
-//   canvasCols: 192,
-//   walls: [
-//     { id: "wall-1", row: 5, col: 10, length: 5, direction: "h", width: 1 },
-//     { id: "wall-2", row: 12, col: 8, length: 3, direction: "v", width: 1 },
-//   ],
-//   doors: [
-//     { id: "door-1", row: 5, col: 10, length: 2, direction: "h" },
-//     { id: "door-2", row: 12, col: 8, length: 1, direction: "v" },
-//   ],
-//   rooms: [
-//     { label: "Living Room", rects: [[2, 2, 50, 40]] },
-//     { label: "Bedroom", rects: [[100, 50, 40, 60]] },
-//   ],
-// };
-
 const initialPlan = getInitialPlan();
 
-const CELL_SIZE = 5;
+/* ============================================= */
 
-// const BG_COLOR = "#37424E";
-// const WALL_COLOR = "#C9246A";
+function calcLineRect(
+  row: number,
+  col: number,
+  length: number,
+  direction: "h" | "v",
+  thickness = 1
+) {
+  const x = snapToGrid(col * CELL_SIZE);
+  const y = snapToGrid(row * CELL_SIZE);
 
-const BG_COLOR = "#26102b";
-const ROOM_COLOR = "rgba(107, 30, 189, 0.3)";
+  let width = thickness;
+  let height = thickness;
 
-const WALL_COLOR = "#CAC0C9";
-const ACTIVE_COLOR = "#1c5ce8";
+  if (direction == "h") {
+    width = length;
+  } else {
+    height = length;
+  }
 
-const snapToGrid = value => Math.round(value / CELL_SIZE) * CELL_SIZE;
+  width *= CELL_SIZE;
+  height *= CELL_SIZE;
 
-type Item = { type: string; id: any };
-type Action = { plan: any; selectedOnUndoRedo: Item | null };
+  return { x, y, width, height };
+}
 
-export function EditorView2D() {
-  const [containerRef, containerSize] = useMeasure();
+function RenderWalls({ plan }: { plan: any }) {
+  return plan.walls.map(
+    ({ id, row, col, length, direction, width: thickness }) => {
+      const { x, y, width, height } = calcLineRect(
+        row,
+        col,
+        length,
+        direction,
+        thickness
+      );
 
-  const [plan, setPlan] = useState(initialPlan);
-  const [viewport, setViewport] = useState({
-    scale: 1
+      return (
+        <Rect
+          key={id}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          // fill={"#919191"}
+          fill={"#000000"}
+          stroke='black'
+          strokeWidth={1.5}
+        />
+      );
+    }
+  );
+}
+
+function WallMeasure({ side, x, y, width, height, gap = 8, textGap = 8 }) {
+  let points: any[] = [];
+
+  {
+    const w = width - 1;
+    const h = height - 1;
+
+    if (side === "top") {
+      points = [x, y, x, y - gap, x + w, y - gap, x + w, y];
+    } else if (side === "bottom") {
+      points = [x, y + h, x, y + h + gap, x + w, y + h + gap, x + w, y + h];
+    } else if (side === "left") {
+      points = [x, y, x - gap, y, x - gap, y + h, x, y + h];
+    } else if (side === "right") {
+      points = [x + w, y, x + w + gap, y, x + w + gap, y + h, x + w, y + h];
+    }
+  }
+
+  let lineCenterX = Math.round((points[2] + points[4]) / 2);
+  let lineCenterY = Math.round((points[3] + points[5]) / 2);
+
+  if (side == "top") lineCenterY -= textGap;
+  if (side == "bottom") lineCenterY += textGap;
+  if (side == "left") lineCenterX -= textGap;
+  if (side == "right") lineCenterX += textGap;
+
+  let rot = 0;
+  if (side === "right") {
+    rot = 90;
+  } else if (side === "left") {
+    rot = -90;
+  }
+
+  return (
+    <>
+      <Line points={points} stroke='#AAAAAA' />
+      <Text
+        text='1000ft'
+        fontSize={16}
+        fill='#848484'
+        x={lineCenterX}
+        y={lineCenterY}
+        width={1000}
+        height={1000}
+        offsetX={500}
+        offsetY={500}
+        align='center'
+        verticalAlign='middle'
+        rotation={rot}
+      />
+    </>
+  );
+}
+
+function RenderWallMeasures({ plan }: { plan: any }) {
+  return plan.walls.map(
+    ({ id, row, col, length, direction, width: thickness }) => {
+      if (length < 25) return null;
+
+      const { x, y, width, height } = calcLineRect(
+        row,
+        col,
+        length,
+        direction,
+        thickness
+      );
+
+      return (
+        <WallMeasure
+          key={id}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          side={direction === "h" ? "top" : "right"}
+        />
+      );
+    }
+  );
+}
+
+function RenderDoors({ plan }: { plan: any }) {
+  return plan.doors.map(
+    ({ id, row, col, length, direction, width: thickness }) => {
+      const { x, y, width, height } = calcLineRect(
+        row,
+        col,
+        length,
+        direction,
+        thickness
+      );
+
+      return (
+        <Rect
+          key={id}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill='#F6F6F6'
+        />
+      );
+    }
+  );
+}
+
+function RenderRoomLabels({ plan }: { plan: any }) {
+  return plan.rooms.map((room, i) => {
+    let largestRectIndex = -1;
+    let largestArea = -1;
+
+    for (let i = 0; i < room.rects.length; ++i) {
+      const [_row, _col, width, height] = room.rects[i];
+      let area = width * height;
+
+      if (area > largestArea) {
+        largestArea = area;
+        largestRectIndex = i;
+      }
+    }
+
+    let [row, col, width, height] = room.rects[largestRectIndex];
+
+    return (
+      <Text
+        key={room.id}
+        x={(col + width / 2) * CELL_SIZE - 20}
+        y={(row + height / 2) * CELL_SIZE - 10}
+        text={room.label}
+        fontSize={13}
+        fill={"black"}
+      />
+    );
   });
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-  const stageRef = useRef<Konva.Stage>(null);
+}
 
-  useEffect(() => {
-    const stage = stageRef.current;
-    if (stage) {
-      // stage.on("dragmove", () => {
-      //   const pos = stage.position();
-      //   setViewport(prev => ({ ...prev, x: -pos.x, y: -pos.y }));
-      // });
+function RenderRooms({ plan }: { plan: any }) {
+  return plan.rooms.map((room, i) => {
+    const color = getRectColor(room.type);
+    return room.rects.map(([row, col, width, height], j) => (
+      <Rect
+        key={`room-${i}-${j}`}
+        x={col * CELL_SIZE}
+        y={row * CELL_SIZE}
+        width={width * CELL_SIZE}
+        height={height * CELL_SIZE}
+        fill={color}
+        stroke={color}
+      />
+    ));
+  });
+}
 
-      stage.content.addEventListener("wheel", e => {
-        e.preventDefault();
+function ScratchEditorView2D({ plan }: { plan: any }) {
+  const stageRef = useRef<Konva.Stage | null>(null);
 
-        const pointer = stage.getPointerPosition();
-        if (!pointer) return;
-
-        const oldScale = stage.scaleX();
-        const mousePointTo = {
-          x: (pointer.x - stage.x()) / oldScale,
-          y: (pointer.y - stage.y()) / oldScale
-        };
-
-        const newScale = Math.max(
-          0.1,
-          Math.min(5, oldScale - e.deltaY * 0.001)
-        );
-        stage.scale({ x: newScale, y: newScale });
-
-        const newPos = {
-          x: pointer.x - mousePointTo.x * newScale,
-          y: pointer.y - mousePointTo.y * newScale
-        };
-
-        stage.position(newPos);
-        setViewport(prev => ({
-          ...prev,
-          scale: newScale
-        }));
-      });
-    }
-  }, []);
-
-  const firstPlaced = useRef(false);
-  useLayoutEffect(() => {
-    if (firstPlaced.current) {
-      return;
-    }
-
-    const stage = stageRef.current;
-
-    if (!stage) return;
-
-    if (plan.rooms.length === 0) return;
-    if (!containerSize.width || !containerSize.height) return;
-
-    firstPlaced.current = true;
-
-    let minRow = Infinity,
-      minCol = Infinity;
-    let maxRow = -Infinity,
-      maxCol = -Infinity;
-
-    // Find bounding box of all room rects
-    plan.rooms.forEach(room => {
-      room.rects.forEach(([row, col, width, height]) => {
-        minRow = Math.min(minRow, row);
-        minCol = Math.min(minCol, col);
-        maxRow = Math.max(maxRow, row + height);
-        maxCol = Math.max(maxCol, col + width);
-      });
-    });
-
-    // Convert to pixel dimensions
-    const boundingWidth = (maxCol - minCol) * CELL_SIZE;
-    const boundingHeight = (maxRow - minRow) * CELL_SIZE;
-
-    const paddingFactor = 0.9; // Leave 10% padding around the plan
-    const scaleX = (containerSize.width / boundingWidth) * paddingFactor;
-    const scaleY = (containerSize.height / boundingHeight) * paddingFactor;
-    const scale = Math.min(scaleX, scaleY); // Fit to the smaller dimension
-
-    // Compute center of bounding box
-    const centerX = ((minCol + maxCol) / 2) * CELL_SIZE;
-    const centerY = ((minRow + maxRow) / 2) * CELL_SIZE;
-
-    // Compute new viewport offset to center it
-    const screenCenterX = containerSize.width / 2;
-    const screenCenterY = containerSize.height / 2;
-
-    const initialPos = {
-      x: screenCenterX - centerX * scale,
-      y: screenCenterY - centerY * scale
-    };
-
-    const initialScale = { x: scale, y: scale };
-
-    stage.position(initialPos);
-    stage.scale(initialScale);
-  }, [containerSize]);
-
-  const [undoStack, setUndoStack] = useState<Action[]>([]);
-  const [redoStack, setRedoStack] = useState<Action[]>([]);
-
-  const pushToHistory = (newPlan, affectedItem) => {
-    setUndoStack(prev => [...prev, { plan, selectedOnUndoRedo: affectedItem }]);
-    setRedoStack([]); // Clear redo stack on a new action
-    setPlan(newPlan);
-    setSelectedItem(affectedItem); // Ensure the item stays selected
-  };
-
-  useEffect(() => {
-    const handleKeyDown = e => {
-      if (e.ctrlKey && e.key === "z" && undoStack.length > 0) {
-        const lastState = undoStack[undoStack.length - 1];
-        setRedoStack(prev => [
-          { plan, selectedOnUndoRedo: selectedItem },
-          ...prev
-        ]);
-        setPlan(lastState.plan);
-        setSelectedItem(lastState.selectedOnUndoRedo); // Auto-select the affected item
-        setUndoStack(prev => prev.slice(0, -1));
-      }
-      if (e.ctrlKey && e.key === "y" && redoStack.length > 0) {
-        const nextState = redoStack[0];
-        setUndoStack(prev => [
-          ...prev,
-          { plan, selectedOnUndoRedo: selectedItem }
-        ]);
-        setPlan(nextState.plan);
-        setSelectedItem(nextState.selectedOnUndoRedo); // Auto-select the affected item
-        setRedoStack(prev => prev.slice(1));
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [undoStack, redoStack, plan, selectedItem]);
+  const [containerRef, containerSize] = useMeasure();
+  useInitialRecenter(stageRef.current, plan, containerSize);
+  const { scale } = useStageZoom(stageRef.current);
 
   return (
     <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
       <Stage
+        ref={stageRef}
         width={containerSize.width || 0}
         height={containerSize.height || 0}
         draggable
-        ref={stageRef}
-        scaleX={viewport.scale}
-        scaleY={viewport.scale}
-        style={{ background: BG_COLOR }}
-        onClick={() => setSelectedItem(null)}
+        scaleX={scale}
+        scaleY={scale}
+        style={{ background: "#F6F6F6" }}
       >
         <Layer>
-          {/* <Rect
-            x={-10 * CELL_SIZE}
-            width={10 * CELL_SIZE}
-            y={0}
-            height={10 * CELL_SIZE}
-            fill='rgba(0, 255, 0, 0.3)'
-          /> */}
-          {/* Draw Rooms First */}
-          {plan.rooms.map((room, i) =>
-            room.rects.map(([row, col, width, height], j) => (
-              <>
-                <Rect
-                  key={`room-${i}-${j}`}
-                  x={col * CELL_SIZE}
-                  y={row * CELL_SIZE}
-                  width={width * CELL_SIZE}
-                  height={height * CELL_SIZE}
-                  // fill='rgba(245, 118, 236, 0.3)'
-                  fill={ROOM_COLOR}
-                  // stroke='green'
-                  // strokeWidth={1}
-                />
-                <Text
-                  x={(col + width / 2) * CELL_SIZE - 20}
-                  y={(row + height / 2) * CELL_SIZE - 10}
-                  text={room.label}
-                  fontSize={12}
-                  fill={"#ffffff"}
-                />
-              </>
-            ))
-          )}
-
-          {/* Draw Walls */}
-          {plan.walls.map(({ id, row, col, length, direction, width }) => (
-            <Rect
-              key={id}
-              x={snapToGrid(col * CELL_SIZE)}
-              y={snapToGrid(row * CELL_SIZE)}
-              width={direction === "h" ? length * CELL_SIZE : width * CELL_SIZE}
-              height={
-                direction === "v" ? length * CELL_SIZE : width * CELL_SIZE
-              }
-              fill={WALL_COLOR}
-              stroke={selectedItem?.id === id ? ACTIVE_COLOR : WALL_COLOR}
-              strokeWidth={selectedItem?.id === id ? 3 : 1}
-              draggable
-              onDragStart={e => {
-                setSelectedItem({ type: "Wall", id });
-              }}
-              onDragMove={e => {
-                const newX = snapToGrid(e.target.x());
-                const newY = snapToGrid(e.target.y());
-                e.target.x(newX);
-                e.target.y(newY);
-              }}
-              onDragEnd={e => {
-                const newX = snapToGrid(e.target.x());
-                const newY = snapToGrid(e.target.y());
-                pushToHistory(
-                  prev => ({
-                    ...prev,
-                    walls: prev.walls.map(wall =>
-                      wall.id === id
-                        ? {
-                            ...wall,
-                            col: newX / CELL_SIZE,
-                            row: newY / CELL_SIZE
-                          }
-                        : wall
-                    )
-                  }),
-                  { type: "Wall", id }
-                );
-              }}
-              onClick={e => {
-                e.cancelBubble = true;
-                setSelectedItem({ type: "Wall", id });
-              }}
-            />
-          ))}
+          <RenderRooms plan={plan} />
+          <RenderWalls plan={plan} />
+          <RenderDoors plan={plan} />
+          <RenderRoomLabels plan={plan} />
+          <RenderWallMeasures plan={plan} />
         </Layer>
       </Stage>
     </div>
   );
+}
+
+export function EditorView2D() {
+  return <ScratchEditorView2D plan={initialPlan} />;
 }

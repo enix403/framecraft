@@ -12,52 +12,8 @@ import {
   SelectLabel
 } from "@/components/ui/select";
 import { RectPreview } from "./RectPreview";
-import { ComponentType, useState } from "react";
-import { BedDouble, Droplet, Eclipse, Grape, Tv } from "lucide-react";
-// import {  } from "@radix-ui/react-select";
-
-interface RoomType {
-  id: string;
-  title: string;
-  color: string;
-  Icon: ComponentType<any>;
-}
-
-const roomTypes = {
-  living: {
-    id: "living",
-    title: "Living Room",
-    color: "#EE4D4D",
-    Icon: Tv
-  } as RoomType,
-  bedroom: {
-    id: "bedroom",
-    title: "Bedroom Room",
-    color: "#a808c5",
-    Icon: BedDouble
-  } as RoomType,
-  bathroom: {
-    id: "bathroom",
-    title: "Bathroom Room",
-    color: "#BEBEBE",
-    Icon: Droplet
-  } as RoomType,
-  kitchen: {
-    id: "kitchen",
-    title: "Kitchen",
-    color: "#6ce244",
-    Icon: Grape
-  } as RoomType,
-  balcony: {
-    id: "balcony",
-    title: "Balcony",
-    color: "#f9e909",
-    Icon: Eclipse
-  } as RoomType
-} as const;
-
-type RoomTypeIds = keyof typeof roomTypes;
-const roomTypeIds = Object.keys(roomTypes) as RoomTypeIds[];
+import { useState } from "react";
+import { roomTypeIds, roomTypes } from "./EditorView2D/common";
 
 function RoomName() {
   const [selectedId, setSelectedId] = useState<any>("living");
@@ -72,11 +28,6 @@ function RoomName() {
             {selected && (
               <selected.Icon size={18} color={selected.color} strokeWidth={3} />
             )}
-            {/* {selected && (
-              <span className='text-lg leading-none'>
-                {findC(selected)?.flag}
-              </span>
-            )} */}
           </SelectValue>
         </SelectTrigger>
 
