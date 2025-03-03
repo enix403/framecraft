@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Rect, Text, Line } from "react-konva";
 
 import { getInitialPlan } from "./initialPlan";
@@ -241,14 +241,16 @@ function RenderRooms() {
 
 const plan = initialPlan;
 
-
 export function EditorView2D() {
   const [containerRef, containerSize] = useMeasure();
-
   const stageRef = useRef<Konva.Stage | null>(null);
-  const { forceRecenter, baseScale } = useRecenter(stageRef, plan, containerSize);
 
-  useStageZoom(stageRef, baseScale);
+  const { forceRecenter, baseScale } = useRecenter(
+    stageRef,
+    plan,
+    containerSize
+  );
+  const { scale } = useStageZoom(stageRef, baseScale);
 
   useEffect(() => {
     const subscription = eventSubject.subscribe(event => {
@@ -260,8 +262,11 @@ export function EditorView2D() {
     return () => subscription.unsubscribe();
   }, [forceRecenter]);
 
-
   const settings = useSettings();
+
+  useEffect(() => {
+    console.log(scale);
+  }, [scale]);
 
   return (
     <PlanContext.Provider value={plan}>
