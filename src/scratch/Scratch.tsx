@@ -21,34 +21,6 @@ const initialPlan = getInitialPlan();
 
 /* ============================================= */
 
-function RenderRooms({ plan }: { plan: any }) {
-  return (
-    <>
-      {plan.rooms.map((room, i) =>
-        room.rects.map(([row, col, width, height], j) => (
-          <>
-            <Rect
-              key={`room-${i}-${j}`}
-              x={col * CELL_SIZE}
-              y={row * CELL_SIZE}
-              width={width * CELL_SIZE}
-              height={height * CELL_SIZE}
-              fill={ROOM_COLOR}
-            />
-            <Text
-              x={(col + width / 2) * CELL_SIZE - 20}
-              y={(row + height / 2) * CELL_SIZE - 10}
-              text={room.label}
-              fontSize={12}
-              fill={"#ffffff"}
-            />
-          </>
-        ))
-      )}
-    </>
-  );
-}
-
 function calcLineRect(
   row: number,
   col: number,
@@ -74,59 +46,50 @@ function calcLineRect(
   return { x, y, width, height };
 }
 
-function RectSizeLabel({ side, x, y, width, height }) {}
+function WallMeasure({ side, x, y, width, height, gap = 8, textGap = 8 }) {
+  let points: any[] = [];
 
-function WallMeasure({ side, x, y, width, height, gap }) {
-  // let points: any[] = [];
-  let mx = 0;
-  let my = 0;
-  let mw = 0;
-  let mh = 0;
+  {
+    const w = width - 1;
+    const h = height - 1;
 
-  if (side === "top") {
-    mx = x;
-    my = y - gap;
-    mw = width;
-    mh = gap;
-  } else if (side === "bottom") {
-    mx = x;
-    my = y + height;
-    mw = width;
-    mh = gap;
-  } else if (side === "left") {
-    mx = x - gap;
-    my = y;
-    mw = gap;
-    mh = height;
-  } else if (side === "right") {
-    mx = x + width;
-    my = y;
-    mw = gap;
-    mh = height;
+    if (side === "top") {
+      points = [x, y, x, y - gap, x + w, y - gap, x + w, y];
+    } else if (side === "bottom") {
+      points = [x, y + h, x, y + h + gap, x + w, y + h + gap, x + w, y + h];
+    } else if (side === "left") {
+      points = [x, y, x - gap, y, x - gap, y + h, x, y + h];
+    } else if (side === "right") {
+      points = [x + w, y, x + w + gap, y, x + w + gap, y + h, x + w, y + h];
+    }
   }
+
+  let lineCenterX = Math.round((points[2] + points[4]) / 2);
+  let lineCenterY = Math.round((points[3] + points[5]) / 2);
 
   const isHoriz = side === "top" || side === "bottom";
 
-  if (isHoriz) {
-    return null;
-  }
+  if (side == "top") lineCenterY -= textGap;
+  if (side == "bottom") lineCenterY += textGap;
+  if (side == "left") lineCenterX -= textGap;
+  if (side == "right") lineCenterX += textGap;
 
   return (
     <>
-      <Rect x={0} y={0} stroke='red' width={100} height={100} />
+      <Line points={points} stroke='#AAAAAA' />
       <Text
         text='1000ft'
         fontSize={13}
-        fill='blue'
-        x={0}
-        y={0}
+        fill='#848484'
+        x={lineCenterX}
+        y={lineCenterY}
         width={1000}
         height={1000}
         offsetX={500}
         offsetY={500}
         align='center'
         verticalAlign='middle'
-        rotationDeg={90}
+        rotationDeg={isHoriz ? 0 : 90}
       />
     </>
   );
@@ -162,7 +125,6 @@ function RenderWalls({ plan }: { plan: any }) {
               width={width}
               height={height}
               side={direction === "h" ? "top" : "right"}
-              gap={10}
             />
           )}
         </>
