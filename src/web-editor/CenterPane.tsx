@@ -40,6 +40,7 @@ import {
   ZoomIn
 } from "lucide-react";
 import { PropsWithChildren, ReactNode, useState } from "react";
+import { EditorView2D } from "./EditorView2D/EditorView2D";
 
 function ZoomControl() {
   return (
@@ -219,7 +220,9 @@ export function CenterPane() {
     <>
       <ResizablePanel minSize={40} className='flex flex-col'>
         <Toolbar />
-        <div className='flex-1-fix bg-[#F6F6F6]'></div>
+        <div className='flex-1-fix bg-[#F6F6F6]'>
+          <EditorView2D />
+        </div>
       </ResizablePanel>
     </>
   );
