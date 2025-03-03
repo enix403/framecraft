@@ -225,7 +225,9 @@ function RenderRooms({ plan }: { plan: any }) {
   });
 }
 
-function ScratchEditorView2D({ plan }: { plan: any }) {
+const plan = initialPlan;
+
+export function EditorView2D() {
   const stageRef = useRef<Konva.Stage | null>(null);
 
   const [containerRef, containerSize] = useMeasure();
@@ -253,8 +255,4 @@ function ScratchEditorView2D({ plan }: { plan: any }) {
       </Stage>
     </div>
   );
-}
-
-export function EditorView2D() {
-  return <ScratchEditorView2D plan={initialPlan} />;
 }
