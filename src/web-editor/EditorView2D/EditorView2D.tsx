@@ -6,11 +6,9 @@ import { getInitialPlan } from "./initialPlan";
 import { useMeasure } from "@uidotdev/usehooks";
 import { useStageZoom } from "./zoom";
 import { useInitialRecenter } from "./recenter";
-import {
-  CELL_SIZE,
-  getRectColor,
-  snapToGrid,
-} from "./common";
+import { CELL_SIZE, getRectColor, snapToGrid } from "./common";
+import { useSettings } from "./settings";
+import { PlanContext } from "./PlanProvider";
 
 /* ============================================= */
 
@@ -234,25 +232,29 @@ export function EditorView2D() {
   useInitialRecenter(stageRef.current, plan, containerSize);
   const { scale } = useStageZoom(stageRef.current);
 
+  const settings = useSettings();
+
   return (
-    <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
-      <Stage
-        ref={stageRef}
-        width={containerSize.width || 0}
-        height={containerSize.height || 0}
-        draggable
-        scaleX={scale}
-        scaleY={scale}
-        style={{ background: "#F6F6F6" }}
-      >
-        <Layer>
-          <RenderRooms plan={plan} />
-          <RenderWalls plan={plan} />
-          <RenderDoors plan={plan} />
-          <RenderRoomLabels plan={plan} />
-          <RenderWallMeasures plan={plan} />
-        </Layer>
-      </Stage>
-    </div>
+    <PlanContext.Provider value={plan}>
+      <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
+        <Stage
+          ref={stageRef}
+          width={containerSize.width || 0}
+          height={containerSize.height || 0}
+          draggable
+          scaleX={scale}
+          scaleY={scale}
+          style={{ background: "#F6F6F6" }}
+        >
+          <Layer>
+            <RenderRooms plan={plan} />
+            <RenderWalls plan={plan} />
+            <RenderDoors plan={plan} />
+            <RenderRoomLabels plan={plan} />
+            <RenderWallMeasures plan={plan} />
+          </Layer>
+        </Stage>
+      </div>
+    </PlanContext.Provider>
   );
 }

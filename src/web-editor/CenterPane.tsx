@@ -12,13 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
 import { ResizablePanel } from "@/components/ui/resizable";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
@@ -38,6 +31,7 @@ import {
 } from "lucide-react";
 import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
 import { EditorView2D } from "./EditorView2D/EditorView2D";
+import { useSetSettings, useSettings } from "./EditorView2D/settings";
 
 function ZoomControl() {
   return (
@@ -78,7 +72,8 @@ function ZoomControl() {
 }
 
 function UnitControl() {
-  const [unit, setUnit] = useState("ft");
+  const { unit } = useSettings();
+  const setSettings = useSetSettings();
 
   return (
     <DropdownMenu>
@@ -89,7 +84,10 @@ function UnitControl() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Select Unit</DropdownMenuLabel>
-        <DropdownMenuRadioGroup value={unit} onValueChange={setUnit}>
+        <DropdownMenuRadioGroup
+          value={unit}
+          onValueChange={unit => setSettings({ unit: unit as any })}
+        >
           <DropdownMenuRadioItem value='ft'>Feet</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value='m'>Meters</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value='in'>Inches</DropdownMenuRadioItem>
@@ -119,8 +117,8 @@ function FeatureToggle({
 }
 
 function FeatureTogglesControl() {
-  const [wallMeasurements, setWallMeasurements] = useState(true);
-  const [roomLabels, setRoomLabels] = useState(true);
+  const { enableWallMeasure, enableRoomLabels } = useSettings();
+  const setSettings = useSetSettings();
 
   return (
     <DropdownMenu>
@@ -134,13 +132,13 @@ function FeatureTogglesControl() {
         <DropdownMenuGroup>
           <FeatureToggle
             label='Wall Measurements'
-            enabled={wallMeasurements}
-            onChange={setWallMeasurements}
+            enabled={enableWallMeasure}
+            onChange={enable => setSettings({ enableWallMeasure: enable })}
           />
           <FeatureToggle
             label='Room Labels'
-            enabled={roomLabels}
-            onChange={setRoomLabels}
+            enabled={enableRoomLabels}
+            onChange={enable => setSettings({ enableRoomLabels: enable })}
           />
         </DropdownMenuGroup>
       </DropdownMenuContent>
@@ -149,7 +147,9 @@ function FeatureTogglesControl() {
 }
 
 function ViewModeControl() {
-  const [viewMode, setViewMode] = useState("color");
+  const { viewMode } = useSettings();
+
+  const setSettings = useSetSettings();
 
   return (
     <DropdownMenu>
@@ -160,7 +160,10 @@ function ViewModeControl() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Select View Mode</DropdownMenuLabel>
-        <DropdownMenuRadioGroup value={viewMode} onValueChange={setViewMode}>
+        <DropdownMenuRadioGroup
+          value={viewMode}
+          onValueChange={viewMode => setSettings({ viewMode: viewMode as any })}
+        >
           <DropdownMenuRadioItem value='color'>Color</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value='wireframe'>
             Wireframe
