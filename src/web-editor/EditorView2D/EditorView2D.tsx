@@ -256,14 +256,18 @@ export function EditorView2D() {
     const subscription = eventSubject.subscribe(event => {
       if (event === "recenter") {
         forceRecenter();
+      } else if ((event as string).startsWith("set-zoom:")) {
+        let zoomNum = parseInt((event as string).split(":")[1]);
+        zoomNum /= 100.0;
+        let newScale = zoomNum * baseScale;
+        stageRef.current?.scale({ x: newScale, y: newScale });
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [forceRecenter]);
+  }, [forceRecenter, baseScale]);
 
   const settings = useSettings();
-  // const zoomLevel = useZoomLevel();
 
   return (
     <PlanContext.Provider value={plan}>

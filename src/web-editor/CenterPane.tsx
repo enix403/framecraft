@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Subject } from "rxjs";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -32,15 +32,32 @@ import {
 } from "lucide-react";
 import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
 import { EditorView2D } from "./EditorView2D/EditorView2D";
-import { eventSubject, useSetSettings, useSettings } from "./EditorView2D/settings";
+import {
+  eventSubject,
+  useSetSettings,
+  useSettings
+} from "./EditorView2D/settings";
+import { useSetZoomLevel, useZoomLevel } from "./EditorView2D/zoom";
 
 function ZoomControl() {
+  const zoomLevel = useZoomLevel();
+  const setZoomLevel = useSetZoomLevel();
+
+  function applyZoom(value: number) {
+    setZoomLevel(value / 100);
+    eventSubject.next("set-zoom:" + value);
+  }
+
+  const selectableZoomLevels = [70, 80, 100, 110, 120, 140, 180, 200];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='secondary'>
           <ZoomIn className='me-1' size={18} />
-          180%
+          <p className="w-10">
+          {Math.round(zoomLevel * 100)}%
+          </p>
           <ChevronDownIcon
             className='-me-1 opacity-60'
             size={16}
@@ -51,21 +68,18 @@ function ZoomControl() {
       <DropdownMenuContent>
         <DropdownMenuLabel>Zoom</DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => applyZoom(100)}>
             <Binoculars size={16} className='opacity-60' aria-hidden='true' />
             Reset
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>70%</DropdownMenuItem>
-          <DropdownMenuItem>80%</DropdownMenuItem>
-          <DropdownMenuItem>100%</DropdownMenuItem>
-          <DropdownMenuItem>110%</DropdownMenuItem>
-          <DropdownMenuItem>120%</DropdownMenuItem>
-          <DropdownMenuItem>140%</DropdownMenuItem>
-          <DropdownMenuItem>180%</DropdownMenuItem>
-          <DropdownMenuItem>200%</DropdownMenuItem>
+          {selectableZoomLevels.map((level, index) => (
+            <DropdownMenuItem key={index} onSelect={() => applyZoom(level)}>
+              {level}%
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -31,6 +31,4 @@ export function useSetSettings() {
 
 /* ================= */
 
-type EventNames = "recenter";
-
-export const eventSubject = new Subject<EventNames>();
+export const eventSubject = new Subject<string>();
