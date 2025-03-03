@@ -49,22 +49,84 @@ function RenderRooms({ plan }: { plan: any }) {
   );
 }
 
+function calcLineRect(
+  row: number,
+  col: number,
+  length: number,
+  direction: "h" | "v",
+  thickness = 1
+) {
+  const x = snapToGrid(col * CELL_SIZE);
+  const y = snapToGrid(row * CELL_SIZE);
+
+  let width = thickness;
+  let height = thickness;
+
+  if (direction == "h") {
+    width = length;
+  } else {
+    height = length;
+  }
+
+  width *= CELL_SIZE;
+  height *= CELL_SIZE;
+
+  return { x, y, width, height };
+}
+
 function RenderWalls({ plan }: { plan: any }) {
-  return (
-    <>
-      {plan.walls.map(({ id, row, col, length, direction, width }) => (
+  return plan.walls.map(
+    ({ id, row, col, length, direction, width: thickness }) => {
+      const { x, y, width, height } = calcLineRect(
+        row,
+        col,
+        length,
+        direction,
+        thickness
+      );
+
+      return (
         <Rect
           key={id}
-          x={snapToGrid(col * CELL_SIZE)}
-          y={snapToGrid(row * CELL_SIZE)}
-          width={direction === "h" ? length * CELL_SIZE : width * CELL_SIZE}
-          height={direction === "v" ? length * CELL_SIZE : width * CELL_SIZE}
-          fill={WALL_COLOR}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill="#919191"
+          stroke="black"
+          strokeWidth={1.5}
         />
-      ))}
-    </>
+      );
+    }
   );
 }
+
+
+function RenderDoors({ plan }: { plan: any }) {
+  return plan.doors.map(
+    ({ id, row, col, length, direction, width: thickness }) => {
+      const { x, y, width, height } = calcLineRect(
+        row,
+        col,
+        length,
+        direction,
+        thickness
+      );
+
+      return (
+        <Rect
+          key={id}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill="#F6F6F6"
+        />
+      );
+    }
+  );
+}
+
 
 function ScratchEditorView2D({ plan }: { plan: any }) {
   const stageRef = useRef<Konva.Stage | null>(null);
@@ -82,11 +144,11 @@ function ScratchEditorView2D({ plan }: { plan: any }) {
         draggable
         scaleX={scale}
         scaleY={scale}
-        style={{ background: BG_COLOR }}
+        style={{ background: "#F6F6F6" }}
       >
         <Layer>
-          <RenderRooms plan={plan} />
           <RenderWalls plan={plan} />
+          <RenderDoors plan={plan} />
         </Layer>
       </Stage>
     </div>
