@@ -39,7 +39,8 @@ export function getInitialPlan() {
 
     return {
       type,
-      label: `Room ${index}`,
+      id: `room-${index}`,
+      label: `Room ${index + 1}`,
       rects
     };
   });

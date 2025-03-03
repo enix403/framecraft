@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect, Fragment } from "react";
 import Konva from "konva";
 import { Stage, Layer, Rect, Text, Line } from "react-konva";
 
@@ -7,11 +7,8 @@ import { useMeasure } from "@uidotdev/usehooks";
 import { useStageZoom } from "./zoom";
 import { useInitialRecenter } from "./recenter";
 import {
-  BG_COLOR,
   CELL_SIZE,
-  ROOM_COLOR,
   snapToGrid,
-  WALL_COLOR
 } from "./common";
 
 /* ============================================= */
@@ -58,18 +55,16 @@ function RenderWalls({ plan }: { plan: any }) {
       );
 
       return (
-        <>
-          <Rect
-            key={id}
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            fill={"#919191"}
-            stroke='black'
-            strokeWidth={1.5}
-          />
-        </>
+        <Rect
+          key={id}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill={"#919191"}
+          stroke='black'
+          strokeWidth={1.5}
+        />
       );
     }
   );
@@ -130,27 +125,30 @@ function WallMeasure({ side, x, y, width, height, gap = 8, textGap = 8 }) {
 }
 
 function RenderWallMeasures({ plan }: { plan: any }) {
-  return plan.walls.map(({ row, col, length, direction, width: thickness }) => {
-    if (length < 25) return null;
+  return plan.walls.map(
+    ({ id, row, col, length, direction, width: thickness }) => {
+      if (length < 25) return null;
 
-    const { x, y, width, height } = calcLineRect(
-      row,
-      col,
-      length,
-      direction,
-      thickness
-    );
+      const { x, y, width, height } = calcLineRect(
+        row,
+        col,
+        length,
+        direction,
+        thickness
+      );
 
-    return (
-      <WallMeasure
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        side={direction === "h" ? "top" : "right"}
-      />
-    );
-  });
+      return (
+        <WallMeasure
+          key={id}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          side={direction === "h" ? "top" : "right"}
+        />
+      );
+    }
+  );
 }
 
 function RenderDoors({ plan }: { plan: any }) {
@@ -197,6 +195,7 @@ function RenderRoomLabels({ plan }: { plan: any }) {
 
     return (
       <Text
+        key={room.id}
         x={(col + width / 2) * CELL_SIZE - 20}
         y={(row + height / 2) * CELL_SIZE - 10}
         text={room.label}
@@ -209,14 +208,6 @@ function RenderRoomLabels({ plan }: { plan: any }) {
 
 function RenderRooms({ plan }: { plan: any }) {
   return plan.rooms.map((room, i) => {
-    // const color = "#d9ebc3";
-
-    // const color = "#d3e7f0";
-    // const color = "#f2e3b9";
-    // const color = "#ffe192";
-    // const color = "#caf2aa";
-    // const color = "#ffd5ef";
-    // const color = "#fec0ce";
     const color = getNodeColor(room.type);
     return room.rects.map(([row, col, width, height], j) => (
       <Rect
