@@ -5,7 +5,7 @@ import { Stage, Layer, Rect, Text, Line } from "react-konva";
 import { getInitialPlan } from "./initialPlan";
 import { useMeasure } from "@uidotdev/usehooks";
 import { useStageZoom } from "./zoom";
-import { useInitialRecenter } from "./recenter";
+import { useRecenter } from "./recenter";
 import { CELL_SIZE, roomInfoFromNodeType, snapToGrid } from "./common";
 import { eventSubject, useSettings } from "./settings";
 import { PlanContext, usePlan } from "./PlanProvider";
@@ -246,7 +246,7 @@ export function EditorView2D() {
   const [containerRef, containerSize] = useMeasure();
 
   const stageRef = useRef<Konva.Stage | null>(null);
-  const { forceRecenter, baseScale } = useInitialRecenter(stageRef, plan, containerSize);
+  const { forceRecenter, baseScale } = useRecenter(stageRef, plan, containerSize);
 
   useStageZoom(stageRef, baseScale);
 
@@ -259,6 +259,7 @@ export function EditorView2D() {
 
     return () => subscription.unsubscribe();
   }, [forceRecenter]);
+
 
   const settings = useSettings();
 

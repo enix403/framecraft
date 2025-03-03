@@ -3,7 +3,7 @@ import { useRef, useLayoutEffect, RefObject, useState } from "react";
 
 import { CELL_SIZE } from "./common";
 
-export function useInitialRecenter(
+export function useRecenter(
   stageRef: RefObject<Konva.Stage | null>,
   plan: any,
   containerSize: {
@@ -71,11 +71,13 @@ export function useInitialRecenter(
   }
 
   useLayoutEffect(() => {
+    if (!containerSize.width || !containerSize.height) return;
+
     if (firstPlaced.current) {
       return;
     }
     performRecenter();
-  }, [containerSize, performRecenter]);
+  }, [containerSize]);
 
   return {
     forceRecenter: performRecenter,
