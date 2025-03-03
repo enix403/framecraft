@@ -38,6 +38,7 @@ export function getInitialPlan() {
     }
 
     return {
+      type,
       label: `Room ${index}`,
       rects
     };
