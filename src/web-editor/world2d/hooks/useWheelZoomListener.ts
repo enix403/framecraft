@@ -1,19 +1,9 @@
-import { atom, useAtomValue, useSetAtom } from "jotai";
 import Konva from "konva";
-import { useState, useEffect, RefObject } from "react";
+import { useEffect, RefObject } from "react";
+import { useSetZoomLevel } from "../settings";
 
 const MIN_SCALE_REL = 0.5;
 const MAX_SCALE_REL = 4;
-
-const zoomLevelAtom = atom(1);
-
-export function useZoomLevel() {
-  return useAtomValue(zoomLevelAtom);
-}
-
-export function useSetZoomLevel() {
-  return useSetAtom(zoomLevelAtom);
-}
 
 export function useWheelZoomListener(
   stageRef: RefObject<Konva.Stage | null>,

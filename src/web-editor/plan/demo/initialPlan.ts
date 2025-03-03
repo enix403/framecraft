@@ -1,5 +1,11 @@
-import planJsonRaw from "./plan.json";
-(window as any).planJsonRaw = planJsonRaw;
+import planJsonRaw from "./planA.json";
+
+export type RoomRect = [
+  number, /* row */
+  number, /* col */
+  number, /* width */
+  number, /* height */
+]
 
 export function getInitialPlan() {
   const { shape, rooms, walls, doors, scale } = planJsonRaw;
@@ -26,7 +32,7 @@ export function getInitialPlan() {
 
   let roomsN = rooms.map((room, index) => {
     let [type, ...flatRects] = room;
-    let rects: number[][] = [];
+    let rects: RoomRect[] = [];
 
     for (let i = 0; i < flatRects.length; i += 4) {
       rects.push([
@@ -40,7 +46,6 @@ export function getInitialPlan() {
     return {
       type,
       id: `room-${index}`,
-      label: `Room ${index + 1}`,
       rects
     };
   });
@@ -50,23 +55,6 @@ export function getInitialPlan() {
     canvasCols,
     walls: wallsN,
     doors: doorsN,
-    rooms: roomsN,
+    rooms: roomsN
   };
 }
-
-// const initialPlan = {
-//   canvasRows: 192,
-//   canvasCols: 192,
-//   walls: [
-//     { id: "wall-1", row: 5, col: 10, length: 5, direction: "h", width: 1 },
-//     { id: "wall-2", row: 12, col: 8, length: 3, direction: "v", width: 1 },
-//   ],
-//   doors: [
-//     { id: "door-1", row: 5, col: 10, length: 2, direction: "h" },
-//     { id: "door-2", row: 12, col: 8, length: 1, direction: "v" },
-//   ],
-//   rooms: [
-//     { label: "Living Room", rects: [[2, 2, 50, 40]] },
-//     { label: "Bedroom", rects: [[100, 50, 40, 60]] },
-//   ],
-// };

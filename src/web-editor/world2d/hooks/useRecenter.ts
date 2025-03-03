@@ -1,8 +1,8 @@
 import Konva from "konva";
 import { useRef, useLayoutEffect, RefObject, useState } from "react";
 
-import { CELL_SIZE } from "./common";
-import { useSetZoomLevel } from "./zoom";
+import { CELL_SIZE } from "../common";
+import { useSetZoomLevel } from "../settings";
 
 export function useRecenter(
   stageRef: RefObject<Konva.Stage | null>,

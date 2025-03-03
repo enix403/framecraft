@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 
-import { roomTypeIds, roomTypes } from "../EditorView2D/common";
+import { roomTypeIds, roomTypes } from "../plan/rooms";
 import { RectPreview } from "@/components/RectPreview";
 
 function RoomName() {

@@ -1,9 +1,6 @@
 import { ComponentType } from "react";
 import { BedDouble, Droplet, Eclipse, Grape, Tv } from "lucide-react";
 
-export const CELL_SIZE = 5;
-export const snapToGrid = value => Math.round(value / CELL_SIZE) * CELL_SIZE;
-
 interface RoomType {
   id: string;
   title: string;
