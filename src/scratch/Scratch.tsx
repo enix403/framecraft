@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import Konva from "konva";
-import { Stage, Layer, Rect, Text } from "react-konva";
+import { Stage, Layer, Rect, Text, Line } from "react-konva";
 
 import { getInitialPlan } from "@/web-editor/EditorView2D/initialPlan";
 import { useMeasure } from "@uidotdev/usehooks";
@@ -74,6 +74,64 @@ function calcLineRect(
   return { x, y, width, height };
 }
 
+function WallMeasure({ side, x, y, width, height, gap }) {
+  let points: any[] = [];
+
+  // prettier-ignore
+  {
+    const w = width - 1;
+    const h = height - 1;
+
+    if (side === 'top') {
+      points = [
+        x, y,
+        x, y - gap,
+        x + w, y - gap,
+        x + w, y,
+      ];
+    }
+    else if (side === 'bottom') {
+      points = [
+        x, y + h,
+        x, y + h + gap,
+        x + w, y + h + gap,
+        x + w, y + h,
+      ];
+    }
+    else if (side === 'left') {
+      points = [
+        x, y,
+        x - gap, y,
+        x - gap, y + h,
+        x, y + h,
+      ];
+    }
+    else if (side === 'right') {
+      points = [
+        x + w, y,
+        x + w + gap, y,
+        x + w + gap, y + h,
+        x + w, y + h,
+      ];
+    }
+  }
+
+  return (
+    <>
+      <Line points={points} stroke='blue' />
+      <Text
+        // x={(col + width / 2) * CELL_SIZE - 20}
+        // y={(row + height / 2) * CELL_SIZE - 10}
+        x={x}
+        y={y}
+        text={"1000 ft"}
+        fontSize={13}
+        fill={"black"}
+      />
+    </>
+  );
+}
+
 function RenderWalls({ plan }: { plan: any }) {
   return plan.walls.map(
     ({ id, row, col, length, direction, width: thickness }) => {
@@ -86,16 +144,28 @@ function RenderWalls({ plan }: { plan: any }) {
       );
 
       return (
-        <Rect
-          key={id}
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-          fill='#919191'
-          stroke='black'
-          strokeWidth={1.5}
-        />
+        <>
+          <Rect
+            key={id}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            fill={"#919191"}
+            stroke='black'
+            strokeWidth={1.5}
+          />
+          {length > 25 && (
+            <WallMeasure
+              x={x}
+              y={y}
+              width={width}
+              height={height}
+              side={direction === "h" ? "top" : "right"}
+              gap={10}
+            />
+          )}
+        </>
       );
     }
   );
@@ -159,8 +229,8 @@ function ScratchEditorView2D({ plan }: { plan: any }) {
   const stageRef = useRef<Konva.Stage | null>(null);
 
   const [containerRef, containerSize] = useMeasure();
-  const { scale } = useStageZoom(stageRef.current);
   useInitialRecenter(stageRef.current, plan, containerSize);
+  const { scale } = useStageZoom(stageRef.current);
 
   return (
     <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
