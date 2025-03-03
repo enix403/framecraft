@@ -4,11 +4,6 @@ import { Stage, Layer, Rect, Line } from "react-konva";
 
 import { polygon, featureCollection } from "@turf/helpers";
 import { union } from "@turf/union";
-import { repeatNode } from "@/utils/markup";
-
-(window as any).polygon = polygon;
-(window as any).featureCollection = featureCollection;
-(window as any).union = union;
 
 interface Rect {
   left: number;
@@ -16,9 +11,6 @@ interface Rect {
   width: number;
   height: number;
 }
-
-// fillColor = "#E6DBF3",
-// fillColor = "#b898dd",
 
 export function RectPreview({
   rectangles,

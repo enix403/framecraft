@@ -11,9 +11,10 @@ import {
   SelectGroup,
   SelectLabel
 } from "@/components/ui/select";
-import { RectPreview } from "./RectPreview";
 import { useState } from "react";
-import { roomTypeIds, roomTypes } from "./EditorView2D/common";
+
+import { roomTypeIds, roomTypes } from "../EditorView2D/common";
+import { RectPreview } from "@/components/RectPreview";
 
 function RoomName() {
   const [selectedId, setSelectedId] = useState<any>("living");
@@ -57,9 +58,9 @@ function RoomName() {
   );
 }
 
-export function RightPane() {
+export function RoomDetails() {
   return (
-    <ResizablePanel minSize={10} defaultSize={15} className='flex flex-col p-4'>
+    <div className='flex flex-col p-4'>
       <h2 className='mb-2 font-semibold'>Room Details</h2>
 
       <RoomName />
@@ -85,6 +86,6 @@ export function RightPane() {
       <Stat label='Length' value='32 ft.' />
       <Stat label='Width' value='26 ft.' />
       <Stat label='Area' value='832 ft. sq' />
-    </ResizablePanel>
+    </div>
   );
 }
