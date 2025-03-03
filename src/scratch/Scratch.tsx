@@ -92,15 +92,14 @@ function RenderWalls({ plan }: { plan: any }) {
           y={y}
           width={width}
           height={height}
-          fill="#919191"
-          stroke="black"
+          fill='#919191'
+          stroke='black'
           strokeWidth={1.5}
         />
       );
     }
   );
 }
-
 
 function RenderDoors({ plan }: { plan: any }) {
   return plan.doors.map(
@@ -120,13 +119,41 @@ function RenderDoors({ plan }: { plan: any }) {
           y={y}
           width={width}
           height={height}
-          fill="#F6F6F6"
+          fill='#F6F6F6'
         />
       );
     }
   );
 }
 
+function RenderRoomLabels({ plan }: { plan: any }) {
+  return plan.rooms.map((room, i) => {
+    let largestRectIndex = -1;
+    let largestArea = -1;
+
+    for (let i = 0; i < room.rects.length; ++i) {
+      const [_row, _col, width, height] = room.rects[i];
+      let area = width * height;
+
+      if (area > largestArea) {
+        largestArea = area;
+        largestRectIndex = i;
+      }
+    }
+
+    let [row, col, width, height] = room.rects[largestRectIndex];
+
+    return (
+      <Text
+        x={(col + width / 2) * CELL_SIZE - 20}
+        y={(row + height / 2) * CELL_SIZE - 10}
+        text={room.label}
+        fontSize={13}
+        fill={"black"}
+      />
+    );
+  });
+}
 
 function ScratchEditorView2D({ plan }: { plan: any }) {
   const stageRef = useRef<Konva.Stage | null>(null);
@@ -149,6 +176,7 @@ function ScratchEditorView2D({ plan }: { plan: any }) {
         <Layer>
           <RenderWalls plan={plan} />
           <RenderDoors plan={plan} />
+          <RenderRoomLabels plan={plan} />
         </Layer>
       </Stage>
     </div>
