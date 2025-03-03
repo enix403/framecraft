@@ -51,7 +51,6 @@ export function getInitialPlan() {
     walls: wallsN,
     doors: doorsN,
     rooms: roomsN,
-    scale
   };
 }
 

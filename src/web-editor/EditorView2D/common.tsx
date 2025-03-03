@@ -55,9 +55,9 @@ export const roomTypeIds = Object.keys(roomTypes) as RoomTypeIds[];
 
 export const nodeTypeToRoomType: Record<number, RoomTypeIds> = {
   0: "living",
-  1: "bedroom",
-  2: "bathroom",
-  3: "kitchen",
+  1: "kitchen",
+  2: "bedroom",
+  3: "bathroom",
   4: "balcony"
 };
 
