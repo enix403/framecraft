@@ -14,8 +14,57 @@ import {
   WALL_COLOR
 } from "./common";
 
+/* ============================================= */
+
 (window as any).getInitialPlan = getInitialPlan;
 const initialPlan = getInitialPlan();
+
+/* ============================================= */
+
+function RenderRooms({ plan }: { plan: any }) {
+  return (
+    <>
+      {plan.rooms.map((room, i) =>
+        room.rects.map(([row, col, width, height], j) => (
+          <>
+            <Rect
+              key={`room-${i}-${j}`}
+              x={col * CELL_SIZE}
+              y={row * CELL_SIZE}
+              width={width * CELL_SIZE}
+              height={height * CELL_SIZE}
+              fill={ROOM_COLOR}
+            />
+            <Text
+              x={(col + width / 2) * CELL_SIZE - 20}
+              y={(row + height / 2) * CELL_SIZE - 10}
+              text={room.label}
+              fontSize={12}
+              fill={"#ffffff"}
+            />
+          </>
+        ))
+      )}
+    </>
+  );
+}
+
+function RenderWalls({ plan }: { plan: any }) {
+  return (
+    <>
+      {plan.walls.map(({ id, row, col, length, direction, width }) => (
+        <Rect
+          key={id}
+          x={snapToGrid(col * CELL_SIZE)}
+          y={snapToGrid(row * CELL_SIZE)}
+          width={direction === "h" ? length * CELL_SIZE : width * CELL_SIZE}
+          height={direction === "v" ? length * CELL_SIZE : width * CELL_SIZE}
+          fill={WALL_COLOR}
+        />
+      ))}
+    </>
+  );
+}
 
 function ScratchEditorView2D({ plan }: { plan: any }) {
   const stageRef = useRef<Konva.Stage | null>(null);
@@ -36,41 +85,8 @@ function ScratchEditorView2D({ plan }: { plan: any }) {
         style={{ background: BG_COLOR }}
       >
         <Layer>
-          {plan.rooms.map((room, i) =>
-            room.rects.map(([row, col, width, height], j) => (
-              <>
-                <Rect
-                  key={`room-${i}-${j}`}
-                  x={col * CELL_SIZE}
-                  y={row * CELL_SIZE}
-                  width={width * CELL_SIZE}
-                  height={height * CELL_SIZE}
-                  fill={ROOM_COLOR}
-                />
-                <Text
-                  x={(col + width / 2) * CELL_SIZE - 20}
-                  y={(row + height / 2) * CELL_SIZE - 10}
-                  text={room.label}
-                  fontSize={12}
-                  fill={"#ffffff"}
-                />
-              </>
-            ))
-          )}
-
-          {/* Draw Walls */}
-          {plan.walls.map(({ id, row, col, length, direction, width }) => (
-            <Rect
-              key={id}
-              x={snapToGrid(col * CELL_SIZE)}
-              y={snapToGrid(row * CELL_SIZE)}
-              width={direction === "h" ? length * CELL_SIZE : width * CELL_SIZE}
-              height={
-                direction === "v" ? length * CELL_SIZE : width * CELL_SIZE
-              }
-              fill={WALL_COLOR}
-            />
-          ))}
+          <RenderRooms plan={plan} />
+          <RenderWalls plan={plan} />
         </Layer>
       </Stage>
     </div>
