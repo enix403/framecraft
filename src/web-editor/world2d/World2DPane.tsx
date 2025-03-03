@@ -6,13 +6,15 @@ import {
   TooltipTrigger
 } from "@/components/ui/tooltip";
 import { Redo, Undo } from "lucide-react";
-import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
-import { World2DEditor } from "./world2d/World2DEditor";
-import { UnitControl } from "./world2d/controls/UnitControl";
-import { FeatureTogglesControl } from "./world2d/controls/FeatureTogglesControl";
-import { ViewModeControl } from "./world2d/controls/ViewModeControl";
-import { ZoomControl } from "./world2d/controls/ZoomControl";
-import { RecenterButton } from "./world2d/controls/RecenterButton";
+import { ComponentProps, PropsWithChildren, ReactNode } from "react";
+
+import { UnitControl } from "./controls/UnitControl";
+import { FeatureTogglesControl } from "./controls/FeatureTogglesControl";
+import { ViewModeControl } from "./controls/ViewModeControl";
+import { ZoomControl } from "./controls/ZoomControl";
+import { RecenterButton } from "./controls/RecenterButton";
+
+import { World2DEditor } from "./World2DEditor";
 
 function TooltipWrapper({
   children,
@@ -63,9 +65,9 @@ function Toolbar() {
   );
 }
 
-export function CenterPane() {
+export function World2DPane() {
   return (
-    <ResizablePanel minSize={40} className='relative flex flex-col'>
+    <div className='relative flex flex-1-fix flex-col'>
       <Toolbar />
       <div className='flex-1-fix bg-[#F6F6F6]'>
         <World2DEditor />
@@ -75,6 +77,6 @@ export function CenterPane() {
           <RecenterButton />
         </TooltipWrapper>
       </div>
-    </ResizablePanel>
+    </div>
   );
 }

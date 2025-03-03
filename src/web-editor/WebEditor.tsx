@@ -4,15 +4,15 @@ import {
   ResizablePanelGroup
 } from "@/components/ui/resizable";
 
+import { getInitialPlan } from "./plan/demo/initialPlan";
+import { PlanContext } from "./PlanProvider";
+
 import { TopNav } from "./panes/TopNav";
 import { RoomList } from "./panes/RoomList";
 import { PlotDetails } from "./panes/PlotDetails";
 import { RoomDetails } from "./panes/RoomDetails";
 
-import { getInitialPlan } from "./plan/demo/initialPlan";
-
-import { CenterPane } from "./CenterPane";
-import { PlanContext } from "./PlanProvider";
+import { World2DPane } from "./world2d/World2DPane";
 
 const plan = getInitialPlan();
 
@@ -33,7 +33,9 @@ export function WebEditor() {
           </ResizablePanel>
           <ResizableHandle />
           {/* Center Pane */}
-          <CenterPane />
+          <ResizablePanel minSize={40} className='flex flex-1-fix flex-col'>
+            <World2DPane />
+          </ResizablePanel>
           <ResizableHandle />
           {/* Right Pane */}
           <ResizablePanel minSize={10} defaultSize={15}>
