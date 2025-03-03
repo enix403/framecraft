@@ -27,19 +27,16 @@ import {
 } from "@/components/ui/tooltip";
 import {
   Binoculars,
-  BoltIcon,
   ChevronDownIcon,
   DraftingCompass,
-  FilesIcon,
   Layers,
-  Layers2Icon,
+  LocateFixed,
   Palette,
   Redo,
-  TrashIcon,
   Undo,
   ZoomIn
 } from "lucide-react";
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
 import { EditorView2D } from "./EditorView2D/EditorView2D";
 
 function ZoomControl() {
@@ -176,12 +173,20 @@ function ViewModeControl() {
 
 function TooltipWrapper({
   children,
-  tip
-}: PropsWithChildren & { tip: ReactNode }) {
+  tip,
+  side = 'bottom'
+}: PropsWithChildren & {
+  tip: ReactNode;
+  side?: ComponentProps<typeof TooltipContent>["side"];
+}) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent side="bottom" className='dark px-2 py-1 text-xs' showArrow={true}>
+      <TooltipContent
+        side={side}
+        className='dark px-2 py-1 text-xs'
+        showArrow={true}
+      >
         {tip}
       </TooltipContent>
     </Tooltip>
@@ -218,10 +223,20 @@ function Toolbar() {
 export function CenterPane() {
   return (
     <>
-      <ResizablePanel minSize={40} className='flex flex-col'>
+      <ResizablePanel minSize={40} className='relative flex flex-col'>
         <Toolbar />
         <div className='flex-1-fix bg-[#F6F6F6]'>
           <EditorView2D />
+        </div>
+        <div className='absolute bottom-6 left-6'>
+          <TooltipWrapper tip='Recenter' side="top">
+            <Button
+              size='icon'
+              className='rounded-full bg-white p-4 text-black hover:bg-accent/90 active:bg-accent/70'
+            >
+              <LocateFixed size={30} />
+            </Button>
+          </TooltipWrapper>
         </div>
       </ResizablePanel>
     </>
