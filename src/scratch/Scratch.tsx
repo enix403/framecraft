@@ -118,6 +118,25 @@ function RenderWalls({ plan }: { plan: any }) {
             stroke='black'
             strokeWidth={1.5}
           />
+        </>
+      );
+    }
+  );
+}
+
+function RenderWallMeasures({ plan }: { plan: any }) {
+  return plan.walls.map(
+    ({ row, col, length, direction, width: thickness }) => {
+      const { x, y, width, height } = calcLineRect(
+        row,
+        col,
+        length,
+        direction,
+        thickness
+      );
+
+      return (
+        <>
           {length > 25 && (
             <WallMeasure
               x={x}
@@ -209,6 +228,7 @@ function ScratchEditorView2D({ plan }: { plan: any }) {
           <RenderWalls plan={plan} />
           <RenderDoors plan={plan} />
           <RenderRoomLabels plan={plan} />
+          <RenderWallMeasures plan={plan} />
         </Layer>
       </Stage>
     </div>
