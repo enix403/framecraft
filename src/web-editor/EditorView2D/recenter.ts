@@ -1,10 +1,10 @@
 import Konva from "konva";
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, RefObject } from "react";
 
 import { CELL_SIZE } from "./common";
 
 export function useInitialRecenter(
-  stage: Konva.Stage | null,
+  stageRef: RefObject<Konva.Stage | null>,
   plan: any,
   containerSize: {
     width: number | null;
@@ -17,6 +17,8 @@ export function useInitialRecenter(
     if (firstPlaced.current) {
       return;
     }
+
+    const stage = stageRef.current;
 
     if (!stage) return;
 
@@ -66,5 +68,5 @@ export function useInitialRecenter(
 
     stage.position(initialPos);
     stage.scale(initialScale);
-  }, [stage, containerSize]);
+  }, [containerSize]);
 }

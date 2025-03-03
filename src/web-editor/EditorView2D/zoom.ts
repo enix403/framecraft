@@ -1,10 +1,11 @@
 import Konva from "konva";
-import { useState, useEffect } from "react";
+import { useState, useEffect, RefObject } from "react";
 
-export function useStageZoom(stage: Konva.Stage | null) {
+export function useStageZoom(stageRef: RefObject<Konva.Stage | null>) {
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
+    const stage = stageRef.current;
     if (stage) {
       stage.content.addEventListener("wheel", e => {
         e.preventDefault();
@@ -33,7 +34,7 @@ export function useStageZoom(stage: Konva.Stage | null) {
         setScale(newScale);
       });
     }
-  }, [stage]);
+  }, []);
 
   return { scale };
 }

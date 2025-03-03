@@ -206,8 +206,7 @@ function RenderRoomLabels() {
 
     const label = roomInfoFromNodeType(room.type)?.title;
 
-    if (!label)
-      return;
+    if (!label) return;
 
     return (
       <Text
@@ -225,7 +224,7 @@ function RenderRoomLabels() {
 function RenderRooms() {
   const plan = usePlan();
   return plan.rooms.map((room, i) => {
-    const color = roomInfoFromNodeType(room.type)?.rectColor || "#ff0000"
+    const color = roomInfoFromNodeType(room.type)?.rectColor || "#ff0000";
     return room.rects.map(([row, col, width, height], j) => (
       <Rect
         key={`room-${i}-${j}`}
@@ -246,8 +245,8 @@ export function EditorView2D() {
   const stageRef = useRef<Konva.Stage | null>(null);
 
   const [containerRef, containerSize] = useMeasure();
-  useInitialRecenter(stageRef.current, plan, containerSize);
-  const { scale } = useStageZoom(stageRef.current);
+  useInitialRecenter(stageRef, plan, containerSize);
+  const { scale } = useStageZoom(stageRef);
 
   const settings = useSettings();
 
