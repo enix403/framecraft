@@ -75,71 +75,68 @@ function calcLineRect(
 }
 
 function WallMeasure({ side, x, y, width, height, gap }) {
-  let points: any[] = [];
+  // let points: any[] = [];
+  let mx = 0;
+  let my = 0;
+  let mw = 0;
+  let mh = 0;
 
-  // prettier-ignore
-  {
-    const w = width - 1;
-    const h = height - 1;
-
-    if (side === 'top') {
-      points = [
-        x, y,
-        x, y - gap,
-        x + w, y - gap,
-        x + w, y,
-      ];
-    }
-    else if (side === 'bottom') {
-      points = [
-        x, y + h,
-        x, y + h + gap,
-        x + w, y + h + gap,
-        x + w, y + h,
-      ];
-    }
-    else if (side === 'left') {
-      points = [
-        x, y,
-        x - gap, y,
-        x - gap, y + h,
-        x, y + h,
-      ];
-    }
-    else if (side === 'right') {
-      points = [
-        x + w, y,
-        x + w + gap, y,
-        x + w + gap, y + h,
-        x + w, y + h,
-      ];
-    }
+  if (side === "top") {
+    mx = x;
+    my = y - gap;
+    mw = width;
+    mh = gap;
+  } else if (side === "bottom") {
+    mx = x;
+    my = y + height;
+    mw = width;
+    mh = gap;
+  } else if (side === "left") {
+    mx = x - gap;
+    my = y;
+    mw = gap;
+    mh = height;
+  } else if (side === "right") {
+    mx = x + width;
+    my = y;
+    mw = gap;
+    mh = height;
   }
 
-  const lineCenterX = Math.round((points[2] + points[4]) / 2);
-  const lineCenterY = Math.round((points[3] + points[5]) / 2);
-
-  const directedGap = side === "top" || side === "left" ? -gap : gap;
-
   const isHoriz = side === "top" || side === "bottom";
-  const isVert = !isHoriz;
+
 
   return (
     <>
-      <Line points={points} stroke='blue' />
+      <Text
+        text='1000ft'
+        fontSize={13}
+        fill='blue'
+
+        x={mx}
+        y={my}
+        width={mw}
+        height={mh}
+        align="center"
+        verticalAlign="middle"
+        rotationDeg={isHoriz ? 0 : 90}
+      />
+      {/* <Line points={points} stroke='blue' />
       <Text
         text={"1000 ft"}
+        fontSize={13}
+        fill={"black"}
 
-        x={points[2]}
-        y={lineCenterY + directedGap / 2}
-
+        x={lineCenterX}
+        y={lineCenterY}
 
         width={isHoriz ? width : undefined}
         height={isVert ? height : undefined}
         align="center"
-        fontSize={13}
-        fill={"black"}
-      />
+
+        rotationDeg={isVert ? 90 : 0}
+
+      /> */}
     </>
   );
 }
