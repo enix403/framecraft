@@ -116,15 +116,27 @@ function WallMeasure({ side, x, y, width, height, gap }) {
     }
   }
 
+  const lineCenterX = Math.round((points[2] + points[4]) / 2);
+  const lineCenterY = Math.round((points[3] + points[5]) / 2);
+
+  const directedGap = side === "top" || side === "left" ? -gap : gap;
+
+  const isHoriz = side === "top" || side === "bottom";
+  const isVert = !isHoriz;
+
   return (
     <>
       <Line points={points} stroke='blue' />
       <Text
-        // x={(col + width / 2) * CELL_SIZE - 20}
-        // y={(row + height / 2) * CELL_SIZE - 10}
-        x={x}
-        y={y}
         text={"1000 ft"}
+
+        x={points[2]}
+        y={lineCenterY + directedGap / 2}
+
+
+        width={isHoriz ? width : undefined}
+        height={isVert ? height : undefined}
+        align="center"
         fontSize={13}
         fill={"black"}
       />
