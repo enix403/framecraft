@@ -8,7 +8,7 @@ import { useStageZoom } from "./zoom";
 import { useInitialRecenter } from "./recenter";
 import { CELL_SIZE, getRectColor, snapToGrid } from "./common";
 import { useSettings } from "./settings";
-import { PlanContext } from "./PlanProvider";
+import { PlanContext, usePlan } from "./PlanProvider";
 
 /* ============================================= */
 
@@ -42,7 +42,10 @@ function calcLineRect(
   return { x, y, width, height };
 }
 
-function RenderWalls({ plan }: { plan: any }) {
+function RenderWalls() {
+  const plan = usePlan();
+  const settings = useSettings();
+
   return plan.walls.map(
     ({ id, row, col, length, direction, width: thickness }) => {
       const { x, y, width, height } = calcLineRect(
@@ -61,7 +64,7 @@ function RenderWalls({ plan }: { plan: any }) {
           width={width}
           height={height}
           // fill={"#919191"}
-          fill={"#000000"}
+          fill={settings.viewMode === "color" ? "#000000" : "#919191"}
           stroke='black'
           strokeWidth={1.5}
         />
@@ -71,6 +74,8 @@ function RenderWalls({ plan }: { plan: any }) {
 }
 
 function WallMeasure({ side, x, y, width, height, gap = 8, textGap = 8 }) {
+  const { unit } = useSettings();
+
   let points: any[] = [];
 
   {
@@ -107,7 +112,7 @@ function WallMeasure({ side, x, y, width, height, gap = 8, textGap = 8 }) {
     <>
       <Line points={points} stroke='#AAAAAA' />
       <Text
-        text='1000ft'
+        text={`1000 ${unit}`}
         fontSize={16}
         fill='#848484'
         x={lineCenterX}
@@ -124,7 +129,9 @@ function WallMeasure({ side, x, y, width, height, gap = 8, textGap = 8 }) {
   );
 }
 
-function RenderWallMeasures({ plan }: { plan: any }) {
+function RenderWallMeasures() {
+  const plan = usePlan();
+
   return plan.walls.map(
     ({ id, row, col, length, direction, width: thickness }) => {
       if (length < 25) return null;
@@ -151,7 +158,9 @@ function RenderWallMeasures({ plan }: { plan: any }) {
   );
 }
 
-function RenderDoors({ plan }: { plan: any }) {
+function RenderDoors() {
+  const plan = usePlan();
+
   return plan.doors.map(
     ({ id, row, col, length, direction, width: thickness }) => {
       const { x, y, width, height } = calcLineRect(
@@ -176,7 +185,9 @@ function RenderDoors({ plan }: { plan: any }) {
   );
 }
 
-function RenderRoomLabels({ plan }: { plan: any }) {
+function RenderRoomLabels() {
+  const plan = usePlan();
+
   return plan.rooms.map((room, i) => {
     let largestRectIndex = -1;
     let largestArea = -1;
@@ -206,7 +217,8 @@ function RenderRoomLabels({ plan }: { plan: any }) {
   });
 }
 
-function RenderRooms({ plan }: { plan: any }) {
+function RenderRooms() {
+  const plan = usePlan();
   return plan.rooms.map((room, i) => {
     const color = getRectColor(room.type);
     return room.rects.map(([row, col, width, height], j) => (
@@ -247,11 +259,11 @@ export function EditorView2D() {
           style={{ background: "#F6F6F6" }}
         >
           <Layer>
-            <RenderRooms plan={plan} />
-            <RenderWalls plan={plan} />
-            <RenderDoors plan={plan} />
-            <RenderRoomLabels plan={plan} />
-            <RenderWallMeasures plan={plan} />
+            {settings.viewMode === "color" && <RenderRooms />}
+            <RenderWalls />
+            <RenderDoors />
+            {settings.enableRoomLabels && <RenderRoomLabels />}
+            {settings.enableWallMeasure && <RenderWallMeasures />}
           </Layer>
         </Stage>
       </div>
