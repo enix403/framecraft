@@ -61,7 +61,8 @@ function RenderWalls({ plan }: { plan: any }) {
           y={y}
           width={width}
           height={height}
-          fill={"#919191"}
+          // fill={"#919191"}
+          fill={"#000000"}
           stroke='black'
           strokeWidth={1.5}
         />
@@ -208,7 +209,7 @@ function RenderRoomLabels({ plan }: { plan: any }) {
 
 function RenderRooms({ plan }: { plan: any }) {
   return plan.rooms.map((room, i) => {
-    const color = getNodeColor(room.type);
+    const color = getRectColor(room.type);
     return room.rects.map(([row, col, width, height], j) => (
       <Rect
         key={`room-${i}-${j}`}
@@ -257,13 +258,6 @@ export function Scratch() {
   return <ScratchEditorView2D plan={initialPlan} />;
 }
 
-// const color = "#d3e7f0";
-// const color = "#f2e3b9";
-// const color = "#caf2aa";
-// const color = "#ffd5ef";
-// const color = "#ffe192";
-// const color = "#fec0ce";
-
 const roomTypes = {
   living: {
     id: "living",
@@ -305,6 +299,6 @@ const nodeTypeToRoomType = {
   4: "balcony"
 };
 
-function getNodeColor(nodeType: string) {
+function getRectColor(nodeType: string) {
   return roomTypes[nodeTypeToRoomType[nodeType]]?.rectColor || "#ff0000";
 }
