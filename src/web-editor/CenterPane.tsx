@@ -223,25 +223,30 @@ function Toolbar() {
   );
 }
 
+function RecenterButton({ onClick }: { onClick?: () => void }) {
+  return (
+    <div className='absolute bottom-6 left-6'>
+      <TooltipWrapper tip='Recenter' side='top'>
+        <Button
+          onClick={onClick}
+          size='icon'
+          className='rounded-full bg-white p-4 text-black shadow-2xl shadow-black hover:bg-accent/90 active:bg-accent/70'
+        >
+          <LocateFixed size={30} />
+        </Button>
+      </TooltipWrapper>
+    </div>
+  );
+}
+
 export function CenterPane() {
   return (
-    <>
-      <ResizablePanel minSize={40} className='relative flex flex-col'>
-        <Toolbar />
-        <div className='flex-1-fix bg-[#F6F6F6]'>
-          <EditorView2D />
-        </div>
-        <div className='absolute bottom-6 left-6'>
-          <TooltipWrapper tip='Recenter' side='top'>
-            <Button
-              size='icon'
-              className='rounded-full bg-white p-4 text-black shadow-2xl shadow-black hover:bg-accent/90 active:bg-accent/70'
-            >
-              <LocateFixed size={30} />
-            </Button>
-          </TooltipWrapper>
-        </div>
-      </ResizablePanel>
-    </>
+    <ResizablePanel minSize={40} className='relative flex flex-col'>
+      <Toolbar />
+      <div className='flex-1-fix bg-[#F6F6F6]'>
+        <EditorView2D />
+      </div>
+      <RecenterButton />
+    </ResizablePanel>
   );
 }

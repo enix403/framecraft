@@ -242,12 +242,12 @@ function RenderRooms() {
 const plan = initialPlan;
 
 export function EditorView2D() {
-  const stageRef = useRef<Konva.Stage | null>(null);
-
   const [containerRef, containerSize] = useMeasure();
-  useInitialRecenter(stageRef, plan, containerSize);
-  const { scale } = useStageZoom(stageRef);
 
+  const stageRef = useRef<Konva.Stage | null>(null);
+  const { forceRecenter } = useInitialRecenter(stageRef, plan, containerSize);
+
+  const { scale } = useStageZoom(stageRef);
   const settings = useSettings();
 
   return (
