@@ -8,7 +8,7 @@ export function useStageZoom(
   stageRef: RefObject<Konva.Stage | null>,
   baseScale: number
 ) {
-  const [scale, setScale] = useState(1);
+  // const [scale, setScale] = useState(1);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -41,7 +41,7 @@ export function useStageZoom(
       };
 
       stage.position(newPos);
-      setScale(newScale);
+      // setScale(newScale);
     }
 
     function onWheel(e: WheelEvent) {
@@ -55,5 +55,5 @@ export function useStageZoom(
     };
   }, [baseScale]);
 
-  return { scale };
+  // return { scale };
 }

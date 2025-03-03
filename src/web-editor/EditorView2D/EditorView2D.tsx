@@ -248,8 +248,7 @@ export function EditorView2D() {
   const stageRef = useRef<Konva.Stage | null>(null);
   const { forceRecenter, baseScale } = useInitialRecenter(stageRef, plan, containerSize);
 
-  const { scale } = useStageZoom(stageRef, baseScale);
-  const settings = useSettings();
+  useStageZoom(stageRef, baseScale);
 
   useEffect(() => {
     const subscription = eventSubject.subscribe(event => {
@@ -261,7 +260,7 @@ export function EditorView2D() {
     return () => subscription.unsubscribe();
   }, [forceRecenter]);
 
-
+  const settings = useSettings();
 
   return (
     <PlanContext.Provider value={plan}>
