@@ -19,6 +19,43 @@ const snapToGrid = value => Math.round(value / CELL_SIZE) * CELL_SIZE;
 
 type Item = { type: string; id: any };
 
+function useStageZoom(stage: Konva.Stage | null) {
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    if (stage) {
+      stage.content.addEventListener("wheel", e => {
+        e.preventDefault();
+
+        const pointer = stage.getPointerPosition();
+        if (!pointer) return;
+
+        const oldScale = stage.scaleX();
+        const mousePointTo = {
+          x: (pointer.x - stage.x()) / oldScale,
+          y: (pointer.y - stage.y()) / oldScale
+        };
+
+        const newScale = Math.max(
+          0.1,
+          Math.min(5, oldScale - e.deltaY * 0.001)
+        );
+        stage.scale({ x: newScale, y: newScale });
+
+        const newPos = {
+          x: pointer.x - mousePointTo.x * newScale,
+          y: pointer.y - mousePointTo.y * newScale
+        };
+
+        stage.position(newPos);
+        setScale(newScale);
+      });
+    }
+  }, [stage]);
+
+  return { scale };
+}
+
 function useInitialRecenter(
   stage: Konva.Stage | null,
   plan: any,
@@ -82,53 +119,13 @@ function useInitialRecenter(
 
     stage.position(initialPos);
     stage.scale(initialScale);
-  }, [containerSize]);
+  }, [stage, containerSize]);
 }
 
-function useStageZoom(stage: Konva.Stage | null) {
-  const [scale, setScale] = useState(1);
+function ScratchEditorView2D({ plan }: { plan: any }) {
+  const stageRef = useRef<Konva.Stage | null>(null);
 
-  useEffect(() => {
-    if (stage) {
-      stage.content.addEventListener("wheel", e => {
-        e.preventDefault();
-
-        const pointer = stage.getPointerPosition();
-        if (!pointer) return;
-
-        const oldScale = stage.scaleX();
-        const mousePointTo = {
-          x: (pointer.x - stage.x()) / oldScale,
-          y: (pointer.y - stage.y()) / oldScale
-        };
-
-        const newScale = Math.max(
-          0.1,
-          Math.min(5, oldScale - e.deltaY * 0.001)
-        );
-        stage.scale({ x: newScale, y: newScale });
-
-        const newPos = {
-          x: pointer.x - mousePointTo.x * newScale,
-          y: pointer.y - mousePointTo.y * newScale
-        };
-
-        stage.position(newPos);
-        setScale(newScale);
-      });
-    }
-  }, [stage]);
-
-  return { scale };
-}
-
-function ScratchEditorView2D() {
   const [containerRef, containerSize] = useMeasure();
-
-  const [plan, setPlan] = useState(initialPlan);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-  const stageRef = useRef<Konva.Stage>(null);
-
   const { scale } = useStageZoom(stageRef.current);
   useInitialRecenter(stageRef.current, plan, containerSize);
 
@@ -142,7 +139,6 @@ function ScratchEditorView2D() {
         scaleX={scale}
         scaleY={scale}
         style={{ background: BG_COLOR }}
-        onClick={() => setSelectedItem(null)}
       >
         <Layer>
           {plan.rooms.map((room, i) =>
@@ -178,12 +174,6 @@ function ScratchEditorView2D() {
                 direction === "v" ? length * CELL_SIZE : width * CELL_SIZE
               }
               fill={WALL_COLOR}
-              stroke={selectedItem?.id === id ? ACTIVE_COLOR : WALL_COLOR}
-              strokeWidth={selectedItem?.id === id ? 3 : 1}
-              onClick={e => {
-                e.cancelBubble = true;
-                setSelectedItem({ type: "Wall", id });
-              }}
             />
           ))}
         </Layer>
@@ -193,5 +183,5 @@ function ScratchEditorView2D() {
 }
 
 export function Scratch() {
-  return <ScratchEditorView2D />;
+  return <ScratchEditorView2D plan={initialPlan} />;
 }
