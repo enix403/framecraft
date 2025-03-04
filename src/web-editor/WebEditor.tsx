@@ -13,12 +13,14 @@ import { PlotDetails } from "./panes/PlotDetails";
 import { RoomDetails } from "./panes/RoomDetails";
 
 import { World2DPane } from "./world2d/World2DPane";
-
-const plan = getInitialPlan();
+import { useState } from "react";
+import { PlanData } from "./plan/plan";
 
 export function WebEditor() {
+  const [plan, setPlan] = useState<PlanData | null>(getInitialPlan);
+
   return (
-    <PlanContext.Provider value={plan}>
+    <PlanContext.Provider value={{ plan, setPlan }}>
       <div className='flex h-full max-h-full flex-col overflow-hidden'>
         <TopNav />
         <ResizablePanelGroup direction='horizontal' className='flex-1-fix'>

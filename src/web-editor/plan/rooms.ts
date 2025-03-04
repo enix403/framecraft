@@ -58,6 +58,14 @@ export const nodeTypeToRoomType: Record<number, RoomTypeIds> = {
   4: "balcony"
 };
 
+export const roomTypeToNodeType: Record<RoomTypeIds, number> = {
+  living: 0,
+  kitchen: 1,
+  bedroom: 2,
+  bathroom: 3,
+  balcony: 4
+};
+
 export function roomInfoFromNodeType(nodeType: number) {
   return roomTypes[nodeTypeToRoomType[nodeType]];
 }

@@ -11,36 +11,54 @@ import {
   SelectGroup,
   SelectLabel
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   nodeTypeToRoomType,
   roomInfoFromNodeType,
   roomTypeIds,
-  roomTypes
+  roomTypes,
+  roomTypeToNodeType
 } from "../plan/rooms";
 import { RectPreview } from "@/components/RectPreview";
 import { useSelectedObject } from "../world2d/state/selections";
-import { usePlan } from "../PlanProvider";
+import { usePlan, useUpdatePlan } from "../PlanProvider";
 import { PlanData } from "../plan/plan";
 
 function RoomName({
-  plan,
   room,
   roomIndex
 }: {
-  plan: PlanData;
   room: PlanData["rooms"][number];
   roomIndex: number;
 }) {
+  const updatePlan = useUpdatePlan();
   const [name, setName] = useState(room.label);
 
-  const [typeId, setTypeId] = useState<any>(nodeTypeToRoomType[room.type]);
+  const [typeId, setTypeId] = useState<string>(nodeTypeToRoomType[room.type]);
   const selectedType = roomTypes[typeId] || null;
+
+  function saveName() {
+    updatePlan(plan => {
+      plan.rooms[roomIndex].label = name;
+    });
+  }
+
+  function saveType(typeId: string) {
+    updatePlan(plan => {
+      plan.rooms[roomIndex].type = roomTypeToNodeType[typeId];
+    });
+  }
 
   return (
     <div className='flex rounded-md shadow-xs'>
-      <Select value={typeId} onValueChange={v => setTypeId(v)}>
+      <Select
+        value={typeId}
+        onValueChange={v => {
+          setTypeId(v);
+          saveType(v);
+        }}
+      >
         <SelectTrigger className='w-fit rounded-e-none shadow-none'>
           <SelectValue>
             {selectedType && (
@@ -75,6 +93,7 @@ function RoomName({
         type='text'
         value={name}
         onChange={e => setName(e.target.value)}
+        onBlur={saveName}
       />
     </div>
   );
@@ -92,12 +111,7 @@ export function RoomDetails() {
         <>
           <h2 className='mb-2 font-semibold'>Room Details</h2>
 
-          <RoomName
-            key={room.id}
-            plan={plan}
-            room={room}
-            roomIndex={selectedObj!.index}
-          />
+          <RoomName key={room.id} room={room} roomIndex={selectedObj!.index} />
 
           <RectPreview
             className='mt-6 mb-6'

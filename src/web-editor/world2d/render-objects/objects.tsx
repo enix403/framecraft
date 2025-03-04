@@ -208,8 +208,14 @@ export function RenderRoomLabels() {
     return (
       <Text
         key={room.id}
-        x={(col + width / 2) * CELL_SIZE - 20}
-        y={(row + height / 2) * CELL_SIZE - 10}
+        x={(col + width / 2) * CELL_SIZE}
+        y={(row + height / 2) * CELL_SIZE}
+        width={1000}
+        height={1000}
+        offsetX={500}
+        offsetY={500}
+        align='center'
+        verticalAlign='middle'
         text={label}
         fontSize={13}
         fill={"black"}
