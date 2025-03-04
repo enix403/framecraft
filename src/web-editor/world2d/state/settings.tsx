@@ -43,4 +43,8 @@ export function useSetZoomLevel() {
 
 /* ================= */
 
-export const eventSubject = new Subject<string>();
+export type SubjectEventTypes =
+  | { type: "recenter" }
+  | { type: "set-zoom", zoomPercent: number }
+
+export const eventSubject = new Subject<SubjectEventTypes>();

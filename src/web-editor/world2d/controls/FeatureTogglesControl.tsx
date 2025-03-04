@@ -12,7 +12,7 @@ import { Layers } from "lucide-react";
 import { ReactNode } from "react";
 import { Label } from "react-konva";
 
-import { useSetSettings, useSettings } from "../settings";
+import { useSetSettings, useSettings } from "../state/settings";
 
 function FeatureToggle({
   label,

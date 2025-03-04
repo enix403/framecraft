@@ -1,9 +1,37 @@
 import Konva from "konva";
 import { useEffect, RefObject } from "react";
-import { useSetZoomLevel } from "../settings";
+import { useSetZoomLevel } from "../state/settings";
 
 const MIN_SCALE_REL = 0.5;
 const MAX_SCALE_REL = 4;
+
+export function scaleStageTo(
+  stage: Konva.Stage,
+  newScale: number,
+  focusPoint?: Konva.Vector2d
+) {
+  if (!focusPoint)
+    focusPoint = {
+      x: stage.width() / 2,
+      y: stage.height() / 2
+    };
+
+  const oldScale = stage.scaleX();
+
+  const mousePointTo = {
+    x: (focusPoint.x - stage.x()) / oldScale,
+    y: (focusPoint.y - stage.y()) / oldScale
+  };
+
+  stage.scale({ x: newScale, y: newScale });
+
+  const newPos = {
+    x: focusPoint.x - mousePointTo.x * newScale,
+    y: focusPoint.y - mousePointTo.y * newScale
+  };
+
+  stage.position(newPos);
+}
 
 export function useWheelZoomListener(
   stageRef: RefObject<Konva.Stage | null>,
@@ -20,35 +48,22 @@ export function useWheelZoomListener(
 
     setZoomLevel(stage.scaleX() / baseScale);
 
-    function onWheelImpl(stage: Konva.Stage, e: WheelEvent) {
-      e.preventDefault();
-
+    function onWheelImpl(stage: Konva.Stage, zoomAmount: number) {
       const pointer = stage.getPointerPosition();
       if (!pointer) return;
 
-      const oldScale = stage.scaleX();
-      const mousePointTo = {
-        x: (pointer.x - stage.x()) / oldScale,
-        y: (pointer.y - stage.y()) / oldScale
-      };
-
       const newScale = Math.max(
         minScale,
-        Math.min(maxScale, oldScale - e.deltaY * 0.001)
+        Math.min(maxScale, stage.scaleX() - zoomAmount * 0.001)
       );
-      stage.scale({ x: newScale, y: newScale });
+
+      scaleStageTo(stage, newScale, pointer);
       setZoomLevel(newScale / baseScale);
-
-      const newPos = {
-        x: pointer.x - mousePointTo.x * newScale,
-        y: pointer.y - mousePointTo.y * newScale
-      };
-
-      stage.position(newPos);
     }
 
-    function onWheel(e: WheelEvent) {
-      onWheelImpl(stage!, e);
+    function onWheel(event: WheelEvent) {
+      event.preventDefault();
+      onWheelImpl(stage!, event.deltaY);
     }
 
     stage.content.addEventListener("wheel", onWheel);

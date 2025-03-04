@@ -3,13 +3,18 @@ import { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Rect, Text, Line } from "react-konva";
 
 import { useMeasure } from "@uidotdev/usehooks";
-import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
+
+import { roomInfoFromNodeType } from "../plan/rooms";
+import { CELL_PHYSICAL_LENGTH, unitFactor } from "../plan/units";
+import { usePlan } from "../PlanProvider";
+
+import {
+  useWheelZoomListener,
+  scaleStageTo
+} from "./hooks/useWheelZoomListener";
 import { useRecenter } from "./hooks/useRecenter";
 import { CELL_SIZE, snapToGrid } from "./common";
-import { roomInfoFromNodeType } from "../plan/rooms";
-import { eventSubject, useSettings } from "./settings";
-import { usePlan } from "../PlanProvider";
-import { CELL_PHYSICAL_LENGTH, unitFactor } from "../plan/units";
+import { eventSubject, useSettings } from "./state/settings";
 
 /* ============================================= */
 
@@ -249,13 +254,12 @@ export function World2DEditor() {
 
   useEffect(() => {
     const subscription = eventSubject.subscribe(event => {
-      if (event === "recenter") {
+      if (event.type === "recenter") {
         forceRecenter();
-      } else if ((event as string).startsWith("set-zoom:")) {
-        let zoomNum = parseInt((event as string).split(":")[1]);
-        zoomNum /= 100.0;
-        let newScale = zoomNum * baseScale;
-        stageRef.current?.scale({ x: newScale, y: newScale });
+      } else if (event.type === "set-zoom") {
+        let zoomLevel = event.zoomPercent / 100.0;
+        let newScale = zoomLevel * baseScale;
+        scaleStageTo(stageRef.current!, newScale);
       }
     });
 

@@ -2,7 +2,7 @@ import Konva from "konva";
 import { useRef, useLayoutEffect, RefObject, useState } from "react";
 
 import { CELL_SIZE } from "../common";
-import { useSetZoomLevel } from "../settings";
+import { useSetZoomLevel } from "../state/settings";
 import { usePlan } from "@/web-editor/PlanProvider";
 
 export function useRecenter(

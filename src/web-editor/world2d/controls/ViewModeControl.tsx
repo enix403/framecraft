@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Palette } from "lucide-react";
-import { useSetSettings, useSettings } from "../settings";
+import { useSetSettings, useSettings } from "../state/settings";
 
 export function ViewModeControl() {
   const { viewMode } = useSettings();

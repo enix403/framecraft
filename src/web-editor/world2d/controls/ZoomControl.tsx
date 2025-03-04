@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Binoculars, ChevronDownIcon, ZoomIn } from "lucide-react";
 
-import { eventSubject, useSetZoomLevel, useZoomLevel } from "../settings";
+import { eventSubject, useSetZoomLevel, useZoomLevel } from "../state/settings";
 
 export function ZoomControl() {
   const zoomLevel = useZoomLevel();
@@ -18,7 +18,10 @@ export function ZoomControl() {
 
   function applyZoom(value: number) {
     setZoomLevel(value / 100);
-    eventSubject.next("set-zoom:" + value);
+    eventSubject.next({
+      type: "set-zoom",
+      zoomPercent: value
+    });
   }
 
   const selectableZoomLevels = [70, 80, 100, 110, 120, 140, 180, 200];
