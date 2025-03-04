@@ -43,12 +43,12 @@ export class CameraController {
     private readonly setZoomLevel: (x: number) => void
   ) {}
 
-  private get Stage() {
+  public get Stage() {
     return this.stageRef.current;
   }
 
   public isStageActive() {
-    return !isNaN(this.focus.initialPos.x);
+    return Boolean(this.Stage) && !isNaN(this.focus.initialPos.x);
   }
 
   public get CurrentScale() {

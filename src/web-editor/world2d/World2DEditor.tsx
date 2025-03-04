@@ -14,7 +14,6 @@ import {
 import { eventSubject, useSettings } from "./state/settings";
 import { usePlanFocus } from "./hooks/usePlanFocus";
 import {
-  useStageScaler,
   useWheelZoomListener
 } from "./hooks/useWheelZoomListener";
 import { useRecenter } from "./hooks/useRecenter";
@@ -30,22 +29,19 @@ export function World2DEditor() {
   const camera = useCamera(stageRef, focus);
   useRecenter(camera);
 
-  // useWheelZoomListener(stageRef, baseScale);
+  useWheelZoomListener(camera);
 
   useEffect(() => {
     const subscription = eventSubject.subscribe(event => {
       if (event.type === "recenter") {
         camera.recenter();
       } else if (event.type === "set-zoom") {
-        // let zoomLevel = event.zoomPercent / 100.0;
-        // let newScale = zoomLevel * baseScale;
-        // scaleStageTo(newScale);
+        camera.setZoom(event.zoomPercent / 100.0);
       }
     });
 
     return () => subscription.unsubscribe();
   }, [camera]);
-  // }, [forceRecenter, scaleStageTo, baseScale]);
 
   const settings = useSettings();
 
