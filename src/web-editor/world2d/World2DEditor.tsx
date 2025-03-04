@@ -8,13 +8,16 @@ import { roomInfoFromNodeType } from "../plan/rooms";
 import { CELL_PHYSICAL_LENGTH, unitFactor } from "../plan/units";
 import { usePlan } from "../PlanProvider";
 
-import {
-  useWheelZoomListener,
-  scaleStageTo
-} from "./hooks/useWheelZoomListener";
-import { useRecenter } from "./hooks/useRecenter";
+// import {
+//   useWheelZoomListener,
+//   scaleStageTo
+// } from "./hooks/useWheelZoomListener";
+// import { useRecenter } from "./hooks/useRecenter";
 import { CELL_SIZE, snapToGrid } from "./common";
 import { eventSubject, useSettings } from "./state/settings";
+import { usePlanFocus } from "./hooks/usePlanFocus";
+import { useStageScaler, useWheelZoomListener } from "./hooks/useWheelZoomListener";
+import { useRecenter } from "./hooks/useRecenter";
 
 /* ============================================= */
 
@@ -249,7 +252,16 @@ export function World2DEditor() {
   const [containerRef, containerSize] = useMeasure();
   const stageRef = useRef<Konva.Stage | null>(null);
 
-  const { forceRecenter, baseScale } = useRecenter(stageRef, containerSize);
+  const { baseScale, initialPos } = usePlanFocus(stageRef, containerSize);
+
+  const scaleStageTo = useStageScaler(stageRef, baseScale);
+  const { forceRecenter } = useRecenter(
+    stageRef,
+    baseScale,
+    initialPos,
+    scaleStageTo
+  );
+
   useWheelZoomListener(stageRef, baseScale);
 
   useEffect(() => {
@@ -259,12 +271,12 @@ export function World2DEditor() {
       } else if (event.type === "set-zoom") {
         let zoomLevel = event.zoomPercent / 100.0;
         let newScale = zoomLevel * baseScale;
-        scaleStageTo(stageRef.current!, newScale);
+        scaleStageTo(newScale);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [forceRecenter, baseScale]);
+  }, [forceRecenter, scaleStageTo, baseScale]);
 
   const settings = useSettings();
 
