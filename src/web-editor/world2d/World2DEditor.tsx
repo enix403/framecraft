@@ -18,6 +18,7 @@ import {
   useWheelZoomListener
 } from "./hooks/useWheelZoomListener";
 import { useRecenter } from "./hooks/useRecenter";
+import { useCamera } from "./state/camera";
 
 /* ============================================= */
 
@@ -25,31 +26,26 @@ export function World2DEditor() {
   const [containerRef, containerSize] = useMeasure();
   const stageRef = useRef<Konva.Stage | null>(null);
 
-  const { baseScale, initialPos } = usePlanFocus(stageRef, containerSize);
+  const focus = usePlanFocus(stageRef, containerSize);
+  const camera = useCamera(stageRef, focus);
+  useRecenter(camera);
 
-  const scaleStageTo = useStageScaler(stageRef, baseScale);
-  const { forceRecenter } = useRecenter(
-    stageRef,
-    baseScale,
-    initialPos,
-    scaleStageTo
-  );
-
-  useWheelZoomListener(stageRef, baseScale);
+  // useWheelZoomListener(stageRef, baseScale);
 
   useEffect(() => {
     const subscription = eventSubject.subscribe(event => {
       if (event.type === "recenter") {
-        forceRecenter();
+        camera.recenter();
       } else if (event.type === "set-zoom") {
-        let zoomLevel = event.zoomPercent / 100.0;
-        let newScale = zoomLevel * baseScale;
-        scaleStageTo(newScale);
+        // let zoomLevel = event.zoomPercent / 100.0;
+        // let newScale = zoomLevel * baseScale;
+        // scaleStageTo(newScale);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [forceRecenter, scaleStageTo, baseScale]);
+  }, [camera]);
+  // }, [forceRecenter, scaleStageTo, baseScale]);
 
   const settings = useSettings();
 

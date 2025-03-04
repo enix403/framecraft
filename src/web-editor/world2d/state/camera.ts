@@ -47,8 +47,20 @@ export class CameraController {
     return this.stageRef.current;
   }
 
+  public isStageActive() {
+    return !isNaN(this.focus.initialPos.x);
+  }
+
   public get CurrentScale() {
     return this.stageRef.current?.scaleX() || 1;
+  }
+
+  public get BaseScale() {
+    return this.focus.baseScale;
+  }
+
+  public get InitialPos() {
+    return this.focus.initialPos;
   }
 
   public scaleStageTo(newScale: number, focusPoint?: Konva.Vector2d) {
@@ -58,8 +70,19 @@ export class CameraController {
     this.setZoomLevel(newScale / this.focus.baseScale);
   }
 
+  public moveStageTo(pos: Konva.Vector2d) {
+    if (!this.Stage) return;
+
+    this.Stage.position(pos);
+  }
+
   public setZoom(zoomLevel: number) {
     this.scaleStageTo(zoomLevel * this.focus.baseScale);
+  }
+
+  public recenter() {
+    this.scaleStageTo(this.BaseScale);
+    this.moveStageTo(this.InitialPos);
   }
 }
 
@@ -68,13 +91,18 @@ export function useCamera(
   focus: PlanFocus
 ) {
   const setZoomLevel = useSetAtom(zoomLevelAtom);
-  const camera = useMemo(() => new CameraController(stageRef, focus, setZoomLevel), [focus]);
+  const camera = useMemo(
+    () => new CameraController(stageRef, focus, setZoomLevel),
+    [focus]
+  );
 
   useEffect(() => {
     camera.scaleStageTo(camera.CurrentScale);
   }, [camera]);
 
-/*   function scaleStageTo(newScale: number, focusPoint?: Konva.Vector2d) {
+  return camera;
+
+  /*   function scaleStageTo(newScale: number, focusPoint?: Konva.Vector2d) {
     if (!stageRef.current) return;
 
     _scaleStageToImpl(stageRef.current, newScale, focusPoint);

@@ -1,45 +1,24 @@
-import Konva from "konva";
 import {
   useRef,
   useLayoutEffect,
-  RefObject,
-  useState,
-  useCallback
 } from "react";
+import { CameraController } from "../state/camera";
 
-export function useRecenter(
-  stageRef: RefObject<Konva.Stage | null>,
-  baseScale: number,
-  initialPos: Konva.Vector2d,
-  scaleStageTo: any
-) {
+export function useRecenter(camera: CameraController) {
   const firstPlaced = useRef(false);
 
-  const performRecenter = useCallback(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-
-    if (isNaN(initialPos.x)) {
+  useLayoutEffect(() => {
+    if (!camera.isStageActive()) {
       return;
     }
-
-    firstPlaced.current = true;
-
-    scaleStageTo(baseScale);
-    stage.position(initialPos);
-  }, [baseScale, initialPos]);
-
-  useLayoutEffect(() => {
-    if (isNaN(initialPos.x)) return;
 
     if (firstPlaced.current) {
       return;
     }
 
-    performRecenter();
-  }, [baseScale, initialPos]);
+    firstPlaced.current = true;
 
-  return {
-    forceRecenter: performRecenter
-  };
+    // performRecenter();
+    camera.recenter();
+  }, [camera]);
 }
