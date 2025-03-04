@@ -5,12 +5,12 @@ import { CELL_SIZE } from "../common";
 import { usePlan } from "@/web-editor/PlanProvider";
 
 export type PlanFocus = {
-  initialPos: Konva.Vector2d;
+  planCenter: Konva.Vector2d;
   baseScale: number;
 };
 
 const noFocus: PlanFocus = {
-  initialPos: { x: NaN, y: NaN },
+  planCenter: { x: NaN, y: NaN },
   baseScale: 1
 };
 
@@ -65,11 +65,11 @@ export function usePlanFocus(
     const screenCenterX = containerSize.width / 2;
     const screenCenterY = containerSize.height / 2;
 
-    const initialPos = {
+    const planCenter = {
       x: screenCenterX - centerX * baseScale,
       y: screenCenterY - centerY * baseScale
     };
 
-    return { initialPos, baseScale } as PlanFocus;
+    return { planCenter, baseScale } as PlanFocus;
   }, [plan, containerSize]);
 }

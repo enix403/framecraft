@@ -54,7 +54,7 @@ export class Camera {
   }
 
   public isStageActive() {
-    return Boolean(this.Stage) && !isNaN(this.focus.initialPos.x);
+    return Boolean(this.Stage) && !isNaN(this.focus.planCenter.x);
   }
 
   public get CurrentScale() {
@@ -65,8 +65,8 @@ export class Camera {
     return this.focus.baseScale;
   }
 
-  public get InitialPos() {
-    return this.focus.initialPos;
+  public get PlanCenter() {
+    return this.focus.planCenter;
   }
 
   public scaleStageTo(newScale: number, focusPoint?: Konva.Vector2d) {
@@ -88,7 +88,7 @@ export class Camera {
 
   public recenter() {
     this.scaleStageTo(this.BaseScale);
-    this.moveStageTo(this.InitialPos);
+    this.moveStageTo(this.PlanCenter);
   }
 }
 
