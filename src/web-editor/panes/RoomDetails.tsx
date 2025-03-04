@@ -13,7 +13,12 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 
-import { roomTypeIds, roomTypes } from "../plan/rooms";
+import {
+  nodeTypeToRoomType,
+  roomInfoFromNodeType,
+  roomTypeIds,
+  roomTypes
+} from "../plan/rooms";
 import { RectPreview } from "@/components/RectPreview";
 import { useSelectedObject } from "../world2d/state/selections";
 import { usePlan } from "../PlanProvider";
@@ -28,17 +33,22 @@ function RoomName({
   room: PlanData["rooms"][number];
   roomIndex: number;
 }) {
-  const [selectedId, setSelectedId] = useState<any>("living");
+  const [name, setName] = useState(room.label);
 
-  const selected = roomTypes[selectedId] || null;
+  const [typeId, setTypeId] = useState<any>(nodeTypeToRoomType[room.type]);
+  const selectedType = roomTypes[typeId] || null;
 
   return (
     <div className='flex rounded-md shadow-xs'>
-      <Select value={selectedId} onValueChange={v => setSelectedId(v)}>
+      <Select value={typeId} onValueChange={v => setTypeId(v)}>
         <SelectTrigger className='w-fit rounded-e-none shadow-none'>
           <SelectValue>
-            {selected && (
-              <selected.Icon size={18} color={selected.color} strokeWidth={3} />
+            {selectedType && (
+              <selectedType.Icon
+                size={18}
+                color={selectedType.color}
+                strokeWidth={3}
+              />
             )}
           </SelectValue>
         </SelectTrigger>
@@ -63,7 +73,8 @@ function RoomName({
         className='-ms-px rounded-s-none shadow-none focus-visible:z-10'
         placeholder='Room Name'
         type='text'
-        defaultValue='Living Room'
+        value={name}
+        onChange={e => setName(e.target.value)}
       />
     </div>
   );
@@ -81,7 +92,12 @@ export function RoomDetails() {
         <>
           <h2 className='mb-2 font-semibold'>Room Details</h2>
 
-          <RoomName plan={plan} room={room} roomIndex={selectedObj!.index} />
+          <RoomName
+            key={room.id}
+            plan={plan}
+            room={room}
+            roomIndex={selectedObj!.index}
+          />
 
           <RectPreview
             className='mt-6 mb-6'
@@ -91,8 +107,8 @@ export function RoomDetails() {
               width: w,
               height: h
             }))}
-            fillColor="#843cd655"
-            outStrokeColor="#843cd6"
+            fillColor='#843cd655'
+            outStrokeColor='#843cd6'
           />
 
           <Stat label='Length' value='32 ft.' />
