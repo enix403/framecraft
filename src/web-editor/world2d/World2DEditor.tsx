@@ -29,11 +29,11 @@ export function World2DEditor() {
   useWheelZoomListener(camera);
 
   useEffect(() => {
-    const subscription = commandsSubject.subscribe(event => {
-      if (event.type === "recenter") {
+    const subscription = commandsSubject.subscribe(cmd => {
+      if (cmd.type === "recenter") {
         camera.recenter();
-      } else if (event.type === "set-zoom") {
-        camera.setZoom(event.zoomPercent / 100.0);
+      } else if (cmd.type === "set-zoom") {
+        camera.setZoom(cmd.zoomPercent / 100.0);
       }
     });
 
