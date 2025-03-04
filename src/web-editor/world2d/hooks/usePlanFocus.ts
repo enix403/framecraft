@@ -5,7 +5,12 @@ import { CELL_SIZE } from "../common";
 import { useSetZoomLevel } from "../state/settings";
 import { usePlan } from "@/web-editor/PlanProvider";
 
-const noFocus = {
+export type PlanFocus = {
+  initialPos: Konva.Vector2d;
+  baseScale: number;
+};
+
+const noFocus: PlanFocus = {
   initialPos: { x: NaN, y: NaN },
   baseScale: 1
 };
@@ -66,6 +71,6 @@ export function usePlanFocus(
       y: screenCenterY - centerY * baseScale
     };
 
-    return { initialPos, baseScale };
+    return { initialPos, baseScale } as PlanFocus;
   }, [plan, containerSize]);
 }
