@@ -1,11 +1,11 @@
 import Konva from "konva";
 import { useEffect } from "react";
-import { CameraController } from "../state/camera";
+import { Camera } from "../state/camera";
 
 const MIN_SCALE_REL = 0.5;
 const MAX_SCALE_REL = 4;
 
-export function useWheelZoomListener(camera: CameraController) {
+export function useWheelZoomListener(camera: Camera) {
   useEffect(() => {
     if (!camera.isStageActive()) {
       return;

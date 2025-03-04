@@ -16,6 +16,7 @@ function _scaleStageToImpl(
       y: stage.height() / 2
     };
 
+  /* ===== Set Position ===== */
   const oldScale = stage.scaleX();
 
   const mousePointTo = {
@@ -23,14 +24,16 @@ function _scaleStageToImpl(
     y: (focusPoint.y - stage.y()) / oldScale
   };
 
-  stage.scale({ x: newScale, y: newScale });
-
   const newPos = {
     x: focusPoint.x - mousePointTo.x * newScale,
     y: focusPoint.y - mousePointTo.y * newScale
   };
 
   stage.position(newPos);
+
+  /* ===== Set Scale ===== */
+  stage.scale({ x: newScale, y: newScale });
+
 }
 
 const zoomLevelAtom = atom(1);
@@ -39,7 +42,7 @@ export function useZoomLevel() {
   return useAtomValue(zoomLevelAtom);
 }
 
-export class CameraController {
+export class Camera {
   public constructor(
     private readonly stageRef: RefObject<Konva.Stage | null>,
     private readonly focus: PlanFocus,
@@ -95,7 +98,7 @@ export function useCamera(
 ) {
   const setZoomLevel = useSetAtom(zoomLevelAtom);
   const camera = useMemo(
-    () => new CameraController(stageRef, focus, setZoomLevel),
+    () => new Camera(stageRef, focus, setZoomLevel),
     [focus]
   );
 
