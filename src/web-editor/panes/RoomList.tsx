@@ -1,11 +1,14 @@
 import { Input } from "@/components/ui/input";
-import { repeatNode } from "@/utils/markup";
-import { Eclipse, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { usePlan } from "../PlanProvider";
 import { roomInfoFromNodeType } from "../plan/rooms";
+import { useSelectedObject } from "../world2d/state/selections";
+import clsx from "clsx";
 
 export function RoomList() {
   let { rooms } = usePlan();
+
+  const [selectedObj, setSelectedObj] = useSelectedObject();
 
   return (
     <div className='flex flex-1 flex-col p-4 pb-0'>
@@ -27,12 +30,22 @@ export function RoomList() {
       </div>
 
       <div className='-mx-4 mt-2 flex-1-y'>
-        {rooms.map(room => {
+        {rooms.map((room, index) => {
           const roomType = roomInfoFromNodeType(room.type);
+          const isSelected = index === selectedObj?.index;
+
           return (
             <button
               key={room.id}
-              className='flex w-full items-center gap-x-2 px-4 py-3 last:mb-8 hover:bg-accent-foreground/[0.07]'
+              className={clsx(
+                "flex w-full items-center gap-x-2 px-4 py-3 last:mb-8",
+                isSelected
+                  ? "bg-[#DDEDFE]"
+                  : "hover:bg-accent-foreground/[0.07]"
+              )}
+              onClick={() => {
+                setSelectedObj(isSelected ? null : { type: "room", index });
+              }}
             >
               <roomType.Icon color={roomType.color} strokeWidth={3} />
               <span>{room.label}</span>
