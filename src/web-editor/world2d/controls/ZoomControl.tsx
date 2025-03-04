@@ -10,14 +10,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Binoculars, ChevronDownIcon, ZoomIn } from "lucide-react";
 
-import { eventSubject } from "../state/settings";
 import { useZoomLevel } from "../state/camera";
+import { sendEditorCommand } from "../state/commands";
 
 export function ZoomControl() {
   const zoomLevel = useZoomLevel();
 
   function applyZoom(value: number) {
-    eventSubject.next({
+    sendEditorCommand({
       type: "set-zoom",
       zoomPercent: value
     });

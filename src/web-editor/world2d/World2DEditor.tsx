@@ -11,11 +11,12 @@ import {
   RenderWallMeasures
 } from "./render-objects/objects";
 
-import { eventSubject, useSettings } from "./state/settings";
+import { useSettings } from "./state/settings";
 import { usePlanFocus } from "./hooks/usePlanFocus";
 import { useCamera } from "./state/camera";
 import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
 import { useInitialRecenter } from "./hooks/useInitialRecenter";
+import { commandsSubject } from "./state/commands";
 
 /* ============================================= */
 
@@ -30,7 +31,7 @@ export function World2DEditor() {
   useWheelZoomListener(camera);
 
   useEffect(() => {
-    const subscription = eventSubject.subscribe(event => {
+    const subscription = commandsSubject.subscribe(event => {
       if (event.type === "recenter") {
         camera.recenter();
       } else if (event.type === "set-zoom") {
