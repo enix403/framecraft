@@ -24,6 +24,7 @@ import { RectPreview } from "@/components/RectPreview";
 import { useSelectedObject } from "../world2d/state/selections";
 import { usePlan, useUpdatePlan } from "../PlanProvider";
 import { PlanData } from "../plan/plan";
+import { DoorOpen } from "lucide-react";
 
 function RoomName({
   room,
@@ -106,8 +107,8 @@ export function RoomDetails() {
   const room = selectedObj ? plan.rooms[selectedObj.index] : null;
 
   return (
-    <div className='flex flex-col p-4'>
-      {room && (
+    <div className='h-full p-4'>
+      {room ? (
         <>
           <h2 className='mb-2 font-semibold'>Room Details</h2>
 
@@ -129,6 +130,16 @@ export function RoomDetails() {
           <Stat label='Width' value='26 ft.' />
           <Stat label='Area' value='832 ft. sq' />
         </>
+      ) : (
+        <div className='flex h-full max-h-[34rem] flex-col items-center justify-center px-3'>
+          <DoorOpen
+            className='h-auto w-full max-w-52 text-muted-foreground opacity-40'
+            strokeWidth={1}
+          />
+          <p className='mt-2 font-medium text-center leading-[1.2] text-muted-foreground/70'>
+            Select a room to inspect
+          </p>
+        </div>
       )}
     </div>
   );
