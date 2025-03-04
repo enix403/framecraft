@@ -16,10 +16,10 @@ export function RectPreview({
   rectangles,
   hintWidth = 150,
   hintHeight = 150,
-  fillColor = "#843cd655",
+  fillColor = "#00d49055",
   inStrokeColor = "transparent",
   inStrokeWidth = 1,
-  outStrokeColor = "#843cd6",
+  outStrokeColor = "#00d490",
   outStrokeWidth = 4,
   className
 }: {
@@ -88,11 +88,16 @@ export function RectPreview({
       ])
     );
 
-    const outlinePoly = union(featureCollection(polys));
+    if (polys.length > 1) {
+      const outlinePoly = union(featureCollection(polys));
 
-    if (outlinePoly) {
-      let coords = outlinePoly.geometry.coordinates.flat(2) as number[];
-      setOutline(coords);
+      if (outlinePoly) {
+        let coords = outlinePoly.geometry.coordinates.flat(2) as number[];
+        setOutline(coords);
+      }
+    }
+    else {
+      setOutline(polys[0].geometry.coordinates.flat(2) as number[]);
     }
   }, [rectangles, canvasHeight]);
 

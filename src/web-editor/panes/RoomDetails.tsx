@@ -15,8 +15,19 @@ import { useState } from "react";
 
 import { roomTypeIds, roomTypes } from "../plan/rooms";
 import { RectPreview } from "@/components/RectPreview";
+import { useSelectedObject } from "../world2d/state/selections";
+import { usePlan } from "../PlanProvider";
+import { PlanData } from "../plan/plan";
 
-function RoomName() {
+function RoomName({
+  plan,
+  room,
+  roomIndex
+}: {
+  plan: PlanData;
+  room: PlanData["rooms"][number];
+  roomIndex: number;
+}) {
   const [selectedId, setSelectedId] = useState<any>("living");
 
   const selected = roomTypes[selectedId] || null;
@@ -59,33 +70,36 @@ function RoomName() {
 }
 
 export function RoomDetails() {
+  const plan = usePlan();
+  const [selectedObj] = useSelectedObject();
+
+  const room = selectedObj ? plan.rooms[selectedObj.index] : null;
+
   return (
     <div className='flex flex-col p-4'>
-      <h2 className='mb-2 font-semibold'>Room Details</h2>
+      {room && (
+        <>
+          <h2 className='mb-2 font-semibold'>Room Details</h2>
 
-      <RoomName />
+          <RoomName plan={plan} room={room} roomIndex={selectedObj!.index} />
 
-      <RectPreview
-        className='mt-6 mb-6'
-        rectangles={[
-          {
-            left: 29,
-            top: 39,
-            width: 9,
-            height: 14
-          },
-          {
-            left: 29,
-            top: 53,
-            width: 5,
-            height: 1
-          }
-        ]}
-      />
+          <RectPreview
+            className='mt-6 mb-6'
+            rectangles={room.rects.map(([r, c, w, h]) => ({
+              left: c,
+              top: r,
+              width: w,
+              height: h
+            }))}
+            fillColor="#843cd655"
+            outStrokeColor="#843cd6"
+          />
 
-      <Stat label='Length' value='32 ft.' />
-      <Stat label='Width' value='26 ft.' />
-      <Stat label='Area' value='832 ft. sq' />
+          <Stat label='Length' value='32 ft.' />
+          <Stat label='Width' value='26 ft.' />
+          <Stat label='Area' value='832 ft. sq' />
+        </>
+      )}
     </div>
   );
 }
