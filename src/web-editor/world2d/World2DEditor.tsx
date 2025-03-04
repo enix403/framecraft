@@ -13,11 +13,9 @@ import {
 
 import { eventSubject, useSettings } from "./state/settings";
 import { usePlanFocus } from "./hooks/usePlanFocus";
-import {
-  useWheelZoomListener
-} from "./hooks/useWheelZoomListener";
-import { useRecenter } from "./hooks/useRecenter";
 import { useCamera } from "./state/camera";
+import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
+import { useInitialRecenter } from "./hooks/useInitialRecenter";
 
 /* ============================================= */
 
@@ -27,8 +25,8 @@ export function World2DEditor() {
 
   const focus = usePlanFocus(stageRef, containerSize);
   const camera = useCamera(stageRef, focus);
-  useRecenter(camera);
 
+  useInitialRecenter(camera);
   useWheelZoomListener(camera);
 
   useEffect(() => {

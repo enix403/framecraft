@@ -1,8 +1,7 @@
 import Konva from "konva";
-import { useRef, useLayoutEffect, RefObject, useState, useMemo } from "react";
+import { useRef, RefObject, useMemo } from "react";
 
 import { CELL_SIZE } from "../common";
-import { useSetZoomLevel } from "../state/settings";
 import { usePlan } from "@/web-editor/PlanProvider";
 
 export type PlanFocus = {

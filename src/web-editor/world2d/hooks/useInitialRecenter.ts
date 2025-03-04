@@ -4,21 +4,20 @@ import {
 } from "react";
 import { CameraController } from "../state/camera";
 
-export function useRecenter(camera: CameraController) {
-  const firstPlaced = useRef(false);
+export function useInitialRecenter(camera: CameraController) {
+  const initiallyRecentered = useRef(false);
 
   useLayoutEffect(() => {
     if (!camera.isStageActive()) {
       return;
     }
 
-    if (firstPlaced.current) {
+    if (initiallyRecentered.current) {
       return;
     }
 
-    firstPlaced.current = true;
+    initiallyRecentered.current = true;
 
-    // performRecenter();
     camera.recenter();
   }, [camera]);
 }

@@ -1,8 +1,7 @@
 import Konva from "konva";
-import { atom, useSetAtom } from "jotai";
+import { atom, useAtomValue, useSetAtom } from "jotai";
 import { PlanFocus } from "../hooks/usePlanFocus";
-import { RefObject, SetStateAction, useEffect, useMemo } from "react";
-import { Certificate } from "crypto";
+import { RefObject, useEffect, useMemo } from "react";
 
 /* ================== */
 
@@ -35,6 +34,10 @@ function _scaleStageToImpl(
 }
 
 const zoomLevelAtom = atom(1);
+
+export function useZoomLevel() {
+  return useAtomValue(zoomLevelAtom);
+}
 
 export class CameraController {
   public constructor(
@@ -101,23 +104,4 @@ export function useCamera(
   }, [camera]);
 
   return camera;
-
-  /*   function scaleStageTo(newScale: number, focusPoint?: Konva.Vector2d) {
-    if (!stageRef.current) return;
-
-    _scaleStageToImpl(stageRef.current, newScale, focusPoint);
-    setZoomLevel(newScale / focus.baseScale);
-  }
-
-  function setZoom(zoomLevel: number) {
-    if (!stageRef.current) return;
-
-    scaleStageTo(zoomLevel * focus.baseScale);
-  }
-
-  useEffect(() => {
-    if (!stageRef.current) return;
-
-    scaleStageTo(stageRef.current.scaleX());
-  }, [focus]); */
 }

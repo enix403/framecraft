@@ -31,18 +31,6 @@ export function useSetSettings() {
 
 /* ================= */
 
-const zoomLevelAtom = atom(1);
-
-export function useZoomLevel() {
-  return useAtomValue(zoomLevelAtom);
-}
-
-export function useSetZoomLevel() {
-  return useSetAtom(zoomLevelAtom);
-}
-
-/* ================= */
-
 export type SubjectEventTypes =
   | { type: "recenter" }
   | { type: "set-zoom", zoomPercent: number }
