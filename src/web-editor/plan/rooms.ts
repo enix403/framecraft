@@ -27,7 +27,7 @@ export const roomTypes = {
   bathroom: {
     id: "bathroom",
     title: "Bathroom",
-    color: "#BEBEBE",
+    color: "#67d8e0",
     Icon: Droplet,
     rectColor: "#caf2aa"
   } as RoomType,
@@ -41,7 +41,7 @@ export const roomTypes = {
   balcony: {
     id: "balcony",
     title: "Balcony",
-    color: "#f9e909",
+    color: "#0400fc",
     Icon: Eclipse,
     rectColor: "#ffe192"
   } as RoomType

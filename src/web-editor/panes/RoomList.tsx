@@ -1,8 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { repeatNode } from "@/utils/markup";
 import { Eclipse, Search } from "lucide-react";
+import { usePlan } from "../PlanProvider";
+import { roomInfoFromNodeType } from "../plan/rooms";
 
 export function RoomList() {
+  let { rooms } = usePlan();
+
   return (
     <div className='flex flex-1 flex-col p-4 pb-0'>
       <h2 className='mb-2 font-semibold'>Rooms</h2>
@@ -23,15 +27,18 @@ export function RoomList() {
       </div>
 
       <div className='-mx-4 mt-2 flex-1-y'>
-        {repeatNode(50, index => (
-          <button
-            key={index}
-            className='flex w-full items-center gap-x-2 px-4 py-3 last:mb-8 hover:bg-accent-foreground/[0.07]'
-          >
-            <Eclipse className='text-[#f9e909]' strokeWidth={3} />
-            <span>Balcony {index + 1}</span>
-          </button>
-        ))}
+        {rooms.map(room => {
+          const roomType = roomInfoFromNodeType(room.type);
+          return (
+            <button
+              key={room.id}
+              className='flex w-full items-center gap-x-2 px-4 py-3 last:mb-8 hover:bg-accent-foreground/[0.07]'
+            >
+              <roomType.Icon color={roomType.color} strokeWidth={3} />
+              <span>{room.label}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
