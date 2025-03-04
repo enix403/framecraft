@@ -1,7 +1,89 @@
 import Konva from "konva";
 import { atom, useAtomValue, useSetAtom } from "jotai";
-import { PlanFocus } from "../hooks/usePlanFocus";
-import { RefObject, useEffect, useMemo } from "react";
+import {
+  RefObject,
+  useEffect,
+  useMemo,
+  useLayoutEffect,
+  useState
+} from "react";
+
+import { CELL_SIZE } from "../common";
+import { usePlan } from "@/web-editor/PlanProvider";
+import { PlanData } from "@/web-editor/plan/plan";
+
+/* ================== */
+
+type Size = { width: number; height: number };
+type Nullable<T> = { [K in keyof T]: T[K] | null };
+
+/* ================== */
+
+type PlanFocus = {
+  planCenter: Konva.Vector2d;
+  baseScale: number;
+};
+
+const noFocus: PlanFocus = {
+  planCenter: { x: NaN, y: NaN },
+  baseScale: 1
+};
+
+function _calculateFocus(plan: PlanData, containerSize: Size) {
+  if (plan.rooms.length === 0) return noFocus;
+
+  let minRow = Infinity,
+    minCol = Infinity;
+  let maxRow = -Infinity,
+    maxCol = -Infinity;
+
+  // Find bounding box of all room rects
+  plan.rooms.forEach(room => {
+    room.rects.forEach(([row, col, width, height]) => {
+      minRow = Math.min(minRow, row);
+      minCol = Math.min(minCol, col);
+      maxRow = Math.max(maxRow, row + height);
+      maxCol = Math.max(maxCol, col + width);
+    });
+  });
+
+  // Convert to pixel dimensions
+  const boundingWidth = (maxCol - minCol) * CELL_SIZE;
+  const boundingHeight = (maxRow - minRow) * CELL_SIZE;
+
+  const paddingFactor = 0.9; // Leave 10% padding around the plan
+  const scaleX = (containerSize.width / boundingWidth) * paddingFactor;
+  const scaleY = (containerSize.height / boundingHeight) * paddingFactor;
+  const baseScale = Math.min(scaleX, scaleY); // Fit to the smaller dimension
+
+  // Compute center of bounding box
+  const centerX = ((minCol + maxCol) / 2) * CELL_SIZE;
+  const centerY = ((minRow + maxRow) / 2) * CELL_SIZE;
+
+  // Compute new viewport offset to center it
+  const screenCenterX = containerSize.width / 2;
+  const screenCenterY = containerSize.height / 2;
+
+  const planCenter = {
+    x: screenCenterX - centerX * baseScale,
+    y: screenCenterY - centerY * baseScale
+  };
+
+  return { planCenter, baseScale } as PlanFocus;
+}
+
+function usePlanFocus(containerSize: Nullable<Size>) {
+  const plan = usePlan();
+  const [focus, setFocus] = useState(noFocus);
+
+  useLayoutEffect(() => {
+    if (!containerSize.width || !containerSize.height) return;
+
+    setFocus(_calculateFocus(plan, containerSize as any));
+  }, [containerSize]);
+
+  return focus;
+}
 
 /* ================== */
 
@@ -33,7 +115,6 @@ function _scaleStageToImpl(
 
   /* ===== Set Scale ===== */
   stage.scale({ x: newScale, y: newScale });
-
 }
 
 const zoomLevelAtom = atom(1);
@@ -94,8 +175,10 @@ export class Camera {
 
 export function useCamera(
   stageRef: RefObject<Konva.Stage | null>,
-  focus: PlanFocus
+  containerSize: Nullable<Size>
 ) {
+  const focus = usePlanFocus(containerSize);
+
   const setZoomLevel = useSetAtom(zoomLevelAtom);
   const camera = useMemo(
     () => new Camera(stageRef, focus, setZoomLevel),

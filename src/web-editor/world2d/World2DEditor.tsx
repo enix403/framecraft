@@ -12,7 +12,6 @@ import {
 } from "./render-objects/objects";
 
 import { useSettings } from "./state/settings";
-import { usePlanFocus } from "./hooks/usePlanFocus";
 import { useCamera } from "./state/camera";
 import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
 import { useInitialRecenter } from "./hooks/useInitialRecenter";
@@ -24,8 +23,7 @@ export function World2DEditor() {
   const [containerRef, containerSize] = useMeasure();
   const stageRef = useRef<Konva.Stage | null>(null);
 
-  const focus = usePlanFocus(stageRef, containerSize);
-  const camera = useCamera(stageRef, focus);
+  const camera = useCamera(stageRef, containerSize);
 
   useInitialRecenter(camera);
   useWheelZoomListener(camera);
