@@ -1,9 +1,11 @@
+import { ComponentProps, ReactNode, useState } from "react";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FolderGit2, Hammer } from "lucide-react";
+import { FlipHorizontal, FlipVertical, FolderGit2, Hammer } from "lucide-react";
+import { BoxIcon, HouseIcon, PanelsTopLeftIcon } from "lucide-react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ComponentProps, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 function PlanName() {
@@ -27,18 +29,28 @@ function PlanName() {
 function DimensionsInput({
   label,
   unit,
+  icon,
   ...props
-}: { label: string; unit: string } & ComponentProps<"input">) {
+}: {
+  label: string;
+  unit: string;
+  icon?: ReactNode;
+} & ComponentProps<"input">) {
   return (
     <div>
       <Label>{label}</Label>
       <div className='relative mt-1 flex rounded-md shadow-xs'>
         <Input
-          className='-me-px rounded-e-none shadow-none'
+          className='-me-px rounded-e-none ps-9 shadow-none'
           type='text'
-          // placeholder='Enter width'
           {...props}
         />
+        {icon && (
+          <div className='pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50'>
+            {/*  */}
+            {icon}
+          </div>
+        )}
         <span className='-z-10 inline-flex items-center rounded-e-md border border-input bg-background px-3 text-sm text-muted-foreground'>
           {unit}
         </span>
@@ -73,14 +85,33 @@ function PlotDimensions() {
       </Tabs>
 
       <div className='mt-3 flex gap-2'>
-        <DimensionsInput label='Width' placeholder='Enter width' unit={unit} />
         <DimensionsInput
-          label='Height'
-          placeholder='Enter height'
+          label='Width'
+          placeholder='Enter width'
+          icon={<FlipVertical size={18} />}
+          unit={unit}
+        />
+        <DimensionsInput
+          label='Length'
+          placeholder='Enter length'
+          icon={<FlipHorizontal size={18} />}
           unit={unit}
         />
       </div>
     </div>
+  );
+}
+
+function TopNav() {
+  return (
+    <nav className='flex border-b'>
+      {/* <div className='flex items-center justify-end'>
+        <Button className='gap-x-3 px-6 text-lg'>
+          Generate
+          <Hammer />
+        </Button>
+      </div> */}
+    </nav>
   );
 }
 
@@ -96,14 +127,7 @@ export function GenerateDesign() {
         <PlotDimensions />
       </div>
       <div className='flex flex-1-fix flex-col'>
-        <nav className='flex border-b px-4 py-4'>
-          <div className='flex flex-1 items-center justify-end'>
-            <Button  className='text-lg px-6 gap-x-3'>
-              Generate
-              <Hammer />
-            </Button>
-          </div>
-        </nav>
+        <TopNav />
       </div>
     </div>
   );
