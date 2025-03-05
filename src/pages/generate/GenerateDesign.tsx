@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { FolderGit2 } from "lucide-react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ComponentProps } from "react";
+import { ComponentProps, useState } from "react";
 
 function PlanName() {
   return (
@@ -25,12 +25,13 @@ function PlanName() {
 
 function DimensionsInput({
   label,
+  unit,
   ...props
-}: { label: string } & ComponentProps<"input">) {
+}: { label: string; unit: string } & ComponentProps<"input">) {
   return (
     <div>
       <Label>{label}</Label>
-      <div className='relative flex rounded-md shadow-xs'>
+      <div className='relative mt-1 flex rounded-md shadow-xs'>
         <Input
           className='-me-px rounded-e-none shadow-none'
           type='text'
@@ -38,7 +39,7 @@ function DimensionsInput({
           {...props}
         />
         <span className='-z-10 inline-flex items-center rounded-e-md border border-input bg-background px-3 text-sm text-muted-foreground'>
-          ft
+          {unit}
         </span>
       </div>
     </div>
@@ -46,27 +47,37 @@ function DimensionsInput({
 }
 
 function PlotDimensions() {
+  const [unit, setUnit] = useState("ft");
+
   return (
-    <div className='mt-6'>
+    <div className='mt-8'>
       <Label className='text-ls font-semibold'>Plot Size</Label>
 
-      <Tabs defaultValue='tab-1' className='mt-1 items-center'>
+      <Tabs
+        value={unit}
+        onValueChange={v => setUnit(v)}
+        className='mt-2 items-center'
+      >
         <TabsList className='flex w-full'>
-          <TabsTrigger className='flex-1' value='tab-1'>
+          <TabsTrigger className='flex-1' value='ft'>
             Feet
           </TabsTrigger>
-          <TabsTrigger className='flex-1' value='tab-2'>
-            Meter
+          <TabsTrigger className='flex-1' value='m'>
+            Meters
           </TabsTrigger>
-          <TabsTrigger className='flex-1' value='tab-3'>
+          <TabsTrigger className='flex-1' value='in'>
             Inches
           </TabsTrigger>
         </TabsList>
       </Tabs>
 
-      <div className='mt-2 flex gap-2'>
-        <DimensionsInput label="Width" placeholder="Enter width" />
-        <DimensionsInput label="Height" placeholder="Enter height" />
+      <div className='mt-3 flex gap-2'>
+        <DimensionsInput label='Width' placeholder='Enter width' unit={unit} />
+        <DimensionsInput
+          label='Height'
+          placeholder='Enter height'
+          unit={unit}
+        />
       </div>
     </div>
   );
