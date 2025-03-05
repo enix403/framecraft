@@ -1,9 +1,10 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FolderGit2 } from "lucide-react";
+import { FolderGit2, Hammer } from "lucide-react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ComponentProps, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 function PlanName() {
   return (
@@ -93,6 +94,16 @@ export function GenerateDesign() {
 
         <PlanName />
         <PlotDimensions />
+      </div>
+      <div className='flex flex-1-fix flex-col'>
+        <nav className='flex border-b px-4 py-4'>
+          <div className='flex flex-1 items-center justify-end'>
+            <Button  className='text-lg px-6 gap-x-3'>
+              Generate
+              <Hammer />
+            </Button>
+          </div>
+        </nav>
       </div>
     </div>
   );
