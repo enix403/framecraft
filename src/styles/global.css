@@ -206,6 +206,10 @@ body {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@theme {
+  --text-ls: 1.0425rem
+}
+
 /*
   ---break---
 */

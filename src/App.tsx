@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { Scratch } from "./pages/_scratch/Scratch";
 import { WebEditor } from "./pages/web-editor/WebEditor";
+import { GenerateDesign } from "./pages/generate/GenerateDesign";
 
 export function App() {
   return (
@@ -13,7 +14,8 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/s' element={<Scratch />} />
-          <Route path='/' element={<WebEditor />} />
+          <Route path='/e' element={<WebEditor />} />
+          <Route path='/' element={<GenerateDesign />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
