@@ -9,8 +9,8 @@ import {
 } from "react";
 
 import { CELL_SIZE } from "../common";
-import { usePlan } from "@/web-editor/PlanProvider";
-import { PlanData } from "@/web-editor/plan/plan";
+import { usePlan } from "../../PlanProvider";
+import { PlanData } from "../../plan/plan";
 
 /* ================== */
 

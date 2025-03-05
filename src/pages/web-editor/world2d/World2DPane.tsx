@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { ResizablePanel } from "@/components/ui/resizable";
 import {
   Tooltip,
   TooltipContent,

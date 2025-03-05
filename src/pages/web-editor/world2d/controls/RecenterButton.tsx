@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { LocateFixed } from "lucide-react";
 import { sendEditorCommand } from "../state/commands";
+import { ComponentProps } from "react";
 
-export function RecenterButton() {
+export function RecenterButton({ ...props }: ComponentProps<"button">) {
   return (
     <Button
+      {...props}
       onClick={() => {
         sendEditorCommand({ type: "recenter" });
       }}

@@ -1,12 +1,11 @@
 import "./styles/load-fonts";
 import "./styles/global.css";
 
-// import { IconContext } from "@phosphor-icons/react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-import { WebEditor } from "./web-editor/WebEditor";
-import { Scratch } from "./scratch/Scratch";
+import { WebEditor } from "./pages/web-editor/WebEditor";
+import { Scratch } from "./pages/scratch/Scratch";
 
 export function App() {
   return (

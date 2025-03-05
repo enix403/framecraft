@@ -13,7 +13,7 @@ import { PlotDetails } from "./panes/PlotDetails";
 import { RoomDetails } from "./panes/RoomDetails";
 
 import { World2DPane } from "./world2d/World2DPane";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PlanData } from "./plan/plan";
 
 export function WebEditor() {
