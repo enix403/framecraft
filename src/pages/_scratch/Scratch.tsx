@@ -54,9 +54,11 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
           <Package size={26} />
         </div>
 
-        <div className='flex-1-fit space-y-1.5'>
-          <p className='text-sm leading-[1] text-[color:#1B1B2E]'>{label}</p>
-          <p className='text-[size:0.7rem] leading-[1] text-[color:#7C7D87]'>
+        <div className='flex-1-fit space-y-1.5 font-graph-editor'>
+          <p className='text-sm leading-[1] font-semibold text-[color:#1B1B2E]'>
+            {label}
+          </p>
+          <p className='text-[size:0.7rem] leading-[1] font-medium text-[color:#7C7D87]'>
             {roomTypeLabel}
           </p>
         </div>
@@ -79,7 +81,7 @@ function LayoutGraphEditor() {
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={nodes}
-        nodesDraggable={false}
+        // nodesDraggable={false}
         onNodesChange={onNodesChange}
         edges={[]}
         fitView

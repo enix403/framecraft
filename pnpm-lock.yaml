@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fontsource-variable/quicksand':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@fontsource/inter':
         specifier: ^5.1.1
         version: 5.1.1
@@ -401,6 +404,9 @@ packages:
 
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
+
+  '@fontsource-variable/quicksand@5.2.5':
+    resolution: {integrity: sha512-St1SleivUK/k8xQnW5NXHpeVw1tRh5qGpW77q0baNQDiGtYyYnoYNselE3n4a14rN8qkEPJFVhrx22tYEur3/A==}
 
   '@fontsource/inter@5.1.1':
     resolution: {integrity: sha512-weN3E+rq0Xb3Z93VHJ+Rc7WOQX9ETJPTAJ+gDcaMHtjft67L58sfS65rAjC5tZUXQ2FdZ/V1/sSzCwZ6v05kJw==}
@@ -2071,6 +2077,8 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
 
   '@floating-ui/utils@0.2.8': {}
+
+  '@fontsource-variable/quicksand@5.2.5': {}
 
   '@fontsource/inter@5.1.1': {}
 
