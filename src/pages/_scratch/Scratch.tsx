@@ -86,6 +86,7 @@ function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
       <Handle
         type='source'
         position={Position.Right}
+        isConnectableEnd={false}
         className={clsx(
           "!h-auto !w-auto !border-none !bg-[#AF79DC] !p-1",
           "!top-[calc(50%+10px)]"
@@ -98,11 +99,14 @@ function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
         />
       </Handle>
 
-      {(connection.inProgress && isTarget) && <Handle
-        type='target'
-        position={Position.Left}
-        className='!top-0 !left-0 !h-full !w-full !transform-none !rounded-none opacity-50'
-      />}
+      {/* {connection.inProgress && isTarget && ( */}
+        <Handle
+          type='target'
+          position={Position.Left}
+          isConnectableStart={false}
+          className='!top-0 !left-0 !h-full !w-full !transform-none !rounded-none opacity-0'
+        />
+      {/* )} */}
     </>
   );
 }
