@@ -1,18 +1,23 @@
 import "@xyflow/react/dist/style.css";
 
 import {
+  addEdge,
   Background,
   BackgroundVariant,
   Controls,
+  Edge,
   Handle,
+  OnConnect,
   Position,
   ReactFlow,
+  useEdgesState,
   useNodesState,
   type Node,
   type NodeProps
 } from "@xyflow/react";
 import { Circle, Link, Link2, Package, Plus } from "lucide-react";
 import clsx from "clsx";
+import { useCallback } from "react";
 
 const initialNodes: RoomNode[] = [
   {
@@ -67,15 +72,11 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
       <button
         className={clsx(
           "nodrag nopan cursor-crosshair",
-          "!h-auto !w-auto !border-none !bg-[#79dcbd] !p-1 rounded-full",
+          "!h-auto !w-auto rounded-full !border-none !bg-[#79dcbd] !p-1",
           "absolute !top-[calc(50%-10px)] right-0 translate-x-1/2 -translate-y-1/2"
         )}
       >
-        <Plus
-          size={8}
-          className=' text-white'
-          strokeWidth={3}
-        />
+        <Plus size={8} className='text-white' strokeWidth={3} />
       </button>
 
       <Handle
@@ -92,6 +93,12 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
           strokeWidth={3}
         />
       </Handle>
+
+      <Handle
+        type='target'
+        position={Position.Left}
+        className='!top-0 !left-0 !h-full !w-full !transform-none !rounded-none opacity-50'
+      />
     </>
   );
 }
@@ -101,18 +108,24 @@ const nodeTypes = {
 };
 
 function LayoutGraphEditor() {
-  let [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([] as Edge[]);
 
-  // nodes = initialNodes;
+  const onConnect: OnConnect = useCallback(
+    connection =>
+      setEdges(eds => addEdge({ ...connection, animated: true }, eds)),
+    [setEdges]
+  );
 
   return (
     <>
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={nodes}
-        // nodesDraggable={false}
         onNodesChange={onNodesChange}
-        edges={[]}
+        edges={edges}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
         fitView
         fitViewOptions={{
           maxZoom: 1
