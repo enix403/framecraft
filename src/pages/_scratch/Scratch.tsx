@@ -4,8 +4,10 @@ import {
   addEdge,
   Background,
   BackgroundVariant,
+  BaseEdge,
   Controls,
   Edge,
+  getSimpleBezierPath,
   Handle,
   OnConnect,
   Position,
@@ -16,7 +18,7 @@ import {
   type Node,
   type NodeProps
 } from "@xyflow/react";
-import { Circle, Link, Link2, Package, Plus } from "lucide-react";
+import { Link2, Package, Plus } from "lucide-react";
 import clsx from "clsx";
 import { useCallback } from "react";
 
@@ -32,6 +34,12 @@ const initialNodes: RoomNode[] = [
     type: "roomNode",
     position: { x: 80, y: 180 },
     data: { label: "Living Room 2", roomTypeLabel: "Living Room" }
+  },
+  {
+    id: "3",
+    type: "roomNode",
+    position: { x: 180, y: -180 },
+    data: { label: "Living Room 3", roomTypeLabel: "Living Room" }
   }
 ];
 
@@ -100,13 +108,28 @@ function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
       </Handle>
 
       {/* {connection.inProgress && isTarget && ( */}
-        <Handle
-          type='target'
-          position={Position.Left}
-          isConnectableStart={false}
-          className='!top-0 !left-0 !h-full !w-full !transform-none !rounded-none opacity-0'
-        />
+      <Handle
+        type='target'
+        position={Position.Left}
+        isConnectableStart={false}
+        className='!top-0 !left-0 !h-full !w-full !transform-none !rounded-none opacity-0'
+      />
       {/* )} */}
+    </>
+  );
+}
+
+export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
+  const [edgePath] = getSimpleBezierPath({
+    sourceX,
+    sourceY,
+    targetX,
+    targetY
+  });
+
+  return (
+    <>
+      <BaseEdge id={id} path={edgePath} />
     </>
   );
 }
@@ -115,13 +138,17 @@ const nodeTypes = {
   roomNode: RoomNode
 };
 
+const edgeTypes = {
+  myCustomEdge: CustomEdge
+};
+
 function LayoutGraphEditor() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([] as Edge[]);
 
   const onConnect: OnConnect = useCallback(
     connection =>
-      setEdges(eds => addEdge({ ...connection, animated: true }, eds)),
+      setEdges(eds => addEdge({ ...connection, type: "myCustomEdge" }, eds)),
     [setEdges]
   );
 
@@ -129,6 +156,7 @@ function LayoutGraphEditor() {
     <>
       <ReactFlow
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         nodes={nodes}
         onNodesChange={onNodesChange}
         edges={edges}
@@ -146,7 +174,6 @@ function LayoutGraphEditor() {
           gap={10}
           size={1.5}
         />
-
         <Controls />
       </ReactFlow>
     </>
