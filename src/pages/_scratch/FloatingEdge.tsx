@@ -1,6 +1,11 @@
-import { getBezierPath, useInternalNode } from '@xyflow/react';
+import {
+  EdgeLabelRenderer,
+  getBezierPath,
+  useInternalNode,
+  useReactFlow
+} from "@xyflow/react";
 
-import { Position } from '@xyflow/react';
+import { Position } from "@xyflow/react";
 
 // this helper function returns the intersection point
 // of the line between the center of the intersectionNode and the target node
@@ -68,7 +73,7 @@ export function getEdgeParams(source, target) {
     tx: targetIntersectionPoint.x,
     ty: targetIntersectionPoint.y,
     sourcePos,
-    targetPos,
+    targetPos
   };
 }
 
@@ -82,29 +87,48 @@ function FloatingEdge({ id, source, target, markerEnd, style }) {
 
   const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(
     sourceNode,
-    targetNode,
+    targetNode
   );
 
-  const [edgePath] = getBezierPath({
+  const [edgePath, labelX, labelY] = getBezierPath({
     sourceX: sx,
     sourceY: sy,
     sourcePosition: sourcePos,
     targetPosition: targetPos,
     targetX: tx,
-    targetY: ty,
+    targetY: ty
   });
 
+  const { setEdges } = useReactFlow();
+
+  const onEdgeClick = () => {
+    setEdges((edges) => edges.filter((edge) => edge.id !== id));
+  };
+
+
   return (
-    <path
-      id={id}
-      className="react-flow__edge-path"
-      d={edgePath}
-      markerEnd={markerEnd}
-      style={{
-        ...style,
-        strokeWidth: 1.5
-      }}
-    />
+    <>
+      <path
+        id={id}
+        className='react-flow__edge-path'
+        d={edgePath}
+        markerEnd={markerEnd}
+        style={{
+          ...style,
+          strokeWidth: 1.5
+        }}
+      />
+      <EdgeLabelRenderer>
+        <div
+          className='button-edge__label nodrag nopan'
+          style={{
+            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
+          }}
+        >
+          <button className='button-edge__button' onClick={onEdgeClick}>x</button>
+        </div>
+      </EdgeLabelRenderer>
+    </>
   );
 }
 
