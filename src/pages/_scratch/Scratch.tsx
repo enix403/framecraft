@@ -10,6 +10,7 @@ import {
   OnConnect,
   Position,
   ReactFlow,
+  useConnection,
   useEdgesState,
   useNodesState,
   type Node,
@@ -42,8 +43,11 @@ type RoomNode = Node<
   "roomNode"
 >;
 
-function RoomNode({ data, selected }: NodeProps<RoomNode>) {
+function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
   const { label, roomTypeLabel } = data;
+
+  const connection = useConnection();
+  const isTarget = connection.inProgress && connection.fromNode.id !== id;
 
   return (
     <>
@@ -94,11 +98,11 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
         />
       </Handle>
 
-      <Handle
+      {(connection.inProgress && isTarget) && <Handle
         type='target'
         position={Position.Left}
         className='!top-0 !left-0 !h-full !w-full !transform-none !rounded-none opacity-50'
-      />
+      />}
     </>
   );
 }
