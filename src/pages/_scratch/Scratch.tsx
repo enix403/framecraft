@@ -11,7 +11,7 @@ import {
   type Node,
   type NodeProps
 } from "@xyflow/react";
-import { Package } from "lucide-react";
+import { Circle, Link, Link2, Package, Plus } from "lucide-react";
 import clsx from "clsx";
 
 const initialNodes: RoomNode[] = [
@@ -47,6 +47,7 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
           "flex min-w-56 flex-row items-center gap-x-2.5 rounded-[8px] border bg-white p-2.5 pr-6",
           "transition-colors",
           "shadow-[0px_10px_36px_-6px_rgba(0,_0,_0,_0.1)]",
+          "relative",
           selected && "border-[#04ACB0]"
         )}
       >
@@ -63,6 +64,24 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
           </p>
         </div>
       </div>
+      <Handle
+        type='source'
+        position={Position.Right}
+        className={clsx(
+          "!h-auto !w-auto -translate-y-2.5 !border-none !bg-[#79dcbd] !p-1"
+        )}
+      >
+        <Plus size={8} className='text-white' strokeWidth={3} />
+      </Handle>
+      <Handle
+        type='source'
+        position={Position.Right}
+        className={clsx(
+          "!h-auto !w-auto translate-y-2.5 !border-none !bg-[#AF79DC] !p-1"
+        )}
+      >
+        <Link2 size={8} className='text-white' strokeWidth={3} />
+      </Handle>
     </>
   );
 }
