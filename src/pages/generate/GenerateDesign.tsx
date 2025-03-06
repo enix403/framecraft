@@ -104,13 +104,11 @@ function PlotDimensions() {
 
 function TopNav() {
   return (
-    <nav className='flex border-b'>
-      {/* <div className='flex items-center justify-end'>
-        <Button className='gap-x-3 px-6 text-lg'>
-          Generate
-          <Hammer />
-        </Button>
-      </div> */}
+    <nav className='flex border-b p-4'>
+      <Button className='gap-x-3 px-6 text-lg'>
+        Generate
+        <Hammer />
+      </Button>
     </nav>
   );
 }
