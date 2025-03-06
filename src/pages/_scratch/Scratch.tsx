@@ -21,6 +21,9 @@ import {
 import { Link2, Package, Plus } from "lucide-react";
 import clsx from "clsx";
 import { useCallback } from "react";
+import FloatingEdge from "./FloatingEdge";
+
+/* =================================== */
 
 const initialNodes: RoomNode[] = [
   {
@@ -42,6 +45,8 @@ const initialNodes: RoomNode[] = [
     data: { label: "Living Room 3", roomTypeLabel: "Living Room" }
   }
 ];
+
+/* =================================== */
 
 type RoomNode = Node<
   {
@@ -119,7 +124,9 @@ function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
   );
 }
 
-export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
+/* =================================== */
+
+function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
   const [edgePath] = getSimpleBezierPath({
     sourceX,
     sourceY,
@@ -134,13 +141,18 @@ export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
   );
 }
 
+/* =================================== */
+
 const nodeTypes = {
   roomNode: RoomNode
 };
 
 const edgeTypes = {
-  myCustomEdge: CustomEdge
+  // myCustomEdge: CustomEdge,
+  floating: FloatingEdge,
 };
+
+/* =================================== */
 
 function LayoutGraphEditor() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -148,7 +160,8 @@ function LayoutGraphEditor() {
 
   const onConnect: OnConnect = useCallback(
     connection =>
-      setEdges(eds => addEdge({ ...connection, type: "myCustomEdge" }, eds)),
+      // setEdges(eds => addEdge({ ...connection, type: "myCustomEdge" }, eds)),
+      setEdges(eds => addEdge({ ...connection, type: "floating" }, eds)),
     [setEdges]
   );
 
@@ -156,6 +169,7 @@ function LayoutGraphEditor() {
     <>
       <ReactFlow
         nodeTypes={nodeTypes}
+        // @ts-ignore
         edgeTypes={edgeTypes}
         nodes={nodes}
         onNodesChange={onNodesChange}
@@ -180,65 +194,8 @@ function LayoutGraphEditor() {
   );
 }
 
+/* =================================== */
+
 export function Scratch() {
   return <LayoutGraphEditor />;
 }
-
-/*
-import {
-  addEdge,
-  Background,
-  BackgroundVariant,
-  Controls,
-  Handle,
-  MiniMap,
-  NodeToolbar,
-  OnConnect,
-  Position,
-  ReactFlow,
-  useEdgesState,
-  useNodesState
-} from "@xyflow/react";
-
-import "@xyflow/react/dist/style.css";
-import { useCallback } from "react";
-
-const initialNodes = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-  { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } }
-];
-
-const initialEdges = [] as any;
-
-function GraphEditor() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-  const onConnect: OnConnect = useCallback(
-    connection => setEdges(eds => addEdge({ ...connection, animated: true }, eds)),
-    [setEdges]
-  );
-
-  return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <ReactFlow
-      colorMode="dark"
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        fitView
-      >
-        <Background variant={BackgroundVariant.Lines} gap={16} />
-        <Controls />
-        <MiniMap />
-      </ReactFlow>
-    </div>
-  );
-}
-
-export function Scratch() {
-  return <GraphEditor />;
-}
-*/
