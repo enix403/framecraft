@@ -64,20 +64,19 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
           </p>
         </div>
       </div>
-      <Handle
-        type='source'
-        position={Position.Right}
+      <button
         className={clsx(
-          "!h-auto !w-auto !border-none !bg-[#79dcbd] !p-1",
-          "!top-[calc(50%-10px)]"
+          "nodrag nopan cursor-crosshair",
+          "!h-auto !w-auto !border-none !bg-[#79dcbd] !p-1 rounded-full",
+          "absolute !top-[calc(50%-10px)] right-0 translate-x-1/2 -translate-y-1/2"
         )}
       >
         <Plus
           size={8}
-          className='pointer-events-none text-white'
+          className=' text-white'
           strokeWidth={3}
         />
-      </Handle>
+      </button>
 
       <Handle
         type='source'
