@@ -68,19 +68,30 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
         type='source'
         position={Position.Right}
         className={clsx(
-          "!h-auto !w-auto -translate-y-2.5 !border-none !bg-[#79dcbd] !p-1"
+          "!h-auto !w-auto !border-none !bg-[#79dcbd] !p-1",
+          "!top-[calc(50%-10px)]"
         )}
       >
-        <Plus size={8} className='text-white' strokeWidth={3} />
+        <Plus
+          size={8}
+          className='pointer-events-none text-white'
+          strokeWidth={3}
+        />
       </Handle>
+
       <Handle
         type='source'
         position={Position.Right}
         className={clsx(
-          "!h-auto !w-auto translate-y-2.5 !border-none !bg-[#AF79DC] !p-1"
+          "!h-auto !w-auto !border-none !bg-[#AF79DC] !p-1",
+          "!top-[calc(50%+10px)]"
         )}
       >
-        <Link2 size={8} className='text-white' strokeWidth={3} />
+        <Link2
+          size={8}
+          className='pointer-events-none text-white'
+          strokeWidth={3}
+        />
       </Handle>
     </>
   );
