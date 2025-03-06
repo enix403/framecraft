@@ -8,42 +8,56 @@ import {
   Position,
   ReactFlow,
   useNodesState,
-  type Node
+  type Node,
+  type NodeProps
 } from "@xyflow/react";
 import { Package } from "lucide-react";
+import clsx from "clsx";
 
-const initialNodes: Node[] = [
+const initialNodes: RoomNode[] = [
   {
     id: "1",
-    type: "myCustomNode",
+    type: "roomNode",
     position: { x: 0, y: 0 },
-    data: { label: "Node 1" }
+    data: { label: "Living Room 1", roomTypeLabel: "Living Room" }
   },
   {
     id: "2",
+    type: "roomNode",
     position: { x: 80, y: 180 },
-    data: { label: "Node 2" }
+    data: { label: "Living Room 2", roomTypeLabel: "Living Room" }
   }
 ];
 
-function MyCustomNode(props) {
-  console.log(props);
+type RoomNode = Node<
+  {
+    label: string;
+    roomTypeLabel: string;
+  },
+  "roomNode"
+>;
 
-  const { data } = props;
+function RoomNode({ data, selected }: NodeProps<RoomNode>) {
+  const { label, roomTypeLabel } = data;
 
   return (
     <>
-      <div className='flex min-w-56 flex-row items-center gap-x-2.5 rounded-[8px] border bg-white p-2.5'>
+      <div
+        className={clsx(
+          "flex min-w-56 flex-row items-center gap-x-2.5 rounded-[8px] border bg-white p-2.5 pr-6",
+          "transition-colors",
+          "shadow-[0px_10px_36px_-6px_rgba(0,_0,_0,_0.1)]",
+          selected && "border-[#04ACB0]"
+        )}
+      >
         <div className='rounded-[6px] bg-[#04ACB0] p-1.5 text-white'>
           <Package size={26} />
         </div>
 
-        <div className='flex-1-fit space-y-1'>
-          <p className='text-sm leading-[1] text-[color:#1B1B2E]'>
-            master-build
-          </p>
+        <div className='flex-1-fit space-y-1.5'>
+          <p className='text-sm leading-[1] text-[color:#1B1B2E]'>{label}</p>
           <p className='text-[size:0.7rem] leading-[1] text-[color:#7C7D87]'>
-            Dependency
+            {roomTypeLabel}
           </p>
         </div>
       </div>
@@ -52,13 +66,13 @@ function MyCustomNode(props) {
 }
 
 const nodeTypes = {
-  myCustomNode: MyCustomNode
+  roomNode: RoomNode
 };
 
 function LayoutGraphEditor() {
   let [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 
-  nodes = initialNodes;
+  // nodes = initialNodes;
 
   return (
     <>
