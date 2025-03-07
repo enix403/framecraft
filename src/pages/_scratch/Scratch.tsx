@@ -1,7 +1,7 @@
 // @dwats-nocheck
 
 import { ResponsiveNetworkCanvas } from "@nivo/network";
-import { nodeTypeToRoomType, roomTypes } from "../web-editor/plan/rooms";
+import { nodeTypeToRoomType, roomTypes } from "@/lib/rooms";
 
 
 const demoNodeTypes = [0, 1, 2, 2, 2, 3, 3, 3, 4, 14];

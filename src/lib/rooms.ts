@@ -4,50 +4,55 @@ import { BedDouble, Droplet, Eclipse, Grape, Tv } from "lucide-react";
 interface RoomType {
   id: string;
   title: string;
-  color: string;
   rectColor: string;
+  color: string;
   Icon: ComponentType<any>;
 }
 
 export const roomTypes = {
+  // Living Room
   living: {
     id: "living",
     title: "Living Room",
     color: "#EE4D4D",
+    rectColor: "#d3e7f0",
     Icon: Tv,
-    rectColor: "#d3e7f0"
   } as RoomType,
+  // Bedroom
   bedroom: {
     id: "bedroom",
     title: "Bedroom",
     color: "#a808c5",
+    rectColor: "#f2e3b9",
     Icon: BedDouble,
-    rectColor: "#f2e3b9"
   } as RoomType,
+  // Bathroom
   bathroom: {
     id: "bathroom",
     title: "Bathroom",
     color: "#67d8e0",
+    rectColor: "#caf2aa",
     Icon: Droplet,
-    rectColor: "#caf2aa"
   } as RoomType,
+  // Kitchen
   kitchen: {
     id: "kitchen",
     title: "Kitchen",
     color: "#6ce244",
+    rectColor: "#ffd5ef",
     Icon: Grape,
-    rectColor: "#ffd5ef"
   } as RoomType,
+  // Balcony
   balcony: {
     id: "balcony",
     title: "Balcony",
     color: "#0400fc",
+    rectColor: "#ffe192",
     Icon: Eclipse,
-    rectColor: "#ffe192"
   } as RoomType
 } as const;
 
-export type RoomTypeIds = keyof typeof roomTypes;
+/* export type RoomTypeIds = keyof typeof roomTypes;
 export const roomTypeIds = Object.keys(roomTypes) as RoomTypeIds[];
 
 export const nodeTypeToRoomType: Record<number, RoomTypeIds> = {
@@ -69,3 +74,4 @@ export const roomTypeToNodeType: Record<RoomTypeIds, number> = {
 export function roomInfoFromNodeType(nodeType: number) {
   return roomTypes[nodeTypeToRoomType[nodeType]];
 }
+ */
