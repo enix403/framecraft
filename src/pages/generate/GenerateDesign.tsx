@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { GeneralSettings } from "./GeneralSettings";
 import { LayoutGraphHeading } from "./LayoutGraphHeading";
 import { Toolbar } from "./Toolbar";
+import { GraphEditor } from "./graph-editor/GraphEditor";
 
 export function GenerateDesign() {
   return (
@@ -28,9 +29,6 @@ export function GenerateDesign() {
   );
 }
 
-function GraphEditor() {
-  return "e";
-}
 
 function NodeDragSource() {
   return "n";
