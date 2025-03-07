@@ -43,7 +43,7 @@ const MyResponsiveNetworkCanvas = ({ data }: { data: any }) => (
 
 export function Scratch() {
   return (
-    <div className='h-[16rem] w-[16rem] border-4'>
+    <div className='h-[12rem] w-[12rem] border-4'>
       <MyResponsiveNetworkCanvas data={data} />
     </div>
   );
