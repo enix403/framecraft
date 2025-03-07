@@ -9,7 +9,7 @@ import {
   OnConnect,
   ReactFlow,
   useEdgesState,
-  useNodesState,
+  useNodesState
 } from "@xyflow/react";
 import { useCallback } from "react";
 import { LayoutEdge } from "./LayoutEdge";
@@ -18,39 +18,20 @@ import { LayoutNode } from "./LayoutNode";
 
 /* =================================== */
 
-const initialNodes: LayoutNode[] = [
-  {
-    id: "1",
-    type: "custom",
-    position: { x: 0, y: 0 },
-    data: { label: "Living Room 1", roomTypeLabel: "Living Room" }
-  },
-  {
-    id: "2",
-    type: "custom",
-    position: { x: 80, y: 180 },
-    data: { label: "Living Room 2", roomTypeLabel: "Living Room" }
-  },
-  {
-    id: "3",
-    type: "custom",
-    position: { x: 180, y: -180 },
-    data: { label: "Living Room 3", roomTypeLabel: "Living Room" }
-  }
-];
-
-const initialEdges: LayoutEdge[] = [];
-
-/* =================================== */
-
 const nodeTypes = { custom: LayoutNode };
 const edgeTypes = { custom: LayoutEdge };
 
 /* =================================== */
 
-export function LayoutGraphEditor() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+export function LayoutGraphEditor({
+  nodesState,
+  edgesState
+}: {
+  nodesState: ReturnType<typeof useNodesState<LayoutNode>>;
+  edgesState: ReturnType<typeof useEdgesState<LayoutEdge>>;
+}) {
+  const [nodes, _setNodes, onNodesChange] = nodesState;
+  const [edges, setEdges, onEdgesChange] = edgesState;
 
   const onConnect: OnConnect = useCallback(
     connection => setEdges(eds => addEdge(connection, eds)),

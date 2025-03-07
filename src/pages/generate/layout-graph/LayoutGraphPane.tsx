@@ -7,6 +7,14 @@ import { useState } from "react";
 import { LayoutGraphEditor } from "./layout-editor/LayoutGraphEditor";
 import { NodeDragSource } from "./NodeDragSource";
 import { GraphPresets } from "./GraphPresets";
+import {
+  ReactFlowProvider,
+  useEdgesState,
+  useNodesData,
+  useNodesState
+} from "@xyflow/react";
+import { LayoutNode } from "./layout-editor/LayoutNode";
+import { LayoutEdge } from "./layout-editor/LayoutEdge";
 
 export function LayoutGraphTitle() {
   return (
@@ -33,7 +41,7 @@ export function Toolbar() {
         {nodeSelected ? (
           <RoomIdentityInput
             initialName={"Living Room 1"}
-            initialTypeId="living"
+            initialTypeId='living'
             onUpdateName={name => {}}
             onUpdateNodeType={type => {}}
             className='max-w-lg flex-1'
@@ -63,15 +71,17 @@ export function Toolbar() {
   );
 }
 
+function LayoutGraphPaneInner() {
+  const nodesState = useNodesState(initialNodes);
+  const edgesState = useEdgesState(initialEdges);
 
-export function LayoutGraphPane() {
   return (
     <>
       <LayoutGraphTitle />
       <Toolbar />
       <div className='flex flex-1-fix'>
         <div className='flex-1-fix shrink-0'>
-          <LayoutGraphEditor />
+          <LayoutGraphEditor nodesState={nodesState} edgesState={edgesState} />
         </div>
         <div className='max-h-full max-w-sm border-l-2'>
           <NodeDragSource />
@@ -83,3 +93,36 @@ export function LayoutGraphPane() {
     </>
   );
 }
+
+export function LayoutGraphPane() {
+  return (
+    <ReactFlowProvider>
+      <LayoutGraphPaneInner />
+    </ReactFlowProvider>
+  );
+}
+
+/* =================================== */
+
+const initialNodes: LayoutNode[] = [
+  {
+    id: "1",
+    type: "custom",
+    position: { x: 0, y: 0 },
+    data: { label: "Living Room 1", roomTypeLabel: "Living Room" }
+  },
+  {
+    id: "2",
+    type: "custom",
+    position: { x: 80, y: 180 },
+    data: { label: "Living Room 2", roomTypeLabel: "Living Room" }
+  },
+  {
+    id: "3",
+    type: "custom",
+    position: { x: 180, y: -180 },
+    data: { label: "Living Room 3", roomTypeLabel: "Living Room" }
+  }
+];
+
+const initialEdges: LayoutEdge[] = [];
