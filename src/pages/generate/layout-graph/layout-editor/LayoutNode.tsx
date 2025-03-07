@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { appRoomTypes } from "@/lib/nodes";
+import { appRoomTypes, idToNodeType } from "@/lib/nodes";
 import { appNodeStyle } from "@/lib/node-styles";
 
 function AddNodeButton() {
@@ -54,13 +54,13 @@ function AddNodeButton() {
 export type LayoutNode = Node<
   {
     label: string;
-    roomTypeLabel: string;
+    typeId: string;
   },
   "custom"
 >;
 
 export function LayoutNode({ data, selected }: NodeProps<LayoutNode>) {
-  const { label, roomTypeLabel } = data;
+  const { label, typeId } = data;
 
   return (
     <>
@@ -82,7 +82,7 @@ export function LayoutNode({ data, selected }: NodeProps<LayoutNode>) {
             {label}
           </p>
           <p className='text-[size:0.7rem] leading-[1] font-medium text-[color:#7C7D87]'>
-            {roomTypeLabel}
+            {idToNodeType[typeId].title}
           </p>
         </div>
       </div>

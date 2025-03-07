@@ -36,7 +36,7 @@ export function LayoutGraphTitle() {
 // TODO: Simplify. Too many unnecessary flex divs
 export function Toolbar({ selectedNodeId }: { selectedNodeId: string }) {
   const node = useNodesData<LayoutNode>(selectedNodeId);
-  // const { updateNodeData } = useReactFlow<LayoutNode>();
+  const { updateNodeData } = useReactFlow<LayoutNode>();
 
   return (
     <nav className='flex gap-x-2 border-b px-4 py-2'>
@@ -44,10 +44,20 @@ export function Toolbar({ selectedNodeId }: { selectedNodeId: string }) {
         {node ? (
           <RoomIdentityInput
             key={node.id}
-            initialName={"Living Room 1"}
-            initialTypeId='living'
-            onUpdateName={name => {}}
-            onUpdateNodeType={type => {}}
+            initialName={node.data.label}
+            initialTypeId={node.data.typeId}
+            onUpdateName={name =>
+              updateNodeData(selectedNodeId, {
+                ...node.data,
+                label: name
+              })
+            }
+            onUpdateNodeType={typeId =>
+              updateNodeData(selectedNodeId, {
+                ...node.data,
+                typeId
+              })
+            }
             className='max-w-lg flex-1'
           />
         ) : (
@@ -121,19 +131,19 @@ const initialNodes: LayoutNode[] = [
     id: "1",
     type: "custom",
     position: { x: 0, y: 0 },
-    data: { label: "Living Room 1", roomTypeLabel: "Living Room" }
+    data: { label: "Living Room 1", typeId: "living" }
   },
   {
     id: "2",
     type: "custom",
     position: { x: 80, y: 180 },
-    data: { label: "Living Room 2", roomTypeLabel: "Living Room" }
+    data: { label: "Living Room 2", typeId: "kitchen" }
   },
   {
     id: "3",
     type: "custom",
     position: { x: 180, y: -180 },
-    data: { label: "Living Room 3", roomTypeLabel: "Living Room" }
+    data: { label: "Living Room 3", typeId: "living" }
   }
 ];
 
