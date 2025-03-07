@@ -3,6 +3,7 @@ import { GeneralSettings } from "./GeneralSettings";
 import { LayoutGraphHeading } from "./LayoutGraphHeading";
 import { Toolbar } from "./Toolbar";
 import { GraphEditor } from "./graph-editor/GraphEditor";
+import { NodeDragSource } from "./NodeDragSource";
 
 export function GenerateDesign() {
   return (
@@ -14,14 +15,14 @@ export function GenerateDesign() {
         <LayoutGraphHeading />
         <Toolbar />
         <div className='flex flex-1-fix'>
-          <div className='flex-1-fix'>
+          <div className='flex-1-fix shrink-0'>
             <GraphEditor />
           </div>
-          <div className='border-l-2'>
+          <div className='border-l-2 max-h-full max-w-sm'>
             <NodeDragSource />
           </div>
         </div>
-        <div className='border-t-2'>
+        <div className='border-t-2 shrink-0'>
           <GraphPresets />
         </div>
       </div>
@@ -29,10 +30,6 @@ export function GenerateDesign() {
   );
 }
 
-
-function NodeDragSource() {
-  return "n";
-}
 
 function GraphPresets() {
   return "p";
