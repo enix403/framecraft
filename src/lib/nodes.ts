@@ -42,9 +42,11 @@ export type RoomTypeId = (typeof appRoomTypes)[number]["id"];
 
 /* ====================== */
 
+export const FRONT_DOOR_ID = "fdoor";
+
 export const appDoorTypes = [
   {
-    id: "fdoor",
+    id: FRONT_DOOR_ID,
     serverId: 14,
     importance: 14,
     title: "Entrance"
@@ -52,6 +54,12 @@ export const appDoorTypes = [
 ] as const satisfies NodeType[];
 
 export type DoorTypeId = (typeof appDoorTypes)[number]["id"];
+
+const doorIds = appDoorTypes.map(t => t.id);
+
+export function isDoor(typeId: string) {
+  return doorIds.findIndex(id => id == typeId) !== -1;
+}
 
 /* ====================== */
 
