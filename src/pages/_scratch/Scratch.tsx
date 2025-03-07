@@ -1,52 +1,44 @@
 // @dwats-nocheck
 
 import { ResponsiveNetworkCanvas } from "@nivo/network";
+import { nodeTypeToRoomType, roomTypes } from "../web-editor/plan/rooms";
+
+
+const demoNodeTypes = [0, 1, 2, 2, 2, 3, 3, 3, 4, 14];
+const demoEdges = [
+  [0, 1],
+  [0, 2],
+  [0, 3],
+  [0, 4],
+  [0, 9],
+  [8, 4],
+  [2, 5],
+  [3, 6],
+  [4, 7]
+] as [number, number][];
 
 const data = {
-  nodes: [
-    {
-      id: "Node 1",
-      color: "rgb(97, 205, 187)"
-    },
-    {
-      id: "Node 0",
-      color: "rgb(244, 117, 96)"
-    },
-    {
-      id: "Node 1.0",
-      color: "rgb(232, 193, 160)"
-    },
-    {
-      id: "Node 1.1",
-      color: "rgb(232, 193, 160)"
-    },
-  ],
-  links: [
-    {
-      source: "Node 0",
-      target: "Node 1"
-    },
-    {
-      source: "Node 1",
-      target: "Node 1.0"
-    },
-    {
-      source: "Node 1",
-      target: "Node 1.1"
-    }
-  ]
+  nodes: demoNodeTypes.map((n, index) => ({
+    id: index,
+    color: roomTypes[nodeTypeToRoomType[n]]?.color || "pink"
+  })),
+  links: demoEdges.map(([a, b]) => ({
+    source: a,
+    target: b
+  }))
 };
 
 const MyResponsiveNetworkCanvas = ({ data }: { data: any }) => (
   <ResponsiveNetworkCanvas
     data={data}
     isInteractive={false}
+    centeringStrength={0.9}
     animate={false}
-    nodeColor={"rgb(97, 205, 187)"}
+    // @ts-ignore
+    nodeColor={n => n.color}
     nodeBorderWidth={1}
     linkThickness={2}
   />
-
 );
 
 export function Scratch() {
