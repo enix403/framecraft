@@ -1,11 +1,11 @@
 import { Rect, Text, Line } from "react-konva";
 
-import { roomInfoFromNodeType } from "../../plan/rooms";
-import { CELL_PHYSICAL_LENGTH, unitFactor } from "../../plan/units";
+import { CELL_PHYSICAL_LENGTH, unitFactor } from "@/lib/units";
 import { usePlan } from "../../PlanProvider";
 
 import { CELL_SIZE, snapToGrid } from "../common";
 import { useSettings } from "../state/settings";
+import { appNodeStyle } from "@/lib/node-styles";
 
 /* ============================================= */
 
@@ -227,7 +227,9 @@ export function RenderRoomLabels() {
 export function RenderRooms() {
   const plan = usePlan();
   return plan.rooms.map((room, i) => {
-    const color = roomInfoFromNodeType(room.type)?.rectColor || "#ff0000";
+    // const color = roomInfoFromNodeType(room.type)?.rectColor || "#ff0000";
+    const style = appNodeStyle[room.typeId];
+    const color = style.mapRectColor;
     return room.rects.map(([row, col, width, height], j) => (
       <Rect
         key={`room-${i}-${j}`}

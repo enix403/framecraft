@@ -1,9 +1,10 @@
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { usePlan } from "../PlanProvider";
-import { roomInfoFromNodeType } from "../plan/rooms";
 import { useSelectedObject } from "../world2d/state/selections";
 import clsx from "clsx";
+import { idToNodeType } from "@/lib/nodes";
+import { appNodeStyle } from "@/lib/node-styles";
 
 export function RoomList() {
   let { rooms } = usePlan();
@@ -31,7 +32,9 @@ export function RoomList() {
 
       <div className='-mx-4 mt-2 flex-1-y'>
         {rooms.map((room, index) => {
-          const roomType = roomInfoFromNodeType(room.type);
+          // const roomType = roomInfoFromNodeType(room.type);
+          const style = appNodeStyle[room.typeId];
+
           const isSelected = index === selectedObj?.index;
 
           return (
@@ -47,7 +50,7 @@ export function RoomList() {
                 setSelectedObj(isSelected ? null : { type: "room", index });
               }}
             >
-              <roomType.Icon color={roomType.color} strokeWidth={3} />
+              <style.Icon color={style.iconColor} strokeWidth={3} />
               <span>{room.label}</span>
             </button>
           );

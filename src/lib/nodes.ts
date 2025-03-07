@@ -61,7 +61,7 @@ export const appNodeTypes: NodeType[] = [...appRoomTypes, ...appDoorTypes];
 
 export type NodeTypeId = RoomTypeId | DoorTypeId;
 
-export const idToNodeType: Record<NodeTypeId, NodeType> = appNodeTypes.reduce(
+export const idToNodeType: Record<string, NodeType> = appNodeTypes.reduce(
   (acc, nodeType) => ({
     ...acc,
     [nodeType.id]: nodeType

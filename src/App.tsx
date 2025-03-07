@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { Scratch } from "./pages/_scratch/Scratch";
-// import { WebEditor } from "./pages/web-editor/WebEditor";
+import { WebEditor } from "./pages/web-editor/WebEditor";
 import { GenerateDesign } from "./pages/generate/GenerateDesign";
 
 export function App() {
@@ -14,7 +14,7 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Scratch />} />
-          {/* <Route path='/e' element={<WebEditor />} /> */}
+          <Route path='/e' element={<WebEditor />} />
           <Route path='/g' element={<GenerateDesign />} />
         </Routes>
       </BrowserRouter>

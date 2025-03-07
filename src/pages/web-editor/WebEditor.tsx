@@ -4,7 +4,7 @@ import {
   ResizablePanelGroup
 } from "@/components/ui/resizable";
 
-import { getInitialPlan } from "./plan/demo/initialPlan";
+import { getInitialPlan } from "@/lib/demo/initialPlan";
 import { PlanContext } from "./PlanProvider";
 
 import { TopNav } from "./panes/TopNav";
@@ -14,7 +14,7 @@ import { RoomDetails } from "./panes/RoomDetails";
 
 import { World2DPane } from "./world2d/World2DPane";
 import { useEffect, useRef, useState } from "react";
-import { PlanData } from "./plan/plan";
+import { PlanData } from "@/lib/plan";
 
 export function WebEditor() {
   const [plan, setPlan] = useState<PlanData | null>(getInitialPlan);

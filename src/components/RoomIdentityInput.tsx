@@ -21,7 +21,7 @@ export function RoomIdentityInput({
   className
 }: {
   initialName: string;
-  initialTypeId: RoomTypeId;
+  initialTypeId: string;
   onUpdateName: (name: string) => void;
   onUpdateNodeType: (typeId: RoomTypeId) => void;
   className?: string;
@@ -29,7 +29,7 @@ export function RoomIdentityInput({
   const ref = useRef<HTMLInputElement>(null);
 
   const [name, setName] = useState(initialName);
-  const [typeId, setTypeId] = useState<RoomTypeId>(initialTypeId);
+  const [typeId, setTypeId] = useState(initialTypeId);
 
   function saveName() {
     onUpdateName(name);

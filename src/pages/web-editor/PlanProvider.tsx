@@ -5,7 +5,7 @@ import {
   useCallback,
   useContext
 } from "react";
-import { PlanData } from "./plan/plan";
+import { PlanData } from "@/lib/plan";
 import { produce } from "immer";
 
 interface IPlanContext {

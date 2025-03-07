@@ -22,15 +22,15 @@ export function RoomDetails() {
           <RoomIdentityInput
             key={room.id}
             initialName={room.label}
-            initialRoomType={room.type}
+            initialTypeId={room.typeId}
             onUpdateName={name => {
               updatePlan(plan => {
                 plan.rooms[selectedObj!.index].label = name;
               });
             }}
-            onUpdateNodeType={type => {
+            onUpdateNodeType={typeId => {
               updatePlan(plan => {
-                plan.rooms[selectedObj!.index].type = type;
+                plan.rooms[selectedObj!.index].typeId = typeId;
               });
             }}
           />
