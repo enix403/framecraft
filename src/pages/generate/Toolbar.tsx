@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Info, Redo, Undo } from "lucide-react";
 import { useState } from "react";
 
+// TODO: Simplify. Too many unnecessary flex divs
 export function Toolbar() {
   const [nodeSelected, setNodeSelected] = useState(false);
 

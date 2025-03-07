@@ -12,7 +12,30 @@ export function GenerateDesign() {
       <div className='flex flex-1-fix flex-col'>
         <LayoutGraphHeading />
         <Toolbar />
+        <div className='flex flex-1-fix'>
+          <div className='flex-1-fix'>
+            <GraphEditor />
+          </div>
+          <div className='border-l-2'>
+            <NodeDragSource />
+          </div>
+        </div>
+        <div className='border-t-2'>
+          <GraphPresets />
+        </div>
       </div>
     </div>
   );
+}
+
+function GraphEditor() {
+  return "e";
+}
+
+function NodeDragSource() {
+  return "n";
+}
+
+function GraphPresets() {
+  return "p";
 }
