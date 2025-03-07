@@ -21,7 +21,7 @@ import {
 import { Link2, Package, Plus } from "lucide-react";
 import clsx from "clsx";
 import { useCallback } from "react";
-import FloatingEdge from "./FloatingEdge";
+import {FloatingEdge} from "./FloatingEdge";
 
 /* =================================== */
 
@@ -58,9 +58,6 @@ type RoomNode = Node<
 
 function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
   const { label, roomTypeLabel } = data;
-
-  const connection = useConnection();
-  const isTarget = connection.inProgress && connection.fromNode.id !== id;
 
   return (
     <>
@@ -126,29 +123,12 @@ function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
 
 /* =================================== */
 
-function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
-  const [edgePath] = getSimpleBezierPath({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY
-  });
-
-  return (
-    <>
-      <BaseEdge id={id} path={edgePath} />
-    </>
-  );
-}
-
-/* =================================== */
 
 const nodeTypes = {
   roomNode: RoomNode
 };
 
 const edgeTypes = {
-  // myCustomEdge: CustomEdge,
   floating: FloatingEdge,
 };
 
@@ -176,6 +156,7 @@ function LayoutGraphEditor() {
         edges={edges}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        edgesFocusable={false}
         fitView
         fitViewOptions={{
           maxZoom: 1

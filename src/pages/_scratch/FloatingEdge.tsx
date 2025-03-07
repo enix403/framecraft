@@ -6,6 +6,8 @@ import {
 } from "@xyflow/react";
 
 import { Position } from "@xyflow/react";
+import clsx from "clsx";
+import { Trash2 } from "lucide-react";
 
 // this helper function returns the intersection point
 // of the line between the center of the intersectionNode and the target node
@@ -77,7 +79,7 @@ export function getEdgeParams(source, target) {
   };
 }
 
-function FloatingEdge({ id, source, target, markerEnd, style }) {
+export function FloatingEdge({ id, source, target, style }) {
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
 
@@ -102,9 +104,8 @@ function FloatingEdge({ id, source, target, markerEnd, style }) {
   const { setEdges } = useReactFlow();
 
   const onEdgeClick = () => {
-    setEdges((edges) => edges.filter((edge) => edge.id !== id));
+    setEdges(edges => edges.filter(edge => edge.id !== id));
   };
-
 
   return (
     <>
@@ -112,24 +113,30 @@ function FloatingEdge({ id, source, target, markerEnd, style }) {
         id={id}
         className='react-flow__edge-path'
         d={edgePath}
-        markerEnd={markerEnd}
         style={{
           ...style,
           strokeWidth: 1.5
         }}
       />
       <EdgeLabelRenderer>
-        <div
-          className='button-edge__label nodrag nopan'
+        <button
+          className='nodrag nopan pointer-events-auto absolute origin-center cursor-pointer leading-none'
           style={{
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
           }}
+          onClick={e => {
+            e.stopPropagation();
+            e.preventDefault();
+            onEdgeClick();
+          }}
         >
-          <button className='button-edge__button' onClick={onEdgeClick}>x</button>
-        </div>
+          <div
+            className={clsx("rounded-full !bg-[#dc7979] !p-1 hover:opacity-80")}
+          >
+            <Trash2 size={8} className='text-white' strokeWidth={3} />
+          </div>
+        </button>
       </EdgeLabelRenderer>
     </>
   );
 }
-
-export default FloatingEdge;
