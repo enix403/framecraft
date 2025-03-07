@@ -1,18 +1,7 @@
-import { WandSparkles } from "lucide-react";
-import { GeneralSettings } from "./GeneralSettings";
 import { Button } from "@/components/ui/button";
-
-function LayoutGraphHeading() {
-  return (
-    <nav className='flex items-center justify-between border-b px-4 py-2'>
-      <p className='text-xl font-bold tracking-tight'>Plan Layout Graph</p>
-      <Button variant="ghost" className='text-blue-600 flex items-center gap-x-2'>
-        <WandSparkles size={20} />
-        Use Auto Layout
-      </Button>
-    </nav>
-  );
-}
+import { GeneralSettings } from "./GeneralSettings";
+import { LayoutGraphHeading } from "./LayoutGraphHeading";
+import { Toolbar } from "./Toolbar";
 
 export function GenerateDesign() {
   return (
@@ -22,6 +11,7 @@ export function GenerateDesign() {
       </div>
       <div className='flex flex-1-fix flex-col'>
         <LayoutGraphHeading />
+        <Toolbar />
       </div>
     </div>
   );

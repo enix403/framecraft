@@ -1,11 +1,6 @@
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from "@/components/ui/tooltip";
 import { Redo, Undo } from "lucide-react";
-import { ComponentProps, PropsWithChildren, ReactNode } from "react";
+import { TooltipWrapper } from "@/components/TooltipWrapper";
 
 import { UnitControl } from "./controls/UnitControl";
 import { FeatureTogglesControl } from "./controls/FeatureTogglesControl";
@@ -14,28 +9,6 @@ import { ZoomControl } from "./controls/ZoomControl";
 import { RecenterButton } from "./controls/RecenterButton";
 
 import { World2DEditor } from "./World2DEditor";
-
-function TooltipWrapper({
-  children,
-  tip,
-  side = "bottom"
-}: PropsWithChildren & {
-  tip: ReactNode;
-  side?: ComponentProps<typeof TooltipContent>["side"];
-}) {
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent
-        side={side}
-        className='dark px-2 py-1 text-xs'
-        showArrow={true}
-      >
-        {tip}
-      </TooltipContent>
-    </Tooltip>
-  );
-}
 
 function Toolbar() {
   return (
