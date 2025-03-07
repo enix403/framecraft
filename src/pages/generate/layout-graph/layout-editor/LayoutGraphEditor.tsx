@@ -25,10 +25,12 @@ const edgeTypes = { custom: LayoutEdge };
 
 export function LayoutGraphEditor({
   nodesState,
-  edgesState
+  edgesState,
+  onSelection
 }: {
   nodesState: ReturnType<typeof useNodesState<LayoutNode>>;
   edgesState: ReturnType<typeof useEdgesState<LayoutEdge>>;
+  onSelection: (node: LayoutNode | null) => void;
 }) {
   const [nodes, _setNodes, onNodesChange] = nodesState;
   const [edges, setEdges, onEdgesChange] = edgesState;
@@ -45,6 +47,9 @@ export function LayoutGraphEditor({
         edgeTypes={edgeTypes}
         nodes={nodes}
         onNodesChange={onNodesChange}
+        onNodeClick={(e, node) => onSelection(node)}
+        onNodeDragStart={(e, node) => onSelection(node)}
+        onPaneClick={() => onSelection(null)}
         edges={edges}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}

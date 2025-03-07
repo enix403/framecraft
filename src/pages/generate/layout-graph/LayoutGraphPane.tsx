@@ -11,10 +11,12 @@ import {
   ReactFlowProvider,
   useEdgesState,
   useNodesData,
-  useNodesState
+  useNodesState,
+  useReactFlow
 } from "@xyflow/react";
 import { LayoutNode } from "./layout-editor/LayoutNode";
 import { LayoutEdge } from "./layout-editor/LayoutEdge";
+import { useSelectedObject } from "@/pages/web-editor/world2d/state/selections";
 
 export function LayoutGraphTitle() {
   return (
@@ -32,14 +34,16 @@ export function LayoutGraphTitle() {
 }
 
 // TODO: Simplify. Too many unnecessary flex divs
-export function Toolbar() {
-  const [nodeSelected, setNodeSelected] = useState(false);
+export function Toolbar({ selectedNodeId }: { selectedNodeId: string }) {
+  const node = useNodesData<LayoutNode>(selectedNodeId);
+  // const { updateNodeData } = useReactFlow<LayoutNode>();
 
   return (
     <nav className='flex gap-x-2 border-b px-4 py-2'>
       <div className='flex flex-1 items-center'>
-        {nodeSelected ? (
+        {node ? (
           <RoomIdentityInput
+            key={node.id}
             initialName={"Living Room 1"}
             initialTypeId='living'
             onUpdateName={name => {}}
@@ -75,13 +79,21 @@ function LayoutGraphPaneInner() {
   const nodesState = useNodesState(initialNodes);
   const edgesState = useEdgesState(initialEdges);
 
+  const [selectedNodeId, setSelectedNodeId] = useState("");
+
   return (
     <>
       <LayoutGraphTitle />
-      <Toolbar />
+      <Toolbar selectedNodeId={selectedNodeId} />
       <div className='flex flex-1-fix'>
         <div className='flex-1-fix shrink-0'>
-          <LayoutGraphEditor nodesState={nodesState} edgesState={edgesState} />
+          <LayoutGraphEditor
+            nodesState={nodesState}
+            edgesState={edgesState}
+            onSelection={(node: LayoutNode | null) => {
+              setSelectedNodeId(node?.id || "");
+            }}
+          />
         </div>
         <div className='max-h-full max-w-sm border-l-2'>
           <NodeDragSource />
