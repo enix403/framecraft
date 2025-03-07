@@ -11,7 +11,8 @@ function Source({ label }: { label: ReactNode }) {
       className={clsx(
         "flex min-w-56 flex-row items-center gap-x-2.5 rounded-[8px] border bg-white p-2.5 pr-6",
         "transition-colors",
-        "shadow-[0px_10px_36px_-6px_rgba(0,_0,_0,_0.1)]",
+        // "shadow-[0px_10px_36px_-6px_rgba(0,_0,_0,_0.1)]",
+        "shadow-sm",
         "relative",
         "border-[#04ACB0]"
       )}
