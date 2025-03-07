@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -9,42 +10,33 @@ import {
   SelectLabel
 } from "@/components/ui/select";
 import { useRef, useState } from "react";
-
-import {
-  nodeTypeToRoomType,
-  roomTypeIds,
-  roomTypes,
-  roomTypeToNodeType
-} from "@/pages/web-editor/plan/rooms";
-import clsx from "clsx";
+import { appRoomTypes, idToNodeType, RoomTypeId } from "@/lib/nodes";
+import { appNodeStyle } from "@/lib/node-styles";
 
 export function RoomIdentityInput({
   initialName,
-  initialNodeType,
+  initialTypeId,
   onUpdateName,
   onUpdateNodeType,
   className
 }: {
   initialName: string;
-  initialNodeType: number;
+  initialTypeId: RoomTypeId;
   onUpdateName: (name: string) => void;
-  onUpdateNodeType: (type: number) => void;
+  onUpdateNodeType: (typeId: RoomTypeId) => void;
   className?: string;
 }) {
   const ref = useRef<HTMLInputElement>(null);
-  const [name, setName] = useState(initialName /* room.label */);
 
-  const [typeId, setTypeId] = useState<string>(
-    nodeTypeToRoomType[initialNodeType /* room.type */]
-  );
-  const selectedType = roomTypes[typeId] || null;
+  const [name, setName] = useState(initialName);
+  const [typeId, setTypeId] = useState<RoomTypeId>(initialTypeId);
 
   function saveName() {
     onUpdateName(name);
   }
 
-  function saveType(typeId: string) {
-    onUpdateNodeType(roomTypeToNodeType[typeId]);
+  function saveType(typeId: RoomTypeId) {
+    onUpdateNodeType(typeId);
   }
 
   function handleKeyDown(event) {
@@ -54,21 +46,23 @@ export function RoomIdentityInput({
     }
   }
 
+  const selectedStyle = appNodeStyle[typeId] || null;
+
   return (
     <div className={clsx("flex rounded-md shadow-xs", className)}>
       <Select
         value={typeId}
-        onValueChange={v => {
+        onValueChange={(v: RoomTypeId) => {
           setTypeId(v);
           saveType(v);
         }}
       >
         <SelectTrigger className='w-fit rounded-e-none shadow-none'>
           <SelectValue>
-            {selectedType && (
-              <selectedType.Icon
+            {selectedStyle && (
+              <selectedStyle.Icon
                 size={18}
-                color={selectedType.color}
+                color={selectedStyle.iconColor}
                 strokeWidth={3}
               />
             )}
@@ -79,15 +73,16 @@ export function RoomIdentityInput({
           <SelectGroup>
             <SelectLabel>Select Room Type</SelectLabel>
 
-            {roomTypeIds.map(roomTypeId => {
-              const typeInfo = roomTypes[roomTypeId];
+            {appRoomTypes.map(roomType => {
+              const style = appNodeStyle[roomType.id];
               return (
-                <SelectItem key={roomTypeId} value={roomTypeId}>
-                  <typeInfo.Icon size={16} color={typeInfo.color} />
-                  <span className='truncate'>{typeInfo.title}</span>
+                <SelectItem key={roomType.id} value={roomType.id}>
+                  <style.Icon size={16} color={style.iconColor} />
+                  <span className='truncate'>{roomType.title}</span>
                 </SelectItem>
               );
             })}
+
           </SelectGroup>
         </SelectContent>
       </Select>

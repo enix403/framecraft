@@ -38,7 +38,7 @@ export const appRoomTypes = [
   }
 ] as const satisfies NodeType[];
 
-export type RoomId = (typeof appRoomTypes)[number]["id"];
+export type RoomTypeId = (typeof appRoomTypes)[number]["id"];
 
 /* ====================== */
 
@@ -51,7 +51,7 @@ export const appDoorTypes = [
   }
 ] as const satisfies NodeType[];
 
-export type DoorId = (typeof appDoorTypes)[number]["id"];
+export type DoorTypeId = (typeof appDoorTypes)[number]["id"];
 
 /* ====================== */
 
@@ -59,9 +59,9 @@ export const appNodeTypes: NodeType[] = [...appRoomTypes, ...appDoorTypes];
 
 /* ====================== */
 
-export type NodeId = RoomId | DoorId;
+export type NodeTypeId = RoomTypeId | DoorTypeId;
 
-export const idToNodeType: Record<NodeId, NodeType> = appNodeTypes.reduce(
+export const idToNodeType: Record<NodeTypeId, NodeType> = appNodeTypes.reduce(
   (acc, nodeType) => ({
     ...acc,
     [nodeType.id]: nodeType

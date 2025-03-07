@@ -1,6 +1,7 @@
+import { serverIdToNodeType } from "../nodes";
 import planJsonRaw from "./planA.json";
 
-import { roomInfoFromNodeType } from "../rooms";
+// import { roomInfoFromNodeType } from "../rooms";
 
 export type RoomRect = [
   number /* row */,
@@ -45,12 +46,14 @@ export function getInitialPlan() {
       ]);
     }
 
+    const nodeType = serverIdToNodeType[type];
+
     return {
-      type,
+      typeId: nodeType.id,
       id: `room-${index}`,
-      label: roomInfoFromNodeType(type)?.title ?? "Room",
+      label: nodeType.title ?? "Room",
       rects
-    };
+    }
   });
 
   return {

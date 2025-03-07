@@ -1,8 +1,8 @@
 // @dwats-nocheck
 
 import { ResponsiveNetworkCanvas } from "@nivo/network";
-import { nodeTypeToRoomType, roomTypes } from "@/lib/rooms";
-
+import { serverIdToNodeType } from "@/lib/nodes";
+import { appNodeStyle } from "@/lib/node-styles";
 
 const demoNodeTypes = [0, 1, 2, 2, 2, 3, 3, 3, 4, 14];
 const demoEdges = [
@@ -17,10 +17,11 @@ const demoEdges = [
   [4, 7]
 ] as [number, number][];
 
+
 const data = {
   nodes: demoNodeTypes.map((n, index) => ({
     id: index,
-    color: roomTypes[nodeTypeToRoomType[n]]?.color || "pink"
+    color: appNodeStyle[serverIdToNodeType[n].id].iconColor
   })),
   links: demoEdges.map(([a, b]) => ({
     source: a,

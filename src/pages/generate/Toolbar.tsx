@@ -14,7 +14,7 @@ export function Toolbar() {
         {nodeSelected ? (
           <RoomIdentityInput
             initialName={"Living Room 1"}
-            initialNodeType={0}
+            initialTypeId="living"
             onUpdateName={name => {}}
             onUpdateNodeType={type => {}}
             className='max-w-lg flex-1'

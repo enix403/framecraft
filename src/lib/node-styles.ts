@@ -1,10 +1,10 @@
 // Node styles (colors) are defined in a separate file since they change based on theme
 
-import { BedDouble, Droplet, Eclipse, Grape, Tv, Icon } from "lucide-react";
-import { NodeId } from "./nodes";
+import { BedDouble, Droplet, Eclipse, Grape, Tv } from "lucide-react";
+import { NodeTypeId } from "./nodes";
 
 // Hack
-type LucideIconType = typeof Icon;
+type LucideIconType = typeof BedDouble;
 
 interface NodeStyle {
   Icon: LucideIconType;
@@ -12,7 +12,7 @@ interface NodeStyle {
   mapRectColor: string;
 }
 
-export const appNodeStyle: Record<NodeId, NodeStyle> = {
+export const appNodeStyle: Record<string, NodeStyle> = {
   living: {
     Icon: Tv,
     iconColor: "#EE4D4D",
@@ -43,4 +43,4 @@ export const appNodeStyle: Record<NodeId, NodeStyle> = {
     iconColor: "#000000",
     mapRectColor: ""
   }
-};
+} satisfies Record<NodeTypeId, NodeStyle>;

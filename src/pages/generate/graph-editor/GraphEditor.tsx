@@ -28,7 +28,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { roomTypeIds, roomTypes } from "@/pages/web-editor/plan/rooms";
+import { appRoomTypes } from "@/lib/nodes";
+import { appNodeStyle } from "@/lib/node-styles";
 
 /* =================================== */
 
@@ -80,15 +81,16 @@ function AddNodeButton() {
       <DropdownMenuContent>
         <DropdownMenuLabel>Connect a New Room</DropdownMenuLabel>
         <DropdownMenuGroup>
-          {roomTypeIds.map(roomTypeId => {
-            const typeInfo = roomTypes[roomTypeId];
+          {appRoomTypes.map(roomType => {
+            const style = appNodeStyle[roomType.id];
             return (
-              <DropdownMenuItem key={roomTypeId}>
-                <typeInfo.Icon size={16} color={typeInfo.color} />
-                <span className='truncate'>{typeInfo.title}</span>
+              <DropdownMenuItem key={roomType.id}>
+                <style.Icon size={16} color={style.iconColor} />
+                <span className='truncate'>{roomType.title}</span>
               </DropdownMenuItem>
             );
           })}
+
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,7 +1,7 @@
 import clsx from "clsx";
+import { appNodeTypes } from "@/lib/nodes";
 import { Package } from "lucide-react";
 import { ReactNode } from "react";
-import { roomTypeIds, roomTypes } from "../web-editor/plan/rooms";
 
 function Source({ label }: { label: ReactNode }) {
   return (
@@ -34,9 +34,10 @@ export function NodeDragSource() {
       <h2 className='mb-2 font-semibold'>Available Rooms</h2>
 
       <div className='-mx-4 -mb-4 flex-1-y space-y-2 px-4 pb-4'>
-        {roomTypeIds.map(typeId => (
-          <Source key={typeId} label={roomTypes[typeId].title} />
-        ))}
+        {appNodeTypes.map(nodeType => {
+          // const style = appNodeStyle[nodeType.id];
+          return <Source key={nodeType.id} label={nodeType.title} />;
+        })}
       </div>
     </div>
   );
