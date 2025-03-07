@@ -1,10 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { GeneralSettings } from "./GeneralSettings";
-import { LayoutGraphHeading } from "./LayoutGraphHeading";
-import { Toolbar } from "./Toolbar";
-import { GraphEditor } from "./graph-editor/GraphEditor";
-import { NodeDragSource } from "./NodeDragSource";
-import { GraphPresets } from "./GraphPresets";
+import { LayoutGraphPane } from "./layout-graph/LayoutGraphPane";
 
 export function GenerateDesign() {
   return (
@@ -13,21 +9,8 @@ export function GenerateDesign() {
         <GeneralSettings />
       </div>
       <div className='flex flex-1-fix flex-col'>
-        <LayoutGraphHeading />
-        <Toolbar />
-        <div className='flex flex-1-fix'>
-          <div className='flex-1-fix shrink-0'>
-            <GraphEditor />
-          </div>
-          <div className='border-l-2 max-h-full max-w-sm'>
-            <NodeDragSource />
-          </div>
-        </div>
-        <div className='border-t-2 shrink-0'>
-          <GraphPresets />
-        </div>
+        <LayoutGraphPane />
       </div>
     </div>
   );
 }
-

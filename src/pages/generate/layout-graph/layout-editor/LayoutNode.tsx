@@ -1,24 +1,12 @@
-import "@xyflow/react/dist/style.css";
 
 import {
-  addEdge,
-  Background,
-  BackgroundVariant,
-  Controls,
-  Edge,
   Handle,
-  OnConnect,
   Position,
-  ReactFlow,
-  useEdgesState,
-  useNodesState,
   type Node,
   type NodeProps
 } from "@xyflow/react";
 import { Link2, Package, Plus } from "lucide-react";
 import clsx from "clsx";
-import { useCallback } from "react";
-import { FloatingEdge } from "./FloatingEdge";
 
 import {
   DropdownMenu,
@@ -30,39 +18,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { appRoomTypes } from "@/lib/nodes";
 import { appNodeStyle } from "@/lib/node-styles";
-
-/* =================================== */
-
-const initialNodes: RoomNode[] = [
-  {
-    id: "1",
-    type: "roomNode",
-    position: { x: 0, y: 0 },
-    data: { label: "Living Room 1", roomTypeLabel: "Living Room" }
-  },
-  {
-    id: "2",
-    type: "roomNode",
-    position: { x: 80, y: 180 },
-    data: { label: "Living Room 2", roomTypeLabel: "Living Room" }
-  },
-  {
-    id: "3",
-    type: "roomNode",
-    position: { x: 180, y: -180 },
-    data: { label: "Living Room 3", roomTypeLabel: "Living Room" }
-  }
-];
-
-/* =================================== */
-
-type RoomNode = Node<
-  {
-    label: string;
-    roomTypeLabel: string;
-  },
-  "roomNode"
->;
 
 function AddNodeButton() {
   return (
@@ -90,14 +45,21 @@ function AddNodeButton() {
               </DropdownMenuItem>
             );
           })}
-
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
 
-function RoomNode({ data, selected }: NodeProps<RoomNode>) {
+export type LayoutNode = Node<
+  {
+    label: string;
+    roomTypeLabel: string;
+  },
+  "layoutNode"
+>;
+
+export function LayoutNode({ data, selected }: NodeProps<LayoutNode>) {
   const { label, roomTypeLabel } = data;
 
   return (
@@ -143,71 +105,12 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
         />
       </Handle>
 
-      {/* {connection.inProgress && isTarget && ( */}
       <Handle
         type='target'
         position={Position.Left}
         isConnectableStart={false}
         className='!top-0 !left-0 !h-full !w-full !transform-none !rounded-none opacity-0'
       />
-      {/* )} */}
     </>
-  );
-}
-
-/* =================================== */
-
-const nodeTypes = {
-  roomNode: RoomNode
-};
-
-const edgeTypes = {
-  floating: FloatingEdge
-};
-
-/* =================================== */
-
-export function GraphEditor() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([] as Edge[]);
-
-  const onConnect: OnConnect = useCallback(
-    connection =>
-      // setEdges(eds => addEdge({ ...connection, type: "myCustomEdge" }, eds)),
-      setEdges(eds => addEdge({ ...connection, type: "floating" }, eds)),
-    [setEdges]
-  );
-
-  return (
-    <div className='h-full max-h-full w-full max-w-full'>
-      <ReactFlow
-        nodeTypes={nodeTypes}
-        // @ts-ignore
-        edgeTypes={edgeTypes}
-        nodes={nodes}
-        onNodesChange={onNodesChange}
-        edges={edges}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        edgesFocusable={false}
-        fitView
-        fitViewOptions={{
-          maxZoom: 1
-        }}
-        defaultEdgeOptions={{ animated: true }}
-        proOptions={{
-          hideAttribution: true
-        }}
-      >
-        <Background
-          bgColor='#FAFAFA'
-          color='#CACACA'
-          variant={BackgroundVariant.Dots}
-          gap={10}
-          size={1.5}
-        />
-        <Controls />
-      </ReactFlow>
-    </div>
   );
 }

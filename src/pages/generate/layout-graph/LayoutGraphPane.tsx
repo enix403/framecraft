@@ -1,8 +1,27 @@
+import { WandSparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { RoomIdentityInput } from "@/components/RoomIdentityInput";
 import { TooltipWrapper } from "@/components/TooltipWrapper";
-import { Button } from "@/components/ui/button";
 import { Info, Redo, Undo } from "lucide-react";
 import { useState } from "react";
+import { LayoutGraphEditor } from "./layout-editor/LayoutGraphEditor";
+import { NodeDragSource } from "./NodeDragSource";
+import { GraphPresets } from "./GraphPresets";
+
+export function LayoutGraphTitle() {
+  return (
+    <nav className='flex items-center justify-between border-b px-4 py-2'>
+      <p className='text-xl font-bold tracking-tight'>Plan Layout Graph</p>
+      <Button
+        variant='ghost'
+        className='flex items-center gap-x-2 text-blue-600'
+      >
+        <WandSparkles size={20} />
+        Use Auto Layout
+      </Button>
+    </nav>
+  );
+}
 
 // TODO: Simplify. Too many unnecessary flex divs
 export function Toolbar() {
@@ -41,5 +60,26 @@ export function Toolbar() {
         </TooltipWrapper>
       </div>
     </nav>
+  );
+}
+
+
+export function LayoutGraphPane() {
+  return (
+    <>
+      <LayoutGraphTitle />
+      <Toolbar />
+      <div className='flex flex-1-fix'>
+        <div className='flex-1-fix shrink-0'>
+          <LayoutGraphEditor />
+        </div>
+        <div className='max-h-full max-w-sm border-l-2'>
+          <NodeDragSource />
+        </div>
+      </div>
+      <div className='shrink-0 border-t-2'>
+        <GraphPresets />
+      </div>
+    </>
   );
 }
