@@ -115,7 +115,8 @@ export function FloatingEdge({ id, source, target, style }) {
         d={edgePath}
         style={{
           ...style,
-          strokeWidth: 1.5
+          strokeWidth: 2,
+          stroke: "#65697AFF"
         }}
       />
       <EdgeLabelRenderer>

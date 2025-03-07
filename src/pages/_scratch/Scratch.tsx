@@ -124,16 +124,6 @@ function RoomNode({ data, selected }: NodeProps<RoomNode>) {
         </div>
       </div>
 
-      {/*  <button
-        className={clsx(
-          "nodrag nopan cursor-crosshair",
-          "!h-auto !w-auto rounded-full !border-none !bg-[#79dcbd] !p-1",
-          "absolute !top-[calc(50%-10px)] right-0 translate-x-1/2 -translate-y-1/2"
-        )}
-      >
-        <Plus size={8} className='text-white' strokeWidth={3} />
-      </button> */}
-
       <AddNodeButton />
 
       <Handle
@@ -203,6 +193,7 @@ function LayoutGraphEditor() {
         fitViewOptions={{
           maxZoom: 1
         }}
+        defaultEdgeOptions={{animated:true}}
       >
         <Background
           bgColor='#FAFAFA'
