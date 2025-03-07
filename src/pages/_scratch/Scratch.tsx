@@ -4,15 +4,12 @@ import {
   addEdge,
   Background,
   BackgroundVariant,
-  BaseEdge,
   Controls,
   Edge,
-  getSimpleBezierPath,
   Handle,
   OnConnect,
   Position,
   ReactFlow,
-  useConnection,
   useEdgesState,
   useNodesState,
   type Node,
@@ -21,7 +18,18 @@ import {
 import { Link2, Package, Plus } from "lucide-react";
 import clsx from "clsx";
 import { useCallback } from "react";
-import {FloatingEdge} from "./FloatingEdge";
+import { FloatingEdge } from "./FloatingEdge";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { roomTypeIds, roomTypes } from "../web-editor/plan/rooms";
 
 /* =================================== */
 
@@ -56,7 +64,39 @@ type RoomNode = Node<
   "roomNode"
 >;
 
-function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
+function AddNodeButton() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={clsx(
+            "nodrag nopan cursor-crosshair",
+            "!h-auto !w-auto rounded-full !border-none !bg-[#79dcbd] !p-1",
+            "absolute !top-[calc(50%-10px)] right-0 translate-x-1/2 -translate-y-1/2"
+          )}
+        >
+          <Plus size={8} className='text-white' strokeWidth={3} />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Connect a New Room</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          {roomTypeIds.map(roomTypeId => {
+            const typeInfo = roomTypes[roomTypeId];
+            return (
+              <DropdownMenuItem key={roomTypeId}>
+                <typeInfo.Icon size={16} color={typeInfo.color} />
+                <span className='truncate'>{typeInfo.title}</span>
+              </DropdownMenuItem>
+            );
+          })}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function RoomNode({ data, selected }: NodeProps<RoomNode>) {
   const { label, roomTypeLabel } = data;
 
   return (
@@ -83,7 +123,8 @@ function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
           </p>
         </div>
       </div>
-      <button
+
+      {/*  <button
         className={clsx(
           "nodrag nopan cursor-crosshair",
           "!h-auto !w-auto rounded-full !border-none !bg-[#79dcbd] !p-1",
@@ -91,7 +132,9 @@ function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
         )}
       >
         <Plus size={8} className='text-white' strokeWidth={3} />
-      </button>
+      </button> */}
+
+      <AddNodeButton />
 
       <Handle
         type='source'
@@ -123,13 +166,12 @@ function RoomNode({ id, data, selected }: NodeProps<RoomNode>) {
 
 /* =================================== */
 
-
 const nodeTypes = {
   roomNode: RoomNode
 };
 
 const edgeTypes = {
-  floating: FloatingEdge,
+  floating: FloatingEdge
 };
 
 /* =================================== */
