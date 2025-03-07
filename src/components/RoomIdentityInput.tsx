@@ -16,17 +16,20 @@ import {
   roomTypes,
   roomTypeToNodeType
 } from "@/pages/web-editor/plan/rooms";
+import clsx from "clsx";
 
 export function RoomIdentityInput({
   initialName,
   initialNodeType,
   onUpdateName,
-  onUpdateNodeType
+  onUpdateNodeType,
+  className
 }: {
   initialName: string;
   initialNodeType: number;
   onUpdateName: (name: string) => void;
   onUpdateNodeType: (type: number) => void;
+  className?: string;
 }) {
   const ref = useRef<HTMLInputElement>(null);
   const [name, setName] = useState(initialName /* room.label */);
@@ -52,7 +55,7 @@ export function RoomIdentityInput({
   }
 
   return (
-    <div className='flex rounded-md shadow-xs'>
+    <div className={clsx("flex rounded-md shadow-xs", className)}>
       <Select
         value={typeId}
         onValueChange={v => {
