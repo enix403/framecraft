@@ -56,7 +56,7 @@ export type LayoutNode = Node<
     label: string;
     roomTypeLabel: string;
   },
-  "layoutNode"
+  "custom"
 >;
 
 export function LayoutNode({ data, selected }: NodeProps<LayoutNode>) {

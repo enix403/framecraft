@@ -1,5 +1,7 @@
 import {
+  Edge,
   EdgeLabelRenderer,
+  EdgeProps,
   getBezierPath,
   useInternalNode,
   useReactFlow
@@ -79,7 +81,16 @@ export function getEdgeParams(source, target) {
   };
 }
 
-export function FloatingEdge({ id, source, target, style }) {
+/* ================================ */
+
+export type LayoutEdge = Edge<{}, "custom">;
+
+export function LayoutEdge({
+  id,
+  source,
+  target,
+  style
+}: EdgeProps<LayoutEdge>) {
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
 
