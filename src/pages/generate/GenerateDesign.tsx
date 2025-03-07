@@ -4,6 +4,7 @@ import { LayoutGraphHeading } from "./LayoutGraphHeading";
 import { Toolbar } from "./Toolbar";
 import { GraphEditor } from "./graph-editor/GraphEditor";
 import { NodeDragSource } from "./NodeDragSource";
+import { GraphPresets } from "./GraphPresets";
 
 export function GenerateDesign() {
   return (
@@ -30,7 +31,3 @@ export function GenerateDesign() {
   );
 }
 
-
-function GraphPresets() {
-  return "p";
-}

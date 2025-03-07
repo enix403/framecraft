@@ -1,8 +1,6 @@
 import { serverIdToNodeType } from "../nodes";
 import planJsonRaw from "./planA.json";
 
-// import { roomInfoFromNodeType } from "../rooms";
-
 export type RoomRect = [
   number /* row */,
   number /* col */,

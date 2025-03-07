@@ -195,6 +195,9 @@ export function GraphEditor() {
           maxZoom: 1
         }}
         defaultEdgeOptions={{ animated: true }}
+        proOptions={{
+          hideAttribution: true
+        }}
       >
         <Background
           bgColor='#FAFAFA'

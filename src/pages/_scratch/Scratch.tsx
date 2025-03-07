@@ -17,7 +17,6 @@ const demoEdges = [
   [4, 7]
 ] as [number, number][];
 
-
 const data = {
   nodes: demoNodeTypes.map((n, index) => ({
     id: index,
@@ -44,8 +43,8 @@ const MyResponsiveNetworkCanvas = ({ data }: { data: any }) => (
 
 export function Scratch() {
   return (
-    <div className='h-[12rem] w-[12rem] border-4'>
+    <button className='h-[12rem] w-[12rem] rounded-2xl bg-indigo-50 tc hover:bg-indigo-100'>
       <MyResponsiveNetworkCanvas data={data} />
-    </div>
+    </button>
   );
 }

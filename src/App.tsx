@@ -13,9 +13,9 @@ export function App() {
     <TooltipProvider delayDuration={0}>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Scratch />} />
+          <Route path='/s' element={<Scratch />} />
           <Route path='/e' element={<WebEditor />} />
-          <Route path='/g' element={<GenerateDesign />} />
+          <Route path='/' element={<GenerateDesign />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
