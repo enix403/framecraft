@@ -24,8 +24,6 @@ export const appNodeStyle: Record<string, NodeStyle> = {
   },
   bedroom: {
     Icon: BedDouble,
-    // iconColor: "#358aa7",
-    // mapRectColor: "#f4d6f4"
     iconColor: "#936b94",
     mapRectColor: "#f3def3"
   },
@@ -36,20 +34,17 @@ export const appNodeStyle: Record<string, NodeStyle> = {
   },
   bathroom: {
     Icon: Droplet,
-    // iconColor: "#cea827",
-    // iconColor: "#6fd0cc",
     iconColor: "#358aa7",
     mapRectColor: "#d3e7f0"
   },
   balcony: {
     Icon: Eclipse,
-    // iconColor: "#cea827",
     iconColor: "#c49049",
     mapRectColor: "#ffe192"
   },
   fdoor: {
     Icon: LogIn,
-    iconColor: "#000000",
+    iconColor: "#2d4043",
     mapRectColor: "#000000"
   }
 } satisfies Record<NodeTypeId, NodeStyle>;
