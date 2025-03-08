@@ -2,16 +2,20 @@ import "@xyflow/react/dist/style.css";
 
 import {
   addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
   Background,
   BackgroundVariant,
   Controls,
+  NodeMouseHandler,
   OnConnect,
+  OnEdgesChange,
+  OnNodeDrag,
+  OnNodesChange,
   ReactFlow,
-  useEdgesState,
-  useNodesState,
   useReactFlow
 } from "@xyflow/react";
-import { useCallback } from "react";
+import { ComponentProps, useCallback } from "react";
 
 import { idToNodeType } from "@/lib/nodes";
 
@@ -19,6 +23,7 @@ import { LayoutEdge } from "./LayoutEdge";
 import { LayoutNode } from "./LayoutNode";
 import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
 import { getNewNodeId } from "./add-node";
+import { StateSet } from "@/lib/utils";
 
 /* =================================== */
 
@@ -28,25 +33,48 @@ const edgeTypes = { custom: LayoutEdge };
 /* =================================== */
 
 export function LayoutGraphEditor({
-  initialNodes,
-  initialEdges,
+  nodes,
+  setNodes,
+  edges,
+  setEdges,
   onSelection = () => {},
   readOnly = false
 }: {
-  initialNodes: LayoutNode[];
-  initialEdges: LayoutEdge[];
+  nodes: LayoutNode[];
+  setNodes: StateSet<LayoutNode[]>;
+  edges: LayoutEdge[];
+  setEdges: StateSet<LayoutEdge[]>;
   onSelection?: (node: LayoutNode | null) => void;
   readOnly?: boolean;
 }) {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
   const { screenToFlowPosition } = useReactFlow();
+
+  const onNodesChange: OnNodesChange<LayoutNode> = useCallback(
+    changes => setNodes(nds => applyNodeChanges(changes, nds)),
+    []
+  );
 
   const onConnect: OnConnect = useCallback(
     connection => setEdges(eds => addEdge(connection, eds)),
     [setEdges]
   );
+
+  const onEdgesChange: OnEdgesChange<LayoutEdge> = useCallback(
+    changes => setEdges(eds => applyEdgeChanges(changes, eds)),
+    []
+  );
+
+  const onNodeClick: NodeMouseHandler<LayoutNode> = useCallback(
+    (e, node) => onSelection(node),
+    [onSelection]
+  );
+
+  const onNodeDragStart: OnNodeDrag<LayoutNode> = useCallback(
+    (e, node) => onSelection(node),
+    [onSelection]
+  );
+
+  const onPaneClick = useCallback(() => onSelection(null), [onSelection]);
 
   const onDragOver = useCallback((event: React.DragEvent<HTMLElement>) => {
     event.preventDefault();
@@ -84,33 +112,37 @@ export function LayoutGraphEditor({
     [screenToFlowPosition]
   );
 
+  const interactionHandlers: ComponentProps<
+    typeof ReactFlow<LayoutNode, LayoutEdge>
+  > = {
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    onNodeClick,
+    onNodeDragStart,
+    onPaneClick,
+    onDragOver,
+    onDrop
+  };
+
   return (
     <LayoutEditorSettingsContext.Provider value={{ readOnly }}>
       <div className='h-full max-h-full w-full max-w-full'>
         <ReactFlow
+          {...(readOnly ? {} : interactionHandlers)}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           nodes={nodes}
-          onNodesChange={readOnly ? undefined : onNodesChange}
-          onNodeClick={readOnly ? undefined : (e, node) => onSelection(node)}
-          onNodeDragStart={
-            readOnly ? undefined : (e, node) => onSelection(node)
-          }
-          onPaneClick={readOnly ? undefined : () => onSelection(null)}
           edges={edges}
-          onEdgesChange={readOnly ? undefined : onEdgesChange}
-          onConnect={readOnly ? undefined : onConnect}
-          edgesFocusable={false}
           nodesFocusable={!readOnly}
           nodesDraggable={!readOnly}
-          onDragOver={readOnly ? undefined : onDragOver}
-          onDrop={readOnly ? undefined : onDrop}
-          fitView
-          fitViewOptions={{ maxZoom: 1 }}
+          edgesFocusable={false}
           defaultEdgeOptions={{
             animated: !readOnly,
             type: "custom"
           }}
+          fitView
+          fitViewOptions={{ maxZoom: 1 }}
           proOptions={{ hideAttribution: true }}
         >
           <Background
