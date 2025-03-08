@@ -56,7 +56,7 @@ export function LayoutGraphEditor({
   const typeId = useAtomValue(dndNodeTypeIdAtom);
 
   const onDrop = useCallback(
-    event => {
+    (event: React.DragEvent<HTMLElement>) => {
       event.preventDefault();
 
       const nodeType = idToNodeType[typeId] || null;
