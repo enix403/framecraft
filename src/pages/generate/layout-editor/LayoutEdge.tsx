@@ -155,10 +155,10 @@ export function LayoutEdge({
           >
             <div
               className={clsx(
-                "rounded-full !bg-[#dc7979] !p-1 hover:opacity-80"
+                "rounded-full !bg-[#dc7979] !p-1.5 hover:opacity-80"
               )}
             >
-              <Trash2 size={8} className='text-white' strokeWidth={3} />
+              <Trash2 size={14} className='text-white' strokeWidth={3} />
             </div>
           </button>
         </EdgeLabelRenderer>

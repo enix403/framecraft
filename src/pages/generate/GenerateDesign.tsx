@@ -27,7 +27,7 @@ function LayoutGraphPanes({
   const selectedNode = nodes.find(n => n.id === selectedNodeId) ?? null;
 
   const updateNodeData = useCallback(
-    (nodeId: string, updates: Partial<LayoutNode['data']>) => {
+    (nodeId: string, updates: Partial<LayoutNode["data"]>) => {
       setNodes(prev =>
         prev.map(node =>
           node.id === nodeId
@@ -101,19 +101,13 @@ const initialNodes: LayoutNode[] = [
     id: "1",
     type: "custom",
     position: { x: 0, y: 0 },
-    data: { label: "Living Room 1", typeId: "living" }
+    data: { label: "Front Door Entrance", typeId: "fdoor" }
   },
   {
     id: "2",
     type: "custom",
-    position: { x: 80, y: 180 },
-    data: { label: "Living Room 2", typeId: "kitchen" }
-  },
-  {
-    id: "3",
-    type: "custom",
-    position: { x: 180, y: -180 },
-    data: { label: "Living Room 3", typeId: "living" }
+    position: { x: 220, y: -180 },
+    data: { label: "Main Living Room", typeId: "living" }
   }
 ];
 
