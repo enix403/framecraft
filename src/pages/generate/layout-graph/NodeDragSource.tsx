@@ -1,11 +1,11 @@
 import clsx from "clsx";
-import { appNodeTypes } from "@/lib/nodes";
+import { appNodeTypes, NodeType } from "@/lib/nodes";
 import { NodeSlab } from "@/components/NodeSlab";
 
-function Source({ label }: { label: string }) {
+function Source({ nodeType }: { nodeType: NodeType }) {
   return (
     <NodeSlab
-      title={label}
+      title={nodeType.title}
       className={clsx("border-[#04ACB0] shadow-sm", "cursor-grab select-none")}
       draggable
       onDragStart={event => {
@@ -22,8 +22,7 @@ export function NodeDragSource() {
 
       <div className='-mx-4 -mb-4 flex-1-y space-y-2 px-4 pb-4'>
         {appNodeTypes.map(nodeType => {
-          // const style = appNodeStyle[nodeType.id];
-          return <Source key={nodeType.id} label={nodeType.title} />;
+          return <Source key={nodeType.id} nodeType={nodeType} />;
         })}
       </div>
     </div>
