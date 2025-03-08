@@ -10,7 +10,7 @@ import {
   SelectLabel
 } from "@/components/ui/select";
 import { useRef, useState } from "react";
-import { appRoomTypes, idToNodeType, RoomTypeId } from "@/lib/nodes";
+import { appRoomTypes, idToNodeType, isDoor, RoomTypeId } from "@/lib/nodes";
 import { appNodeStyle } from "@/lib/node-styles";
 
 export function RoomIdentityInput({
@@ -30,6 +30,8 @@ export function RoomIdentityInput({
 
   const [name, setName] = useState(initialName);
   const [typeId, setTypeId] = useState(initialTypeId);
+
+  const isRoom = !isDoor(typeId);
 
   function saveName() {
     onUpdateName(name);
@@ -51,6 +53,7 @@ export function RoomIdentityInput({
   return (
     <div className={clsx("flex rounded-md shadow-xs", className)}>
       <Select
+        disabled={!isRoom}
         value={typeId}
         onValueChange={(v: RoomTypeId) => {
           setTypeId(v);
@@ -82,7 +85,6 @@ export function RoomIdentityInput({
                 </SelectItem>
               );
             })}
-
           </SelectGroup>
         </SelectContent>
       </Select>
