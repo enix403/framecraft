@@ -4,6 +4,7 @@ import { useSelectedObject } from "../world2d/state/selections";
 import { usePlan, useUpdatePlan } from "../PlanProvider";
 import { DoorOpen } from "lucide-react";
 import { RoomIdentityInput } from "@/components/RoomIdentityInput";
+import { appNodeStyle } from "@/lib/node-styles";
 
 export function RoomDetails() {
   const plan = usePlan();
@@ -12,6 +13,7 @@ export function RoomDetails() {
   const [selectedObj] = useSelectedObject();
 
   const room = selectedObj ? plan.rooms[selectedObj.index] : null;
+  const style = room ? appNodeStyle[room.typeId] : null;
 
   return (
     <div className='h-full p-4'>
@@ -43,8 +45,8 @@ export function RoomDetails() {
               width: w,
               height: h
             }))}
-            fillColor='#843cd655'
-            outStrokeColor='#843cd6'
+            outStrokeColor={style!.iconColor}
+            fillColor={style!.mapRectColor}
           />
 
           <Stat label='Length' value='32 ft.' />
