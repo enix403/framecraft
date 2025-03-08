@@ -12,13 +12,11 @@ import {
   useReactFlow
 } from "@xyflow/react";
 import { useCallback } from "react";
-import { useAtomValue } from "jotai";
 
 import { idToNodeType } from "@/lib/nodes";
 
 import { LayoutEdge } from "./LayoutEdge";
 import { LayoutNode } from "./LayoutNode";
-import { dndNodeTypeIdAtom } from "../NodeDragSource";
 
 /* =================================== */
 
@@ -54,12 +52,11 @@ export function LayoutGraphEditor({
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  const typeId = useAtomValue(dndNodeTypeIdAtom);
-
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLElement>) => {
       event.preventDefault();
 
+      const typeId = event.dataTransfer.getData("custom/source-node-type");
       const nodeType = idToNodeType[typeId] || null;
 
       if (!nodeType) {
@@ -83,7 +80,7 @@ export function LayoutGraphEditor({
 
       setNodes(nds => nds.concat(newNode));
     },
-    [screenToFlowPosition, typeId]
+    [screenToFlowPosition]
   );
 
   return (
