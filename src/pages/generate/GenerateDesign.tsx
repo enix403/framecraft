@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { GeneralSettings } from "./panes/GeneralSettings";
 import { useCallback, useState } from "react";
 
@@ -9,7 +8,6 @@ import { Toolbar } from "./panes/Toolbar";
 
 import { LayoutNode } from "./layout-editor/LayoutNode";
 import { LayoutEdge } from "./layout-editor/LayoutEdge";
-import { ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { LayoutGraphEditor } from "./layout-editor/LayoutGraphEditor";
 import { StateSet } from "@/lib/utils";
 
@@ -26,20 +24,31 @@ function LayoutGraphPanes({
 }) {
   const [selectedNodeId, setSelectedNodeId] = useState("");
 
-  const { screenToFlowPosition } = useReactFlow();
-  const placeDroppedNode = useCallback(
-    (event: React.DragEvent<HTMLElement>) =>
-      screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY
-      }),
-    [screenToFlowPosition]
+  const selectedNode = nodes.find(n => n.id === selectedNodeId) ?? null;
+
+  const updateNodeData = useCallback(
+    (nodeId: string, updates: Partial<LayoutNode['data']>) => {
+      setNodes(prev =>
+        prev.map(node =>
+          node.id === nodeId
+            ? {
+                ...node,
+                data: {
+                  ...node.data,
+                  ...updates
+                }
+              }
+            : node
+        )
+      );
+    },
+    [setNodes]
   );
 
   return (
     <>
       <LayoutGraphTitle />
-      <Toolbar selectedNodeId={selectedNodeId} />
+      <Toolbar node={selectedNode} updateNodeData={updateNodeData} />
       <div className='flex flex-1-fix'>
         <div className='flex-1-fix shrink-0'>
           <LayoutGraphEditor
@@ -50,7 +59,6 @@ function LayoutGraphPanes({
             onSelection={(node: LayoutNode | null) => {
               setSelectedNodeId(node?.id || "");
             }}
-            placeDroppedNode={placeDroppedNode}
             // readOnly
           />
         </div>
@@ -75,14 +83,12 @@ export function GenerateDesign() {
         <GeneralSettings />
       </div>
       <div className='flex flex-1-fix flex-col'>
-        <ReactFlowProvider>
-          <LayoutGraphPanes
-            nodes={nodes}
-            setNodes={setNodes}
-            edges={edges}
-            setEdges={setEdges}
-          />
-        </ReactFlowProvider>
+        <LayoutGraphPanes
+          nodes={nodes}
+          setNodes={setNodes}
+          edges={edges}
+          setEdges={setEdges}
+        />
       </div>
     </div>
   );

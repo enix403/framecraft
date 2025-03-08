@@ -13,6 +13,7 @@ import {
   OnNodeDrag,
   OnNodesChange,
   ReactFlow,
+  ReactFlowProvider,
   useReactFlow,
   XYPosition
 } from "@xyflow/react";
@@ -33,23 +34,23 @@ const edgeTypes = { custom: LayoutEdge };
 
 /* =================================== */
 
-export function LayoutGraphEditor({
-  nodes,
-  setNodes,
-  edges,
-  setEdges,
-  onSelection = () => {},
-  placeDroppedNode,
-  readOnly = false
-}: {
+export interface LayoutGraphEditorProps {
   nodes: LayoutNode[];
   setNodes: StateSet<LayoutNode[]>;
   edges: LayoutEdge[];
   setEdges: StateSet<LayoutEdge[]>;
   onSelection?: (node: LayoutNode | null) => void;
   readOnly?: boolean;
-  placeDroppedNode?: (event: React.DragEvent<HTMLElement>) => XYPosition;
-}) {
+}
+
+function Inner({
+  nodes,
+  setNodes,
+  edges,
+  setEdges,
+  onSelection = () => {},
+  readOnly = false
+}: LayoutGraphEditorProps) {
   const onNodesChange: OnNodesChange<LayoutNode> = useCallback(
     changes => setNodes(nds => applyNodeChanges(changes, nds)),
     []
@@ -82,6 +83,7 @@ export function LayoutGraphEditor({
     event.dataTransfer.dropEffect = "move";
   }, []);
 
+  const { screenToFlowPosition } = useReactFlow();
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLElement>) => {
       event.preventDefault();
@@ -89,11 +91,14 @@ export function LayoutGraphEditor({
       const typeId = event.dataTransfer.getData("custom/source-node-type");
       const nodeType = idToNodeType[typeId] || null;
 
-      if (!nodeType || !placeDroppedNode) {
+      if (!nodeType) {
         return;
       }
 
-      const position = placeDroppedNode(event);
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY
+      });
 
       const newNode = {
         id: getNewNodeId(),
@@ -107,7 +112,7 @@ export function LayoutGraphEditor({
 
       setNodes(nds => nds.concat(newNode));
     },
-    [placeDroppedNode]
+    [screenToFlowPosition]
   );
 
   const interactionHandlers: ComponentProps<
@@ -154,5 +159,13 @@ export function LayoutGraphEditor({
         </ReactFlow>
       </div>
     </LayoutEditorSettingsContext.Provider>
+  );
+}
+
+export function LayoutGraphEditor(props: LayoutGraphEditorProps) {
+  return (
+    <ReactFlowProvider>
+      <Inner {...props} />
+    </ReactFlowProvider>
   );
 }
