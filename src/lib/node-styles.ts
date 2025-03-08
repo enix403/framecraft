@@ -12,14 +12,11 @@ interface NodeStyle {
   mapRectColor: string;
 }
 
-// mapRectColor: "#ffd5ef"
-// iconColor: "#a808c5",
-// iconColor: "#cbae2f",
-// mapRectColor: "#f2e3b9"
 export const appNodeStyle: Record<string, NodeStyle> = {
   living: {
     Icon: Tv,
-    iconColor: "#ed6f4f",
+    // iconColor: "#ed6f4f",
+    iconColor: "#e56f78",
     mapRectColor: "#ffc5b4"
   },
   bedroom: {
