@@ -17,7 +17,7 @@ import {
   useReactFlow,
   XYPosition
 } from "@xyflow/react";
-import { ComponentProps, useCallback } from "react";
+import { ComponentProps, useCallback, useMemo } from "react";
 
 import { idToNodeType } from "@/lib/nodes";
 
@@ -128,8 +128,10 @@ function Inner({
     onDrop
   };
 
+  const settings = useMemo(() => ({ readOnly }), [readOnly]);
+
   return (
-    <LayoutEditorSettingsContext.Provider value={{ readOnly }}>
+    <LayoutEditorSettingsContext.Provider value={settings}>
       <div className='h-full max-h-full w-full max-w-full'>
         <ReactFlow
           {...(readOnly ? {} : interactionHandlers)}

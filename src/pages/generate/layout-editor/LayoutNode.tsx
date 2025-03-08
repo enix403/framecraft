@@ -48,10 +48,10 @@ function AddNodeButton({ nodeId }: { nodeId: string }) {
           className={clsx(
             "nodrag nopan cursor-crosshair",
             "!h-auto !w-auto rounded-full !border-none !bg-[#79dcbd] !p-1",
-            "absolute !top-[calc(50%-10px)] right-0 translate-x-1/2 -translate-y-1/2"
+            "absolute !top-[calc(50%-12px)] right-0 translate-x-1/2 -translate-y-1/2"
           )}
         >
-          <Plus size={8} className='text-white' strokeWidth={3} />
+          <Plus size={14} className='text-white' strokeWidth={3} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -113,12 +113,12 @@ export function LayoutNode({ id, data, selected }: NodeProps<LayoutNode>) {
         isConnectableEnd={false}
         className={clsx(
           "!h-auto !w-auto !border-none !bg-[#AF79DC] !p-1",
-          "!top-[calc(50%+10px)]",
+          "!top-[calc(50%+12px)]",
           readOnly && "opacity-0"
         )}
       >
         <Link2
-          size={8}
+          size={14}
           className='pointer-events-none text-white'
           strokeWidth={3}
         />
