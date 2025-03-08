@@ -23,7 +23,7 @@ import { FRONT_DOOR_ID, idToNodeType } from "@/lib/nodes";
 import { LayoutEdge } from "./LayoutEdge";
 import { LayoutNode } from "./LayoutNode";
 import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
-import { canAddEdge, getNewNodeId } from "./add-node";
+import { canAddEdge, getNewNodeId, getNewNodeName } from "./add-node";
 import { StateSet } from "@/lib/utils";
 
 /* =================================== */
@@ -126,30 +126,31 @@ function Inner({
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLElement>) => {
       event.preventDefault();
+      setNodes(nodes => {
+        const typeId = event.dataTransfer.getData("custom/source-node-type");
+        const nodeType = idToNodeType[typeId] || null;
 
-      const typeId = event.dataTransfer.getData("custom/source-node-type");
-      const nodeType = idToNodeType[typeId] || null;
-
-      if (!nodeType) {
-        return;
-      }
-
-      const position = screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY
-      });
-
-      const newNode = {
-        id: getNewNodeId(),
-        type: "custom",
-        position,
-        data: {
-          label: nodeType.title,
-          typeId: nodeType.id
+        if (!nodeType) {
+          return nodes;
         }
-      } as LayoutNode;
 
-      setNodes(nds => nds.concat(newNode));
+        const position = screenToFlowPosition({
+          x: event.clientX,
+          y: event.clientY
+        });
+
+        const newNode = {
+          id: getNewNodeId(),
+          type: "custom",
+          position,
+          data: {
+            label: getNewNodeName(nodes, nodeType.id),
+            typeId: nodeType.id
+          }
+        } as LayoutNode;
+
+        return [...nodes, newNode];
+      });
     },
     [screenToFlowPosition]
   );
