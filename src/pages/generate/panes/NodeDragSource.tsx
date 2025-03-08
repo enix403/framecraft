@@ -8,7 +8,9 @@ function Source({ nodeType }: { nodeType: NodeType }) {
   return (
     <NodeSlab
       title={nodeType.title}
-      className={clsx("border-[#04ACB0] shadow-sm", "cursor-grab select-none")}
+      className={clsx("shadow-sm", "cursor-grab select-none")}
+      typeId={nodeType.id}
+      showBorder
       draggable
       onDragStart={event => {
         event.dataTransfer.effectAllowed = "move";

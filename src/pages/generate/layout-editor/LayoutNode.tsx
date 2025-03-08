@@ -106,10 +106,11 @@ export function LayoutNode({ id, data, selected }: NodeProps<LayoutNode>) {
       <NodeSlab
         title={label}
         subtitle={idToNodeType[typeId].title}
+        typeId={typeId}
+        showBorder={selected}
         className={clsx(
           "relative min-w-56",
           "shadow-[0px_10px_36px_-6px_rgba(0,_0,_0,_0.1)]",
-          selected && "border-[#04ACB0]"
         )}
       />
 

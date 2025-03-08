@@ -1,6 +1,6 @@
 // Node styles (colors) are defined in a separate file since they change based on theme
 
-import { BedDouble, Droplet, Eclipse, Grape, Tv } from "lucide-react";
+import { BedDouble, Droplet, Eclipse, Grape, LogIn, Tv } from "lucide-react";
 import { NodeTypeId } from "./nodes";
 
 // Hack
@@ -12,35 +12,44 @@ interface NodeStyle {
   mapRectColor: string;
 }
 
+// mapRectColor: "#ffd5ef"
+// iconColor: "#a808c5",
+// iconColor: "#cbae2f",
+// mapRectColor: "#f2e3b9"
 export const appNodeStyle: Record<string, NodeStyle> = {
   living: {
     Icon: Tv,
-    iconColor: "#EE4D4D",
-    mapRectColor: "#d3e7f0"
-  },
-  kitchen: {
-    Icon: Grape,
-    iconColor: "#6ce244",
-    mapRectColor: "#ffd5ef"
+    iconColor: "#ed6f4f",
+    mapRectColor: "#ffc5b4"
   },
   bedroom: {
     Icon: BedDouble,
-    iconColor: "#a808c5",
-    mapRectColor: "#f2e3b9"
+    // iconColor: "#358aa7",
+    // mapRectColor: "#f4d6f4"
+    iconColor: "#936b94",
+    mapRectColor: "#f3def3"
+  },
+  kitchen: {
+    Icon: Grape,
+    iconColor: "#76bf43",
+    mapRectColor: "#caf2aa"
   },
   bathroom: {
     Icon: Droplet,
-    iconColor: "#67d8e0",
-    mapRectColor: "#caf2aa"
+    // iconColor: "#cea827",
+    // iconColor: "#6fd0cc",
+    iconColor: "#358aa7",
+    mapRectColor: "#d3e7f0"
   },
   balcony: {
     Icon: Eclipse,
-    iconColor: "#0400fc",
+    // iconColor: "#cea827",
+    iconColor: "#c49049",
     mapRectColor: "#ffe192"
   },
   fdoor: {
-    Icon: Tv,
+    Icon: LogIn,
     iconColor: "#000000",
-    mapRectColor: ""
+    mapRectColor: "#000000"
   }
 } satisfies Record<NodeTypeId, NodeStyle>;

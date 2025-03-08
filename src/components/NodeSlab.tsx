@@ -1,16 +1,28 @@
+import { appNodeStyle } from "@/lib/node-styles";
+import { idToNodeType } from "@/lib/nodes";
 import clsx from "clsx";
 import { Package } from "lucide-react";
 import { ComponentProps } from "react";
+
+// #04ACB0
 
 export function NodeSlab({
   title,
   subtitle,
   className,
+  typeId,
+  showBorder = false,
   ...divProps
 }: {
   title: string;
   subtitle?: string;
+  typeId: string;
+  showBorder?: boolean;
 } & ComponentProps<"div">) {
+  const style = appNodeStyle[typeId];
+
+  const color = style.iconColor;
+
   return (
     <div
       {...divProps}
@@ -19,9 +31,18 @@ export function NodeSlab({
         "transition-colors",
         className
       )}
+      style={{
+        borderColor: showBorder ? color : undefined
+      }}
     >
-      <div className='rounded-[6px] bg-[#04ACB0] p-1.5 text-white'>
-        <Package size={26} />
+      <div
+        className='rounded-[6px] p-1.5 text-white'
+        style={{
+          backgroundColor: color
+        }}
+      >
+        {/* <Package size={26} /> */}
+        <style.Icon size={26} />
       </div>
 
       <div className='flex-1-fit space-y-1.5 font-graph-editor'>

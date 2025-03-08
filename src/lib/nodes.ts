@@ -13,16 +13,16 @@ export const appRoomTypes = [
     title: "Living Room"
   },
   {
-    id: "kitchen",
-    serverId: 1,
-    importance: 1,
-    title: "Kitchen"
-  },
-  {
     id: "bedroom",
     serverId: 2,
     importance: 2,
     title: "Bedroom"
+  },
+  {
+    id: "kitchen",
+    serverId: 1,
+    importance: 1,
+    title: "Kitchen"
   },
   {
     id: "bathroom",
