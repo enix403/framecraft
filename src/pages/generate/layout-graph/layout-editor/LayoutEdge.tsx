@@ -10,6 +10,8 @@ import {
 import { Position } from "@xyflow/react";
 import clsx from "clsx";
 import { Trash2 } from "lucide-react";
+import { useContext } from "react";
+import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
 
 // this helper function returns the intersection point
 // of the line between the center of the intersectionNode and the target node
@@ -91,6 +93,7 @@ export function LayoutEdge({
   target,
   style
 }: EdgeProps<LayoutEdge>) {
+  const { readOnly } = useContext(LayoutEditorSettingsContext);
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
 
@@ -130,25 +133,29 @@ export function LayoutEdge({
           stroke: "#65697AFF"
         }}
       />
-      <EdgeLabelRenderer>
-        <button
-          className='nodrag nopan pointer-events-auto absolute origin-center cursor-pointer leading-none'
-          style={{
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
-          }}
-          onClick={e => {
-            e.stopPropagation();
-            e.preventDefault();
-            onEdgeClick();
-          }}
-        >
-          <div
-            className={clsx("rounded-full !bg-[#dc7979] !p-1 hover:opacity-80")}
+      {!readOnly && (
+        <EdgeLabelRenderer>
+          <button
+            className='nodrag nopan pointer-events-auto absolute origin-center cursor-pointer leading-none'
+            style={{
+              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
+            }}
+            onClick={e => {
+              e.stopPropagation();
+              e.preventDefault();
+              onEdgeClick();
+            }}
           >
-            <Trash2 size={8} className='text-white' strokeWidth={3} />
-          </div>
-        </button>
-      </EdgeLabelRenderer>
+            <div
+              className={clsx(
+                "rounded-full !bg-[#dc7979] !p-1 hover:opacity-80"
+              )}
+            >
+              <Trash2 size={8} className='text-white' strokeWidth={3} />
+            </div>
+          </button>
+        </EdgeLabelRenderer>
+      )}
     </>
   );
 }

@@ -17,6 +17,7 @@ import { idToNodeType } from "@/lib/nodes";
 
 import { LayoutEdge } from "./LayoutEdge";
 import { LayoutNode } from "./LayoutNode";
+import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
 
 /* =================================== */
 
@@ -31,11 +32,13 @@ const getId = () => `dndnode_${id++}`;
 export function LayoutGraphEditor({
   initialNodes,
   initialEdges,
-  onSelection
+  onSelection = () => {},
+  readOnly = false
 }: {
   initialNodes: LayoutNode[];
   initialEdges: LayoutEdge[];
-  onSelection: (node: LayoutNode | null) => void;
+  onSelection?: (node: LayoutNode | null) => void;
+  readOnly?: boolean;
 }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -84,38 +87,42 @@ export function LayoutGraphEditor({
   );
 
   return (
-    <div className='h-full max-h-full w-full max-w-full'>
-      <ReactFlow
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        nodes={nodes}
-        onNodesChange={onNodesChange}
-        onNodeClick={(e, node) => onSelection(node)}
-        onNodeDragStart={(e, node) => onSelection(node)}
-        onPaneClick={() => onSelection(null)}
-        edges={edges}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        edgesFocusable={false}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        fitView
-        fitViewOptions={{ maxZoom: 1 }}
-        defaultEdgeOptions={{
-          animated: true,
-          type: "custom"
-        }}
-        proOptions={{ hideAttribution: true }}
-      >
-        <Background
-          bgColor='#FAFAFA'
-          color='#CACACA'
-          variant={BackgroundVariant.Dots}
-          gap={10}
-          size={1.5}
-        />
-        <Controls />
-      </ReactFlow>
-    </div>
+    <LayoutEditorSettingsContext.Provider value={{ readOnly }}>
+      <div className='h-full max-h-full w-full max-w-full'>
+        <ReactFlow
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          nodes={nodes}
+          onNodesChange={readOnly ? undefined : onNodesChange}
+          onNodeClick={readOnly ? undefined : (e, node) => onSelection(node)}
+          onNodeDragStart={
+            readOnly ? undefined : (e, node) => onSelection(node)
+          }
+          onPaneClick={readOnly ? undefined : () => onSelection(null)}
+          edges={edges}
+          onEdgesChange={readOnly ? undefined : onEdgesChange}
+          onConnect={readOnly ? undefined : onConnect}
+          edgesFocusable={false}
+          onDragOver={readOnly ? undefined : onDragOver}
+          onDrop={readOnly ? undefined : onDrop}
+          fitView
+          fitViewOptions={{ maxZoom: 1 }}
+          defaultEdgeOptions={{
+            animated: !readOnly,
+            type: "custom"
+          }}
+          proOptions={{ hideAttribution: true }}
+        >
+          <Background
+            bgColor='#FAFAFA'
+            color='#CACACA'
+            variant={BackgroundVariant.Dots}
+            gap={10}
+            size={1.5}
+          />
+          <Controls />
+        </ReactFlow>
+      </div>
+    </LayoutEditorSettingsContext.Provider>
   );
 }

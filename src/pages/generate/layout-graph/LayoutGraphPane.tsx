@@ -97,6 +97,7 @@ function LayoutGraphPaneInner() {
             onSelection={(node: LayoutNode | null) => {
               setSelectedNodeId(node?.id || "");
             }}
+            // readOnly
           />
         </div>
         <div className='max-h-full max-w-sm border-l-2'>
@@ -141,4 +142,10 @@ const initialNodes: LayoutNode[] = [
   }
 ];
 
-const initialEdges: LayoutEdge[] = [];
+const initialEdges: LayoutEdge[] = [
+  {
+    id: "e1",
+    source: "1",
+    target: "2",
+  }
+];
