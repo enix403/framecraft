@@ -18,6 +18,7 @@ import { idToNodeType } from "@/lib/nodes";
 import { LayoutEdge } from "./LayoutEdge";
 import { LayoutNode } from "./LayoutNode";
 import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
+import { getNewNodeId } from "./add-node";
 
 /* =================================== */
 
@@ -25,9 +26,6 @@ const nodeTypes = { custom: LayoutNode };
 const edgeTypes = { custom: LayoutEdge };
 
 /* =================================== */
-
-let id = 0;
-const getId = () => `dndnode_${id++}`;
 
 export function LayoutGraphEditor({
   initialNodes,
@@ -72,7 +70,7 @@ export function LayoutGraphEditor({
       });
 
       const newNode = {
-        id: getId(),
+        id: getNewNodeId(),
         type: "custom",
         position,
         data: {

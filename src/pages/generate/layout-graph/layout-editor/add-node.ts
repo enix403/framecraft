@@ -93,9 +93,11 @@ function getNextNodePosition(
   };
 }
 
-let id = 0;
-const getNodeId = () => `A_${id++}`;
-const getEdgeId = () => `AE_${id++}`;
+let nextNodeId = 0;
+let nextEdgeId = 0;
+
+export const getNewNodeId = () => `A${nextNodeId++}`;
+export const getNewEdgeId = () => `E${nextEdgeId++}`;
 
 export function createNewNode(
   typeId: string,
@@ -106,7 +108,7 @@ export function createNewNode(
   const position = getNextNodePosition(nodes, referenceNodeId);
 
   const newNode = {
-    id: getNodeId(),
+    id: getNewNodeId(),
     type: "custom",
     position,
     data: {
@@ -116,10 +118,10 @@ export function createNewNode(
   } as LayoutNode;
 
   const newEdge = {
-    id: getEdgeId(),
+    id: getNewEdgeId(),
     type: "custom",
     source: referenceNodeId,
-    target: newNode.id,
+    target: newNode.id
   } as LayoutEdge;
 
   return [newNode, newEdge] as const;

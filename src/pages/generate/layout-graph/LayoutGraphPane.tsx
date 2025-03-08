@@ -97,7 +97,7 @@ function LayoutGraphPaneInner() {
             onSelection={(node: LayoutNode | null) => {
               setSelectedNodeId(node?.id || "");
             }}
-            readOnly
+            // readOnly
           />
         </div>
         <div className='max-h-full max-w-sm border-l-2'>

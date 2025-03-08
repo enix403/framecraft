@@ -6,7 +6,7 @@ import {
   type Node,
   type NodeProps
 } from "@xyflow/react";
-import { Link2, Package, Plus } from "lucide-react";
+import { Link2, Plus } from "lucide-react";
 import clsx from "clsx";
 
 import {
@@ -23,7 +23,7 @@ import { NodeSlab } from "@/components/NodeSlab";
 import { useCallback, useContext, useEffect } from "react";
 import { createNewNode } from "./add-node";
 import { LayoutEdge } from "./LayoutEdge";
-import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
+import { LayoutEditorSettingsContext, useLayoutEditorSettings } from "./LayoutEditorSettings";
 
 function AddNodeButton({ nodeId }: { nodeId: string }) {
   const { getNodes, addNodes, addEdges } = useReactFlow<
@@ -87,7 +87,7 @@ export function LayoutNode({ id, data, selected }: NodeProps<LayoutNode>) {
   const { label, typeId } = data;
 
   const updateNodeInternals = useUpdateNodeInternals();
-  const { readOnly } = useContext(LayoutEditorSettingsContext);
+  const { readOnly } = useLayoutEditorSettings();
 
   useEffect(() => {
     updateNodeInternals(id);

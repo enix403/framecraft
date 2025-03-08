@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
 interface LayoutEditorSettings {
   readOnly: boolean;
@@ -7,3 +7,7 @@ interface LayoutEditorSettings {
 export const LayoutEditorSettingsContext = createContext<LayoutEditorSettings>({
   readOnly: false
 });
+
+export function useLayoutEditorSettings() {
+  return useContext(LayoutEditorSettingsContext);
+}

@@ -10,8 +10,8 @@ import {
 import { Position } from "@xyflow/react";
 import clsx from "clsx";
 import { Trash2 } from "lucide-react";
-import { useContext, useEffect } from "react";
-import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
+import { useEffect } from "react";
+import { useLayoutEditorSettings } from "./LayoutEditorSettings";
 
 // this helper function returns the intersection point
 // of the line between the center of the intersectionNode and the target node
@@ -93,11 +93,8 @@ export function LayoutEdge({
   target,
   style
 }: EdgeProps<LayoutEdge>) {
-  const { updateEdge } = useReactFlow();
-  const { readOnly } = useContext(LayoutEditorSettingsContext);
-
-  const sourceNode = useInternalNode(source);
-  const targetNode = useInternalNode(target);
+  const { setEdges, updateEdge } = useReactFlow();
+  const { readOnly } = useLayoutEditorSettings();
 
   useEffect(() => {
     updateEdge(id, data => ({
@@ -105,6 +102,9 @@ export function LayoutEdge({
       animated: !readOnly
     }));
   }, [id, updateEdge, readOnly]);
+
+  const sourceNode = useInternalNode(source);
+  const targetNode = useInternalNode(target);
 
   if (!sourceNode || !targetNode) {
     return null;
@@ -124,9 +124,7 @@ export function LayoutEdge({
     targetY: ty
   });
 
-  const { setEdges } = useReactFlow();
-
-  const onEdgeClick = () => {
+  const deleteEdge = () => {
     setEdges(edges => edges.filter(edge => edge.id !== id));
   };
 
@@ -152,7 +150,7 @@ export function LayoutEdge({
             onClick={e => {
               e.stopPropagation();
               e.preventDefault();
-              onEdgeClick();
+              deleteEdge();
             }}
           >
             <div
