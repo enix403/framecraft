@@ -1,10 +1,4 @@
-
-import {
-  Handle,
-  Position,
-  type Node,
-  type NodeProps
-} from "@xyflow/react";
+import { Handle, Position, type Node, type NodeProps } from "@xyflow/react";
 import { Link2, Package, Plus } from "lucide-react";
 import clsx from "clsx";
 
@@ -18,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { appRoomTypes, idToNodeType } from "@/lib/nodes";
 import { appNodeStyle } from "@/lib/node-styles";
+import { NodeSlab } from "@/components/NodeSlab";
 
 function AddNodeButton() {
   return (
@@ -64,28 +59,15 @@ export function LayoutNode({ data, selected }: NodeProps<LayoutNode>) {
 
   return (
     <>
-      <div
+      <NodeSlab
+        title={label}
+        subtitle={idToNodeType[typeId].title}
         className={clsx(
-          "flex min-w-56 flex-row items-center gap-x-2.5 rounded-[8px] border bg-white p-2.5 pr-6",
-          "transition-colors",
+          "relative min-w-56",
           "shadow-[0px_10px_36px_-6px_rgba(0,_0,_0,_0.1)]",
-          "relative",
           selected && "border-[#04ACB0]"
         )}
-      >
-        <div className='rounded-[6px] bg-[#04ACB0] p-1.5 text-white'>
-          <Package size={26} />
-        </div>
-
-        <div className='flex-1-fit space-y-1.5 font-graph-editor'>
-          <p className='text-sm leading-[1] font-semibold text-[color:#1B1B2E]'>
-            {label}
-          </p>
-          <p className='text-[size:0.7rem] leading-[1] font-medium text-[color:#7C7D87]'>
-            {idToNodeType[typeId].title}
-          </p>
-        </div>
-      </div>
+      />
 
       <AddNodeButton />
 

@@ -1,30 +1,17 @@
 import clsx from "clsx";
 import { appNodeTypes } from "@/lib/nodes";
-import { Package } from "lucide-react";
-import { ReactNode } from "react";
+import { NodeSlab } from "@/components/NodeSlab";
 
-function Source({ label }: { label: ReactNode }) {
+function Source({ label }: { label: string }) {
   return (
-    <div
-      className={clsx(
-        "flex min-w-56 flex-row items-center gap-x-2.5 rounded-[8px] border bg-white p-2.5 pr-6",
-        "transition-colors",
-        // "shadow-[0px_10px_36px_-6px_rgba(0,_0,_0,_0.1)]",
-        "shadow-sm",
-        "relative",
-        "border-[#04ACB0]"
-      )}
-    >
-      <div className='rounded-[6px] bg-[#04ACB0] p-1.5 text-white'>
-        <Package size={26} />
-      </div>
-
-      <div className='flex-1-fit space-y-1.5 font-graph-editor'>
-        <p className='text-sm leading-[1] font-semibold text-[color:#1B1B2E]'>
-          {label}
-        </p>
-      </div>
-    </div>
+    <NodeSlab
+      title={label}
+      className={clsx("border-[#04ACB0] shadow-sm", "cursor-grab select-none")}
+      draggable
+      onDragStart={event => {
+        event.dataTransfer.effectAllowed = "move";
+      }}
+    />
   );
 }
 
