@@ -10,7 +10,7 @@ import {
 
 import { CELL_SIZE } from "../common";
 import { usePlan } from "../../PlanProvider";
-import { PlanData } from "../../plan/plan";
+import { PlanData } from "@/lib/plan";
 
 /* ================== */
 
