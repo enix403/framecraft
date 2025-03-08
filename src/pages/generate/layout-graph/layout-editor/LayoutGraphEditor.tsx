@@ -31,16 +31,17 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 export function LayoutGraphEditor({
-  nodesState,
-  edgesState,
+  initialNodes,
+  initialEdges,
   onSelection
 }: {
-  nodesState: ReturnType<typeof useNodesState<LayoutNode>>;
-  edgesState: ReturnType<typeof useEdgesState<LayoutEdge>>;
+  initialNodes: LayoutNode[];
+  initialEdges: LayoutEdge[];
   onSelection: (node: LayoutNode | null) => void;
 }) {
-  const [nodes, setNodes, onNodesChange] = nodesState;
-  const [edges, setEdges, onEdgesChange] = edgesState;
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
   const { screenToFlowPosition } = useReactFlow();
 
   const onConnect: OnConnect = useCallback(

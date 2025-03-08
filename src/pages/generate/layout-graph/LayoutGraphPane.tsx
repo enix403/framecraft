@@ -9,14 +9,11 @@ import { NodeDragSource } from "./NodeDragSource";
 import { GraphPresets } from "./GraphPresets";
 import {
   ReactFlowProvider,
-  useEdgesState,
   useNodesData,
-  useNodesState,
   useReactFlow
 } from "@xyflow/react";
 import { LayoutNode } from "./layout-editor/LayoutNode";
 import { LayoutEdge } from "./layout-editor/LayoutEdge";
-import { useSelectedObject } from "@/pages/web-editor/world2d/state/selections";
 
 export function LayoutGraphTitle() {
   return (
@@ -86,9 +83,6 @@ export function Toolbar({ selectedNodeId }: { selectedNodeId: string }) {
 }
 
 function LayoutGraphPaneInner() {
-  const nodesState = useNodesState(initialNodes);
-  const edgesState = useEdgesState(initialEdges);
-
   const [selectedNodeId, setSelectedNodeId] = useState("");
 
   return (
@@ -98,8 +92,8 @@ function LayoutGraphPaneInner() {
       <div className='flex flex-1-fix'>
         <div className='flex-1-fix shrink-0'>
           <LayoutGraphEditor
-            nodesState={nodesState}
-            edgesState={edgesState}
+            initialNodes={initialNodes}
+            initialEdges={initialEdges}
             onSelection={(node: LayoutNode | null) => {
               setSelectedNodeId(node?.id || "");
             }}
