@@ -9,7 +9,7 @@ import dagre from "dagre";
 /* ======================== */
 
 // Default size for nodes if not explicitly set
-const DEFAULT_NODE_SIZE = { width: 150, height: 50 };
+const DEFAULT_NODE_SIZE = { width: 300, height: 60 };
 
 // Helper function to check for overlap between candidate node and existing nodes
 function isCollision(candidate, newNodeSize, nodes) {
@@ -65,8 +65,8 @@ function getNextNodePosition(
   };
 
   // Parameters for the spiral search
-  const radiusStep = 20;
-  const maxRadius = 500;
+  const radiusStep = 250;
+  const maxRadius = 1000;
   const angleStep = 15; // degrees
   const toRadians = angle => angle * (Math.PI / 180);
 
