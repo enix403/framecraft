@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { GeneralSettings } from "./panes/GeneralSettings";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { NodeDragSource } from "./panes/NodeDragSource";
 import { GraphPresets } from "./panes/GraphPresets";
@@ -9,7 +9,7 @@ import { Toolbar } from "./panes/Toolbar";
 
 import { LayoutNode } from "./layout-editor/LayoutNode";
 import { LayoutEdge } from "./layout-editor/LayoutEdge";
-import { ReactFlowProvider } from "@xyflow/react";
+import { ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { LayoutGraphEditor } from "./layout-editor/LayoutGraphEditor";
 import { StateSet } from "@/lib/utils";
 
@@ -26,6 +26,16 @@ function LayoutGraphPanes({
 }) {
   const [selectedNodeId, setSelectedNodeId] = useState("");
 
+  const { screenToFlowPosition } = useReactFlow();
+  const placeDroppedNode = useCallback(
+    (event: React.DragEvent<HTMLElement>) =>
+      screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY
+      }),
+    [screenToFlowPosition]
+  );
+
   return (
     <>
       <LayoutGraphTitle />
@@ -40,6 +50,7 @@ function LayoutGraphPanes({
             onSelection={(node: LayoutNode | null) => {
               setSelectedNodeId(node?.id || "");
             }}
+            placeDroppedNode={placeDroppedNode}
             // readOnly
           />
         </div>

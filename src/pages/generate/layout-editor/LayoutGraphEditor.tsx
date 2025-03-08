@@ -13,7 +13,8 @@ import {
   OnNodeDrag,
   OnNodesChange,
   ReactFlow,
-  useReactFlow
+  useReactFlow,
+  XYPosition
 } from "@xyflow/react";
 import { ComponentProps, useCallback } from "react";
 
@@ -38,6 +39,7 @@ export function LayoutGraphEditor({
   edges,
   setEdges,
   onSelection = () => {},
+  placeDroppedNode,
   readOnly = false
 }: {
   nodes: LayoutNode[];
@@ -46,9 +48,8 @@ export function LayoutGraphEditor({
   setEdges: StateSet<LayoutEdge[]>;
   onSelection?: (node: LayoutNode | null) => void;
   readOnly?: boolean;
+  placeDroppedNode?: (event: React.DragEvent<HTMLElement>) => XYPosition;
 }) {
-  const { screenToFlowPosition } = useReactFlow();
-
   const onNodesChange: OnNodesChange<LayoutNode> = useCallback(
     changes => setNodes(nds => applyNodeChanges(changes, nds)),
     []
@@ -88,14 +89,11 @@ export function LayoutGraphEditor({
       const typeId = event.dataTransfer.getData("custom/source-node-type");
       const nodeType = idToNodeType[typeId] || null;
 
-      if (!nodeType) {
+      if (!nodeType || !placeDroppedNode) {
         return;
       }
 
-      const position = screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY
-      });
+      const position = placeDroppedNode(event);
 
       const newNode = {
         id: getNewNodeId(),
@@ -109,7 +107,7 @@ export function LayoutGraphEditor({
 
       setNodes(nds => nds.concat(newNode));
     },
-    [screenToFlowPosition]
+    [placeDroppedNode]
   );
 
   const interactionHandlers: ComponentProps<
