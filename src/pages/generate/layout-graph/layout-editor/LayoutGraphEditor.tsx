@@ -103,6 +103,8 @@ export function LayoutGraphEditor({
           onEdgesChange={readOnly ? undefined : onEdgesChange}
           onConnect={readOnly ? undefined : onConnect}
           edgesFocusable={false}
+          nodesFocusable={!readOnly}
+          nodesDraggable={!readOnly}
           onDragOver={readOnly ? undefined : onDragOver}
           onDrop={readOnly ? undefined : onDrop}
           fitView

@@ -10,7 +10,7 @@ import {
 import { Position } from "@xyflow/react";
 import clsx from "clsx";
 import { Trash2 } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
 
 // this helper function returns the intersection point
@@ -93,9 +93,18 @@ export function LayoutEdge({
   target,
   style
 }: EdgeProps<LayoutEdge>) {
+  const { updateEdge } = useReactFlow();
   const { readOnly } = useContext(LayoutEditorSettingsContext);
+
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
+
+  useEffect(() => {
+    updateEdge(id, data => ({
+      ...data,
+      animated: !readOnly
+    }));
+  }, [id, updateEdge, readOnly]);
 
   if (!sourceNode || !targetNode) {
     return null;

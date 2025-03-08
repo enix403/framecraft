@@ -2,6 +2,7 @@ import {
   Handle,
   Position,
   useReactFlow,
+  useUpdateNodeInternals,
   type Node,
   type NodeProps
 } from "@xyflow/react";
@@ -19,9 +20,10 @@ import {
 import { appRoomTypes, idToNodeType } from "@/lib/nodes";
 import { appNodeStyle } from "@/lib/node-styles";
 import { NodeSlab } from "@/components/NodeSlab";
-import { useCallback } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { createNewNode } from "./add-node";
 import { LayoutEdge } from "./LayoutEdge";
+import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
 
 function AddNodeButton({ nodeId }: { nodeId: string }) {
   const { getNodes, addNodes, addEdges } = useReactFlow<
@@ -84,6 +86,13 @@ export type LayoutNode = Node<
 export function LayoutNode({ id, data, selected }: NodeProps<LayoutNode>) {
   const { label, typeId } = data;
 
+  const updateNodeInternals = useUpdateNodeInternals();
+  const { readOnly } = useContext(LayoutEditorSettingsContext);
+
+  useEffect(() => {
+    updateNodeInternals(id);
+  }, [updateNodeInternals, id, readOnly]);
+
   return (
     <>
       <NodeSlab
@@ -96,7 +105,7 @@ export function LayoutNode({ id, data, selected }: NodeProps<LayoutNode>) {
         )}
       />
 
-      <AddNodeButton nodeId={id} />
+      {!readOnly && <AddNodeButton nodeId={id} />}
 
       <Handle
         type='source'
@@ -104,7 +113,8 @@ export function LayoutNode({ id, data, selected }: NodeProps<LayoutNode>) {
         isConnectableEnd={false}
         className={clsx(
           "!h-auto !w-auto !border-none !bg-[#AF79DC] !p-1",
-          "!top-[calc(50%+10px)]"
+          "!top-[calc(50%+10px)]",
+          readOnly && "opacity-0"
         )}
       >
         <Link2
