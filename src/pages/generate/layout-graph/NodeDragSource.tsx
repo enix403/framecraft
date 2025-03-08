@@ -2,33 +2,21 @@ import clsx from "clsx";
 import { appNodeTypes, NodeType } from "@/lib/nodes";
 import { NodeSlab } from "@/components/NodeSlab";
 import { atom, useSetAtom } from "jotai";
-import { useReactFlow } from "@xyflow/react";
-import { useCallback } from "react";
-import { createNewNode } from "./layout-editor/add-node";
 
 /* ========================== */
 
 function Source({ nodeType }: { nodeType: NodeType }) {
-  const { getNodes, addNodes } = useReactFlow();
-
-  const handleAddNode = useCallback(() => {
-    const nodes = getNodes();
-    const newNode = createNewNode("living", "1", nodes);
-    addNodes(newNode);
-  }, [getNodes, addNodes]);
-
   const setTypeId = useSetAtom(dndNodeTypeIdAtom);
 
   return (
     <NodeSlab
       title={nodeType.title}
       className={clsx("border-[#04ACB0] shadow-sm", "cursor-grab select-none")}
-      onClick={() => handleAddNode()}
-      // draggable
-      // onDragStart={event => {
-      //   setTypeId(nodeType.id);
-      //   event.dataTransfer.effectAllowed = "move";
-      // }}
+      draggable
+      onDragStart={event => {
+        setTypeId(nodeType.id);
+        event.dataTransfer.effectAllowed = "move";
+      }}
     />
   );
 }

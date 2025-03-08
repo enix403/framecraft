@@ -1,3 +1,7 @@
+import { idToNodeType } from "@/lib/nodes";
+import { LayoutNode } from "./LayoutNode";
+import { LayoutEdge } from "./LayoutEdge";
+
 // Default size for nodes if not explicitly set
 const DEFAULT_NODE_SIZE = { width: 300, height: 60 };
 
@@ -55,14 +59,16 @@ function getNextNodePosition(
   };
 
   // Parameters for the spiral search
-  const radiusStep = 250;
+  const startRadius = 250;
+  const radiusStep = 100;
   const maxRadius = 1000;
+  const startAngle = 45 + 180; // degrees
   const angleStep = 15; // degrees
   const toRadians = angle => angle * (Math.PI / 180);
 
   // Spiral outwards from the reference center to search for an available spot.
-  for (let radius = radiusStep; radius <= maxRadius; radius += radiusStep) {
-    for (let angle = 0; angle < 360; angle += angleStep) {
+  for (let radius = startRadius; radius <= maxRadius; radius += radiusStep) {
+    for (let angle = startAngle; angle < 360; angle += angleStep) {
       // Compute offset from the center using polar coordinates
       const offsetX = radius * Math.cos(toRadians(angle));
       const offsetY = radius * Math.sin(toRadians(angle));
@@ -87,15 +93,34 @@ function getNextNodePosition(
   };
 }
 
-export function createNewNode(typeId, referenceNodeId, nodes) {
+let id = 0;
+const getNodeId = () => `A_${id++}`;
+const getEdgeId = () => `AE_${id++}`;
+
+export function createNewNode(
+  typeId: string,
+  referenceNodeId: string,
+  nodes: LayoutNode[]
+) {
+  const nodeType = idToNodeType[typeId];
   const position = getNextNodePosition(nodes, referenceNodeId);
 
   const newNode = {
-    id: `node-${nodes.length + 1}`,
+    id: getNodeId(),
+    type: "custom",
     position,
-    data: { label: `Node ${nodes.length + 1}` },
-    type: "default"
-  };
+    data: {
+      label: nodeType.title,
+      typeId: nodeType.id
+    }
+  } as LayoutNode;
 
-  return newNode;
+  const newEdge = {
+    id: getEdgeId(),
+    type: "custom",
+    source: referenceNodeId,
+    target: newNode.id,
+  } as LayoutEdge;
+
+  return [newNode, newEdge] as const;
 }

@@ -1,4 +1,10 @@
-import { Handle, Position, type Node, type NodeProps } from "@xyflow/react";
+import {
+  Handle,
+  Position,
+  useReactFlow,
+  type Node,
+  type NodeProps
+} from "@xyflow/react";
 import { Link2, Package, Plus } from "lucide-react";
 import clsx from "clsx";
 
@@ -13,8 +19,26 @@ import {
 import { appRoomTypes, idToNodeType } from "@/lib/nodes";
 import { appNodeStyle } from "@/lib/node-styles";
 import { NodeSlab } from "@/components/NodeSlab";
+import { useCallback } from "react";
+import { createNewNode } from "./add-node";
+import { LayoutEdge } from "./LayoutEdge";
 
-function AddNodeButton() {
+function AddNodeButton({ nodeId }: { nodeId: string }) {
+  const { getNodes, addNodes, addEdges } = useReactFlow<
+    LayoutNode,
+    LayoutEdge
+  >();
+
+  const handleAddNode = useCallback(
+    (newNodeTypeId: string) => {
+      const nodes = getNodes();
+      const [newNode, newEdge] = createNewNode(newNodeTypeId, nodeId, nodes);
+      addNodes(newNode);
+      addEdges(newEdge);
+    },
+    [getNodes, addNodes, nodeId]
+  );
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,7 +58,10 @@ function AddNodeButton() {
           {appRoomTypes.map(roomType => {
             const style = appNodeStyle[roomType.id];
             return (
-              <DropdownMenuItem key={roomType.id}>
+              <DropdownMenuItem
+                key={roomType.id}
+                onSelect={() => handleAddNode(roomType.id)}
+              >
                 <style.Icon size={16} color={style.iconColor} />
                 <span className='truncate'>{roomType.title}</span>
               </DropdownMenuItem>
@@ -54,7 +81,7 @@ export type LayoutNode = Node<
   "custom"
 >;
 
-export function LayoutNode({ data, selected }: NodeProps<LayoutNode>) {
+export function LayoutNode({ id, data, selected }: NodeProps<LayoutNode>) {
   const { label, typeId } = data;
 
   return (
@@ -69,7 +96,7 @@ export function LayoutNode({ data, selected }: NodeProps<LayoutNode>) {
         )}
       />
 
-      <AddNodeButton />
+      <AddNodeButton nodeId={id} />
 
       <Handle
         type='source'
