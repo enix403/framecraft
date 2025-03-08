@@ -1,4 +1,4 @@
-import { idToNodeType } from "@/lib/nodes";
+import { FRONT_DOOR_ID, idToNodeType } from "@/lib/nodes";
 import { LayoutNode } from "./LayoutNode";
 import { LayoutEdge } from "./LayoutEdge";
 
@@ -125,4 +125,29 @@ export function createNewNode(
   } as LayoutEdge;
 
   return [newNode, newEdge] as const;
+}
+
+export function canAddEdge(
+  sourceNode: LayoutNode,
+  targetNode: LayoutNode,
+  edges: LayoutEdge[]
+) {
+  const isSourceFrontDoor = sourceNode.data.typeId === FRONT_DOOR_ID;
+  const isTargetFrontDoor = targetNode.data.typeId === FRONT_DOOR_ID;
+
+  // Disallow connections between two FRONT_DOOR_ID nodes
+  if (isSourceFrontDoor && isTargetFrontDoor) return false;
+
+  // Check if either node is FRONT_DOOR_ID and already has a connection
+  const hasExistingConnection = edges.some(
+    edge =>
+      (isSourceFrontDoor &&
+        (edge.source === sourceNode.id || edge.target === sourceNode.id)) ||
+      (isTargetFrontDoor &&
+        (edge.source === targetNode.id || edge.target === targetNode.id))
+  );
+
+  if (hasExistingConnection) return false;
+
+  return true;
 }

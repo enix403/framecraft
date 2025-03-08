@@ -20,25 +20,33 @@ import {
 import { appRoomTypes, idToNodeType } from "@/lib/nodes";
 import { appNodeStyle } from "@/lib/node-styles";
 import { NodeSlab } from "@/components/NodeSlab";
-import { useCallback, useContext, useEffect } from "react";
-import { createNewNode } from "./add-node";
+import { useCallback, useEffect } from "react";
+import { canAddEdge, createNewNode } from "./add-node";
 import { LayoutEdge } from "./LayoutEdge";
-import { LayoutEditorSettingsContext, useLayoutEditorSettings } from "./LayoutEditorSettings";
+import { useLayoutEditorSettings } from "./LayoutEditorSettings";
 
 function AddNodeButton({ nodeId }: { nodeId: string }) {
-  const { getNodes, addNodes, addEdges } = useReactFlow<
+  const { getNodes, getNode, getEdges, addNodes, addEdges } = useReactFlow<
     LayoutNode,
     LayoutEdge
   >();
 
   const handleAddNode = useCallback(
     (newNodeTypeId: string) => {
-      const nodes = getNodes();
-      const [newNode, newEdge] = createNewNode(newNodeTypeId, nodeId, nodes);
-      addNodes(newNode);
-      addEdges(newEdge);
+      const thisNode = getNode(nodeId)!;
+
+      const [newNode, newEdge] = createNewNode(
+        newNodeTypeId,
+        nodeId,
+        getNodes()
+      );
+
+      if (canAddEdge(thisNode, newNode, getEdges())) {
+        addNodes(newNode);
+        addEdges(newEdge);
+      }
     },
-    [getNodes, addNodes, nodeId]
+    [nodeId, getNodes, getNode, addNodes, getEdges]
   );
 
   return (

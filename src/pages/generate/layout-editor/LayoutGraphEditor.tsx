@@ -23,7 +23,7 @@ import { FRONT_DOOR_ID, idToNodeType } from "@/lib/nodes";
 import { LayoutEdge } from "./LayoutEdge";
 import { LayoutNode } from "./LayoutNode";
 import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
-import { getNewNodeId } from "./add-node";
+import { canAddEdge, getNewNodeId } from "./add-node";
 import { StateSet } from "@/lib/utils";
 
 /* =================================== */
@@ -40,31 +40,6 @@ export interface LayoutGraphEditorProps {
   setEdges: StateSet<LayoutEdge[]>;
   onSelection?: (node: LayoutNode | null) => void;
   readOnly?: boolean;
-}
-
-function canAddEdge(
-  sourceNode: LayoutNode,
-  targetNode: LayoutNode,
-  edges: LayoutEdge[]
-) {
-  const isSourceFrontDoor = sourceNode.data.typeId === FRONT_DOOR_ID;
-  const isTargetFrontDoor = targetNode.data.typeId === FRONT_DOOR_ID;
-
-  // Disallow connections between two FRONT_DOOR_ID nodes
-  if (isSourceFrontDoor && isTargetFrontDoor) return false;
-
-  // Check if either node is FRONT_DOOR_ID and already has a connection
-  const hasExistingConnection = edges.some(
-    edge =>
-      (isSourceFrontDoor &&
-        (edge.source === sourceNode.id || edge.target === sourceNode.id)) ||
-      (isTargetFrontDoor &&
-        (edge.source === targetNode.id || edge.target === targetNode.id))
-  );
-
-  if (hasExistingConnection) return false;
-
-  return false;
 }
 
 function Inner({
@@ -105,11 +80,6 @@ function Inner({
       }),
     []
   );
-
-  /* const onConnect: OnConnect = useCallback(
-    connection => setEdges(eds => addEdge(connection, eds)),
-    [setEdges]
-  ); */
 
   const onConnect: OnConnect = useCallback(
     connection => {
