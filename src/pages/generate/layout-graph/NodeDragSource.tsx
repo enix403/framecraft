@@ -2,53 +2,130 @@ import clsx from "clsx";
 import { appNodeTypes, NodeType } from "@/lib/nodes";
 import { NodeSlab } from "@/components/NodeSlab";
 import { atom, useSetAtom } from "jotai";
-import dagre from "dagre";
 import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
+import dagre from "dagre";
 
-export const dndNodeTypeIdAtom = atom("");
+/* ======================== */
 
-const getNextNodePosition = (nodes, edges) => {
-  const g = new dagre.graphlib.Graph();
-  g.setGraph({ rankdir: "TB" }); // Top to Bottom layout
-  g.setDefaultEdgeLabel(() => ({}));
+// Default size for nodes if not explicitly set
+const DEFAULT_NODE_SIZE = { width: 150, height: 50 };
 
-  nodes.forEach(node => g.setNode(node.id, { width: 150, height: 50 }));
-  edges.forEach(edge => g.setEdge(edge.source, edge.target));
+// Helper function to check for overlap between candidate node and existing nodes
+function isCollision(candidate, newNodeSize, nodes) {
+  const candidateBox = {
+    left: candidate.x,
+    right: candidate.x + newNodeSize.width,
+    top: candidate.y,
+    bottom: candidate.y + newNodeSize.height
+  };
 
-  dagre.layout(g);
-
-  // Find a suitable position
-  let maxY = Math.max(...nodes.map(n => n.position.y), 0);
-  return { x: 100, y: maxY + 100 }; // Place new node below the lowest one
-};
-
-function Source({ nodeType }: { nodeType: NodeType }) {
-  const setTypeId = useSetAtom(dndNodeTypeIdAtom);
-
-  const { getNodes, getEdges, addNodes } = useReactFlow();
-
-  const handleAddNode = useCallback(() => {
-    const nodes = getNodes();
-    const edges = getEdges();
-
-    const position = getNextNodePosition(nodes, edges);
-    const newNode = {
-      id: `ui-node-${nodes.length + 1}`,
-      position,
-      data: { label: `Node ${nodes.length + 1}` },
-      type: "default",
+  for (const node of nodes) {
+    const nodeSize = {
+      width: node.width || DEFAULT_NODE_SIZE.width,
+      height: node.height || DEFAULT_NODE_SIZE.height
+    };
+    const nodeBox = {
+      left: node.position.x,
+      right: node.position.x + nodeSize.width,
+      top: node.position.y,
+      bottom: node.position.y + nodeSize.height
     };
 
-    addNodes(newNode);
-  }, [getNodes, addNodes]);
+    // Check if the candidate overlaps with this node
+    if (
+      !(
+        candidateBox.right < nodeBox.left ||
+        candidateBox.left > nodeBox.right ||
+        candidateBox.bottom < nodeBox.top ||
+        candidateBox.top > nodeBox.bottom
+      )
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
 
+// Function to find the next free position near the reference node using a spiral search
+function getNextNodePosition(
+  nodes,
+  referenceNodeId,
+  newNodeSize = DEFAULT_NODE_SIZE
+) {
+  const referenceNode = nodes.find(n => n.id === referenceNodeId);
+  if (!referenceNode) return { x: 100, y: 100 }; // Fallback if reference node not found
+
+  // Compute the center of the reference node
+  const refWidth = referenceNode.width || DEFAULT_NODE_SIZE.width;
+  const refHeight = referenceNode.height || DEFAULT_NODE_SIZE.height;
+  const refCenter = {
+    x: referenceNode.position.x + refWidth / 2,
+    y: referenceNode.position.y + refHeight / 2
+  };
+
+  // Parameters for the spiral search
+  const radiusStep = 20;
+  const maxRadius = 500;
+  const angleStep = 15; // degrees
+  const toRadians = angle => angle * (Math.PI / 180);
+
+  // Spiral outwards from the reference center to search for an available spot.
+  for (let radius = radiusStep; radius <= maxRadius; radius += radiusStep) {
+    for (let angle = 0; angle < 360; angle += angleStep) {
+      // Compute offset from the center using polar coordinates
+      const offsetX = radius * Math.cos(toRadians(angle));
+      const offsetY = radius * Math.sin(toRadians(angle));
+
+      // Candidate top-left position such that the new node is centered at the candidate point
+      const candidate = {
+        x: refCenter.x + offsetX - newNodeSize.width / 2,
+        y: refCenter.y + offsetY - newNodeSize.height / 2
+      };
+
+      // If the candidate does not collide with any existing node, return it
+      if (!isCollision(candidate, newNodeSize, nodes)) {
+        return candidate;
+      }
+    }
+  }
+
+  // Fallback: if no free space was found, place the new node to the right of the reference node.
+  return {
+    x: referenceNode.position.x + refWidth + 20,
+    y: referenceNode.position.y
+  };
+}
+
+/* ========================== */
+
+function Source({ nodeType }: { nodeType: NodeType }) {
+  const { getNodes, addNodes } = useReactFlow();
+
+  const handleAddNode = useCallback(
+    referenceNodeId => {
+      const nodes = getNodes();
+      const position = getNextNodePosition(nodes, referenceNodeId);
+
+      const newNode = {
+        id: `node-${nodes.length + 1}`,
+        position,
+        data: { label: `Node ${nodes.length + 1}` },
+        type: "default"
+      };
+
+      addNodes(newNode);
+    },
+    [getNodes, addNodes]
+  );
+
+  const setTypeId = useSetAtom(dndNodeTypeIdAtom);
 
   return (
     <NodeSlab
       title={nodeType.title}
       className={clsx("border-[#04ACB0] shadow-sm", "cursor-grab select-none")}
-      onClick={handleAddNode}
+      onClick={() => handleAddNode("1")}
       // draggable
       // onDragStart={event => {
       //   setTypeId(nodeType.id);
@@ -71,3 +148,5 @@ export function NodeDragSource() {
     </div>
   );
 }
+
+export const dndNodeTypeIdAtom = atom("");
