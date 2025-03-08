@@ -5,16 +5,20 @@ import {
   Background,
   BackgroundVariant,
   Controls,
-  Edge,
   OnConnect,
   ReactFlow,
   useEdgesState,
-  useNodesState
+  useNodesState,
+  useReactFlow
 } from "@xyflow/react";
 import { useCallback } from "react";
-import { LayoutEdge } from "./LayoutEdge";
+import { useAtomValue } from "jotai";
 
+import { idToNodeType } from "@/lib/nodes";
+
+import { LayoutEdge } from "./LayoutEdge";
 import { LayoutNode } from "./LayoutNode";
+import { dndNodeTypeIdAtom } from "../NodeDragSource";
 
 /* =================================== */
 
@@ -22,6 +26,9 @@ const nodeTypes = { custom: LayoutNode };
 const edgeTypes = { custom: LayoutEdge };
 
 /* =================================== */
+
+let id = 0;
+const getId = () => `dndnode_${id++}`;
 
 export function LayoutGraphEditor({
   nodesState,
@@ -32,12 +39,50 @@ export function LayoutGraphEditor({
   edgesState: ReturnType<typeof useEdgesState<LayoutEdge>>;
   onSelection: (node: LayoutNode | null) => void;
 }) {
-  const [nodes, _setNodes, onNodesChange] = nodesState;
+  const [nodes, setNodes, onNodesChange] = nodesState;
   const [edges, setEdges, onEdgesChange] = edgesState;
+  const { screenToFlowPosition } = useReactFlow();
 
   const onConnect: OnConnect = useCallback(
     connection => setEdges(eds => addEdge(connection, eds)),
     [setEdges]
+  );
+
+  const onDragOver = useCallback((event: React.DragEvent<HTMLElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
+
+  const typeId = useAtomValue(dndNodeTypeIdAtom);
+
+  const onDrop = useCallback(
+    event => {
+      event.preventDefault();
+
+      const nodeType = idToNodeType[typeId] || null;
+
+      if (!nodeType) {
+        return;
+      }
+
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY
+      });
+
+      const newNode = {
+        id: getId(),
+        type: "custom",
+        position,
+        data: {
+          label: nodeType.title,
+          typeId: nodeType.id
+        }
+      } as LayoutNode;
+
+      setNodes(nds => nds.concat(newNode));
+    },
+    [screenToFlowPosition, typeId]
   );
 
   return (
@@ -54,17 +99,15 @@ export function LayoutGraphEditor({
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         edgesFocusable={false}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
         fitView
-        fitViewOptions={{
-          maxZoom: 1
-        }}
+        fitViewOptions={{ maxZoom: 1 }}
         defaultEdgeOptions={{
           animated: true,
           type: "custom"
         }}
-        proOptions={{
-          hideAttribution: true
-        }}
+        proOptions={{ hideAttribution: true }}
       >
         <Background
           bgColor='#FAFAFA'

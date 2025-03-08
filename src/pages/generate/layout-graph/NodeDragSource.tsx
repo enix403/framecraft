@@ -1,14 +1,19 @@
 import clsx from "clsx";
 import { appNodeTypes, NodeType } from "@/lib/nodes";
 import { NodeSlab } from "@/components/NodeSlab";
+import { atom, useSetAtom } from "jotai";
+
+export const dndNodeTypeIdAtom = atom("");
 
 function Source({ nodeType }: { nodeType: NodeType }) {
+  const setTypeId = useSetAtom(dndNodeTypeIdAtom);
   return (
     <NodeSlab
       title={nodeType.title}
       className={clsx("border-[#04ACB0] shadow-sm", "cursor-grab select-none")}
       draggable
       onDragStart={event => {
+        setTypeId(nodeType.id);
         event.dataTransfer.effectAllowed = "move";
       }}
     />
