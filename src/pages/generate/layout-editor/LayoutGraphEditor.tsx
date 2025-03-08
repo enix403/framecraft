@@ -14,12 +14,11 @@ import {
   OnNodesChange,
   ReactFlow,
   ReactFlowProvider,
-  useReactFlow,
-  XYPosition
+  useReactFlow
 } from "@xyflow/react";
 import { ComponentProps, useCallback, useMemo } from "react";
 
-import { idToNodeType } from "@/lib/nodes";
+import { FRONT_DOOR_ID, idToNodeType } from "@/lib/nodes";
 
 import { LayoutEdge } from "./LayoutEdge";
 import { LayoutNode } from "./LayoutNode";
@@ -51,8 +50,34 @@ function Inner({
   onSelection = () => {},
   readOnly = false
 }: LayoutGraphEditorProps) {
+  const { getNode, screenToFlowPosition } = useReactFlow<
+    LayoutNode,
+    LayoutEdge
+  >();
+
   const onNodesChange: OnNodesChange<LayoutNode> = useCallback(
-    changes => setNodes(nds => applyNodeChanges(changes, nds)),
+    changes =>
+      setNodes(nodes => {
+        /* Make sure that there is always atleast one front door in the graph. */
+
+        const frontDoorDeletions = changes.filter(
+          change =>
+            change.type === "remove" &&
+            getNode(change.id)?.data.typeId === FRONT_DOOR_ID
+        );
+
+        if (frontDoorDeletions.length > 0) {
+          const numFrontDoors = nodes.filter(
+            node => node.data.typeId === FRONT_DOOR_ID
+          ).length;
+
+          if (numFrontDoors - frontDoorDeletions.length <= 0) {
+            // if there are no frontdoors left after deleting, we cancel the event
+            return nodes;
+          }
+        }
+        return applyNodeChanges(changes, nodes);
+      }),
     []
   );
 
@@ -83,7 +108,6 @@ function Inner({
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  const { screenToFlowPosition } = useReactFlow();
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLElement>) => {
       event.preventDefault();
