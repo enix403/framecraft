@@ -208,7 +208,7 @@ body {
 
 @theme {
   --text-ls: 1.0425rem;
-  --font-graph-editor: 'Quicksand Variable', sans-serif;
+  --font-graph-editor: "Quicksand Variable", sans-serif;
 }
 
 /*
@@ -223,7 +223,6 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
 
 .button-edge__label {
   position: absolute;

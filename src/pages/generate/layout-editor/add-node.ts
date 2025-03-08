@@ -156,8 +156,7 @@ export function getNewNodeName(nodes: LayoutNode[], typeId: string) {
   const existingCount = nodes.filter(n => n.data.typeId === typeId).length;
   const nodeType = idToNodeType[typeId];
 
-  if (!nodeType)
-    return "Room";
+  if (!nodeType) return "Room";
 
   return `${nodeType.title} ${existingCount + 1}`;
 }

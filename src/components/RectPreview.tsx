@@ -95,8 +95,7 @@ export function RectPreview({
         let coords = outlinePoly.geometry.coordinates.flat(2) as number[];
         setOutline(coords);
       }
-    }
-    else {
+    } else {
       setOutline(polys[0].geometry.coordinates.flat(2) as number[]);
     }
   }, [rectangles, canvasHeight]);

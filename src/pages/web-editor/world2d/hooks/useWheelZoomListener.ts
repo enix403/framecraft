@@ -37,6 +37,5 @@ export function useWheelZoomListener(camera: Camera) {
     return () => {
       stage.content.removeEventListener("wheel", onWheel);
     };
-
   }, [camera]);
 }

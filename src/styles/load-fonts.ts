@@ -8,5 +8,4 @@ import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import "@fontsource/inter/900.css";
 
-
-import '@fontsource-variable/quicksand';
+import "@fontsource-variable/quicksand";

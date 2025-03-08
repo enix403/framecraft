@@ -51,7 +51,7 @@ export function getInitialPlan() {
       id: `room-${index}`,
       label: nodeType.title ?? "Room",
       rects
-    }
+    };
   });
 
   return {

@@ -1,7 +1,4 @@
-import {
-  useRef,
-  useLayoutEffect,
-} from "react";
+import { useRef, useLayoutEffect } from "react";
 import { Camera } from "../state/camera";
 
 export function useInitialRecenter(camera: Camera) {
