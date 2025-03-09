@@ -9,15 +9,13 @@ export function PlotDetails() {
       <RectPreview
         className='mb-4'
         rectangles={[
-          { left: 20, top: 10, width: 80, height: 50 },
-          { left: 100, top: 10, width: 50, height: 50 },
-          { left: 20, top: 60, width: 130, height: 40 }
+          { left: 0, top: 0, width: 100, height: 110 }
         ]}
       />
 
-      <Stat label='Length' value='32 ft.' />
-      <Stat label='Width' value='26 ft.' />
-      <Stat label='Area' value='832 ft. sq' />
+      <Stat label='Length' value='110 ft.' />
+      <Stat label='Width' value='100 ft.' />
+      <Stat label='Area' value='11000 ft. sq' />
     </div>
   );
 }
