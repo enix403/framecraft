@@ -5,37 +5,33 @@ import { serverIdToNodeType } from "@/lib/nodes";
 import { appNodeStyle } from "@/lib/node-styles";
 import { repeatNode } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { memo } from "react";
 
-const demoNodeTypes = [0, 1, 2, 2, 2, 3, 3, 3, 4, 14];
-const demoEdges = [
-  [0, 1],
-  [0, 2],
-  [0, 3],
-  [0, 4],
-  [0, 9],
-  [8, 4],
-  [2, 5],
-  [3, 6],
-  [4, 7]
-] as [number, number][];
+interface PresetData {
+  nodeTypes: number[];
+  edges: [number, number][];
+}
 
-const data = {
-  nodes: demoNodeTypes.map((n, index) => ({
-    id: `${index}`,
-    color: appNodeStyle[serverIdToNodeType[n].id].iconColor
-  })),
-  links: demoEdges.map(([a, b]) => ({
-    source: `${a}`,
-    target: `${b}`
-  }))
-};
+function makeNetworkData({ nodeTypes, edges }: PresetData) {
+  return {
+    nodes: nodeTypes.map((n, index) => ({
+      id: `${index}`,
+      color: appNodeStyle[serverIdToNodeType[n].id].iconColor
+    })),
+    links: edges.map(([a, b]) => ({
+      source: `${a}`,
+      target: `${b}`
+    }))
+  };
+}
 
-const PresetPreview = () => (
+const PresetPreview = memo(({ preset }: { preset: PresetData }) => (
   <button className='h-[12rem] w-[12rem] shrink-0 rounded-2xl bg-indigo-50 tc hover:bg-indigo-100'>
     <ResponsiveNetworkCanvas
-      data={data}
+      data={makeNetworkData(preset)}
       isInteractive={false}
-      centeringStrength={0.9}
+      centeringStrength={0.8}
+      repulsivity={20}
       animate={false}
       // @ts-ignore
       nodeColor={n => n.color}
@@ -43,7 +39,7 @@ const PresetPreview = () => (
       linkThickness={2}
     />
   </button>
-);
+));
 
 export function GraphPresets() {
   return (
@@ -68,10 +64,131 @@ export function GraphPresets() {
         </div>
       </div>
       <div className='flex max-w-full gap-x-4 overflow-auto p-4 pt-2.5'>
-        {repeatNode(10, index => (
-          <PresetPreview key={index} />
+        {presets.map((preset, index) => (
+          <PresetPreview key={index} preset={preset} />
         ))}
       </div>
     </>
   );
 }
+
+const presets: PresetData[] = [
+  {
+    nodeTypes: [0, 1, 2, 3, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 4],
+      [2, 3]
+    ]
+  },
+  {
+    nodeTypes: [0, 1, 2, 3, 4, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 5],
+      [2, 3],
+      [2, 4]
+    ]
+  },
+  {
+    nodeTypes: [0, 1, 2, 3, 4, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 4],
+      [0, 5],
+      [2, 3]
+    ]
+  },
+  {
+    nodeTypes: [0, 1, 2, 3, 4, 4, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 4],
+      [0, 6],
+      [2, 3],
+      [2, 5]
+    ]
+  },
+  {
+    nodeTypes: [0, 1, 2, 3, 3, 4, 4, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 5],
+      [0, 4],
+      [0, 7],
+      [2, 3],
+      [2, 6]
+    ]
+  },
+  {
+    nodeTypes: [0, 1, 2, 2, 3, 4, 4, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 5],
+      [0, 3],
+      [0, 7],
+      [2, 4],
+      [2, 6]
+    ]
+  },
+  {
+    nodeTypes: [0, 1, 2, 2, 3, 3, 4, 4, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 6],
+      [0, 3],
+      [0, 8],
+      [2, 4],
+      [2, 7],
+      [3, 5]
+    ]
+  },
+  {
+    nodeTypes: [0, 1, 2, 2, 3, 3, 3, 4, 4, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 7],
+      [0, 3],
+      [0, 6],
+      [0, 9],
+      [2, 4],
+      [2, 8],
+      [3, 5]
+    ]
+  },
+  {
+    nodeTypes: [0, 1, 2, 2, 3, 3, 3, 4, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 3],
+      [0, 6],
+      [0, 8],
+      [2, 4],
+      [2, 7],
+      [3, 5]
+    ]
+  },
+  {
+    nodeTypes: [0, 1, 2, 2, 2, 3, 3, 3, 4, 14],
+    edges: [
+      [0, 2],
+      [0, 1],
+      [0, 3],
+      [0, 4],
+      [0, 9],
+      [2, 5],
+      [2, 8],
+      [3, 6],
+      [4, 7]
+    ]
+  }
+].reverse();
