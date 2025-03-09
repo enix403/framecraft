@@ -14,8 +14,8 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/s' element={<Scratch />} />
-          <Route path='/d' element={<WebEditor />} />
-          <Route path='/' element={<GenerateDesign />} />
+          <Route path='/new' element={<GenerateDesign />} />
+          <Route path='/edit' element={<WebEditor />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

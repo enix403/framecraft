@@ -94,13 +94,13 @@ export function GenerateDesign() {
           loading={loading}
           disabled={loading}
           onClick={() => {
-            // setLoading(true);
-            let layoutData = { nodes, edges };
-            navigate("/d", {
-              state: {
-                layoutData
-              }
-            });
+            setLoading(true);
+            setTimeout(() => {
+              let layoutData = { nodes, edges };
+              navigate("/edit", {
+                state: { layoutData }
+              });
+            }, 3500);
           }}
         >
           Generate
