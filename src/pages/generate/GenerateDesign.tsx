@@ -12,6 +12,7 @@ import { LayoutGraphEditor } from "@/components/layout-editor/LayoutGraphEditor"
 import { StateSet } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MousePointerClick } from "lucide-react";
+import { useNavigate } from "react-router";
 
 function LayoutGraphPanes({
   nodes,
@@ -76,14 +77,32 @@ function LayoutGraphPanes({
 }
 
 export function GenerateDesign() {
+  const navigate = useNavigate();
+
   const [nodes, setNodes] = useState<LayoutNode[]>(initialNodes);
   const [edges, setEdges] = useState<LayoutEdge[]>(initialEdges);
+
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className='flex h-full max-h-full overflow-hidden'>
       <div className='flex w-sm flex-col border-r-2 p-4'>
         <GeneralSettings />
-        <Button size='lg' className='mt-auto atext-ls'>
+        <Button
+          size='lg'
+          className='mt-auto atext-ls'
+          loading={loading}
+          disabled={loading}
+          onClick={() => {
+            // setLoading(true);
+            let layoutData = { nodes, edges };
+            navigate("/d", {
+              state: {
+                layoutData
+              }
+            });
+          }}
+        >
           Generate
           <MousePointerClick />
         </Button>

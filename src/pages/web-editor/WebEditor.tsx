@@ -17,12 +17,40 @@ import { useState } from "react";
 import { PlanData } from "@/lib/plan";
 import { useAtomValue } from "jotai";
 import { LayoutGraphEditor } from "@/components/layout-editor/LayoutGraphEditor";
+import { useLocation } from "react-router";
+import { LayoutNode } from "@/components/layout-editor/LayoutNode";
+import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
+
+function LayoutViewPane() {
+  const { state } = useLocation();
+
+  let initialNodes: any[] = [];
+  let initialEdges: any[] = [];
+
+  if (state && state.layoutData) {
+    initialNodes = state.layoutData.nodes;
+    initialEdges = state.layoutData.edges;
+  }
+
+  const [nodes, setNodes] = useState<LayoutNode[]>(initialNodes);
+  const [edges, setEdges] = useState<LayoutEdge[]>(initialEdges);
+
+  return (
+    <LayoutGraphEditor
+      nodes={nodes}
+      setNodes={setNodes}
+      edges={edges}
+      setEdges={setEdges}
+      readOnly
+    />
+  );
+}
 
 function CentralPane() {
   const activeTab = useAtomValue(activeTabAtom);
 
   if (activeTab === "layout") {
-    return <LayoutGraphEditor />;
+    return <LayoutViewPane />;
   } else if (activeTab === "2d") {
     return <World2DPane />;
   }

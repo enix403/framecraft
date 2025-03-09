@@ -16,7 +16,7 @@ import {
   ReactFlowProvider,
   useReactFlow
 } from "@xyflow/react";
-import { ComponentProps, useCallback, useMemo } from "react";
+import { ComponentProps, useCallback, useEffect, useMemo } from "react";
 
 import { FRONT_DOOR_ID, idToNodeType } from "@/lib/nodes";
 
@@ -54,6 +54,15 @@ function Inner({
     LayoutNode,
     LayoutEdge
   >();
+
+  useEffect(() => {
+    setEdges(edges =>
+      edges.map(e => ({
+        ...e,
+        animated: !readOnly
+      }))
+    );
+  }, [readOnly]);
 
   const onNodesChange: OnNodesChange<LayoutNode> = useCallback(
     changes =>

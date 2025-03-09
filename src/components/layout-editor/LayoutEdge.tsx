@@ -96,12 +96,12 @@ export function LayoutEdge({
   const { setEdges, updateEdge } = useReactFlow();
   const { readOnly } = useLayoutEditorSettings();
 
-  useEffect(() => {
-    updateEdge(id, data => ({
-      ...data,
-      animated: !readOnly
-    }));
-  }, [id, updateEdge, readOnly]);
+  // useEffect(() => {
+  //   updateEdge(id, data => ({
+  //     ...data,
+  //     animated: !readOnly
+  //   }));
+  // }, [id, updateEdge, readOnly]);
 
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);

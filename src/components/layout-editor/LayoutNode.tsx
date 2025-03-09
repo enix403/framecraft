@@ -107,7 +107,7 @@ export function LayoutNode({ id, data, selected }: NodeProps<LayoutNode>) {
         title={label}
         subtitle={idToNodeType[typeId].title}
         typeId={typeId}
-        showBorder={selected}
+        showBorder={!readOnly && selected}
         className={clsx(
           "relative min-w-56",
           "shadow-[0px_10px_36px_-6px_rgba(0,_0,_0,_0.1)]"
