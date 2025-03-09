@@ -6,13 +6,12 @@ import { GraphPresets } from "./panes/GraphPresets";
 import { LayoutGraphTitle } from "./panes/LayoutGraphTitle";
 import { Toolbar } from "./panes/Toolbar";
 
-import { LayoutNode } from "./layout-editor/LayoutNode";
-import { LayoutEdge } from "./layout-editor/LayoutEdge";
-import { LayoutGraphEditor } from "./layout-editor/LayoutGraphEditor";
+import { LayoutNode } from "@/components/layout-editor/LayoutNode";
+import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
+import { LayoutGraphEditor } from "@/components/layout-editor/LayoutGraphEditor";
 import { StateSet } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Cuboid, MousePointerClick } from "lucide-react";
-import { Spinner } from "@/components/ui/spinner";
+import { MousePointerClick } from "lucide-react";
 
 function LayoutGraphPanes({
   nodes,

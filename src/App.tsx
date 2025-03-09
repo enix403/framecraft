@@ -14,7 +14,7 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/s' element={<Scratch />} />
-          <Route path='/e' element={<WebEditor />} />
+          <Route path='/d' element={<WebEditor />} />
           <Route path='/' element={<GenerateDesign />} />
         </Routes>
       </BrowserRouter>

@@ -194,8 +194,8 @@ function Inner({
             bgColor='#FAFAFA'
             color='#CACACA'
             variant={BackgroundVariant.Dots}
-            gap={10}
-            size={1.5}
+            gap={18}
+            size={2.5}
           />
           <Controls />
         </ReactFlow>

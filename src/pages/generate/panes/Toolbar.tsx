@@ -2,9 +2,8 @@ import { Button } from "@/components/ui/button";
 import { RoomIdentityInput } from "@/components/RoomIdentityInput";
 import { TooltipWrapper } from "@/components/TooltipWrapper";
 import { Info, Redo, Undo } from "lucide-react";
-import { useNodesData, useReactFlow } from "@xyflow/react";
-import { LayoutNode } from "../layout-editor/LayoutNode";
-import { memo, useMemo } from "react";
+import { LayoutNode } from "@/components/layout-editor/LayoutNode";
+import { memo } from "react";
 
 // TODO: Simplify. Too many unnecessary flex divs
 export const Toolbar = memo(
