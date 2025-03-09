@@ -1,5 +1,5 @@
 import { serverIdToNodeType } from "../nodes";
-import planJsonRaw from "./planA.json";
+import planJsonRaw from "./planB.json";
 
 export type RoomRect = [
   number /* row */,
@@ -31,28 +31,30 @@ export function getInitialPlan() {
     direction: door[3] as "h" | "v"
   }));
 
-  let roomsN = rooms.map((room, index) => {
-    let [type, ...flatRects] = room;
-    let rects: RoomRect[] = [];
+  let roomsN = rooms
+    .filter(vals => vals.length > 1)
+    .map((room, index) => {
+      let [type, ...flatRects] = room;
+      let rects: RoomRect[] = [];
 
-    for (let i = 0; i < flatRects.length; i += 4) {
-      rects.push([
-        scaleRows * flatRects[i],
-        scaleCols * flatRects[i + 1],
-        scaleCols * flatRects[i + 2],
-        scaleRows * flatRects[i + 3]
-      ]);
-    }
+      for (let i = 0; i < flatRects.length; i += 4) {
+        rects.push([
+          scaleRows * flatRects[i],
+          scaleCols * flatRects[i + 1],
+          scaleCols * flatRects[i + 2],
+          scaleRows * flatRects[i + 3]
+        ]);
+      }
 
-    const nodeType = serverIdToNodeType[type];
+      const nodeType = serverIdToNodeType[type];
 
-    return {
-      typeId: nodeType.id,
-      id: `room-${index}`,
-      label: nodeType.title ?? "Room",
-      rects
-    };
-  });
+      return {
+        typeId: nodeType.id,
+        id: `room-${index}`,
+        label: nodeType.title ?? "Room",
+        rects
+      };
+    });
 
   return {
     canvasRows,
