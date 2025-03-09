@@ -12,6 +12,7 @@ import { LayoutGraphEditor } from "./layout-editor/LayoutGraphEditor";
 import { StateSet } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Cuboid, MousePointerClick } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 function LayoutGraphPanes({
   nodes,
