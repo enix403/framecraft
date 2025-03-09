@@ -34,19 +34,19 @@ const edgeTypes = { custom: LayoutEdge };
 /* =================================== */
 
 export interface LayoutGraphEditorProps {
-  nodes: LayoutNode[];
-  setNodes: StateSet<LayoutNode[]>;
-  edges: LayoutEdge[];
-  setEdges: StateSet<LayoutEdge[]>;
+  nodes?: LayoutNode[];
+  setNodes?: StateSet<LayoutNode[]>;
+  edges?: LayoutEdge[];
+  setEdges?: StateSet<LayoutEdge[]>;
   onSelection?: (node: LayoutNode | null) => void;
   readOnly?: boolean;
 }
 
 function Inner({
-  nodes,
-  setNodes,
-  edges,
-  setEdges,
+  nodes = [],
+  setNodes = () => {},
+  edges = [],
+  setEdges = () => {},
   onSelection = () => {},
   readOnly = false
 }: LayoutGraphEditorProps) {

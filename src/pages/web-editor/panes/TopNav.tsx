@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { atom, useAtom } from "jotai";
 
 import {
   Box,
@@ -10,7 +11,11 @@ import {
   Waypoints
 } from "lucide-react";
 
+export const activeTabAtom = atom<"layout" | "2d" | "3d">("2d");
+
 export function TopNav() {
+  const [activeTab, setActiveTab] = useAtom(activeTabAtom);
+
   return (
     <nav className='flex border-b px-4 py-4'>
       <div className='flex flex-1 items-center'>
@@ -33,11 +38,12 @@ export function TopNav() {
       </div>
       <div className='flex flex-1 items-center justify-center'>
         <ToggleGroup
-          defaultValue='2d'
           variant='outline'
           size='lg'
           className='inline-flex'
           type='single'
+          value={activeTab}
+          onValueChange={setActiveTab as any}
         >
           <ToggleGroupItem value='layout'>
             Layout Graph <Waypoints />

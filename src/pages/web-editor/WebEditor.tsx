@@ -7,14 +7,28 @@ import {
 import { getInitialPlan } from "@/lib/demo/initialPlan";
 import { PlanContext } from "./PlanProvider";
 
-import { TopNav } from "./panes/TopNav";
+import { TopNav, activeTabAtom } from "./panes/TopNav";
 import { RoomList } from "./panes/RoomList";
 import { PlotDetails } from "./panes/PlotDetails";
 import { RoomDetails } from "./panes/RoomDetails";
 
 import { World2DPane } from "./world2d/World2DPane";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { PlanData } from "@/lib/plan";
+import { useAtomValue } from "jotai";
+import { LayoutGraphEditor } from "@/components/layout-editor/LayoutGraphEditor";
+
+function CentralPane() {
+  const activeTab = useAtomValue(activeTabAtom);
+
+  if (activeTab === "layout") {
+    return <LayoutGraphEditor />;
+  } else if (activeTab === "2d") {
+    return <World2DPane />;
+  }
+
+  return null;
+}
 
 export function WebEditor() {
   const [plan, setPlan] = useState<PlanData | null>(getInitialPlan);
@@ -36,7 +50,7 @@ export function WebEditor() {
           <ResizableHandle />
           {/* Center Pane */}
           <ResizablePanel minSize={40} className='flex flex-1-fix flex-col'>
-            <World2DPane />
+            <CentralPane />
           </ResizablePanel>
           <ResizableHandle />
           {/* Right Pane */}
