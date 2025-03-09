@@ -10,6 +10,8 @@ import { LayoutNode } from "./layout-editor/LayoutNode";
 import { LayoutEdge } from "./layout-editor/LayoutEdge";
 import { LayoutGraphEditor } from "./layout-editor/LayoutGraphEditor";
 import { StateSet } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Cuboid, MousePointerClick } from "lucide-react";
 
 function LayoutGraphPanes({
   nodes,
@@ -79,8 +81,12 @@ export function GenerateDesign() {
 
   return (
     <div className='flex h-full max-h-full overflow-hidden'>
-      <div className='w-sm border-r-2 p-4'>
+      <div className='flex w-sm flex-col border-r-2 p-4'>
         <GeneralSettings />
+        <Button size='lg' className='mt-auto atext-ls'>
+          Generate
+          <MousePointerClick />
+        </Button>
       </div>
       <div className='flex flex-1-fix flex-col'>
         <LayoutGraphPanes

@@ -1,50 +1,21 @@
 @import "tailwindcss";
-/*
-  ---break---
-*/
 @plugin "tailwindcss-animate";
-/*
-  ---break---
-*/
 @custom-variant dark (&:is(.dark *));
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
   button:not(:disabled),
   [role="button"]:not(:disabled),
   [role="menuitem"]:not(:disabled) {
     cursor: pointer;
   }
-}
 
-@utility tc {
-  @apply transition-colors;
-}
-
-@utility d {
-  @apply bg-red-500;
-}
-
-/* overflow x */
-@utility flex-1-x {
-  @apply flex-[1_1_0] shrink-0 overflow-x-auto;
-}
-
-/* overflow y */
-@utility flex-1-y {
-  @apply flex-[1_1_0] shrink-0 overflow-y-auto;
-}
-
-/* Do not overflow */
-@utility flex-1-fix {
-  @apply flex-[1_1_0] shrink-0 overflow-hidden;
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
 html,
@@ -71,16 +42,32 @@ body {
   overflow: hidden;
 }
 
-#root {
-  height: 100%;
-  min-height: 100%;
-  max-height: 100%;
 
-  width: 100%;
-  min-width: 100%;
-  max-width: 100%;
+@utility tc {
+  @apply transition-colors;
+}
 
-  overflow: hidden;
+@utility d {
+  @apply bg-red-500;
+}
+
+/* overflow x */
+@utility flex-1-x {
+  @apply flex-[1_1_0] shrink-0 overflow-x-auto;
+}
+
+/* overflow y */
+@utility flex-1-y {
+  @apply flex-[1_1_0] shrink-0 overflow-y-auto;
+}
+
+/* Do not overflow */
+@utility flex-1-fix {
+  @apply flex-[1_1_0] shrink-0 overflow-hidden;
+}
+
+@utility atext-ls {
+  font-size: 1.0425rem;
 }
 
 /*
@@ -204,45 +191,19 @@ body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-}
 
-@theme {
-  --text-ls: 1.0425rem;
+  /*  */
   --font-graph-editor: "Quicksand Variable", sans-serif;
 }
 
-/*
-  ---break---
-*/
+#root {
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
 
-.button-edge__label {
-  position: absolute;
-  pointer-events: all;
-  transform-origin: center;
-}
-
-.button-edge__button {
-  width: 30px;
-  height: 30px;
-  border: 5px solid #f7f9fb;
-  color: var(--xy-edge-label-color-default);
-  background-color: #f3f3f4;
-  cursor: pointer;
-  border-radius: 50%;
-  font-size: 12px;
-  padding-top: 0px;
-}
-
-.button-edge__button:hover {
-  background-color: var(--xy-theme-hover);
-  color: #ffffff;
+  overflow: hidden;
 }

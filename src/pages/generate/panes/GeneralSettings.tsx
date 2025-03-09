@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 function PlanName() {
   return (
     <>
-      <Label className='text-ls font-semibold'>Plan Name</Label>
+      <Label className='atext-ls font-semibold'>Plan Name</Label>
       <div className='relative mt-1'>
         <Input
           defaultValue='Untitled Plan'
@@ -62,7 +62,7 @@ function PlotDimensions() {
 
   return (
     <div className='mt-8'>
-      <Label className='text-ls font-semibold'>Plot Size</Label>
+      <Label className='atext-ls font-semibold'>Plot Size</Label>
 
       <Tabs
         value={unit}
