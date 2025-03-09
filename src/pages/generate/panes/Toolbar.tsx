@@ -13,7 +13,7 @@ export const Toolbar = memo(
     updateNodeData
   }: {
     node: LayoutNode | null;
-    updateNodeData: (nodeId: string, data: Partial<LayoutNode["data"]>) => void;
+    updateNodeData: (data: Partial<LayoutNode["data"]>) => void;
   }) => {
     return (
       <nav className='flex gap-x-2 border-b px-4 py-2'>
@@ -21,19 +21,11 @@ export const Toolbar = memo(
           {node ? (
             <RoomIdentityInput
               key={node.id}
+              className='max-w-lg flex-1'
               initialName={node.data.label}
               initialTypeId={node.data.typeId}
-              onUpdateName={name =>
-                updateNodeData(node.id, {
-                  label: name
-                })
-              }
-              onUpdateNodeType={typeId =>
-                updateNodeData(node.id, {
-                  typeId
-                })
-              }
-              className='max-w-lg flex-1'
+              onUpdateName={name => updateNodeData({ label: name })}
+              onUpdateNodeType={typeId => updateNodeData({ typeId })}
             />
           ) : (
             <p className='flex flex-1-x items-center gap-x-2 text-muted-foreground/70'>

@@ -27,10 +27,10 @@ function LayoutGraphPanes({
   const selectedNode = nodes.find(n => n.id === selectedNodeId) ?? null;
 
   const updateNodeData = useCallback(
-    (nodeId: string, updates: Partial<LayoutNode["data"]>) => {
+    (updates: Partial<LayoutNode["data"]>) => {
       setNodes(prev =>
         prev.map(node =>
-          node.id === nodeId
+          node.id === selectedNodeId
             ? {
                 ...node,
                 data: {
@@ -42,7 +42,7 @@ function LayoutGraphPanes({
         )
       );
     },
-    [setNodes]
+    [selectedNodeId, setNodes]
   );
 
   return (
