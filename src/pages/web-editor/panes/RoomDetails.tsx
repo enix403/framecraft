@@ -5,15 +5,57 @@ import { usePlan, useUpdatePlan } from "../PlanProvider";
 import { DoorOpen } from "lucide-react";
 import { RoomIdentityInput } from "@/components/RoomIdentityInput";
 import { appNodeStyle } from "@/lib/node-styles";
+import { PlanData } from "@/lib/plan";
+import { useSettings } from "../world2d/state/settings";
+import { CELL_PHYSICAL_LENGTH, unitFactor } from "@/lib/units";
+
+function getLargestRect(room: PlanData["rooms"][number]) {
+  let largestRectIndex = -1;
+  let largestArea = -1;
+
+  for (let i = 0; i < room.rects.length; ++i) {
+    const [_row, _col, width, height] = room.rects[i];
+    let area = width * height;
+
+    if (area > largestArea) {
+      largestArea = area;
+      largestRectIndex = i;
+    }
+  }
+
+  // let [row, col, width, height] = room.rects[largestRectIndex];
+  return room.rects[largestRectIndex];
+}
+
+function useRoomSize(room: PlanData["rooms"][number] | null) {
+  const { unit } = useSettings();
+
+  let length = 1;
+  let width = 1;
+
+  if (room) {
+    const [, , rectW, rectH] = getLargestRect(room);
+    const factor = CELL_PHYSICAL_LENGTH * (unitFactor[unit] || 1);
+
+    length = Math.round(rectH * factor);
+    width = Math.round(rectW * factor);
+  }
+
+  return [length, width];
+}
 
 export function RoomDetails() {
   const plan = usePlan();
   const updatePlan = useUpdatePlan();
+  const { unit } = useSettings();
 
   const [selectedObj] = useSelectedObject();
 
   const room = selectedObj ? plan.rooms[selectedObj.index] : null;
   const style = room ? appNodeStyle[room.typeId] : null;
+
+  const [length, width] = useRoomSize(room);
+  const area = length * width;
 
   return (
     <div className='h-full p-4'>
@@ -49,9 +91,9 @@ export function RoomDetails() {
             fillColor={style!.mapRectColor}
           />
 
-          <Stat label='Length' value='32 ft.' />
-          <Stat label='Width' value='26 ft.' />
-          <Stat label='Area' value='832 ft. sq' />
+          <Stat label='Length' value={`${length} ${unit}.`} />
+          <Stat label='Width' value={`${width} ${unit}.`} />
+          <Stat label='Area' value={`${area} ${unit}. sq`} />
         </>
       ) : (
         <div className='flex h-full max-h-[34rem] flex-col items-center justify-center px-3'>
