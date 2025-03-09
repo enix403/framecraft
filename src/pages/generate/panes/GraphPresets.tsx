@@ -191,4 +191,6 @@ const presets: PresetData[] = [
       [4, 7]
     ]
   }
-].reverse();
+];
+
+presets.reverse();
