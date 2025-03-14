@@ -21,6 +21,8 @@ import { useLocation } from "react-router";
 import { LayoutNode } from "@/components/layout-editor/LayoutNode";
 import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 
+import { World3DPane } from "./world3d/World3DPane";
+
 function LayoutViewPane() {
   const { state } = useLocation();
 
@@ -53,6 +55,8 @@ function CentralPane() {
     return <LayoutViewPane />;
   } else if (activeTab === "2d") {
     return <World2DPane />;
+  } else if (activeTab === "3d") {
+    return <World3DPane />
   }
 
   return null;
