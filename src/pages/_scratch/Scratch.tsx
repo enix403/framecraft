@@ -148,7 +148,8 @@ function build3DModel(plan) {
   } else {
     floorGeometry = new THREE.PlaneGeometry(1, 1);
   }
-  const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, side: THREE.DoubleSide });
+  // const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, side: THREE.DoubleSide });
+  const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xe3bf9d, side: THREE.DoubleSide });
   const floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
   // Rotate floor: use -Math.PI/2 to have it lie on the XZ plane.
   floorMesh.rotation.x = +Math.PI / 2;
@@ -163,7 +164,8 @@ function build3DModel(plan) {
     } else {
       geometry = buildWallGeometry(wall, plan.doors);
     }
-    const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xa0522d });
+    // const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xa0522d });
+    const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xFD7A5F });
     const mesh = new THREE.Mesh(geometry, wallMaterial);
     // For both wall types, the plan's (col, row) maps to (x, z).
     const posX = wall.col * CELL_SIZE;
@@ -186,12 +188,15 @@ function build3DModel(plan) {
 
 const model = build3DModel(getInitialPlan());
 
+// #8BB1B4
+
 export function Scratch() {
   // Memoize the model so it only rebuilds when the plan changes.
 
+  // <color attach='background' args={["#202020"]} />
   return (
     <Canvas camera={{ position: [-10, 40, 5], near: 0.1, far: 100 }}>
-      <color attach='background' args={["#202020"]} />
+      <color attach='background' args={["#b3b48b"]} />
 
       <ambientLight intensity={0.5} />
       {/* <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow /> */}
