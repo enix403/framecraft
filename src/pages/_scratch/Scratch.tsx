@@ -1,50 +1,37 @@
-// @dwats-nocheck
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Bounds, Stage } from "@react-three/drei";
+import * as THREE from "three";
 
-import { ResponsiveNetworkCanvas } from "@nivo/network";
-import { serverIdToNodeType } from "@/lib/nodes";
-import { appNodeStyle } from "@/lib/node-styles";
+function MeshViewer({ meshGeometry }: { meshGeometry?: THREE.BufferGeometry }) {
+  const defaultGeometry = new THREE.BoxGeometry(1, 1, 1);
+  const geometry = meshGeometry || defaultGeometry;
 
-const demoNodeTypes = [0, 1, 2, 2, 2, 3, 3, 3, 4, 14];
-const demoEdges = [
-  [0, 1],
-  [0, 2],
-  [0, 3],
-  [0, 4],
-  [0, 9],
-  [8, 4],
-  [2, 5],
-  [3, 6],
-  [4, 7]
-] as [number, number][];
+  return (
+    <Canvas camera={{ position: [3, 3, 3], near: 0.1, far: 100 }}>
+      <color attach='background' args={["#202020"]} />
 
-const data = {
-  nodes: demoNodeTypes.map((n, index) => ({
-    id: index,
-    color: appNodeStyle[serverIdToNodeType[n].id].iconColor
-  })),
-  links: demoEdges.map(([a, b]) => ({
-    source: a,
-    target: b
-  }))
-};
+      {/* Enhanced Lighting */}
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
+      <directionalLight position={[-5, -5, -5]} intensity={0.8} />
 
-const MyResponsiveNetworkCanvas = ({ data }: { data: any }) => (
-  <ResponsiveNetworkCanvas
-    data={data}
-    isInteractive={false}
-    centeringStrength={0.9}
-    animate={false}
-    // @ts-ignore
-    nodeColor={n => n.color}
-    nodeBorderWidth={1}
-    linkThickness={2}
-  />
-);
+      <OrbitControls enableDamping={true} />
+      <Bounds fit clip observe margin={2}>
+        <mesh geometry={geometry}>
+          {/* Phong Material for better shading */}
+          <meshPhongMaterial color='lightblue' shininess={100} />
+        </mesh>
+
+        {/* Outline Effect for Better Visibility */}
+        <lineSegments>
+          <edgesGeometry attach='geometry' args={[geometry]} />
+          <lineBasicMaterial attach='material' color='black' linewidth={1} />
+        </lineSegments>
+      </Bounds>
+    </Canvas>
+  );
+}
 
 export function Scratch() {
-  return (
-    <button className='h-[12rem] w-[12rem] rounded-2xl bg-indigo-50 tc hover:bg-indigo-100'>
-      <MyResponsiveNetworkCanvas data={data} />
-    </button>
-  );
+  return <MeshViewer />;
 }
