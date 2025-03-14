@@ -15,34 +15,42 @@ const WALL_HEIGHT = 50;
 function buildWallGeometry(wall, allDoors) {
   const { row, col, length, direction, width } = wall;
   const T = width * CELL_SIZE; // wall thickness
-  let segments = [];
+  let segments: [number, number][] = [];
 
   // Filter doors for this wall.
   let wallDoors;
   if (direction === "h") {
-    wallDoors = allDoors.filter((door) =>
-      door.direction === "h" && door.row === row && door.col >= col && door.col < col + length
+    wallDoors = allDoors.filter(
+      door =>
+        door.direction === "h" &&
+        door.row === row &&
+        door.col >= col &&
+        door.col < col + length
     );
   } else {
-    wallDoors = allDoors.filter((door) =>
-      door.direction === "v" && door.col === col && door.row >= row && door.row < row + length
+    wallDoors = allDoors.filter(
+      door =>
+        door.direction === "v" &&
+        door.col === col &&
+        door.row >= row &&
+        door.row < row + length
     );
   }
 
   // For each wall, we create segments along its length that are not occupied by a door.
   // We'll work in local coordinates along the wall’s main axis.
   const totalLength = length * CELL_SIZE; // total wall length in pixels
-  let doorIntervals = [];
+  let doorIntervals: [number, number][] = [];
   if (direction === "h") {
     // For horizontal walls, local X coordinate.
-    doorIntervals = wallDoors.map((door) => {
+    doorIntervals = wallDoors.map(door => {
       const dStart = (door.col - col) * CELL_SIZE;
       const dEnd = dStart + door.length * CELL_SIZE;
       return [dStart, dEnd];
     });
   } else {
     // For vertical walls, local Z coordinate.
-    doorIntervals = wallDoors.map((door) => {
+    doorIntervals = wallDoors.map(door => {
       const dStart = (door.row - row) * CELL_SIZE;
       const dEnd = dStart + door.length * CELL_SIZE;
       return [dStart, dEnd];
@@ -63,7 +71,7 @@ function buildWallGeometry(wall, allDoors) {
   }
 
   // For each segment, create a box geometry.
-  let segmentGeometries = [];
+  let segmentGeometries: THREE.BoxGeometry[] = [];
   if (direction === "h") {
     // Horizontal wall: extends along X.
     segments.forEach(([s, e]) => {
@@ -95,22 +103,34 @@ function buildWallGeometry(wall, allDoors) {
 
 function build3DModel(plan) {
   // STEP 1: Build the floor mesh (using previous approach).
-  const roomPolygons = [];
-  plan.rooms.forEach((room) => {
+  const roomPolygons: [number, number][][] = [];
+  plan.rooms.forEach(room => {
     room.rects.forEach(([row, col, width, height]) => {
       const x = col * CELL_SIZE;
       const y = row * CELL_SIZE;
       const w = width * CELL_SIZE;
       const h = height * CELL_SIZE;
-      roomPolygons.push([[x, y], [x + w, y], [x + w, y + h], [x, y + h]]);
+      roomPolygons.push([
+        [x, y],
+        [x + w, y],
+        [x + w, y + h],
+        [x, y + h]
+      ]);
     });
   });
-  const unioned = polygonClipping.union(...roomPolygons.map((poly) => [poly]));
-  let globalMinX = Infinity, globalMinY = Infinity, globalMaxX = -Infinity, globalMaxY = -Infinity;
-  const floorShapes = [];
+
+  // @ts-ignore
+  const unioned = polygonClipping.union(...roomPolygons.map(poly => [poly]));
+
+  let globalMinX = Infinity,
+    globalMinY = Infinity,
+    globalMaxX = -Infinity,
+    globalMaxY = -Infinity;
+
+  const floorShapes: THREE.Shape[] = [];
   if (unioned && unioned.length > 0) {
-    unioned.forEach((polygon) => {
-      polygon.forEach((ring) => {
+    unioned.forEach(polygon => {
+      polygon.forEach(ring => {
         ring.forEach(([x, y]) => {
           globalMinX = Math.min(globalMinX, x);
           globalMinY = Math.min(globalMinY, y);
@@ -139,7 +159,9 @@ function build3DModel(plan) {
       floorShapes.push(shape);
     });
   }
-  const floorGeometries = floorShapes.map((shape) => new THREE.ShapeGeometry(shape));
+  const floorGeometries = floorShapes.map(
+    shape => new THREE.ShapeGeometry(shape)
+  );
   let floorGeometry;
   if (floorGeometries.length === 1) {
     floorGeometry = floorGeometries[0];
@@ -149,7 +171,10 @@ function build3DModel(plan) {
     floorGeometry = new THREE.PlaneGeometry(1, 1);
   }
   // const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, side: THREE.DoubleSide });
-  const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xe3bf9d, side: THREE.DoubleSide });
+  const floorMaterial = new THREE.MeshStandardMaterial({
+    color: 0xe3bf9d,
+    side: THREE.DoubleSide
+  });
   const floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
   // Rotate floor: use -Math.PI/2 to have it lie on the XZ plane.
   floorMesh.rotation.x = +Math.PI / 2;
@@ -157,7 +182,7 @@ function build3DModel(plan) {
   floorMesh.position.y = -0.1;
 
   // STEP 2: Build wall meshes using our segmentation method.
-  const wallMeshes = plan.walls.map((wall) => {
+  const wallMeshes = plan.walls.map(wall => {
     let geometry;
     if (wall.direction === "h") {
       geometry = buildWallGeometry(wall, plan.doors);
@@ -165,7 +190,7 @@ function build3DModel(plan) {
       geometry = buildWallGeometry(wall, plan.doors);
     }
     // const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xa0522d });
-    const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xFD7A5F });
+    const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xfd7a5f });
     const mesh = new THREE.Mesh(geometry, wallMaterial);
     // For both wall types, the plan's (col, row) maps to (x, z).
     const posX = wall.col * CELL_SIZE;
@@ -179,7 +204,7 @@ function build3DModel(plan) {
   const centerY = (globalMinY + globalMaxY) / 2;
   const group = new THREE.Group();
   group.add(floorMesh);
-  wallMeshes.forEach((mesh) => group.add(mesh));
+  wallMeshes.forEach(mesh => group.add(mesh));
   group.position.set(-centerX, 0, -centerY);
   return group;
 }
@@ -199,8 +224,6 @@ export function Scratch() {
       <color attach='background' args={["#b3b48b"]} />
 
       <ambientLight intensity={0.5} />
-      {/* <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow /> */}
-      {/* <directionalLight position={[-5, -5, -5]} intensity={0.8} /> */}
       <directionalLight position={[100, 150, 100]} intensity={0.8} />
       <directionalLight position={[100, -150, 100]} intensity={0.8} />
 
