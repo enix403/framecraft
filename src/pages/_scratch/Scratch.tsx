@@ -1,50 +1,116 @@
-// ThreeDFloorPlan.jsx
-import React, { useMemo } from "react";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment, Bounds } from "@react-three/drei";
 import polygonClipping from "polygon-clipping";
-// For merging geometries, we use BufferGeometryUtils from three/examples
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 import { getInitialPlan } from "@/lib/demo/initialPlan";
 
-// Assume same CELL_SIZE used in your 2D plan
+/* =============================================== */
+
+// Constants
 const CELL_SIZE = 5;
 const WALL_HEIGHT = 50;
 
+// Helper: Build a wall geometry with door openings by splitting it into segments.
+function buildWallGeometry(wall, allDoors) {
+  const { row, col, length, direction, width } = wall;
+  const T = width * CELL_SIZE; // wall thickness
+  let segments = [];
+
+  // Filter doors for this wall.
+  let wallDoors;
+  if (direction === "h") {
+    wallDoors = allDoors.filter((door) =>
+      door.direction === "h" && door.row === row && door.col >= col && door.col < col + length
+    );
+  } else {
+    wallDoors = allDoors.filter((door) =>
+      door.direction === "v" && door.col === col && door.row >= row && door.row < row + length
+    );
+  }
+
+  // For each wall, we create segments along its length that are not occupied by a door.
+  // We'll work in local coordinates along the wall’s main axis.
+  const totalLength = length * CELL_SIZE; // total wall length in pixels
+  let doorIntervals = [];
+  if (direction === "h") {
+    // For horizontal walls, local X coordinate.
+    doorIntervals = wallDoors.map((door) => {
+      const dStart = (door.col - col) * CELL_SIZE;
+      const dEnd = dStart + door.length * CELL_SIZE;
+      return [dStart, dEnd];
+    });
+  } else {
+    // For vertical walls, local Z coordinate.
+    doorIntervals = wallDoors.map((door) => {
+      const dStart = (door.row - row) * CELL_SIZE;
+      const dEnd = dStart + door.length * CELL_SIZE;
+      return [dStart, dEnd];
+    });
+  }
+  // Sort door intervals by starting coordinate.
+  doorIntervals.sort((a, b) => a[0] - b[0]);
+
+  let currentStart = 0;
+  doorIntervals.forEach(([dStart, dEnd]) => {
+    if (dStart > currentStart) {
+      segments.push([currentStart, dStart]);
+    }
+    currentStart = Math.max(currentStart, dEnd);
+  });
+  if (currentStart < totalLength) {
+    segments.push([currentStart, totalLength]);
+  }
+
+  // For each segment, create a box geometry.
+  let segmentGeometries = [];
+  if (direction === "h") {
+    // Horizontal wall: extends along X.
+    segments.forEach(([s, e]) => {
+      const segLength = e - s;
+      if (segLength <= 0) return;
+      // Create a box with dimensions: (segLength, WALL_HEIGHT, T)
+      const geom = new THREE.BoxGeometry(segLength, WALL_HEIGHT, T);
+      // Translate the geometry so its center is at:
+      // x: (s + segLength/2), y: WALL_HEIGHT/2, z: T/2.
+      geom.translate(s + segLength / 2, WALL_HEIGHT / 2, T / 2);
+      segmentGeometries.push(geom);
+    });
+  } else {
+    // Vertical wall: extends along Z.
+    segments.forEach(([s, e]) => {
+      const segLength = e - s;
+      if (segLength <= 0) return;
+      // Create a box with dimensions: (T, WALL_HEIGHT, segLength)
+      const geom = new THREE.BoxGeometry(T, WALL_HEIGHT, segLength);
+      // Translate so its center is at: x: T/2, y: WALL_HEIGHT/2, z: (s + segLength/2)
+      geom.translate(T / 2, WALL_HEIGHT / 2, s + segLength / 2);
+      segmentGeometries.push(geom);
+    });
+  }
+
+  // Merge all segments into one geometry.
+  return BufferGeometryUtils.mergeGeometries(segmentGeometries, true);
+}
+
 function build3DModel(plan) {
-  // STEP 1: Build floor geometry from the union of all room rects
-  const roomPolygons: any[] = [];
-  plan.rooms.forEach(room => {
+  // STEP 1: Build the floor mesh (using previous approach).
+  const roomPolygons = [];
+  plan.rooms.forEach((room) => {
     room.rects.forEach(([row, col, width, height]) => {
       const x = col * CELL_SIZE;
       const y = row * CELL_SIZE;
       const w = width * CELL_SIZE;
       const h = height * CELL_SIZE;
-      // Define a rectangle polygon (as a closed ring).
-      roomPolygons.push([
-        [x, y],
-        [x + w, y],
-        [x + w, y + h],
-        [x, y + h]
-      ]);
+      roomPolygons.push([[x, y], [x + w, y], [x + w, y + h], [x, y + h]]);
     });
   });
-
-  // Wrap each room polygon in an array (each polygon can have holes later)
-  // @ts-ignore
-  const unioned = polygonClipping.union(...roomPolygons.map(poly => [poly]));
-
-  // Compute overall bounding box from the unioned polygons
-  let globalMinX = Infinity,
-    globalMinY = Infinity,
-    globalMaxX = -Infinity,
-    globalMaxY = -Infinity;
-  const floorShapes: any[] = [];
+  const unioned = polygonClipping.union(...roomPolygons.map((poly) => [poly]));
+  let globalMinX = Infinity, globalMinY = Infinity, globalMaxX = -Infinity, globalMaxY = -Infinity;
+  const floorShapes = [];
   if (unioned && unioned.length > 0) {
-    unioned.forEach(polygon => {
-      // Each polygon is an array of rings
-      polygon.forEach(ring => {
+    unioned.forEach((polygon) => {
+      polygon.forEach((ring) => {
         ring.forEach(([x, y]) => {
           globalMinX = Math.min(globalMinX, x);
           globalMinY = Math.min(globalMinY, y);
@@ -52,7 +118,6 @@ function build3DModel(plan) {
           globalMaxY = Math.max(globalMaxY, y);
         });
       });
-      // Build a shape from the first ring (outer boundary)
       const shape = new THREE.Shape();
       const outerRing = polygon[0];
       outerRing.forEach(([x, y], idx) => {
@@ -60,7 +125,6 @@ function build3DModel(plan) {
         else shape.lineTo(x, y);
       });
       shape.lineTo(outerRing[0][0], outerRing[0][1]);
-      // Add holes if present
       if (polygon.length > 1) {
         for (let i = 1; i < polygon.length; i++) {
           const holePath = new THREE.Path();
@@ -75,11 +139,7 @@ function build3DModel(plan) {
       floorShapes.push(shape);
     });
   }
-
-  // Merge floor shapes into one geometry if possible
-  const floorGeometries = floorShapes.map(
-    shape => new THREE.ShapeGeometry(shape)
-  );
+  const floorGeometries = floorShapes.map((shape) => new THREE.ShapeGeometry(shape));
   let floorGeometry;
   if (floorGeometries.length === 1) {
     floorGeometry = floorGeometries[0];
@@ -88,71 +148,41 @@ function build3DModel(plan) {
   } else {
     floorGeometry = new THREE.PlaneGeometry(1, 1);
   }
-
-  const floorMaterial = new THREE.MeshStandardMaterial({
-    color: 0x808080,
-    side: THREE.DoubleSide
-  });
+  const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, side: THREE.DoubleSide });
   const floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
-  // Rotate so that the floor lies in the XZ plane.
+  // Rotate floor: use -Math.PI/2 to have it lie on the XZ plane.
   floorMesh.rotation.x = +Math.PI / 2;
-  floorMesh.position.y = -1;
+  // Slightly lower the floor.
+  floorMesh.position.y = -0.1;
 
-  // STEP 2: Create wall meshes
-  const wallMeshes = plan.walls.map(wall => {
-    const { row, col, length, direction, width } = wall;
-    // Compute starting coordinates in 2D space
-    const x = col * CELL_SIZE;
-    const y = row * CELL_SIZE;
+  // STEP 2: Build wall meshes using our segmentation method.
+  const wallMeshes = plan.walls.map((wall) => {
     let geometry;
-    if (direction === "h") {
-      // Horizontal wall: extend along X axis.
-      geometry = new THREE.BoxGeometry(
-        length * CELL_SIZE,
-        WALL_HEIGHT,
-        width * CELL_SIZE
-      );
-      // Translate geometry so its bottom-left corner aligns with (x, y)
-      geometry.translate(
-        (length * CELL_SIZE) / 2,
-        WALL_HEIGHT / 2,
-        (width * CELL_SIZE) / 2
-      );
+    if (wall.direction === "h") {
+      geometry = buildWallGeometry(wall, plan.doors);
     } else {
-      // Vertical wall: extend along Y axis (mapped to Z in 3D ground plane).
-      geometry = new THREE.BoxGeometry(
-        width * CELL_SIZE,
-        WALL_HEIGHT,
-        length * CELL_SIZE
-      );
-      geometry.translate(
-        (width * CELL_SIZE) / 2,
-        WALL_HEIGHT / 2,
-        (length * CELL_SIZE) / 2
-      );
+      geometry = buildWallGeometry(wall, plan.doors);
     }
     const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xa0522d });
     const mesh = new THREE.Mesh(geometry, wallMaterial);
-    // Place the wall. In 3D, we map plan's (col, row) to (x, z).
-    mesh.position.set(x, 0, y);
+    // For both wall types, the plan's (col, row) maps to (x, z).
+    const posX = wall.col * CELL_SIZE;
+    const posZ = wall.row * CELL_SIZE;
+    mesh.position.set(posX, 0, posZ);
     return mesh;
   });
 
-  // STEP 3: Center the entire model.
-  // Compute the center of the unioned floor bounding box.
+  // STEP 3: Center the entire model based on the floor bounding box.
   const centerX = (globalMinX + globalMaxX) / 2;
   const centerY = (globalMinY + globalMaxY) / 2;
-
-  // Create a group and add floor and walls.
   const group = new THREE.Group();
   group.add(floorMesh);
-  wallMeshes.forEach(mesh => group.add(mesh));
-
-  // Recenter the group so that its center is at (0,0,0)
+  wallMeshes.forEach((mesh) => group.add(mesh));
   group.position.set(-centerX, 0, -centerY);
-
   return group;
 }
+
+/* =============================================== */
 
 const model = build3DModel(getInitialPlan());
 
