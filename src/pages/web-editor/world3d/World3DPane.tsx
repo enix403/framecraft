@@ -23,7 +23,8 @@ const model = build3DModel(getInitialPlan());
 
 function World3DEditor() {
   return (
-    <Canvas camera={{ position: [-10, 40, 5], near: 0.1, far: 600 }}>
+    // <Canvas camera={{ position: [-10, 40, 5], near: 0.1, far: 600 }}>
+    <Canvas camera={{ position: [-2, 27, 5], near: 0.1, far: 600 }}>
       <color attach='background' args={[COLOR_SKY]} />
 
       <ambientLight intensity={0.8} />

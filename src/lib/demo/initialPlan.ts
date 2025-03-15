@@ -1,5 +1,5 @@
 import { serverIdToNodeType } from "../nodes";
-import planJsonRaw from "./planB.json";
+import planJsonRaw from "./planA.json";
 
 export type RoomRect = [
   number /* row */,
