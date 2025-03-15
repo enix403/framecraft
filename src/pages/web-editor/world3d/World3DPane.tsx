@@ -1,9 +1,17 @@
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Bounds } from "@react-three/drei";
+import {
+  OrbitControls,
+  Bounds,
+  GizmoHelper,
+  GizmoViewport,
+  GizmoViewcube,
+  Grid
+} from "@react-three/drei";
 import { getInitialPlan } from "@/lib/demo/initialPlan";
 import { build3DModel } from "./build-geometry";
 import { COLOR_SKY } from "./styles";
+import { CELL_SIZE } from "../world2d/common";
 
 /* =============================================== */
 
@@ -11,7 +19,7 @@ const model = build3DModel(getInitialPlan());
 
 export function World3DPane() {
   return (
-    <Canvas camera={{ position: [-10, 40, 5], near: 0.1, far: 100 }}>
+    <Canvas camera={{ position: [-10, 40, 5], near: 0.1, far: 600 }}>
       <color attach='background' args={[COLOR_SKY]} />
 
       <ambientLight intensity={0.8} />
@@ -21,8 +29,30 @@ export function World3DPane() {
       <directionalLight position={[0, 150, 0]} intensity={0.8} />
 
       <OrbitControls target={[0, 0, 0]} enableDamping={true} />
+
+      <GizmoHelper
+        alignment='top-right' // widget alignment within scene
+        margin={[80, 80]} // widget margins (X, Y)
+      >
+        <GizmoViewport
+          axisColors={["red", "green", "blue"]}
+          labelColor='black'
+        />
+      </GizmoHelper>
+
       <Bounds fit clip observe margin={1.2}>
         <primitive object={model} />
+        <Grid
+          infiniteGrid
+          cellSize={(CELL_SIZE * 12) / 2}
+          sectionSize={CELL_SIZE * 12}
+          fadeDistance={10000}
+          fadeStrength={4}
+          position={[0,-1,0]}
+          side={THREE.DoubleSide}
+          cellColor='#AAAAAA'
+          sectionColor='#FAFAFA'
+        />
       </Bounds>
     </Canvas>
   );
