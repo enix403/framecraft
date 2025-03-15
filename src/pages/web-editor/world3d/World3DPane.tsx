@@ -68,11 +68,12 @@ export function World3DPane() {
 
       <div
         className={clsx(
-          "absolute rounded-full",
-          "bg-[#000000] opacity-5 pointer-events-none",
-          "top-2 right-2 size-36"
+          "pointer-events-none absolute top-0 right-0",
+          "-translate-x-20 translate-y-20"
         )}
-      ></div>
+      >
+        <div className='size-36 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#000000] opacity-5'></div>
+      </div>
     </div>
   );
 }
