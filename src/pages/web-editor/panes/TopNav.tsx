@@ -11,7 +11,7 @@ import {
   Waypoints
 } from "lucide-react";
 
-export const activeTabAtom = atom<"layout" | "2d" | "3d">("3d");
+export const activeTabAtom = atom<"layout" | "2d" | "3d">("2d");
 
 export function TopNav() {
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);
