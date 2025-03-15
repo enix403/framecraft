@@ -16,6 +16,7 @@ import { CELL_SIZE } from "../world2d/common";
 import { TooltipWrapper } from "@/components/TooltipWrapper";
 import { RecenterButton } from "../world2d/controls/RecenterButton";
 import clsx from "clsx";
+import { Spinner } from "@/components/ui/spinner";
 
 /* =============================================== */
 
@@ -60,10 +61,26 @@ function World3DEditor() {
   );
 }
 
+// #DCDFE1
+// #71B601
+
+function ProgressBar() {
+  return (
+    <div className='flex flex-1 flex-col items-center justify-center px-8'>
+      <p className='mb-2 text-accent-foreground/60'>Rendering Model...</p>
+      <div className='h-1.5 w-full max-w-lg overflow-hidden rounded-[18px] border bg-[#DCDFE1]'>
+        <div className='h-full w-1/2 bg-[#71B601]'></div>
+      </div>
+    </div>
+  );
+}
+
 export function World3DPane() {
   return (
-    <div className='relative flex flex-1-fix flex-col'>
-      <div className='flex-1-fix'>
+    <div className='relative flex flex-1-fix flex-col bg-[#EEF1F3]'>
+      <ProgressBar />
+
+      {/* <div className='flex-1-fix'>
         <World3DEditor />
       </div>
 
@@ -74,7 +91,7 @@ export function World3DPane() {
         )}
       >
         <div className='size-36 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#000000] opacity-5'></div>
-      </div>
+      </div> */}
     </div>
   );
 }
