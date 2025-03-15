@@ -6,18 +6,22 @@ import {
   GizmoHelper,
   GizmoViewport,
   GizmoViewcube,
-  Grid
+  Grid,
+  Html
 } from "@react-three/drei";
 import { getInitialPlan } from "@/lib/demo/initialPlan";
 import { build3DModel } from "./build-geometry";
 import { COLOR_SKY } from "./styles";
 import { CELL_SIZE } from "../world2d/common";
+import { TooltipWrapper } from "@/components/TooltipWrapper";
+import { RecenterButton } from "../world2d/controls/RecenterButton";
+import clsx from "clsx";
 
 /* =============================================== */
 
 const model = build3DModel(getInitialPlan());
 
-export function World3DPane() {
+function World3DEditor() {
   return (
     <Canvas camera={{ position: [-10, 40, 5], near: 0.1, far: 600 }}>
       <color attach='background' args={[COLOR_SKY]} />
@@ -34,10 +38,7 @@ export function World3DPane() {
         alignment='top-right' // widget alignment within scene
         margin={[80, 80]} // widget margins (X, Y)
       >
-        <GizmoViewport
-          axisColors={["red", "green", "blue"]}
-          labelColor='black'
-        />
+        <GizmoViewport axisHeadScale={1.2} />
       </GizmoHelper>
 
       <Bounds fit clip observe margin={1.2}>
@@ -48,12 +49,30 @@ export function World3DPane() {
           sectionSize={CELL_SIZE * 12}
           fadeDistance={10000}
           fadeStrength={4}
-          position={[0,-1,0]}
+          position={[0, -1, 0]}
           side={THREE.DoubleSide}
           cellColor='#AAAAAA'
           sectionColor='#FAFAFA'
         />
       </Bounds>
     </Canvas>
+  );
+}
+
+export function World3DPane() {
+  return (
+    <div className='relative flex flex-1-fix flex-col'>
+      <div className='flex-1-fix'>
+        <World3DEditor />
+      </div>
+
+      <div
+        className={clsx(
+          "absolute rounded-full",
+          "bg-[#000000] opacity-5 pointer-events-none",
+          "top-2 right-2 size-36"
+        )}
+      ></div>
+    </div>
   );
 }
