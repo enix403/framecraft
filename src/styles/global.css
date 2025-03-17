@@ -27,6 +27,7 @@ strong {
   font-weight: 600;
 }
 
+/* ========================= */
 
 @utility tc {
   @apply transition-colors;

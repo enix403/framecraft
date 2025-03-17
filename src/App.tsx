@@ -1,23 +1,40 @@
 import "./styles/load-fonts";
 import "./styles/global.css";
 
-import { BrowserRouter, Routes, Route } from "react-router";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
+import { Providers } from "./Providers";
 
-import { Scratch } from "./pages/_scratch/Scratch";
-import { WebEditor } from "./pages/web-editor/WebEditor";
-import { GenerateDesign } from "./pages/generate/GenerateDesign";
+import { HomePage } from "./pages/home/HomePage";
+import { LoginPage } from "./pages/auth/LoginPage";
+import { CoreApp } from "./pages/app/CoreApp";
+import { useAuthState } from "./stores/auth-store";
+
+function Protect({ children }) {
+  const { token } = useAuthState();
+  if (!token) {
+    return <Navigate to='/auth/login' replace />;
+  } else {
+    return children;
+  }
+}
 
 export function App() {
   return (
-    <TooltipProvider delayDuration={0}>
+    <Providers>
       <BrowserRouter>
         <Routes>
-          <Route path='/s' element={<Scratch />} />
-          <Route path='/new' element={<GenerateDesign />} />
-          <Route path='/edit' element={<WebEditor />} />
+          <Route path='/' element={<HomePage />} />
+          <Route path='/auth/login' element={<LoginPage />} />
+          <Route
+            path='/app/*'
+            element={
+              <Protect>
+                <CoreApp />
+              </Protect>
+            }
+          />
         </Routes>
       </BrowserRouter>
-    </TooltipProvider>
+    </Providers>
   );
 }
