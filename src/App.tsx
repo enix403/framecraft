@@ -9,6 +9,7 @@ import { LoginPage } from "./pages/auth/LoginPage";
 import { CoreApp } from "./pages/app/CoreApp";
 import { useAuthState } from "./stores/auth-store";
 import { ForgetPasswordEmailSentPage, ForgetPasswordPage } from "./pages/auth/ForgetPassword";
+import { ResetPasswordCompletedPage, ResetPasswordPage } from "./pages/auth/ResetPassword";
 
 function Protect({ children }) {
   const { token } = useAuthState();
@@ -28,6 +29,8 @@ export function App() {
           <Route path='/auth/login' element={<LoginPage />} />
           <Route path='/auth/forget-password' element={<ForgetPasswordPage />} />
           <Route path='/auth/forget-password/sent' element={<ForgetPasswordEmailSentPage />} />
+          <Route path='/auth/reset-password' element={<ResetPasswordPage />} />
+          <Route path='/auth/reset-password/done' element={<ResetPasswordCompletedPage />} />
           <Route
             path='/app/*'
             element={
