@@ -15,41 +15,8 @@ import { Link, useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { useSetAuthState } from "@/stores/auth-store";
 import { useForm } from "react-hook-form";
-import { ApiReplyError, apiRoutes } from "@/lib/api-routes";
-import { memo } from "react";
-
-if (apiRoutes) {
-  let x = 1;
-}
-
-const ErrorDisplay = memo(
-  ({
-    error,
-    map = {},
-    fallbackText = "An error occured"
-  }: {
-    error: any;
-    map?: Record<string, string>;
-    fallbackText?: string;
-  }) => {
-    if (!error) return null;
-
-    let errorCode = ApiReplyError.getCode(error);
-    let errorText = fallbackText;
-    for (const code in map) {
-      if (code === errorCode) {
-        errorText = map[code];
-        break;
-      }
-    }
-
-    return (
-      <>
-        {errorText && <p className='text-sm text-destructive'>{errorText}</p>}
-      </>
-    );
-  }
-);
+import { apiRoutes } from "@/lib/api-routes";
+import { ErrorDisplay } from "@/components/ErrorDisplay";
 
 function LoginForm({
   className,
@@ -144,6 +111,7 @@ function LoginForm({
                     <a
                       href='#'
                       className='ml-auto text-xs underline-offset-4 hover:underline'
+                      tabIndex={-1}
                     >
                       Forgot your password?
                     </a>
