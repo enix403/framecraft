@@ -56,7 +56,7 @@ function CentralPane() {
   } else if (activeTab === "2d") {
     return <World2DPane />;
   } else if (activeTab === "3d") {
-    return <World3DPane />
+    return <World3DPane />;
   }
 
   return null;

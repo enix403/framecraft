@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import polygonClipping from "polygon-clipping";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
-import { COLOR_FLOOR, COLOR_WALL } from './styles';
+import { COLOR_FLOOR, COLOR_WALL } from "./styles";
 
 /* =============================================== */
 

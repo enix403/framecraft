@@ -69,7 +69,6 @@ export function World3DPane() {
 
   return (
     <div className='relative flex flex-1-fix flex-col bg-[#EEF1F3]'>
-
       {loading && (
         <div className='flex flex-1 flex-col items-center justify-center px-8'>
           <p className='mb-2 text-accent-foreground/60'>Rendering Model...</p>
@@ -78,14 +77,28 @@ export function World3DPane() {
               className='h-full bg-[#0ec57f]'
               initial={{ width: "0%" }}
               animate={{
-                width: ["0%", "30%", "30%", "42%", "42%", "60%", "60%", "70%", "70%", "80%", "80%", "100%"],
+                width: [
+                  "0%",
+                  "30%",
+                  "30%",
+                  "42%",
+                  "42%",
+                  "60%",
+                  "60%",
+                  "70%",
+                  "70%",
+                  "80%",
+                  "80%",
+                  "100%"
+                ]
               }}
               transition={{
                 duration: 2.5, // Total duration
-                times: [0, 0.2, 0.3, 0.35, 0.45, 0.55, 0.65, 0.75, 0.8, 0.85, 0.9, 1], // Pause times
-                ease: "easeInOut",
+                times: [
+                  0, 0.2, 0.3, 0.35, 0.45, 0.55, 0.65, 0.75, 0.8, 0.85, 0.9, 1
+                ], // Pause times
+                ease: "easeInOut"
               }}
-
             />
           </div>
         </div>

@@ -8,9 +8,7 @@ export function PlotDetails() {
 
       <RectPreview
         className='mb-4'
-        rectangles={[
-          { left: 0, top: 0, width: 100, height: 110 }
-        ]}
+        rectangles={[{ left: 0, top: 0, width: 100, height: 110 }]}
       />
 
       <Stat label='Length' value='110 ft.' />

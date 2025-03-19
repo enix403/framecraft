@@ -107,7 +107,11 @@ function LoginForm({
                   </div>
                   <Input id='password' type='password' />
                 </div>
-                <Button loading={loginMut.isPending} type='submit' className='w-full'>
+                <Button
+                  loading={loginMut.isPending}
+                  type='submit'
+                  className='w-full'
+                >
                   Login
                 </Button>
               </div>
