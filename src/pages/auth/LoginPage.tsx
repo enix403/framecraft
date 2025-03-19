@@ -13,9 +13,43 @@ import { Label } from "@/components/ui/label";
 import { GalleryVerticalEnd } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "@/fakeapi/fakeapi";
 import { useSetAuthState } from "@/stores/auth-store";
 import { useForm } from "react-hook-form";
+import { ApiReplyError, apiRoutes } from "@/lib/api-routes";
+import { memo } from "react";
+
+if (apiRoutes) {
+  let x = 1;
+}
+
+const ErrorDisplay = memo(
+  ({
+    error,
+    map = {},
+    fallbackText = "An error occured"
+  }: {
+    error: any;
+    map?: Record<string, string>;
+    fallbackText?: string;
+  }) => {
+    if (!error) return null;
+
+    let errorCode = ApiReplyError.getCode(error);
+    let errorText = fallbackText;
+    for (const code in map) {
+      if (code === errorCode) {
+        errorText = map[code];
+        break;
+      }
+    }
+
+    return (
+      <>
+        {errorText && <p className='text-sm text-destructive'>{errorText}</p>}
+      </>
+    );
+  }
+);
 
 function LoginForm({
   className,
@@ -26,24 +60,20 @@ function LoginForm({
   const { register, handleSubmit } = useForm();
 
   const loginMut = useMutation({
-    mutationFn: login,
-    onSuccess: ({ token }) => {
-      console.log(token);
+    mutationFn: apiRoutes.login,
+    onSuccess: ({ accessToken, user }) => {
+      console.log(accessToken, user);
       setAuthState({
-        token: token,
-        userId: "1",
-        userRole: "admin"
+        token: accessToken,
+        userId: user["_id"],
+        userRole: user["role"]
       });
       navigate("/app");
     }
   });
 
   const onSubmit = handleSubmit(values => {
-    loginMut.mutate(values as any, {
-      onSettled: (data, error) => {
-        console.log(error);
-      }
-    });
+    loginMut.mutate(values as any);
   });
 
   return (
@@ -92,6 +122,13 @@ function LoginForm({
                 </span>
               </div>
               <div className='grid gap-6'>
+                <ErrorDisplay
+                  error={loginMut.error}
+                  map={{
+                    val_err: "Please fill all the input fields",
+                    invalid_creds: "Invalid username or password"
+                  }}
+                />
                 <div className='grid gap-2'>
                   <Label htmlFor='email'>Email</Label>
                   <Input
@@ -136,10 +173,6 @@ function LoginForm({
           </form>
         </CardContent>
       </Card>
-      <div className='text-center text-xs text-balance text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary'>
-        By clicking continue, you agree to our <a href='#'>Terms of Service</a>{" "}
-        and <a href='#'>Privacy Policy</a>.
-      </div>
     </div>
   );
 }
