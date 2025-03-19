@@ -197,6 +197,8 @@ export const apiRoutes = {
   /* ========================== */
   login: payloadDecl(`/auth/login`),
   forgetPasswordInit: payloadDecl(`/auth/forget-password/init`),
+  resetPasswordCheck: payloadDecl(`/auth/forget-password/check`),
+  resetPassword: payloadDecl(`/auth/forget-password/set`),
 } as const;
 
 if (typeof window !== "undefined") {

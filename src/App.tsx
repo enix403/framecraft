@@ -29,7 +29,7 @@ export function App() {
           <Route path='/auth/login' element={<LoginPage />} />
           <Route path='/auth/forget-password' element={<ForgetPasswordPage />} />
           <Route path='/auth/forget-password/sent' element={<ForgetPasswordEmailSentPage />} />
-          <Route path='/auth/reset-password' element={<ResetPasswordPage />} />
+          <Route path='/auth/reset-password/:userId/:token' element={<ResetPasswordPage />} />
           <Route path='/auth/reset-password/done' element={<ResetPasswordCompletedPage />} />
           <Route
             path='/app/*'

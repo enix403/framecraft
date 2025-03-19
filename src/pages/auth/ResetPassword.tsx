@@ -11,87 +11,97 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { GalleryVerticalEnd } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
-import { useSetAuthState } from "@/stores/auth-store";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { apiRoutes } from "@/lib/api-routes";
 import { ErrorDisplay } from "@/components/ErrorDisplay";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { useEffect } from "react";
 
-function ResetPasswordForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+function ResetPasswordForm({ data: { userId, token, userEmail } }) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  // const resetPassMut = useMutation({
-  //   mutationFn: apiRoutes.ResetPasswordInit,
-  //   onSuccess: (data, variables, context) => {
-  //     const { email } = variables;
-  //     navigate("./sent", { state: { email } });
-  //   }
-  // });
+  const resetPassMut = useMutation({
+    mutationFn: apiRoutes.resetPassword,
+    onSuccess: (data, variables, context) => {
+      navigate("/auth/reset-password/done");
+    }
+  });
 
-  const onSubmit = handleSubmit(values => {
-    // resetPassMut.mutate(values as any);
+  const onSubmit = handleSubmit(({ password }) => {
+    resetPassMut.mutate({
+      userId,
+      token,
+      newPassword: password
+    });
   });
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader className='text-center'>
-          <CardTitle className='text-xl'>Reset Your Password</CardTitle>
-          <CardDescription>
-            Enter a new password for your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={onSubmit}>
+    <Card>
+      <CardHeader className='text-center'>
+        <CardTitle className='text-xl'>Reset Your Password</CardTitle>
+        <CardDescription>Enter a new password for your account</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={onSubmit}>
+          <div className='grid gap-6'>
             <div className='grid gap-6'>
-              <div className='grid gap-6'>
-                <ErrorDisplay
-                  // error={resetPassMut?.error}
-                  error={null}
-                  map={{
-                    val_err: "Please fill all the input fields"
-                  }}
+              <ErrorDisplay
+                error={resetPassMut?.error}
+                map={{
+                  val_err: "Please fill all the input fields"
+                }}
+              />
+              <div className='grid gap-2'>
+                <Label>Password</Label>
+                <Input
+                  type='password'
+                  placeholder='Enter password'
+                  {...register("password")}
                 />
-                <div className='grid gap-2'>
-                  <Label>Password</Label>
-                  <Input
-                    type='password'
-                    placeholder='Enter password'
-                    {...register("password")}
-                  />
-                </div>
-                <div className='grid gap-2'>
-                  <Label>Confirm Password</Label>
-                  <Input
-                    type='password'
-                    placeholder='Enter password again'
-                    {...register("confirmPassword")}
-                  />
-                </div>
-                <Button
-                  // loading={resetPassMut?.isPending}
-                  type='submit'
-                  className='w-full'
-                >
-                  Reset
-                </Button>
               </div>
+              <div className='grid gap-2'>
+                <Label>Confirm Password</Label>
+                <Input
+                  type='password'
+                  placeholder='Enter password again'
+                  {...register("confirmPassword")}
+                />
+              </div>
+              <Button
+                loading={resetPassMut?.isPending}
+                type='submit'
+                className='w-full'
+              >
+                Reset
+              </Button>
             </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
 
 export function ResetPasswordPage() {
+  const { userId, token } = useParams();
+
+  const { data, isError } = useQuery({
+    queryKey: ["resetPasswordCheck", userId, token],
+    queryFn: () => apiRoutes.resetPasswordCheck({ userId, token }),
+    staleTime: Infinity,
+    retry: false
+  });
+
+  useEffect(() => {
+    if (isError) {
+      console.log("Invalid");
+    }
+  }, [data, isError]);
+
   return (
     <div className='flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10'>
       <div className='flex w-full max-w-lg flex-col gap-6'>
@@ -104,7 +114,13 @@ export function ResetPasswordPage() {
           </div>
           FrameCraft.
         </Link>
-        <ResetPasswordForm />
+        {isError ? (
+          "Invalid link"
+        ) : data ? (
+          <ResetPasswordForm data={data} />
+        ) : (
+          "Loading..."
+        )}
       </div>
     </div>
   );
