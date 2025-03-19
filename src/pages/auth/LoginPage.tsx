@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/fakeapi/fakeapi";
 import { useSetAuthState } from "@/stores/auth-store";
+import { useForm } from "react-hook-form";
 
 function LoginForm({
   className,
@@ -22,13 +23,10 @@ function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const setAuthState = useSetAuthState();
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
 
   const loginMut = useMutation({
-    mutationFn: () =>
-      login({
-        username: "1",
-        password: "daw"
-      }),
+    mutationFn: login,
     onSuccess: ({ token }) => {
       console.log(token);
       setAuthState({
@@ -38,6 +36,14 @@ function LoginForm({
       });
       navigate("/app");
     }
+  });
+
+  const onSubmit = handleSubmit(values => {
+    loginMut.mutate(values as any, {
+      onSettled: (data, error) => {
+        console.log(error);
+      }
+    });
   });
 
   return (
@@ -50,12 +56,7 @@ function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            onSubmit={event => {
-              event.preventDefault();
-              loginMut.mutate();
-            }}
-          >
+          <form onSubmit={onSubmit}>
             <div className='grid gap-6'>
               <div className='flex flex-col gap-4'>
                 <Button variant='outline' className='w-full'>
@@ -93,19 +94,29 @@ function LoginForm({
               <div className='grid gap-6'>
                 <div className='grid gap-2'>
                   <Label htmlFor='email'>Email</Label>
-                  <Input id='email' type='email' placeholder='m@example.com' />
+                  <Input
+                    id='email'
+                    type='email'
+                    placeholder='Enter email'
+                    {...register("email")}
+                  />
                 </div>
                 <div className='grid gap-2'>
                   <div className='flex items-center'>
                     <Label htmlFor='password'>Password</Label>
                     <a
                       href='#'
-                      className='ml-auto text-sm underline-offset-4 hover:underline'
+                      className='ml-auto text-xs underline-offset-4 hover:underline'
                     >
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id='password' type='password' />
+                  <Input
+                    id='password'
+                    type='password'
+                    placeholder='Enter password'
+                    {...register("password")}
+                  />
                 </div>
                 <Button
                   loading={loginMut.isPending}
@@ -144,7 +155,7 @@ export function LoginPage() {
           <div className='flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground'>
             <GalleryVerticalEnd className='size-4' />
           </div>
-          Acme Inc.
+          FrameCraft.
         </Link>
         <LoginForm />
       </div>

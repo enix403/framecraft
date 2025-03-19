@@ -3,6 +3,8 @@ import { delay } from "@/lib/utils";
 export async function login({ username, password }) {
   await delay(2000);
 
+  throw new Error("Invalid username or password");
+
   return {
     token: "abcdef0123456789"
   };
