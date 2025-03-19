@@ -8,6 +8,7 @@ import { HomePage } from "./pages/home/HomePage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { CoreApp } from "./pages/app/CoreApp";
 import { useAuthState } from "./stores/auth-store";
+import { ForgetPasswordEmailSentPage, ForgetPasswordPage } from "./pages/auth/ForgetPassword";
 
 function Protect({ children }) {
   const { token } = useAuthState();
@@ -25,6 +26,8 @@ export function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/auth/login' element={<LoginPage />} />
+          <Route path='/auth/forget-password' element={<ForgetPasswordPage />} />
+          <Route path='/auth/forget-password/sent' element={<ForgetPasswordEmailSentPage />} />
           <Route
             path='/app/*'
             element={

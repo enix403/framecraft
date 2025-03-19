@@ -93,7 +93,7 @@ function LoginForm({
                   error={loginMut.error}
                   map={{
                     val_err: "Please fill all the input fields",
-                    invalid_creds: "Invalid username or password"
+                    invalid_creds: "Invalid email or password"
                   }}
                 />
                 <div className='grid gap-2'>
@@ -108,13 +108,13 @@ function LoginForm({
                 <div className='grid gap-2'>
                   <div className='flex items-center'>
                     <Label htmlFor='password'>Password</Label>
-                    <a
-                      href='#'
+                    <Link
+                      to='/auth/forget-password'
                       className='ml-auto text-xs underline-offset-4 hover:underline'
                       tabIndex={-1}
                     >
                       Forgot your password?
-                    </a>
+                    </Link>
                   </div>
                   <Input
                     id='password'
