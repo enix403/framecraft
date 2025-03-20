@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   AudioWaveform,
   BookOpen,
@@ -11,44 +11,44 @@ import {
   Map,
   PieChart,
   Settings2,
-  SquareTerminal,
-} from "lucide-react"
+  SquareTerminal
+} from "lucide-react";
 
-import { NavMain } from "./nav-main"
-import { NavProjects } from "./nav-projects"
-import { NavUser } from "./nav-user"
-import { TeamSwitcher } from "./team-switcher"
+import { NavMain } from "./nav-main";
+import { NavProjects } from "./nav-projects";
+import { NavUser } from "./nav-user";
+import { TeamSwitcher } from "./team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar"
+  SidebarRail
+} from "@/components/ui/sidebar";
 
 // This is sample data.
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "/avatars/shadcn.jpg"
   },
   teams: [
     {
       name: "Acme Inc",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      plan: "Enterprise"
     },
     {
       name: "Acme Corp.",
       logo: AudioWaveform,
-      plan: "Startup",
+      plan: "Startup"
     },
     {
       name: "Evil Corp.",
       logo: Command,
-      plan: "Free",
-    },
+      plan: "Free"
+    }
   ],
   navMain: [
     {
@@ -59,17 +59,17 @@ const data = {
       items: [
         {
           title: "History",
-          url: "#",
+          url: "#"
         },
         {
           title: "Starred",
-          url: "#",
+          url: "#"
         },
         {
           title: "Settings",
-          url: "#",
-        },
-      ],
+          url: "#"
+        }
+      ]
     },
     {
       title: "Models",
@@ -78,17 +78,17 @@ const data = {
       items: [
         {
           title: "Genesis",
-          url: "#",
+          url: "#"
         },
         {
           title: "Explorer",
-          url: "#",
+          url: "#"
         },
         {
           title: "Quantum",
-          url: "#",
-        },
-      ],
+          url: "#"
+        }
+      ]
     },
     {
       title: "Documentation",
@@ -97,21 +97,21 @@ const data = {
       items: [
         {
           title: "Introduction",
-          url: "#",
+          url: "#"
         },
         {
           title: "Get Started",
-          url: "#",
+          url: "#"
         },
         {
           title: "Tutorials",
-          url: "#",
+          url: "#"
         },
         {
           title: "Changelog",
-          url: "#",
-        },
-      ],
+          url: "#"
+        }
+      ]
     },
     {
       title: "Settings",
@@ -120,45 +120,45 @@ const data = {
       items: [
         {
           title: "General",
-          url: "#",
+          url: "#"
         },
         {
           title: "Team",
-          url: "#",
+          url: "#"
         },
         {
           title: "Billing",
-          url: "#",
+          url: "#"
         },
         {
           title: "Limits",
-          url: "#",
-        },
-      ],
-    },
+          url: "#"
+        }
+      ]
+    }
   ],
   projects: [
     {
       name: "Design Engineering",
       url: "#",
-      icon: Frame,
+      icon: Frame
     },
     {
       name: "Sales & Marketing",
       url: "#",
-      icon: PieChart,
+      icon: PieChart
     },
     {
       name: "Travel",
       url: "#",
-      icon: Map,
-    },
-  ],
-}
+      icon: Map
+    }
+  ]
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible='icon' {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
@@ -171,5 +171,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
