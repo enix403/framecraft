@@ -18,6 +18,7 @@ import { ErrorDisplay } from "@/components/ErrorDisplay";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { useEffect } from "react";
+import { AppTopNav } from "@/components/topnav/AppTopNav";
 
 function ResetPasswordForm({ data: { userId, token, userEmail } }) {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ function ResetPasswordForm({ data: { userId, token, userEmail } }) {
   });
 
   return (
-    <Card>
+    <Card className='max-w-md flex-1'>
       <CardHeader className='text-center'>
         <CardTitle className='text-xl'>Reset Your Password</CardTitle>
         <CardDescription>Enter a new password for your account</CardDescription>
@@ -102,24 +103,18 @@ export function ResetPasswordPage() {
   }, [data, isError]);
 
   return (
-    <div className='flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10'>
-      <div className='flex w-full max-w-lg flex-col gap-6'>
-        <Link
-          to='/'
-          className='flex items-center gap-2 self-center font-medium'
-        >
-          <div className='flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground'>
-            <GalleryVerticalEnd className='size-4' />
-          </div>
-          FrameCraft.
-        </Link>
-        {isError ? (
-          "Invalid link"
-        ) : data ? (
-          <ResetPasswordForm data={data} />
-        ) : (
-          "Loading..."
-        )}
+    <div className='flex h-full max-h-full flex-col overflow-hidden bg-muted'>
+      <AppTopNav />
+      <div className='flex flex-1-y flex-col items-stretch px-6 py-10 lg:pt-[10vh] xl:pt-[14vh] 2xl:pt-[16vh]'>
+        <div className='flex justify-center'>
+          {isError ? (
+            "Invalid link"
+          ) : data ? (
+            <ResetPasswordForm data={data} />
+          ) : (
+            "Loading..."
+          )}
+        </div>
       </div>
     </div>
   );
@@ -127,27 +122,21 @@ export function ResetPasswordPage() {
 
 export function ResetPasswordCompletedPage() {
   return (
-    <div className='flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10'>
-      <div className='flex w-full max-w-lg flex-col gap-6'>
-        <Link
-          to='/'
-          className='flex items-center gap-2 self-center font-medium'
-        >
-          <div className='flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground'>
-            <GalleryVerticalEnd className='size-4' />
-          </div>
-          FrameCraft.
-        </Link>
-        <Alert variant='default'>
-          <AlertCircle className='h-4 w-4' />
-          <AlertTitle>Email Sent</AlertTitle>
-          <AlertDescription className='max-w-full'>
-            <p>Your password has been reset.</p>
-            <Link to='/auth/login' className='font-medium text-green-600'>
-              Click here to login.
-            </Link>
-          </AlertDescription>
-        </Alert>
+    <div className='flex h-full max-h-full flex-col overflow-hidden bg-muted'>
+      <AppTopNav />
+      <div className='flex flex-1-y flex-col items-stretch px-6 py-10 lg:pt-[10vh] xl:pt-[14vh] 2xl:pt-[16vh]'>
+        <div className='flex justify-center'>
+          <Alert variant='default' className='max-w-lg flex-1'>
+            <AlertCircle className='h-4 w-4' />
+            <AlertTitle>Email Sent</AlertTitle>
+            <AlertDescription className='max-w-full'>
+              <p>Your password has been reset.</p>
+              <Link to='/auth/login' className='font-medium text-green-600'>
+                Click here to login.
+              </Link>
+            </AlertDescription>
+          </Alert>
+        </div>
       </div>
     </div>
   );

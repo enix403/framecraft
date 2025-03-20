@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,10 +9,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { GalleryVerticalEnd } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { useSetAuthState } from "@/stores/auth-store";
 import { useForm } from "react-hook-form";
 import { apiRoutes } from "@/lib/api-routes";
 import { ErrorDisplay } from "@/components/ErrorDisplay";
@@ -23,7 +20,6 @@ import { AppTopNav } from "@/components/topnav/AppTopNav";
 
 function ForgetPasswordForm({
   className,
-  ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
@@ -41,7 +37,7 @@ function ForgetPasswordForm({
   });
 
   return (
-    <Card className="max-w-sm shrink-0 flex-1">
+    <Card className='max-w-sm flex-1 shrink-0'>
       <CardHeader className='text-center'>
         <CardTitle className='text-xl'>Forgot Your Password ?</CardTitle>
         <CardDescription>
@@ -87,7 +83,7 @@ export function ForgetPasswordPage() {
     <div className='flex h-full max-h-full flex-col overflow-hidden bg-muted'>
       <AppTopNav />
       <div className='flex flex-1-y flex-col items-stretch px-6 py-10 lg:pt-[10vh] xl:pt-[14vh] 2xl:pt-[16vh]'>
-        <div className="flex justify-center">
+        <div className='flex justify-center'>
           <ForgetPasswordForm />
         </div>
       </div>
@@ -95,33 +91,26 @@ export function ForgetPasswordPage() {
   );
 }
 
-
 export function ForgetPasswordEmailSentPage() {
   const { state } = useLocation();
 
   return (
-    <div className='flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10'>
-      <div className='flex w-full max-w-xl flex-col gap-6'>
-        <Link
-          to='/'
-          className='flex items-center gap-2 self-center font-medium'
-        >
-          <div className='flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground'>
-            <GalleryVerticalEnd className='size-4' />
-          </div>
-          FrameCraft.
-        </Link>
-        <Alert variant='default'>
-          <AlertCircle className='h-4 w-4' />
-          <AlertTitle>Email Sent</AlertTitle>
-          <AlertDescription className='max-w-full'>
-            <p>
-              An email has been sent to your inbox at{" "}
-              <strong className='text-foreground'>{state?.email}</strong>
-            </p>
-            <p>Kindly check your inbox</p>
-          </AlertDescription>
-        </Alert>
+    <div className='flex h-full max-h-full flex-col overflow-hidden bg-muted'>
+      <AppTopNav />
+      <div className='flex flex-1-y flex-col items-stretch px-6 py-10 lg:pt-[10vh] xl:pt-[14vh] 2xl:pt-[16vh]'>
+        <div className='flex justify-center'>
+          <Alert variant='default' className="flex-1 max-w-lg">
+            <AlertCircle className='h-4 w-4' />
+            <AlertTitle>Email Sent</AlertTitle>
+            <AlertDescription className='max-w-full'>
+              <p>
+                An email has been sent to your inbox at{" "}
+                <strong className='text-foreground'>{state?.email}</strong>
+              </p>
+              <p>Kindly check your inbox</p>
+            </AlertDescription>
+          </Alert>
+        </div>
       </div>
     </div>
   );
