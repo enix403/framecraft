@@ -8,12 +8,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { useClearAuthState } from "@/stores/auth-store";
 
-import {
-  LogOutIcon,
-  PinIcon,
-  UserPenIcon
-} from "lucide-react";
+import { LogOutIcon, PinIcon, UserPenIcon } from "lucide-react";
+import { Link, useNavigate } from "react-router";
 
 export function AvatarDropdown() {
   return (
@@ -63,12 +61,13 @@ export function AvatarDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant='destructive'>
-          <LogOutIcon size={16} className='opacity-60' aria-hidden='true' />
-          <span>Logout</span>
+        <DropdownMenuItem asChild variant='destructive'>
+          <Link to='/auth/logout'>
+            <LogOutIcon size={16} className='opacity-60' aria-hidden='true' />
+            <span>Logout</span>
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
-
