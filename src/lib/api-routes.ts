@@ -1,13 +1,6 @@
 import ky, { HTTPError } from "ky";
 import { getAuthState } from "@/stores/auth-store";
-
-function unslashStart(str: string) {
-  return str.replace(/^\/+/, "");
-}
-
-function unslashEnd(str: string) {
-  return str.replace(/\/+$/, "");
-}
+import { unslashStart, unslashEnd } from "./utils";
 
 export const API_BASE_URL: string = "http://localhost:3001";
 

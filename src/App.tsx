@@ -6,11 +6,17 @@ import { Providers } from "./Providers";
 
 import { HomePage } from "./pages/home/HomePage";
 import { LoginPage } from "./pages/auth/LoginPage";
-import { CoreApp } from "./pages/app/CoreApp";
 import { useAuthState } from "./stores/auth-store";
-import { ForgetPasswordEmailSentPage, ForgetPasswordPage } from "./pages/auth/ForgetPassword";
-import { ResetPasswordCompletedPage, ResetPasswordPage } from "./pages/auth/ResetPassword";
+import {
+  ForgetPasswordEmailSentPage,
+  ForgetPasswordPage
+} from "./pages/auth/ForgetPassword";
+import {
+  ResetPasswordCompletedPage,
+  ResetPasswordPage
+} from "./pages/auth/ResetPassword";
 import { Scratch } from "./pages/_scratch/Scratch";
+import { CoreApp } from "./pages/app/CoreApp";
 
 function Protect({ children }) {
   const { token } = useAuthState();
@@ -25,6 +31,7 @@ export function App() {
   return (
     <Providers>
       <BrowserRouter>
+        {/* prettier-ignore */}
         <Routes>
           <Route path='/s' element={<Scratch />} />
           <Route path='/' element={<HomePage />} />
@@ -36,9 +43,9 @@ export function App() {
           <Route
             path='/app/*'
             element={
-              <Protect>
+              // <Protect>
                 <CoreApp />
-              </Protect>
+              // </Protect>
             }
           />
         </Routes>

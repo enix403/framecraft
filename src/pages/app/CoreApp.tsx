@@ -1,4 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { Route, Routes } from "react-router";
+import { DashboardPage } from "./dashboard/DashboardPage";
+
+export function CoreApp() {
+  return (
+    <Routes>
+      <Route path='/' element={<DashboardPage />} />
+    </Routes>
+  );
+}
+
+/* import { Button } from "@/components/ui/button";
 import { useClearAuthState } from "@/stores/auth-store";
 
 export function CoreApp() {
@@ -20,3 +31,4 @@ export function CoreApp() {
     </div>
   );
 }
+ */
