@@ -19,6 +19,7 @@ import { AppTopNav } from "@/components/topnav/AppTopNav";
 import { ErrorDisplay } from "@/components/ErrorDisplay";
 
 export function Scratch() {
+  return null;
   const setAuthState = useSetAuthState();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
