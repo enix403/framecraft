@@ -1,0 +1,26 @@
+import { Button } from "@/components/ui/button";
+import { AvatarDropdown } from "./AvatarDropdown";
+import { Bell, BellDot, Search } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+
+export function TopNav() {
+  return (
+    <nav className='flex items-center bg-[#1D212C] px-4 py-2.5 text-white'>
+      <h1 className='font-graph-editor text-xl tracking-tighter'>
+        <span className='font-extrabold text-[#FFF331]'>frame</span>
+        <span className='font-boldd'>craft</span>
+      </h1>
+
+      <div className='ml-auto flex items-center'>
+        <button className='mr-1.5 rounded-md bg-[#333847] p-2.5 tc hover:bg-[#272c3b]'>
+          <Search className='size-5' strokeWidth={2} />
+        </button>
+        <button className='mr-3.5 rounded-md bg-[#333847] p-2.5 tc hover:bg-[#272c3b]'>
+          <Bell className='size-5' strokeWidth={2} />
+        </button>
+
+        <AvatarDropdown />
+      </div>
+    </nav>
+  );
+}

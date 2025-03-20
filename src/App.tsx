@@ -10,6 +10,7 @@ import { CoreApp } from "./pages/app/CoreApp";
 import { useAuthState } from "./stores/auth-store";
 import { ForgetPasswordEmailSentPage, ForgetPasswordPage } from "./pages/auth/ForgetPassword";
 import { ResetPasswordCompletedPage, ResetPasswordPage } from "./pages/auth/ResetPassword";
+import { Scratch } from "./pages/_scratch/Scratch";
 
 function Protect({ children }) {
   const { token } = useAuthState();
@@ -25,6 +26,7 @@ export function App() {
     <Providers>
       <BrowserRouter>
         <Routes>
+          <Route path='/s' element={<Scratch />} />
           <Route path='/' element={<HomePage />} />
           <Route path='/auth/login' element={<LoginPage />} />
           <Route path='/auth/forget-password' element={<ForgetPasswordPage />} />
