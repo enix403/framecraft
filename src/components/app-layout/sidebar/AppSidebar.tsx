@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar";
-import { Link } from "react-router";
+import { NavLink, Link, useLocation, useMatch } from "react-router";
 import { unslashEnd } from "@/lib/utils";
 
 const items = [
@@ -25,10 +25,15 @@ type SidebarItem = (typeof items)[number];
 
 function AppSidebarItem({ item }: { item: SidebarItem }) {
   const path = unslashEnd(urlJoin("/app", item.path));
+  const isActive = useMatch(path);
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton tooltip='My Designs' asChild>
+      <SidebarMenuButton
+        isActive={Boolean(isActive)}
+        tooltip='My Designs'
+        asChild
+      >
         <Link to={path}>
           <item.Icon />
           <span>{item.label}</span>
