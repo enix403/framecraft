@@ -1,10 +1,10 @@
-import { AppSidebar } from "./sidebar/app-sidebar";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger
 } from "@/components/ui/sidebar";
 import { TopNav } from "./topnav/TopNav";
+import { AppSidebar } from "./sidebar/AppSidebar";
 
 export function Scratch() {
   return (
@@ -16,7 +16,7 @@ export function Scratch() {
           <header className='flex shrink-0 items-center px-4 py-4'>
             <SidebarTrigger className='mr-3 -ml-1' />
             <h2 className='text-xl font-bold tracking-tight'>
-              Generate a new Design
+              My Designs
             </h2>
           </header>
         </SidebarInset>
