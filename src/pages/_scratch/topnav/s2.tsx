@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { TopNav } from "./topnav/TopNav";
+import { TopNav } from "./TopNav";
 
 function Sidebar() {
   return (
