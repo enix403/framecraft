@@ -5,6 +5,8 @@ import {
 } from "@/components/ui/sidebar";
 import { TopNav } from "./topnav/TopNav";
 import { AppSidebar } from "./sidebar/AppSidebar";
+import { Button } from "@/components/ui/button";
+import { CircleFadingPlus } from "lucide-react";
 
 export function Scratch() {
   return (
@@ -19,6 +21,12 @@ export function Scratch() {
               My Designs
             </h2>
           </header>
+          <div className="flex-1 flex justify-center items-center">
+            <Button>
+              <CircleFadingPlus />
+              Generate New Design
+            </Button>
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </div>
