@@ -18,6 +18,16 @@ const items = [
     path: "/",
     label: "My Designs",
     Icon: Frame
+  },
+  {
+    path: "/new-design",
+    label: "Generate Design",
+    Icon: Frame
+  },
+  {
+    path: "/edit-design",
+    label: "View Design",
+    Icon: Frame
   }
 ];
 

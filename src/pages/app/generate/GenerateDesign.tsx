@@ -11,8 +11,9 @@ import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 import { LayoutGraphEditor } from "@/components/layout-editor/LayoutGraphEditor";
 import { StateSet } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { MousePointerClick } from "lucide-react";
-import { useNavigate } from "react-router";
+import { ArrowLeft, MousePointerClick } from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import { AppTopNav } from "@/components/topnav/AppTopNav";
 
 function LayoutGraphPanes({
   nodes,
@@ -69,9 +70,10 @@ function LayoutGraphPanes({
           <NodeDragSource />
         </div>
       </div>
-      <div className='shrink-0 border-t-2'>
+      {/* TODO: make it collapsible */}
+      {/* <div className='shrink-0 border-t-2'>
         <GraphPresets />
-      </div>
+      </div> */}
     </>
   );
 }
@@ -85,35 +87,47 @@ export function GenerateDesign() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className='flex h-full max-h-full overflow-hidden'>
-      <div className='flex w-sm flex-col border-r-2 p-4'>
-        <GeneralSettings />
-        <Button
-          size='lg'
-          className='mt-auto atext-ls'
-          loading={loading}
-          disabled={loading}
-          onClick={() => {
-            setLoading(true);
-            setTimeout(() => {
-              let layoutData = { nodes, edges };
-              navigate("/edit", {
-                state: { layoutData }
-              });
-            }, 3500);
-          }}
-        >
-          Generate
-          <MousePointerClick />
-        </Button>
-      </div>
-      <div className='flex flex-1-fix flex-col'>
-        <LayoutGraphPanes
-          nodes={nodes}
-          setNodes={setNodes}
-          edges={edges}
-          setEdges={setEdges}
-        />
+    <div className='flex h-full max-h-full flex-col overflow-hidden'>
+      <AppTopNav />
+      <div className='flex flex-1-fix'>
+        <div className='flex w-[22rem] flex-col gap-y-3 border-r-2 p-4'>
+          <Button size='lg' variant='outline' disabled={loading} asChild>
+            <Link to='/app'>
+              <ArrowLeft />
+              Back
+            </Link>
+          </Button>
+
+          <div className='flex-1-y'>
+            <GeneralSettings />
+          </div>
+          <Button
+            size='lg'
+            className='mt-auto atext-ls'
+            loading={loading}
+            disabled={loading}
+            onClick={() => {
+              setLoading(true);
+              setTimeout(() => {
+                let layoutData = { nodes, edges };
+                navigate("/edit", {
+                  state: { layoutData }
+                });
+              }, 3500);
+            }}
+          >
+            Generate
+            <MousePointerClick />
+          </Button>
+        </div>
+        <div className='flex flex-1-fix flex-col'>
+          <LayoutGraphPanes
+            nodes={nodes}
+            setNodes={setNodes}
+            edges={edges}
+            setEdges={setEdges}
+          />
+        </div>
       </div>
     </div>
   );
