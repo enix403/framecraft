@@ -45,9 +45,9 @@ export function App() {
           <Route
             path='/app/*'
             element={
-              // <Protect>
+              <Protect>
                 <CoreApp />
-              // </Protect>
+              </Protect>
             }
           />
         </Routes>
