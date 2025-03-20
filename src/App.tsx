@@ -35,11 +35,13 @@ export function App() {
         <Routes>
           <Route path='/s' element={<Scratch />} />
           <Route path='/' element={<HomePage />} />
-          <Route path='/auth/login' element={<LoginPage />} />
-          <Route path='/auth/forget-password' element={<ForgetPasswordPage />} />
-          <Route path='/auth/forget-password/sent' element={<ForgetPasswordEmailSentPage />} />
-          <Route path='/auth/reset-password/:userId/:token' element={<ResetPasswordPage />} />
-          <Route path='/auth/reset-password/done' element={<ResetPasswordCompletedPage />} />
+          <Route path="/auth">
+            <Route path='login' element={<LoginPage />} />
+            <Route path='forget-password' element={<ForgetPasswordPage />} />
+            <Route path='forget-password/sent' element={<ForgetPasswordEmailSentPage />} />
+            <Route path='reset-password/:userId/:token' element={<ResetPasswordPage />} />
+            <Route path='reset-password/done' element={<ResetPasswordCompletedPage />} />
+          </Route>
           <Route
             path='/app/*'
             element={

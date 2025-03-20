@@ -18,16 +18,6 @@ const items = [
     path: "/",
     label: "My Designs",
     Icon: Frame
-  },
-  {
-    path: "/new-design",
-    label: "Generate Design",
-    Icon: Frame
-  },
-  {
-    path: "/edit-design",
-    label: "View Design",
-    Icon: Frame
   }
 ];
 
@@ -64,14 +54,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             {items.map(item => (
               <AppSidebarItem key={item.path} item={item} />
             ))}
-            {/*  <SidebarMenuItem>
-              <SidebarMenuButton tooltip='My Designs' asChild>
-                <a href='#'>
-                  <Frame />
-                  <span>My Designs</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem> */}
           </SidebarMenu>
         </SidebarGroup>
         {/*  */}

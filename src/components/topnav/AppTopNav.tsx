@@ -1,18 +1,17 @@
 import { AvatarDropdown } from "./AvatarDropdown";
-import {
-  Bell,
-  MessageSquareMore,
-  Search
-} from "lucide-react";
+import { Bell, MessageSquareMore, Search } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Link } from "react-router";
 
 export function AppTopNav() {
   return (
-    <nav className='flex items-center bg-[#1D212C] px-4 py-2.5 shrink-0 text-white'>
-      <h1 className='font-graph-editor text-xl tracking-tighter'>
-        <span className='font-extrabold text-[#FFF331]'>frame</span>
-        <span className=''>craft</span>
-      </h1>
+    <nav className='flex shrink-0 items-center bg-[#1D212C] px-4 py-2.5 text-white'>
+      <Link to='/app'>
+        <h1 className='font-graph-editor text-xl tracking-tighter'>
+          <span className='font-extrabold text-[#FFF331]'>frame</span>
+          <span className=''>craft</span>
+        </h1>
+      </Link>
 
       <div className='ml-auto flex items-center'>
         <button className='rounded-md bg-[#333847] p-2.5 tc hover:bg-[#272c3b]'>
