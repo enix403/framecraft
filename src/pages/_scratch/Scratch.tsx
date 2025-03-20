@@ -1,11 +1,10 @@
-import { AppSidebar } from "./vc/app-sidebar";
+import { AppSidebar } from "./sidebar/app-sidebar";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger
 } from "@/components/ui/sidebar";
 import { TopNav } from "./topnav/TopNav";
-import { repeatNode } from "@/lib/utils";
 
 export function Scratch() {
   return (
