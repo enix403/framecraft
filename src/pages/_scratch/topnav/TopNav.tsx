@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 
 export function TopNav() {
   return (
-    <nav className='flex items-center bg-[#1D212C] px-4 py-2.5 text-white'>
+    <nav className='flex items-center bg-[#1D212C] px-4 py-2.5 h-(--header-height) shrink-0 text-white'>
       <h1 className='font-graph-editor text-xl tracking-tighter'>
         <span className='font-extrabold text-[#FFF331]'>frame</span>
         <span className=''>craft</span>

@@ -156,6 +156,7 @@ const data = {
   ]
 };
 
+// className="top-(--header-height)"
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible='icon' {...props}>
@@ -166,10 +167,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <NavUser user={data.user} />
-      </SidebarFooter>
-      <SidebarRail />
+      </SidebarFooter> */}
     </Sidebar>
   );
 }
