@@ -4,7 +4,7 @@ import {
   ResizablePanelGroup
 } from "@/components/ui/resizable";
 
-import { getInitialPlan, makeInitialPlan } from "@/lib/demo/initialPlan";
+import { makeInitialPlan } from "@/lib/demo/initialPlan";
 import { PlanContext } from "./PlanProvider";
 
 import { TopNav, activeTabAtom } from "./panes/TopNav";

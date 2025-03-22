@@ -7,20 +7,22 @@ import {
   GizmoViewport,
   Grid
 } from "@react-three/drei";
-import { getInitialPlan } from "@/lib/demo/initialPlan";
 import { build3DModel } from "./build-geometry";
 import { COLOR_SKY } from "./styles";
 import { CELL_SIZE } from "../world2d/common";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import clsx from "clsx";
+import { usePlan } from "../PlanProvider";
 
 /* =============================================== */
 
-const model = build3DModel(getInitialPlan());
-
 function World3DEditor() {
+  const plan = usePlan();
+
+  const model = useMemo(() => build3DModel(plan), [plan]);
+
   return (
     // <Canvas camera={{ position: [-10, 40, 5], near: 0.1, far: 600 }}>
     <Canvas camera={{ position: [-2, 27, 5], near: 0.1, far: 600 }}>
