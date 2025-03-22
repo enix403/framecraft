@@ -4,7 +4,7 @@ import {
   ResizablePanelGroup
 } from "@/components/ui/resizable";
 
-import { getInitialPlan } from "@/lib/demo/initialPlan";
+import { getInitialPlan, makeInitialPlan } from "@/lib/demo/initialPlan";
 import { PlanContext } from "./PlanProvider";
 
 import { TopNav, activeTabAtom } from "./panes/TopNav";
@@ -13,15 +13,17 @@ import { PlotDetails } from "./panes/PlotDetails";
 import { RoomDetails } from "./panes/RoomDetails";
 
 import { World2DPane } from "./world2d/World2DPane";
-import { useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { PlanData } from "@/lib/plan";
 import { useAtomValue } from "jotai";
 import { LayoutGraphEditor } from "@/components/layout-editor/LayoutGraphEditor";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { LayoutNode } from "@/components/layout-editor/LayoutNode";
 import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 
 import { World3DPane } from "./world3d/World3DPane";
+import { skipToken, useQueries, useQuery } from "@tanstack/react-query";
+import { apiRoutes } from "@/lib/api-routes";
 
 function LayoutViewPane() {
   const { state } = useLocation();
@@ -62,8 +64,8 @@ function CentralPane() {
   return null;
 }
 
-export function WebEditor() {
-  const [plan, setPlan] = useState<PlanData | null>(getInitialPlan);
+const WebEditorImpl = memo(({ initPlan }: { initPlan: any }) => {
+  const [plan, setPlan] = useState<PlanData | null>(initPlan);
 
   return (
     <PlanContext.Provider value={{ plan, setPlan }}>
@@ -93,4 +95,23 @@ export function WebEditor() {
       </div>
     </PlanContext.Provider>
   );
+});
+
+export function WebEditor() {
+  const { planId } = useParams();
+
+  const { data: serverPlan, isError } = useQuery({
+    queryKey: ["plan", planId],
+    queryFn: () => (planId ? apiRoutes.getPlan(planId) : skipToken),
+    staleTime: Infinity
+  });
+
+  const plan = useMemo(
+    () => (serverPlan ? makeInitialPlan(serverPlan.canvas.canvasData) : null),
+    [serverPlan]
+  );
+
+  if (!isError && plan) return <WebEditorImpl initPlan={plan} />;
+
+  return "Loading...";
 }

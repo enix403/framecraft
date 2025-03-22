@@ -8,8 +8,8 @@ export type RoomRect = [
   number /* height */
 ];
 
-export function getInitialPlan() {
-  const { shape, rooms, walls, doors, scale } = planJsonRaw;
+export function makeInitialPlan(canvasData: typeof planJsonRaw) {
+  const { shape, rooms, walls, doors, scale } = canvasData;
 
   const [canvasRows, canvasCols] = shape;
   const [scaleRows, scaleCols] = scale;
@@ -63,4 +63,8 @@ export function getInitialPlan() {
     doors: doorsN,
     rooms: roomsN
   };
+}
+
+export function getInitialPlan() {
+  return makeInitialPlan(planJsonRaw);
 }
