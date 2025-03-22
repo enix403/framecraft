@@ -192,6 +192,14 @@ export const apiRoutes = {
   forgetPasswordInit: payloadDecl(`/auth/forget-password/init`),
   resetPasswordCheck: payloadDecl(`/auth/forget-password/check`),
   resetPassword: payloadDecl(`/auth/forget-password/set`),
+
+  /* ========================== */
+  /* ========== Plan ========== */
+  /* ========================== */
+  generatePlan: payloadDecl(`/plan/generate`),
+  getPlan: jsonDecl((planId: string) => `/plan/${planId}`),
+  updatePlan: payloadDecl((planId: string) => `/plan/${planId}`),
+  updatePlanCanvas: payloadDecl((planId: string) => `/plan/canvas/${planId}`),
 } as const;
 
 if (typeof window !== "undefined") {

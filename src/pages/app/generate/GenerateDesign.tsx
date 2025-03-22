@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, MousePointerClick } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { AppTopNav } from "@/components/topnav/AppTopNav";
+import { generateDesignFromServer } from "./impl";
 
 function LayoutGraphPanes({
   nodes,
@@ -78,6 +79,7 @@ function LayoutGraphPanes({
   );
 }
 
+
 export function GenerateDesign() {
   const navigate = useNavigate();
 
@@ -107,13 +109,14 @@ export function GenerateDesign() {
             loading={loading}
             disabled={loading}
             onClick={() => {
-              setLoading(true);
+              generateDesignFromServer(nodes, edges);
+              /* setLoading(true);
               setTimeout(() => {
                 let layoutData = { nodes, edges };
                 navigate("/edit", {
                   state: { layoutData }
                 });
-              }, 3500);
+              }, 3500); */
             }}
           >
             Generate

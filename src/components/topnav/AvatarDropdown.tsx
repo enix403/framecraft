@@ -53,11 +53,7 @@ export function AvatarDropdown() {
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <PinIcon size={16} className='opacity-60' aria-hidden='true' />
-            <span>Option 1</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <UserPenIcon size={16} className='opacity-60' aria-hidden='true' />
-            <span>Option 2</span>
+            <span>Profile</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
