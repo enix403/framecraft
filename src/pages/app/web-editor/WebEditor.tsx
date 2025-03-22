@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/resizable";
 
 import { makeInitialPlan } from "@/lib/demo/initialPlan";
-import { PlanContext } from "./PlanProvider";
+import { PlanContext, usePlan } from "./PlanProvider";
 
 import { TopNav, activeTabAtom } from "./panes/TopNav";
 import { RoomList } from "./panes/RoomList";
@@ -24,6 +24,61 @@ import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 import { World3DPane } from "./world3d/World3DPane";
 import { skipToken, useQueries, useQuery } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
+import { serverIdToNodeType } from "@/lib/nodes";
+
+/*
+
+const initialNodes: LayoutNode[] = [
+  {
+    id: "1",
+    type: "custom",
+    position: { x: 0, y: 0 },
+    data: { label: "Front Door Entrance", typeId: "fdoor" }
+  },
+  {
+    id: "2",
+    type: "custom",
+    position: { x: 220, y: -180 },
+    data: { label: "Main Living Room", typeId: "living" }
+  }
+];
+
+const initialEdges: LayoutEdge[] = [
+  {
+    id: "e1",
+    source: "1",
+    target: "2"
+  }
+];
+
+
+*/
+
+function buildFlowState(serverLayout) {
+  const nodes = serverLayout.nodes.map(
+    (serverNode, index) =>
+      ({
+        id: `n-${index}`,
+        type: "custom",
+        position: serverNode.position,
+        data: {
+          label: serverNode.label,
+          typeId: serverIdToNodeType[serverNode.typeId].id
+        }
+      }) as LayoutNode
+  );
+
+  const edges = serverLayout.edges.map(
+    (serverEdge, index) =>
+      ({
+        id: `e-${index}`,
+        source: `n-${serverEdge.source}`,
+        target: `n-${serverEdge.target}`
+      }) as LayoutEdge
+  );
+
+  return { nodes, edges };
+}
 
 function LayoutViewPane() {
   const { state } = useLocation();

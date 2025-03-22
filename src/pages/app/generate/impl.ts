@@ -34,7 +34,8 @@ export async function generateDesignFromServer(
 
   let serverNodes = nodes.map(node => ({
     label: node.data.label,
-    typeId: idToNodeType[node.data.typeId].serverId
+    typeId: idToNodeType[node.data.typeId].serverId,
+    position: node.position
   }));
 
   let serverEdges = edges.map(edge => [
