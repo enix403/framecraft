@@ -1,8 +1,9 @@
 import { useAuthState } from "@/stores/auth-store";
 import { skipToken, useQuery } from "@tanstack/react-query";
 import { delay } from "@/lib/utils";
+import { apiRoutes } from "@/lib/api-routes";
 
-export async function getMe({ token }) {
+/* export async function getMe({ token }) {
   await delay(2500);
 
   return {
@@ -11,14 +12,14 @@ export async function getMe({ token }) {
     role: "user",
     age: 34
   };
-}
+} */
 
 export function useCurrentUser() {
   const { token } = useAuthState();
 
   const { data: user, ...rest } = useQuery({
     queryKey: ["me", token],
-    queryFn: token ? () => getMe({ token }) : skipToken,
+    queryFn: token ? apiRoutes.getMe : skipToken,
     staleTime: Infinity
   });
 

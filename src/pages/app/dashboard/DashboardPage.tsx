@@ -83,7 +83,8 @@ function MyPlans({ plans }: { plans: any[] }) {
       <div
         className={clsx(
           "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5",
-          "gap-x-6 gap-y-8"
+          "gap-x-6 gap-y-8",
+          "mb-24"
         )}
       >
         {plans.map(plan => (

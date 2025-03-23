@@ -30,10 +30,10 @@ function UserInfo() {
         />
         <div className='flex min-w-0 flex-col'>
           <span className='truncate text-sm font-medium text-foreground'>
-            Keith Kennedy
+            {user.fullName}
           </span>
           <span className='truncate text-xs font-normal text-muted-foreground'>
-            k.kennedy@originui.com
+            {user.email}
           </span>
         </div>
       </>
