@@ -1,9 +1,8 @@
 import { createContext, useContext } from "react";
-
-import { getInitialPlan } from "@/lib/demo/initialPlan";
 import { StateSet } from "@/lib/utils";
+import type { buildComponents } from './build-plan';
 
-export type PlanComponents = ReturnType<typeof getInitialPlan>;
+export type PlanComponents = ReturnType<typeof buildComponents>;
 
 export interface PlanLayoutData {
   nodes: {
@@ -49,20 +48,3 @@ export function usePlanComponents() {
 export function useSetPlanComponents() {
   return usePlan().setPlanComponents;
 }
-
-/*
-export function useUpdatePlan() {
-  const { setPlan } = useContext(PlanContext)!;
-  return useCallback(
-    (fn: (old: PlanData) => void) => {
-      setPlan(
-        produce(draft => {
-          if (!draft) return;
-          fn(draft);
-        })
-      );
-    },
-    [setPlan]
-  );
-}
- */

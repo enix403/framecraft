@@ -1,5 +1,5 @@
-import { serverIdToNodeType } from "../nodes";
-import planJsonRaw from "./planB.json";
+import { serverIdToNodeType } from "@/lib/nodes";
+import { PlanInfo } from "./PlanProvider";
 
 export type RoomRect = [
   number /* row */,
@@ -8,7 +8,10 @@ export type RoomRect = [
   number /* height */
 ];
 
-export function makeInitialPlan(canvasData: typeof planJsonRaw) {
+// TODO: fill
+type PlanCanvasData = any;
+
+export function buildComponents(canvasData: PlanCanvasData) {
   const { shape, rooms, walls, doors, scale } = canvasData;
 
   const [canvasRows, canvasCols] = shape;
@@ -65,6 +68,21 @@ export function makeInitialPlan(canvasData: typeof planJsonRaw) {
   };
 }
 
-export function getInitialPlan() {
-  return makeInitialPlan(planJsonRaw);
+export function buildInitPlan(serverPlan) {
+  const planInfo: PlanInfo = {
+    id: serverPlan.id,
+    name: serverPlan.name,
+    plotWidth: serverPlan.plotWidth,
+    plotLength: serverPlan.plotLength,
+    plotMeasureUnit: serverPlan.plotMeasureUnit,
+    canvasId: serverPlan.canvas.id,
+    layout: serverPlan.layout
+  };
+
+  const planComponents = buildComponents(serverPlan.canvas.canvasData);
+
+  return {
+    planInfo,
+    planComponents
+  };
 }
