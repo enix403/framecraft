@@ -1,3 +1,5 @@
+import { useAtomValue } from "jotai";
+
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,11 +11,9 @@ import { RoomList } from "./panes/RoomList";
 import { PlotDetails } from "./panes/PlotDetails";
 import { RoomDetails } from "./panes/RoomDetails";
 
-import { World2DPane } from "./world2d/World2DPane";
-import { useAtomValue } from "jotai";
-
-import { World3DPane } from "./world3d/World3DPane";
 import { LayoutViewPane } from "./layout-view/LayoutViewPane";
+import { World2DPane } from "./world2d/World2DPane";
+import { World3DPane } from "./world3d/World3DPane";
 
 function CentralPane() {
   const activeTab = useAtomValue(activeTabAtom);
