@@ -10,65 +10,10 @@ import { PlotDetails } from "./panes/PlotDetails";
 import { RoomDetails } from "./panes/RoomDetails";
 
 import { World2DPane } from "./world2d/World2DPane";
-import { memo, useMemo, useState } from "react";
 import { useAtomValue } from "jotai";
-import { LayoutGraphEditor } from "@/components/layout-editor/LayoutGraphEditor";
-import { useLocation, useParams } from "react-router";
-import { LayoutNode } from "@/components/layout-editor/LayoutNode";
-import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 
 import { World3DPane } from "./world3d/World3DPane";
-import { serverIdToNodeType } from "@/lib/nodes";
-import { usePlanInfo } from "./PlanProvider";
-import { useInitState } from "@/hooks/useInitState";
-
-function buildFlowState(serverLayout) {
-  const nodes = serverLayout.nodes.map(
-    (serverNode, index) =>
-      ({
-        id: `n-${index}`,
-        type: "custom",
-        position: serverNode.position,
-        data: {
-          label: serverNode.label,
-          typeId: serverIdToNodeType[serverNode.typeId].id
-        }
-      }) as LayoutNode
-  );
-
-  const edges = serverLayout.edges.map(
-    (serverEdge, index) =>
-      ({
-        id: `e-${index}`,
-        source: nodes[serverEdge[0]].id,
-        target: nodes[serverEdge[1]].id,
-      }) as LayoutEdge
-  );
-
-  return { nodes, edges };
-}
-
-function LayoutViewPane() {
-  const serverLayout = usePlanInfo().layout;
-
-  const { nodes: initNodes, edges: initEdges } = useMemo(
-    () => buildFlowState(serverLayout),
-    [serverLayout]
-  );
-
-  const [nodes, setNodes] = useInitState<LayoutNode[]>(initNodes);
-  const [edges, setEdges] = useInitState<LayoutEdge[]>(initEdges);
-
-  return (
-    <LayoutGraphEditor
-      nodes={nodes}
-      setNodes={setNodes}
-      edges={edges}
-      setEdges={setEdges}
-      readOnly
-    />
-  );
-}
+import { LayoutViewPane } from "./layout-view/LayoutViewPane";
 
 function CentralPane() {
   const activeTab = useAtomValue(activeTabAtom);
