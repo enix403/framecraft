@@ -2,25 +2,6 @@ import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 import { LayoutNode } from "@/components/layout-editor/LayoutNode";
 import { idToNodeType } from "@/lib/nodes";
 
-/*
-name: Joi.string(),
-plotWidth: Joi.number(),
-plotLength: Joi.number(),
-plotMeasureUnit: Joi.string(),
-layout: Joi.object({
-  nodes: Joi.array().items(
-    Joi.object({
-      name: Joi.string(),
-      typeId: Joi.number().integer()
-    })
-  ),
-  edges: Joi.array().items(
-    Joi.array().ordered(Joi.number().integer(), Joi.number().integer())
-  )
-})
-
-*/
-
 export async function generateDesignFromServer(
   nodes: LayoutNode[],
   edges: LayoutEdge[]

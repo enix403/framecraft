@@ -1,7 +1,7 @@
 import { Rect, Text, Line } from "react-konva";
 
 import { CELL_PHYSICAL_LENGTH, unitFactor } from "@/lib/units";
-import { usePlan } from "../../PlanProvider";
+import { usePlanComponents } from "../../PlanProvider";
 
 import { CELL_SIZE, snapToGrid } from "../common";
 import { useSettings } from "../state/settings";
@@ -35,7 +35,7 @@ function calcLineRect(
 }
 
 export function RenderWalls() {
-  const plan = usePlan();
+  const plan = usePlanComponents();
   const settings = useSettings();
 
   return plan.walls.map(
@@ -135,7 +135,7 @@ function WallMeasure({
 }
 
 export function RenderWallMeasures() {
-  const plan = usePlan();
+  const plan = usePlanComponents();
 
   return plan.walls.map(
     ({ id, row, col, length, direction, width: thickness }) => {
@@ -165,7 +165,7 @@ export function RenderWallMeasures() {
 }
 
 export function RenderDoors() {
-  const plan = usePlan();
+  const plan = usePlanComponents();
 
   return plan.doors.map(({ id, row, col, length, direction }) => {
     const { x, y, width, height } = calcLineRect(
@@ -183,7 +183,7 @@ export function RenderDoors() {
 }
 
 export function RenderRoomLabels() {
-  const plan = usePlan();
+  const plan = usePlanComponents();
 
   return plan.rooms.map((room, i) => {
     let largestRectIndex = -1;
@@ -225,7 +225,7 @@ export function RenderRoomLabels() {
 }
 
 export function RenderRooms() {
-  const plan = usePlan();
+  const plan = usePlanComponents();
   return plan.rooms.map((room, i) => {
     // const color = roomInfoFromNodeType(room.type)?.rectColor || "#ff0000";
     const style = appNodeStyle[room.typeId];

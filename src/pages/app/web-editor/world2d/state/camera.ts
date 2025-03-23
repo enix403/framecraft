@@ -9,8 +9,7 @@ import {
 } from "react";
 
 import { CELL_SIZE } from "../common";
-import { usePlan } from "../../PlanProvider";
-import { PlanData } from "@/lib/plan";
+import { PlanComponents, usePlanComponents } from "../../PlanProvider";
 
 /* ================== */
 
@@ -29,7 +28,7 @@ const noFocus: PlanFocus = {
   baseScale: 1
 };
 
-function _calculateFocus(plan: PlanData, containerSize: Size) {
+function _calculateFocus(plan: PlanComponents, containerSize: Size) {
   if (plan.rooms.length === 0) return noFocus;
 
   let minRow = Infinity,
@@ -72,8 +71,8 @@ function _calculateFocus(plan: PlanData, containerSize: Size) {
   return { planCenter, baseScale } as PlanFocus;
 }
 
-function usePlanFocus(containerSize: Nullable<Size>) {
-  const plan = usePlan();
+function usePlanComponentsFocus(containerSize: Nullable<Size>) {
+  const plan = usePlanComponents();
   const [focus, setFocus] = useState(noFocus);
 
   useLayoutEffect(() => {
@@ -177,7 +176,7 @@ export function useCamera(
   stageRef: RefObject<Konva.Stage | null>,
   containerSize: Nullable<Size>
 ) {
-  const focus = usePlanFocus(containerSize);
+  const focus = usePlanComponentsFocus(containerSize);
 
   const setZoomLevel = useSetAtom(zoomLevelAtom);
   const camera = useMemo(

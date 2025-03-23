@@ -1,15 +1,20 @@
 import { Stat } from "@/components/Stat";
 import { RectPreview } from "@/components/RectPreview";
 import { useSelectedObject } from "../world2d/state/selections";
-import { usePlan, useUpdatePlan } from "../PlanProvider";
+import {
+  PlanComponents,
+  usePlanComponents,
+  useSetPlanComponents
+} from "../PlanProvider";
 import { DoorOpen } from "lucide-react";
 import { RoomIdentityInput } from "@/components/RoomIdentityInput";
 import { appNodeStyle } from "@/lib/node-styles";
-import { PlanData } from "@/lib/plan";
 import { useSettings } from "../world2d/state/settings";
 import { CELL_PHYSICAL_LENGTH, unitFactor } from "@/lib/units";
+import { useCallback } from "react";
+import { produce } from "immer";
 
-function getLargestRect(room: PlanData["rooms"][number]) {
+function getLargestRect(room: PlanComponents["rooms"][number]) {
   let largestRectIndex = -1;
   let largestArea = -1;
 
@@ -27,7 +32,7 @@ function getLargestRect(room: PlanData["rooms"][number]) {
   return room.rects[largestRectIndex];
 }
 
-function useRoomSize(room: PlanData["rooms"][number] | null) {
+function useRoomSize(room: PlanComponents["rooms"][number] | null) {
   const { unit } = useSettings();
 
   let length = 1;
@@ -45,8 +50,20 @@ function useRoomSize(room: PlanData["rooms"][number] | null) {
 }
 
 export function RoomDetails() {
-  const plan = usePlan();
-  const updatePlan = useUpdatePlan();
+  const plan = usePlanComponents();
+  const setPlanComponents = useSetPlanComponents();
+  const updatePlan = useCallback(
+    (fn: (old: PlanComponents) => void) => {
+      setPlanComponents(
+        produce(draft => {
+          if (!draft) return;
+          fn(draft);
+        })
+      );
+    },
+    [setPlanComponents]
+  );
+
   const { unit } = useSettings();
 
   const [selectedObj] = useSelectedObject();

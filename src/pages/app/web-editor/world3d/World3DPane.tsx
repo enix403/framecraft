@@ -14,12 +14,12 @@ import { CELL_SIZE } from "../world2d/common";
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { usePlan } from "../PlanProvider";
+import { usePlanComponents } from "../PlanProvider";
 
 /* =============================================== */
 
 function World3DEditor() {
-  const plan = usePlan();
+  const plan = usePlanComponents();
 
   const model = useMemo(() => build3DModel(plan), [plan]);
 
