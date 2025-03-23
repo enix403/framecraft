@@ -196,6 +196,7 @@ export const apiRoutes = {
   /* ========================== */
   /* ========== Plan ========== */
   /* ========================== */
+  getPlans: jsonDecl(`/plan/all`),
   generatePlan: payloadDecl(`/plan/generate`),
   getPlan: jsonDecl((planId: string) => `/plan/${planId}`),
   updatePlan: payloadDecl((planId: string) => `/plan/${planId}`),

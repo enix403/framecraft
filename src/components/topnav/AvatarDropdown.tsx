@@ -26,9 +26,9 @@ export function AvatarDropdown() {
             />
             <AvatarFallback className='text-black'>U</AvatarFallback>
           </Avatar>
-          <span className='absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2 border-background bg-emerald-500'>
+          {/* <span className='absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2 border-background bg-emerald-500'>
             <span className='sr-only'>Online</span>
-          </span>
+          </span> */}
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='max-w-64'>

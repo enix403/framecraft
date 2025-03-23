@@ -18,7 +18,7 @@ export function AppTopNav() {
 
       {isLoggedIn ? (
         <div className='ml-auto flex items-center'>
-          <button className='rounded-md bg-[#333847] p-2.5 tc hover:bg-[#272c3b]'>
+          {/* <button className='rounded-md bg-[#333847] p-2.5 tc hover:bg-[#272c3b]'>
             <Search className='size-5' strokeWidth={2} />
           </button>
           <Separator
@@ -30,7 +30,7 @@ export function AppTopNav() {
           </button>
           <button className='mr-3.5 rounded-md bg-[#333847] p-2.5 tc hover:bg-[#272c3b]'>
             <Bell className='size-5' strokeWidth={2} />
-          </button>
+          </button> */}
 
           <AvatarDropdown />
         </div>
