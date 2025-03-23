@@ -37,7 +37,11 @@ export function MyPlanCard({ plan }: { plan: any }) {
         <Table>
           <TableBody>
             <TableRow>
-              <TableHead>Plot Dimension</TableHead>
+              <TableHead>Name</TableHead>
+              <TableCell>{plan.name}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>Plot Size</TableHead>
               <TableCell>
                 <DimensionDisplay
                   length={plan.plotLength}
@@ -50,15 +54,17 @@ export function MyPlanCard({ plan }: { plan: any }) {
               <TableHead>Room Count</TableHead>
               <TableCell>{roomCount}</TableCell>
             </TableRow>
-            <TableRow>
+            {/* <TableRow>
               <TableHead>Created At</TableHead>
               <TableCell>invoice</TableCell>
-            </TableRow>
+            </TableRow> */}
           </TableBody>
         </Table>
       </CardContent>
       <CardFooter className='flex gap-2'>
-        <Button className='flex-1'>View</Button>
+        <Link to={`/app/edit-plan/${plan.id}`} className='contents'>
+          <Button className='flex-1'>View</Button>
+        </Link>
       </CardFooter>
     </Card>
   );
