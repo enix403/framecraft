@@ -28,11 +28,16 @@ function DimensionDisplay({ length, width, unit }) {
 export function MyPlanCard({ plan }: { plan: any }) {
   const roomCount = plan.canvas.canvasData.rooms.length;
 
+  const planLink = `/app/edit-plan/${plan.id}`;
+
   return (
     <Card className='gap-0 overflow-hidden pt-0'>
-      <CardHeader className='border-b !p-0'>
-        <img src='/plan1.jpg' alt='' />
-      </CardHeader>
+      <Link to={planLink} className='contents'>
+        <CardHeader className='border-b !p-0'>
+          <img src='/plan1.jpg' alt='' />
+        </CardHeader>
+      </Link>
+
       <CardContent className='py-2'>
         <Table>
           <TableBody>
@@ -62,7 +67,7 @@ export function MyPlanCard({ plan }: { plan: any }) {
         </Table>
       </CardContent>
       <CardFooter className='flex gap-2'>
-        <Link to={`/app/edit-plan/${plan.id}`} className='contents'>
+        <Link to={planLink} className='contents'>
           <Button className='flex-1'>View</Button>
         </Link>
       </CardFooter>

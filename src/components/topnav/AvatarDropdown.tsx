@@ -51,6 +51,12 @@ export function AvatarDropdown() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link to='/app'>
+              <PinIcon size={16} className='opacity-60' aria-hidden='true' />
+              <span>Dashboard</span>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>
             <PinIcon size={16} className='opacity-60' aria-hidden='true' />
             <span>Profile</span>
