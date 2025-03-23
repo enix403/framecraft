@@ -15,6 +15,7 @@ import { ArrowLeft, MousePointerClick } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { AppTopNav } from "@/components/topnav/AppTopNav";
 import { generateDesignFromServer } from "./impl";
+import { useMutation } from "@tanstack/react-query";
 
 function LayoutGraphPanes({
   nodes,
@@ -79,21 +80,30 @@ function LayoutGraphPanes({
   );
 }
 
-
 export function GenerateDesign() {
   const navigate = useNavigate();
 
   const [nodes, setNodes] = useState<LayoutNode[]>(initialNodes);
   const [edges, setEdges] = useState<LayoutEdge[]>(initialEdges);
 
-  const [loading, setLoading] = useState(false);
+  const generateMut = useMutation({
+    mutationFn: () => generateDesignFromServer(nodes, edges),
+    onSuccess: ({ plan }) => {
+      navigate(`/app/edit-plan/${plan.id}`);
+    }
+  });
 
   return (
     <div className='flex h-full max-h-full flex-col overflow-hidden'>
       <AppTopNav />
       <div className='flex flex-1-fix'>
         <div className='flex w-[22rem] flex-col gap-y-3 border-r-2 p-4'>
-          <Button size='lg' variant='outline' disabled={loading} asChild>
+          <Button
+            size='lg'
+            variant='outline'
+            disabled={generateMut.isPending}
+            asChild
+          >
             <Link to='/app'>
               <ArrowLeft />
               Back
@@ -106,18 +116,8 @@ export function GenerateDesign() {
           <Button
             size='lg'
             className='mt-auto atext-ls'
-            loading={loading}
-            disabled={loading}
-            onClick={() => {
-              generateDesignFromServer(nodes, edges);
-              /* setLoading(true);
-              setTimeout(() => {
-                let layoutData = { nodes, edges };
-                navigate("/edit", {
-                  state: { layoutData }
-                });
-              }, 3500); */
-            }}
+            loading={generateMut.isPending}
+            onClick={() => generateMut.mutate()}
           >
             Generate
             <MousePointerClick />

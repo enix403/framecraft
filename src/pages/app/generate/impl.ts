@@ -1,5 +1,6 @@
 import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 import { LayoutNode } from "@/components/layout-editor/LayoutNode";
+import { apiRoutes } from "@/lib/api-routes";
 import { idToNodeType } from "@/lib/nodes";
 
 export async function generateDesignFromServer(
@@ -34,6 +35,5 @@ export async function generateDesignFromServer(
       edges: serverEdges
     }
   };
-
-  console.log(generationSettings);
+  return apiRoutes.generatePlan(generationSettings);
 }
