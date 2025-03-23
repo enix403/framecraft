@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { skipToken, useQuery } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
-import { memo, useMemo, useState } from "react";
+import { memo, PropsWithChildren, useMemo, useState } from "react";
 import { IPlanContext, PlanContext, PlanInfo } from "./PlanProvider";
 import { makeInitialPlan } from "@/lib/demo/initialPlan";
 import { useInitState } from "@/hooks/useInitState";
@@ -26,31 +26,31 @@ function buildInitPlan(serverPlan) {
   };
 }
 
-const WebEditorImpl = memo(({ plan: serverPlan }: { plan: any }) => {
-  console.log(serverPlan);
-  const initPlan = useMemo(() => buildInitPlan(serverPlan), [serverPlan]);
+const WebEditorProvider = memo(
+  ({ plan: serverPlan, children }: { plan: any } & PropsWithChildren) => {
+    console.log(serverPlan);
+    const initPlan = useMemo(() => buildInitPlan(serverPlan), [serverPlan]);
 
-  const [planInfo, setPlanInfo] = useInitState(initPlan.planInfo);
-  const [planComponents, setPlanComponents] = useInitState(
-    initPlan.planComponents
-  );
+    const [planInfo, setPlanInfo] = useInitState(initPlan.planInfo);
+    const [planComponents, setPlanComponents] = useInitState(
+      initPlan.planComponents
+    );
 
-  const context = useMemo(
-    () =>
-      ({
-        planInfo,
-        planComponents,
-        setPlanComponents
-      }) as IPlanContext,
-    [initPlan]
-  );
+    const context = useMemo(
+      () =>
+        ({
+          planInfo,
+          planComponents,
+          setPlanComponents
+        }) as IPlanContext,
+      [initPlan]
+    );
 
-  return (
-    <PlanContext.Provider value={context}>
-      <WebEditorUI />
-    </PlanContext.Provider>
-  );
-});
+    return (
+      <PlanContext.Provider value={context}>{children}</PlanContext.Provider>
+    );
+  }
+);
 
 export function WebEditor() {
   const { planId } = useParams();
@@ -61,7 +61,12 @@ export function WebEditor() {
     staleTime: Infinity
   });
 
-  if (!isError && plan) return <WebEditorImpl plan={plan} />;
+  if (!isError && plan)
+    return (
+      <WebEditorProvider plan={plan}>
+        <WebEditorUI />
+      </WebEditorProvider>
+    );
 
   return "Loading...";
 }
