@@ -28,7 +28,7 @@ export function SignUpPage() {
   const signUpMut = useMutation({
     mutationFn: apiRoutes.signUp,
     onSuccess: user => {
-      toast("Account Creation Successful", {
+      toast.success("Account Creation Successful", {
         description: "Your account has been successfully created"
       });
       // if (user.isVerified) {
