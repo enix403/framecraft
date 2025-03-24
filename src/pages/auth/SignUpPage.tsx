@@ -17,6 +17,7 @@ import { apiRoutes } from "@/lib/api-routes";
 import { AppTopNav } from "@/components/topnav/AppTopNav";
 import { ErrorDisplay } from "@/components/ErrorDisplay";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export function SignUpPage() {
   const setAuthState = useSetAuthState();
@@ -27,6 +28,9 @@ export function SignUpPage() {
   const signUpMut = useMutation({
     mutationFn: apiRoutes.signUp,
     onSuccess: user => {
+      toast("Account Creation Successful", {
+        description: "Your account has been successfully created"
+      });
       // if (user.isVerified) {
       // navigate("/auth/login");
       // } else {
