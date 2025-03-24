@@ -36,12 +36,16 @@ export function AppTopNav() {
         </div>
       ) : (
         <div className='ml-auto flex items-center gap-x-2'>
-          <button className='flex rounded bg-[#FFF331] px-2.5 py-1.5 font-medium tracking-wide text-[#333847] tc hover:bg-yellow-300'>
-            Login
-          </button>
-          <button className='flex rounded bg-[#FFF331]/20 px-2.5 py-1.5 tracking-wide text-[#FFF331] tc hover:bg-[#FFF331]/30'>
-            Sign Up
-          </button>
+          <Link to='/auth/login'>
+            <button className='flex rounded bg-[#FFF331] px-2.5 py-1.5 font-medium tracking-wide text-[#333847] tc hover:bg-yellow-300'>
+              Login
+            </button>
+          </Link>
+          <Link to='/auth/sign-up'>
+            <button className='flex rounded bg-[#FFF331]/20 px-2.5 py-1.5 tracking-wide text-[#FFF331] tc hover:bg-[#FFF331]/30'>
+              Sign Up
+            </button>
+          </Link>
         </div>
       )}
     </nav>

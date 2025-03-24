@@ -188,6 +188,7 @@ export const apiRoutes = {
   /* ========================== */
   /* ========== Auth ========== */
   /* ========================== */
+  signUp: payloadDecl(`/auth/sign-up`),
   login: payloadDecl(`/auth/login`),
   getMe: jsonDecl(`/auth/me`),
   forgetPasswordInit: payloadDecl(`/auth/forget-password/init`),

@@ -16,27 +16,35 @@ import { useForm } from "react-hook-form";
 import { apiRoutes } from "@/lib/api-routes";
 import { AppTopNav } from "@/components/topnav/AppTopNav";
 import { ErrorDisplay } from "@/components/ErrorDisplay";
+import { useState } from "react";
 
-export function LoginPage() {
+export function SignUpPage() {
   const setAuthState = useSetAuthState();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const [error, setError] = useState<string | null>(null);
 
-  const loginMut = useMutation({
-    mutationFn: apiRoutes.login,
-    onSuccess: ({ accessToken, user }) => {
-      console.log(accessToken, user);
-      setAuthState({
-        token: accessToken,
-        userId: user["_id"],
-        userRole: user["role"]
-      });
-      navigate("/app");
+  const signUpMut = useMutation({
+    mutationFn: apiRoutes.signUp,
+    onSuccess: user => {
+      if (user.isVerified) {
+        navigate("/auth/login");
+      } else {
+        navigate("./done", { state: { email: user.email } });
+      }
     }
   });
 
   const onSubmit = handleSubmit(values => {
-    loginMut.mutate(values as any);
+    setError(null);
+    if (values["password"] !== values["confirmPassword"]) {
+      setError("not_confirmed");
+      return;
+    }
+
+    delete values["confirmPassword"];
+
+    signUpMut.mutate(values as any);
   });
 
   return (
@@ -49,10 +57,8 @@ export function LoginPage() {
             className='flex w-full flex-col gap-6 overflow-y-auto p-6 text-card-foreground max-lg:flex-1 sm:p-10 lg:max-w-lg'
           >
             <CardHeader className='text-center'>
-              <CardTitle className='text-xl'>Welcome back</CardTitle>
-              <CardDescription>
-                Login with your Apple or Google account
-              </CardDescription>
+              <CardTitle className='text-xl'>Create account</CardTitle>
+              <CardDescription>Join our platform FrameCraft</CardDescription>
             </CardHeader>
             <CardContent>
               <div className='grid gap-6'>
@@ -68,7 +74,7 @@ export function LoginPage() {
                         fill='currentColor'
                       />
                     </svg>
-                    Login with Apple
+                    Continue with Apple
                   </Button>
                   <Button variant='outline' className='w-full'>
                     <svg
@@ -81,7 +87,7 @@ export function LoginPage() {
                         fill='currentColor'
                       />
                     </svg>
-                    Login with Google
+                    Continue with Google
                   </Button>
                 </div>
                 <div className='relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border'>
@@ -91,12 +97,17 @@ export function LoginPage() {
                 </div>
                 <div className='grid gap-6'>
                   <ErrorDisplay
-                    error={loginMut.error}
+                    error={signUpMut.error || error}
                     map={{
                       val_err: "Please fill all the input fields",
-                      invalid_creds: "Invalid email or password"
+                      not_confirmed: "Passwords do not match",
+                      email_taken: "This email is already taken"
                     }}
                   />
+                  <div className='grid gap-2'>
+                    <Label>Name</Label>
+                    <Input placeholder='Enter name' {...register("fullName")} />
+                  </div>
                   <div className='grid gap-2'>
                     <Label htmlFor='email'>Email</Label>
                     <Input
@@ -107,16 +118,7 @@ export function LoginPage() {
                     />
                   </div>
                   <div className='grid gap-2'>
-                    <div className='flex items-center'>
-                      <Label htmlFor='password'>Password</Label>
-                      <Link
-                        to='/auth/forget-password'
-                        className='ml-auto text-xs underline-offset-4 hover:underline'
-                        tabIndex={-1}
-                      >
-                        Forgot your password?
-                      </Link>
-                    </div>
+                    <Label htmlFor='password'>Password</Label>
                     <Input
                       id='password'
                       type='password'
@@ -124,18 +126,30 @@ export function LoginPage() {
                       {...register("password")}
                     />
                   </div>
+                  <div className='grid gap-2'>
+                    <Label htmlFor='password'>Confirm Password</Label>
+                    <Input
+                      id='password'
+                      type='password'
+                      placeholder='Enter password'
+                      {...register("confirmPassword")}
+                    />
+                  </div>
                   <Button
-                    loading={loginMut.isPending}
+                    loading={signUpMut.isPending}
                     type='submit'
                     className='w-full'
                   >
-                    Login
+                    Create account
                   </Button>
                 </div>
                 <div className='text-center text-sm'>
-                  Don&apos;t have an account?{" "}
-                  <Link to='/auth/sign-up' className='underline underline-offset-4'>
-                    Sign up
+                  Already have an account?{" "}
+                  <Link
+                    to='/auth/login'
+                    className='underline underline-offset-4'
+                  >
+                    Login
                   </Link>
                 </div>
               </div>
@@ -143,7 +157,7 @@ export function LoginPage() {
           </form>
           <div className='flex-1 max-lg:hidden'>
             <img
-              src='/hero7.jpg'
+              src='/hero3.jpg'
               className='h-full w-full max-w-full object-cover'
             />
           </div>

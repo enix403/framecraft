@@ -13,7 +13,8 @@ export const ErrorDisplay = memo(
   }) => {
     if (!error) return null;
 
-    let errorCode = ApiReplyError.getCode(error);
+    let errorCode =
+      typeof error === "string" ? error : ApiReplyError.getCode(error);
     let errorText = fallbackText;
     for (const code in map) {
       if (code === errorCode) {
