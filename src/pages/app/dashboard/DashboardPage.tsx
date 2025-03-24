@@ -33,14 +33,11 @@ export function MyPlanCard({ plan }: { plan: any }) {
 
   return (
     <Card className='gap-0 overflow-hidden pt-0'>
-      {/* <Link to={planLink} className='contents'>
-        <CardHeader className='border-b bg-green-400 aspect-[9/7] !m-0 !p-0'>
-          <PlanPreview plan={plan} />
-        </CardHeader>
-      </Link> */}
       <CardHeader className='gap-0 border-b !p-0'>
         <div className='aspect-[9/7] h-full w-full'>
-          <PlanPreview plan={plan} />
+          <Link to={planLink} className='contents'>
+            <PlanPreview plan={plan} />
+          </Link>
         </div>
       </CardHeader>
 
