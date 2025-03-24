@@ -27,11 +27,11 @@ export function SignUpPage() {
   const signUpMut = useMutation({
     mutationFn: apiRoutes.signUp,
     onSuccess: user => {
-      if (user.isVerified) {
-        navigate("/auth/login");
-      } else {
-        navigate("./done", { state: { email: user.email } });
-      }
+      // if (user.isVerified) {
+      // navigate("/auth/login");
+      // } else {
+      navigate("./done", { state: { email: user.email } });
+      // }
     }
   });
 

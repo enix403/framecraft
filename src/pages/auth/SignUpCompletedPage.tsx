@@ -11,15 +11,20 @@ export function SignUpCompletedPage() {
       <AppTopNav />
       <div className='flex flex-1-y flex-col items-stretch px-6 py-10 lg:pt-[10vh] xl:pt-[14vh] 2xl:pt-[16vh]'>
         <div className='flex justify-center'>
-          <Alert variant='default' className='max-w-xl flex-1'>
-            <AlertCircle className='h-4 w-4' />
-            <AlertTitle>Email Sent</AlertTitle>
-            <AlertDescription className='max-w-full'>
+          <Alert variant='default' className='max-w-md flex-1'>
+            <AlertCircle className='!size-5' />
+            <AlertTitle className='text-lg'>
+              Verify Your Email Address
+            </AlertTitle>
+            <AlertDescription className='max-w-full space-y-5 text-base'>
               <p>
-                An email has been sent to your inbox at{" "}
+                Thank you for signing up! We've sent a verification email to{" "}
                 <strong className='text-foreground'>{state?.email}</strong>
               </p>
-              <p>Kindly check your inbox</p>
+              <p>
+                Click the verification link in the email to activate your
+                account.
+              </p>
             </AlertDescription>
           </Alert>
         </div>
