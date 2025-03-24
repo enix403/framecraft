@@ -20,6 +20,7 @@ import {
 import clsx from "clsx";
 import { useQuery } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
+import { PlanPreview } from "./PlanPreview/PlanPreview";
 
 function DimensionDisplay({ length, width, unit }) {
   return `${length} ${unit} x ${width} ${unit}`;
@@ -32,11 +33,16 @@ export function MyPlanCard({ plan }: { plan: any }) {
 
   return (
     <Card className='gap-0 overflow-hidden pt-0'>
-      <Link to={planLink} className='contents'>
-        <CardHeader className='border-b !p-0'>
-          <img src='/plan1.jpg' alt='' />
+      {/* <Link to={planLink} className='contents'>
+        <CardHeader className='border-b bg-green-400 aspect-[9/7] !m-0 !p-0'>
+          <PlanPreview plan={plan} />
         </CardHeader>
-      </Link>
+      </Link> */}
+      <CardHeader className='gap-0 border-b !p-0'>
+        <div className='aspect-[9/7] h-full w-full'>
+          <PlanPreview plan={plan} />
+        </div>
+      </CardHeader>
 
       <CardContent className='py-2'>
         <Table>
