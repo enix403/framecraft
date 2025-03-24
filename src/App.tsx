@@ -1,12 +1,7 @@
 import "./styles/load-fonts";
 import "./styles/global.css";
 
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { Providers } from "./Providers";
 
 import { HomePage } from "./pages/home/HomePage";
@@ -26,6 +21,8 @@ import { LogoutHandler } from "./pages/auth/LogoutHandler";
 import { SignUpPage } from "./pages/auth/SignUpPage";
 import { SignUpCompletedPage } from "./pages/auth/SignUpCompletedPage";
 import { VerifyEmail } from "./pages/auth/VerifyEmail";
+import { useEffect, useLayoutEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 function Protect({ children }) {
   const { token } = useAuthState();
@@ -36,9 +33,19 @@ function Protect({ children }) {
   }
 }
 
+function ResetUserQueries() {
+  const queryClient = useQueryClient();
+  const { token } = useAuthState();
+  useLayoutEffect(() => {
+    queryClient.resetQueries();
+  }, [token]);
+  return null;
+}
+
 export function App() {
   return (
     <Providers>
+      <ResetUserQueries />
       <BrowserRouter>
         {/* prettier-ignore */}
         <Routes>
