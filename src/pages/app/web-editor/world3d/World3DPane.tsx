@@ -62,16 +62,16 @@ function World3DEditor() {
 }
 
 export function World3DPane() {
-  const [loading, setLoading] = useState(true);
+  /* const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2700);
     return () => clearTimeout(timer);
-  }, []);
+  }, []); */
 
   return (
     <div className='relative flex flex-1-fix flex-col bg-[#EEF1F3]'>
-      {loading && (
+      {/*loading && (
         <div className='flex flex-1 flex-col items-center justify-center px-8'>
           <p className='mb-2 text-accent-foreground/60'>Rendering Model...</p>
           <div className='h-1.5 w-full max-w-lg overflow-hidden rounded-[18px] border bg-[#DCDFE1]'>
@@ -104,24 +104,21 @@ export function World3DPane() {
             />
           </div>
         </div>
-      )}
+      )*/}
+      <>
+        <div className='flex-1-fix'>
+          <World3DEditor />
+        </div>
 
-      {!loading && (
-        <>
-          <div className='flex-1-fix'>
-            <World3DEditor />
-          </div>
-
-          <div
-            className={clsx(
-              "pointer-events-none absolute top-0 right-0",
-              "-translate-x-20 translate-y-20"
-            )}
-          >
-            <div className='size-36 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#000000] opacity-5'></div>
-          </div>
-        </>
-      )}
+        <div
+          className={clsx(
+            "pointer-events-none absolute top-0 right-0",
+            "-translate-x-20 translate-y-20"
+          )}
+        >
+          <div className='size-36 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#000000] opacity-5'></div>
+        </div>
+      </>
     </div>
   );
 }
