@@ -97,7 +97,7 @@ function MyPlans({ plans }: { plans: any[] }) {
 
 export function DashboardPage() {
   const { data: plans, isError } = useQuery({
-    queryKey: ["plans"],
+    queryKey: ["plan", "list"],
     queryFn: apiRoutes.getPlans
   });
 

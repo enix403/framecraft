@@ -15,7 +15,7 @@ import { ArrowLeft, MousePointerClick } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { AppTopNav } from "@/components/topnav/AppTopNav";
 import { generateDesignFromServer } from "./impl";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function LayoutGraphPanes({
   nodes,
@@ -81,6 +81,7 @@ function LayoutGraphPanes({
 }
 
 export function GenerateDesign() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [nodes, setNodes] = useState<LayoutNode[]>(initialNodes);
@@ -90,6 +91,7 @@ export function GenerateDesign() {
     mutationFn: () => generateDesignFromServer(nodes, edges),
     onSuccess: ({ plan }) => {
       navigate(`/app/edit-plan/${plan.id}`);
+      queryClient.invalidateQueries({ queryKey: ["plan"] });
     }
   });
 
