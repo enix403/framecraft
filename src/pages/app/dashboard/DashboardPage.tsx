@@ -115,7 +115,7 @@ export function DashboardPage() {
         </Link>
       </div>
 
-      {!isError && plans && <MyPlans plans={plans} />}
+      {!isError && plans && plans.length > 0 && <MyPlans plans={plans} />}
     </AppLayout>
   );
 }

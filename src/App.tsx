@@ -25,6 +25,7 @@ import { CoreApp } from "./pages/app/CoreApp";
 import { LogoutHandler } from "./pages/auth/LogoutHandler";
 import { SignUpPage } from "./pages/auth/SignUpPage";
 import { SignUpCompletedPage } from "./pages/auth/SignUpCompletedPage";
+import { VerifyEmail } from "./pages/auth/VerifyEmail";
 
 function Protect({ children }) {
   const { token } = useAuthState();
@@ -46,6 +47,7 @@ export function App() {
           <Route path="/auth">
             <Route path='sign-up' element={<SignUpPage />} />
             <Route path='sign-up/done' element={<SignUpCompletedPage />} />
+            <Route path='verify/:userId/:token' element={<VerifyEmail />} />
             <Route path='login' element={<LoginPage />} />
             <Route path='logout' element={<LogoutHandler />} />
             <Route path='forget-password' element={<ForgetPasswordPage />} />

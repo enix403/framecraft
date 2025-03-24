@@ -31,11 +31,7 @@ export function SignUpPage() {
       toast.success("Account Creation Successful", {
         description: "Your account has been successfully created"
       });
-      // if (user.isVerified) {
-      // navigate("/auth/login");
-      // } else {
       navigate("./done", { state: { email: user.email } });
-      // }
     }
   });
 

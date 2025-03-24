@@ -16,22 +16,17 @@ import { useForm } from "react-hook-form";
 import { apiRoutes } from "@/lib/api-routes";
 import { AppTopNav } from "@/components/topnav/AppTopNav";
 import { ErrorDisplay } from "@/components/ErrorDisplay";
+import { useLogin } from "@/hooks/useLogin";
 
 export function LoginPage() {
-  const setAuthState = useSetAuthState();
-  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const loginApp = useLogin();
 
   const loginMut = useMutation({
     mutationFn: apiRoutes.login,
     onSuccess: ({ accessToken, user }) => {
       console.log(accessToken, user);
-      setAuthState({
-        token: accessToken,
-        userId: user["_id"],
-        userRole: user["role"]
-      });
-      navigate("/app");
+      loginApp(user, accessToken);
     }
   });
 
@@ -134,7 +129,10 @@ export function LoginPage() {
                 </div>
                 <div className='text-center text-sm'>
                   Don&apos;t have an account?{" "}
-                  <Link to='/auth/sign-up' className='underline underline-offset-4'>
+                  <Link
+                    to='/auth/sign-up'
+                    className='underline underline-offset-4'
+                  >
                     Sign up
                   </Link>
                 </div>
