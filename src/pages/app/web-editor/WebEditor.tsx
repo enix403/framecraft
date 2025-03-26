@@ -2,7 +2,6 @@ import { useParams } from "react-router";
 import { skipToken, useQuery } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
 import { WebEditorUI } from "./WebEditorUI";
-import { PlanProvider } from "@/components/PlanProvider/PlanProvider";
 
 export function WebEditor() {
   const { planId } = useParams();
@@ -15,9 +14,9 @@ export function WebEditor() {
 
   if (!isError && plan)
     return (
-      <PlanProvider plan={plan}>
-        <WebEditorUI />
-      </PlanProvider>
+      <>
+        <WebEditorUI initialPlan={plan} />
+      </>
     );
 
   return "Loading...";

@@ -1,25 +1,26 @@
-import Konva from "konva";
-import { useEffect, useRef } from "react";
-import { Stage, Layer } from "react-konva";
-import { useMeasure } from "@uidotdev/usehooks";
+// import Konva from "konva";
+// import { useEffect, useRef } from "react";
+// import { Stage, Layer } from "react-konva";
+// import { useMeasure } from "@uidotdev/usehooks";
 
-import {
-  RenderRooms,
-  RenderWalls,
-  RenderDoors,
-  RenderRoomLabels,
-  RenderWallMeasures
-} from "./render-objects/objects";
+// import {
+//   RenderRooms,
+//   RenderWalls,
+//   RenderDoors,
+//   RenderRoomLabels,
+//   RenderWallMeasures
+// } from "./render-objects/objects";
 
-import { useSettings } from "./state/settings";
-import { useCamera } from "./state/camera";
-import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
-import { useInitialRecenter } from "./hooks/useInitialRecenter";
-import { commandsSubject } from "./state/commands";
+// import { useSettings } from "./state/settings";
+// import { useCamera } from "./state/camera";
+// import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
+// import { useInitialRecenter } from "./hooks/useInitialRecenter";
+// import { commandsSubject } from "./state/commands";
 
 /* ============================================= */
 
 export function World2DEditor() {
+  return null;
   const [containerRef, containerSize] = useMeasure();
   const stageRef = useRef<Konva.Stage | null>(null);
 

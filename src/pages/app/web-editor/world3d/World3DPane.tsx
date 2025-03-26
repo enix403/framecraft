@@ -14,7 +14,7 @@ import { CELL_SIZE } from "../world2d/common";
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { usePlanComponents } from "../PlanProvider";
+import { usePlanComponents } from "../plan-state";
 
 /* =============================================== */
 

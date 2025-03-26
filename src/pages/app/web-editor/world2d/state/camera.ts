@@ -8,8 +8,7 @@ import {
   useState
 } from "react";
 
-import { CELL_SIZE } from "../common";
-import { PlanComponents, usePlanComponents } from "../../PlanProvider";
+import { CELL_SIZE } from "@/lib/units";
 
 /* ================== */
 

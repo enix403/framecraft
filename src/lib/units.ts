@@ -1,3 +1,5 @@
+export const CELL_SIZE = 5;
+
 // real unit will be METER
 
 // meter-to-unit conversion factors

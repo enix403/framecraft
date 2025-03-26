@@ -14,6 +14,8 @@ import { RoomDetails } from "./panes/RoomDetails";
 import { LayoutViewPane } from "./layout-view/LayoutViewPane";
 import { World2DPane } from "./world2d/World2DPane";
 import { World3DPane } from "./world3d/World3DPane";
+import { useMemo } from "react";
+import { useRegisterPlan } from "./plan-state";
 
 function CentralPane() {
   const activeTab = useAtomValue(activeTabAtom);
@@ -29,7 +31,11 @@ function CentralPane() {
   return null;
 }
 
-export function WebEditorUI() {
+export function WebEditorUI({ initialPlan }: { initialPlan: any }) {
+  const isReady = useRegisterPlan(initialPlan);
+
+  if (!isReady) return null;
+
   return (
     <div className='flex h-full max-h-full flex-col overflow-hidden'>
       <TopNav />
