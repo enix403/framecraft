@@ -1,9 +1,9 @@
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import { usePlanComponents } from "../PlanProvider";
-import { useSelectedObject } from "../world2d/state/selections";
+import { useSelectedObject } from "../plan-state";
 import clsx from "clsx";
 import { appNodeStyle } from "@/lib/node-styles";
+import { usePlanComponents } from "../plan-state";
 
 export function RoomList() {
   let { rooms } = usePlanComponents();

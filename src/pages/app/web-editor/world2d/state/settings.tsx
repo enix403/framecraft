@@ -1,4 +1,5 @@
-import { atom, useAtomValue, useSetAtom } from "jotai";
+import { atom, getDefaultStore, useAtomValue, useSetAtom } from "jotai";
+import { useCallback, useMemo } from "react";
 
 export type EditorSettings = {
   unit: "ft" | "in" | "m";
@@ -26,4 +27,16 @@ export function useSetSettings() {
       ...settings
     }));
   };
+}
+
+/* ===================== */
+
+const zoomLevelAtom = atom(1);
+
+export function useZoomLevel() {
+  return useAtomValue(zoomLevelAtom);
+}
+
+export function useSetZoomLevel() {
+  return useSetAtom(zoomLevelAtom);
 }

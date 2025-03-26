@@ -9,12 +9,11 @@ import {
 } from "@react-three/drei";
 import { build3DModel } from "./build-geometry";
 import { COLOR_SKY } from "./styles";
-import { CELL_SIZE } from "../world2d/common";
 
-import { useState, useEffect, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useMemo } from "react";
 import clsx from "clsx";
-import { usePlanComponents } from "../PlanProvider";
+import { usePlanComponents } from "../plan-state";
+import { CELL_SIZE } from "@/lib/units";
 
 /* =============================================== */
 
