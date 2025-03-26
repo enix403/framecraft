@@ -10,12 +10,12 @@ import { commandsSubject } from "./state/commands";
 import { useCamera } from "@/lib/camera";
 import { usePlanComponents } from "../plan-state";
 
-import { RenderRooms } from "./render-objects/RenderRooms";
-import { RenderWalls } from "./render-objects/RenderWalls";
-import { RenderDoors } from "./render-objects/RenderDoors";
-import { RenderRoomLabels } from "./render-objects/RenderRoomLabels";
-import { RenderWallMeasures } from "./render-objects/RenderWallMeasures";
-import { RenderObjectsProvider } from "./render-objects/RenderObjectsProvider";
+import { RenderObjectsProvider } from "@/components/plan2d-render-objects/RenderObjectsProvider";
+import { RenderRooms } from "@/components/plan2d-render-objects/RenderRooms";
+import { RenderWalls } from "@/components/plan2d-render-objects/RenderWalls";
+import { RenderDoors } from "@/components/plan2d-render-objects/RenderDoors";
+import { RenderRoomLabels } from "@/components/plan2d-render-objects/RenderRoomLabels";
+import { RenderWallMeasures } from "@/components/plan2d-render-objects/RenderWallMeasures";
 
 /* ============================================= */
 
