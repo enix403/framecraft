@@ -20,7 +20,6 @@ import { usePlanComponents } from "../plan-state";
 
 /* ============================================= */
 
-
 export function World2DEditor() {
   const components = usePlanComponents();
 

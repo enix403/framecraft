@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { RefObject, useMemo } from "react";
+import { RefObject, useEffect, useMemo } from "react";
 import { PlanFocus, usePlanFocus } from "./bbox";
 import { Nullable, ParamVoidCallback, Size } from "./utils";
 
@@ -39,7 +39,6 @@ export class Camera {
     private readonly focus: PlanFocus,
     private readonly onZoomLevelUpdate: ParamVoidCallback<number>
   ) {
-    this.scaleStageTo(this.CurrentScale);
   }
 
   public get Stage() {
@@ -92,8 +91,14 @@ export function useCamera(
   onZoomLevelUpdate?: ParamVoidCallback<number>
 ) {
   const focus = usePlanFocus(components, containerSize);
-  return useMemo(
+  const camera = useMemo(
     () => new Camera(stageRef, focus, onZoomLevelUpdate ?? (() => {})),
     [focus, onZoomLevelUpdate]
   );
+
+  useEffect(() => {
+    camera.scaleStageTo(camera.CurrentScale);
+  }, [camera]);
+
+  return camera;
 }
