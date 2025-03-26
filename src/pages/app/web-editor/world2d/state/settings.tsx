@@ -27,3 +27,15 @@ export function useSetSettings() {
     }));
   };
 }
+
+/* ===================== */
+
+const zoomLevelAtom = atom(1);
+
+export function useZoomLevel() {
+  return useAtomValue(zoomLevelAtom);
+}
+
+export function useSetZoomLevel() {
+  return useSetAtom(zoomLevelAtom);
+}

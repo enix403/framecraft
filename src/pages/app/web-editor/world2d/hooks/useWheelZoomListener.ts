@@ -1,6 +1,6 @@
 import Konva from "konva";
 import { useEffect } from "react";
-import { Camera } from "../state/camera";
+import { Camera } from "@/lib/camera";
 
 const MIN_SCALE_REL = 0.5;
 const MAX_SCALE_REL = 4;

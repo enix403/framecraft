@@ -97,21 +97,3 @@ export function useCamera(
     [focus, onZoomLevelUpdate]
   );
 }
-
-
-
-/*
-export function useCamera(
-  stageRef: RefObject<Konva.Stage | null>,
-  containerSize: Nullable<Size>
-) {
-  const focus = usePlanComponentsFocus(containerSize);
-
-  const setZoomLevel = useSetAtom(zoomLevelAtom);
-  const camera = useMemo(
-    () => new Camera(stageRef, focus, setZoomLevel),
-    [focus]
-  );
-
-  return camera;
-} */

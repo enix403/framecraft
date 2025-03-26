@@ -1,5 +1,5 @@
 import { useRef, useLayoutEffect } from "react";
-import { Camera } from "../state/camera";
+import { Camera } from "@/lib/camera";
 
 export function useInitialRecenter(camera: Camera) {
   const initiallyRecentered = useRef(false);
