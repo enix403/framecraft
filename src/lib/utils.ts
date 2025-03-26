@@ -21,6 +21,9 @@ export type StateSet<T> = React.Dispatch<React.SetStateAction<T>>;
 export type VoidCallback = () => void;
 export type ParamVoidCallback<T> = (value: T) => void;
 
+export type Nullable<T> = { [K in keyof T]: T[K] | null };
+export type Size = { width: number; height: number };
+
 export function toNumOrNull(
   val: string | undefined | null | number
 ): number | null {
