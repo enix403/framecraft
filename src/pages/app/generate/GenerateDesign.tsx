@@ -14,8 +14,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, MousePointerClick } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { AppTopNav } from "@/components/topnav/AppTopNav";
-import { generateDesignFromServer } from "./impl";
+import { packSettings } from "./impl";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRoutes } from "@/lib/api-routes";
+import { toast } from "sonner";
 
 function LayoutGraphPanes({
   nodes,
@@ -88,10 +90,18 @@ export function GenerateDesign() {
   const [edges, setEdges] = useState<LayoutEdge[]>(initialEdges);
 
   const generateMut = useMutation({
-    mutationFn: () => generateDesignFromServer(nodes, edges),
+    mutationFn: () => {
+      const settings = packSettings(nodes, edges);
+      console.log(settings);
+      return apiRoutes.generatePlan(settings);
+      // return Promise.reject({});
+    },
     onSuccess: ({ plan }) => {
       navigate(`/app/edit-plan/${plan.id}`);
       queryClient.invalidateQueries({ queryKey: ["plan"] });
+    },
+    onError: () => {
+      toast.error("Failed to generate plan");
     }
   });
 

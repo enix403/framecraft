@@ -1,5 +1,4 @@
 import { serverIdToNodeType } from "@/lib/nodes";
-import { PlanInfo } from "./PlanProvider";
 
 export type RoomRect = [
   number /* row */,
@@ -85,4 +84,25 @@ export function buildInitPlan(serverPlan) {
     planInfo,
     planComponents
   };
+}
+
+export type PlanComponents = ReturnType<typeof buildComponents>;
+
+export interface PlanLayoutData {
+  nodes: {
+    label: string;
+    typeId: number;
+    position: { x: number; y: number };
+  }[];
+  edges: [number, number][];
+}
+
+export interface PlanInfo {
+  id: string;
+  name: string;
+  plotWidth: number;
+  plotLength: number;
+  plotMeasureUnit: string;
+  canvasId: string;
+  layout: PlanLayoutData;
 }

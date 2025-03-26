@@ -1,37 +1,8 @@
 import { useParams } from "react-router";
 import { skipToken, useQuery } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
-import { memo, PropsWithChildren, useMemo, useState } from "react";
-import { IPlanContext, PlanContext, PlanInfo } from "./PlanProvider";
-import { useInitState } from "@/hooks/useInitState";
 import { WebEditorUI } from "./WebEditorUI";
-import { buildInitPlan } from "./build-plan";
-
-const WebEditorProvider = memo(
-  ({ plan: serverPlan, children }: { plan: any } & PropsWithChildren) => {
-    console.log(serverPlan);
-    const initPlan = useMemo(() => buildInitPlan(serverPlan), [serverPlan]);
-
-    const [planInfo, setPlanInfo] = useInitState(initPlan.planInfo);
-    const [planComponents, setPlanComponents] = useInitState(
-      initPlan.planComponents
-    );
-
-    const context = useMemo(
-      () =>
-        ({
-          planInfo,
-          planComponents,
-          setPlanComponents
-        }) as IPlanContext,
-      [initPlan]
-    );
-
-    return (
-      <PlanContext.Provider value={context}>{children}</PlanContext.Provider>
-    );
-  }
-);
+import { PlanProvider } from "@/components/PlanProvider/PlanProvider";
 
 export function WebEditor() {
   const { planId } = useParams();
@@ -44,9 +15,9 @@ export function WebEditor() {
 
   if (!isError && plan)
     return (
-      <WebEditorProvider plan={plan}>
+      <PlanProvider plan={plan}>
         <WebEditorUI />
-      </WebEditorProvider>
+      </PlanProvider>
     );
 
   return "Loading...";

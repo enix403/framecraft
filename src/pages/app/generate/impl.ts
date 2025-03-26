@@ -1,9 +1,8 @@
 import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 import { LayoutNode } from "@/components/layout-editor/LayoutNode";
-import { apiRoutes } from "@/lib/api-routes";
 import { idToNodeType } from "@/lib/nodes";
 
-export async function generateDesignFromServer(
+export function packSettings(
   nodes: LayoutNode[],
   edges: LayoutEdge[]
 ) {
@@ -16,7 +15,8 @@ export async function generateDesignFromServer(
 
   let serverNodes = nodes.map(node => ({
     label: node.data.label,
-    typeId: idToNodeType[node.data.typeId].serverId,
+    // typeId: idToNodeType[node.data.typeId].serverId,
+    typeId: node.data.typeId,
     position: node.position
   }));
 
@@ -35,5 +35,6 @@ export async function generateDesignFromServer(
       edges: serverEdges
     }
   };
-  return apiRoutes.generatePlan(generationSettings);
+
+  return generationSettings;
 }
