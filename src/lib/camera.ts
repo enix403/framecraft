@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { RefObject, useEffect, useMemo } from "react";
+import { RefObject, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { PlanFocus, usePlanFocus } from "./bbox";
 import { Nullable, ParamVoidCallback, Size } from "./utils";
 
@@ -101,4 +101,22 @@ export function useCamera(
   }, [camera]);
 
   return camera;
+}
+
+export function useInitialRecenter(camera: Camera) {
+  const initiallyRecentered = useRef(false);
+
+  useLayoutEffect(() => {
+    if (!camera.isStageActive()) {
+      return;
+    }
+
+    if (initiallyRecentered.current) {
+      return;
+    }
+
+    initiallyRecentered.current = true;
+
+    camera.recenter();
+  }, [camera]);
 }

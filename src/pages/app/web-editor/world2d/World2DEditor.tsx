@@ -5,9 +5,8 @@ import { useMeasure } from "@uidotdev/usehooks";
 
 import { useSettings, useSetZoomLevel } from "./state/settings";
 import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
-import { useInitialRecenter } from "./hooks/useInitialRecenter";
 import { commandsSubject } from "./state/commands";
-import { useCamera } from "@/lib/camera";
+import { useCamera, useInitialRecenter } from "@/lib/camera";
 import { usePlanComponents } from "../plan-state";
 
 import { RenderObjectsProvider } from "@/components/plan2d-render-objects/RenderObjectsProvider";
