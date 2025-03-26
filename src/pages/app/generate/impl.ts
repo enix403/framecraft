@@ -1,12 +1,7 @@
 import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 import { LayoutNode } from "@/components/layout-editor/LayoutNode";
-import { idToNodeType } from "@/lib/nodes";
 
-export function packSettings(
-  nodes: LayoutNode[],
-  edges: LayoutEdge[]
-) {
-
+export function packLayout(nodes: LayoutNode[], edges: LayoutEdge[]) {
   let nodeIdToIndex = {};
   let index = 0;
   for (const node of nodes) {
@@ -25,16 +20,10 @@ export function packSettings(
     nodeIdToIndex[edge.target]
   ]);
 
-  let generationSettings = {
-    name: "My Plan 16",
-    plotWidth: 100,
-    plotLength: 116,
-    plotMeasureUnit: "ft",
-    layout: {
-      nodes: serverNodes,
-      edges: serverEdges
-    }
+  const layout = {
+    nodes: serverNodes,
+    edges: serverEdges
   };
 
-  return generationSettings;
+  return layout;
 }
