@@ -1,8 +1,8 @@
 import { Rect } from "react-konva";
 import { appNodeStyle } from "@/lib/node-styles";
 
-const CELL_SIZE = 5;
-const snapToGrid = value => Math.round(value / CELL_SIZE) * CELL_SIZE;
+export const CELL_SIZE = 5;
+export const snapToGrid = value => Math.round(value / CELL_SIZE) * CELL_SIZE;
 
 function calcLineRect(
   row: number,
@@ -78,7 +78,7 @@ export function RenderRooms({ components }: { components: any }) {
     // const color = roomInfoFromNodeType(room.type)?.rectColor || "#ff0000";
     const style = appNodeStyle[room.typeId];
     const color = style.mapRectColor;
-    return room.rects.map(([row, col, width, height], j) => (
+    return room.rects.map(({ row, col, width, height }, j) => (
       <Rect
         key={`room-${i}-${j}`}
         x={col * CELL_SIZE}
