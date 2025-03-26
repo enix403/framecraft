@@ -19,7 +19,6 @@ export function PlanPreview({ plan }: { plan: any }) {
   useInitialRecenter(camera);
   return (
     <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
-      {/* <img src='/plan1.jpg' className='h-full w-full object-fill' /> */}
       <Stage
         ref={stageRef}
         width={containerSize.width || 0}
