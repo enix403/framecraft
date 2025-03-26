@@ -104,7 +104,7 @@ export function build3DModel(plan) {
   // STEP 1: Build the floor mesh (using previous approach).
   const roomPolygons: [number, number][][] = [];
   plan.rooms.forEach(room => {
-    room.rects.forEach(([row, col, width, height]) => {
+    room.rects.forEach(({ row, col, width, height }) => {
       const x = col * CELL_SIZE;
       const y = row * CELL_SIZE;
       const w = width * CELL_SIZE;

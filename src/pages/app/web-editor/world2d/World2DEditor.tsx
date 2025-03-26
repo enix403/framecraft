@@ -1,30 +1,34 @@
-// import Konva from "konva";
-// import { useEffect, useRef } from "react";
-// import { Stage, Layer } from "react-konva";
-// import { useMeasure } from "@uidotdev/usehooks";
+import Konva from "konva";
+import { useEffect, useRef } from "react";
+import { Stage, Layer } from "react-konva";
+import { useMeasure } from "@uidotdev/usehooks";
 
-// import {
-//   RenderRooms,
-//   RenderWalls,
-//   RenderDoors,
-//   RenderRoomLabels,
-//   RenderWallMeasures
-// } from "./render-objects/objects";
+import {
+  RenderRooms,
+  RenderWalls,
+  RenderDoors,
+  RenderRoomLabels,
+  RenderWallMeasures
+} from "./render-objects/objects";
 
-// import { useSettings } from "./state/settings";
-// import { useCamera } from "./state/camera";
-// import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
-// import { useInitialRecenter } from "./hooks/useInitialRecenter";
-// import { commandsSubject } from "./state/commands";
+import { useSettings, useSetZoomLevel } from "./state/settings";
+import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
+import { useInitialRecenter } from "./hooks/useInitialRecenter";
+import { commandsSubject } from "./state/commands";
+import { useCamera } from "@/lib/camera";
+import { usePlanComponents } from "../plan-state";
 
 /* ============================================= */
 
+
 export function World2DEditor() {
-  return null;
+  const components = usePlanComponents();
+
   const [containerRef, containerSize] = useMeasure();
   const stageRef = useRef<Konva.Stage | null>(null);
 
-  const camera = useCamera(stageRef, containerSize);
+  const setZoomLevel = useSetZoomLevel();
+  const camera = useCamera(stageRef, containerSize, components, setZoomLevel);
 
   useInitialRecenter(camera);
   useWheelZoomListener(camera);
