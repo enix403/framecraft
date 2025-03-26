@@ -17,7 +17,7 @@ function getLargestRect(room: PlanComponents["rooms"][number]) {
   let largestArea = -1;
 
   for (let i = 0; i < room.rects.length; ++i) {
-    const [_row, _col, width, height] = room.rects[i];
+    const { width, height } = room.rects[i];
     let area = width * height;
 
     if (area > largestArea) {
@@ -37,7 +37,7 @@ function useRoomSize(room: PlanComponents["rooms"][number] | null) {
   let width = 1;
 
   if (room) {
-    const [, , rectW, rectH] = getLargestRect(room);
+    const { width: rectW, height: rectH } = getLargestRect(room);
     const factor = CELL_PHYSICAL_LENGTH * (unitFactor[unit] || 1);
 
     length = Math.round(rectH * factor);
@@ -97,11 +97,11 @@ export function RoomDetails() {
 
           <RectPreview
             className='mt-6 mb-6'
-            rectangles={room.rects.map(([r, c, w, h]) => ({
-              left: c,
-              top: r,
-              width: w,
-              height: h
+            rectangles={room.rects.map(({ row, col, width, height }) => ({
+              left: col,
+              top: row,
+              width: width,
+              height: height
             }))}
             outStrokeColor={style!.iconColor}
             fillColor={style!.mapRectColor}

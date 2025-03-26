@@ -3,10 +3,8 @@ import { LayoutGraphEditor } from "@/components/layout-editor/LayoutGraphEditor"
 import { LayoutNode } from "@/components/layout-editor/LayoutNode";
 import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 
-import { serverIdToNodeType } from "@/lib/nodes";
 import { useInitState } from "@/hooks/useInitState";
 import { usePlan } from "../plan-state";
-// import { usePlanInfo } from "../PlanProvider";
 
 function buildFlowState(serverLayout) {
   const nodes = serverLayout.nodes.map(
@@ -17,7 +15,7 @@ function buildFlowState(serverLayout) {
         position: serverNode.position,
         data: {
           label: serverNode.label,
-          typeId: serverIdToNodeType[serverNode.typeId].id
+          typeId: serverNode.typeId
         }
       }) as LayoutNode
   );
