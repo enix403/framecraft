@@ -100,8 +100,7 @@ export function GenerateDesign() {
         layout
       };
       console.log(generationSettings);
-      // return apiRoutes.generatePlan(generationSettings);
-      return Promise.reject({});
+      return apiRoutes.generatePlan(generationSettings);
     },
     onSuccess: ({ plan }) => {
       /* @ts-ignore */
