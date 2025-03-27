@@ -2,6 +2,7 @@
 
 import {
   CSSProperties,
+  Fragment,
   useEffect,
   useId,
   useMemo,
@@ -15,6 +16,7 @@ import {
   FilterFn,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -39,6 +41,7 @@ import {
   Columns3Icon,
   EllipsisIcon,
   FilterIcon,
+  InfoIcon,
   ListFilterIcon,
   PinOffIcon,
   PlusIcon,
@@ -111,6 +114,7 @@ type Item = {
   flag: string;
   status: "Active" | "Inactive" | "Pending";
   balance: number;
+  note?: string;
 };
 
 // Custom filter function for multi-column searching
@@ -144,6 +148,43 @@ const statusFilterFn: FilterFn<Item> = (
 };
 
 const columns: ColumnDef<Item>[] = [
+  {
+    id: "expander",
+    header: () => null,
+    cell: ({ row }) => {
+      return row.getCanExpand() ? (
+        <Button
+          {...{
+            className: "size-7 shadow-none text-muted-foreground",
+            onClick: row.getToggleExpandedHandler(),
+            "aria-expanded": row.getIsExpanded(),
+            "aria-label": row.getIsExpanded()
+              ? `Collapse details for ${row.original.name}`
+              : `Expand details for ${row.original.name}`,
+            size: "icon",
+            variant: "ghost"
+          }}
+        >
+          {row.getIsExpanded() ? (
+            <ChevronUpIcon
+              className='opacity-60'
+              size={16}
+              aria-hidden='true'
+            />
+          ) : (
+            <ChevronDownIcon
+              className='opacity-60'
+              size={16}
+              aria-hidden='true'
+            />
+          )}
+        </Button>
+      ) : undefined;
+    },
+    size: 28,
+    enableSorting: false,
+    enableHiding: false
+  },
   {
     id: "select",
     header: ({ table }) => (
@@ -309,7 +350,9 @@ export function Ex9_Complex() {
       columnFilters,
       columnVisibility
     },
-    columnResizeMode: "onChange"
+    // row collapse/expand
+    getExpandedRowModel: getExpandedRowModel(),
+    getRowCanExpand: row => Boolean(row.original.note)
   });
 
   // Get unique status values
@@ -539,14 +582,7 @@ export function Ex9_Complex() {
 
       {/* Table */}
       <div className='overflow-hidden rounded-md border bg-background'>
-        {/* <Table className='table-fixed'> */}
-        <Table
-          className='table-fixed border-separate border-spacing-0 [&_td]:border-border [&_tfoot_td]:border-t [&_th]:border-b [&_th]:border-border [&_tr]:border-none [&_tr:not(:last-child)_td]:border-b'
-          style={{
-            // minWidth: "100%",
-            // width: table.getTotalSize()
-          }}
-        >
+        <Table className='table-fixed'>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id} className='bg-muted/50'>
@@ -612,19 +648,35 @@ export function Ex9_Complex() {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id} className='last:py-0'>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+                <Fragment key={row.id}>
+                  <TableRow data-state={row.getIsSelected() && "selected"}>
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell key={cell.id} className='last:py-0'>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                  {row.getIsExpanded() && (
+                    <TableRow>
+                      <TableCell colSpan={row.getVisibleCells().length}>
+                        <div className='flex max-w-full items-start py-2 text-primary/80'>
+                          <span
+                            className='me-3 mt-0.5 flex w-7 shrink-0 justify-center'
+                            aria-hidden='true'
+                          >
+                            <InfoIcon className='opacity-60' size={16} />
+                          </span>
+                          <p className='flex-1-fix text-sm text-wrap'>
+                            {row.original.note}
+                          </p>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </Fragment>
               ))
             ) : (
               <TableRow>
