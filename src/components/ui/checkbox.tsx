@@ -14,6 +14,7 @@ function Checkbox({
       data-slot="checkbox"
       className={cn(
         "peer border-input data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-500",
+        "flex items-center justify-center",
         className
       )}
       {...props}
@@ -24,8 +25,7 @@ function Checkbox({
       >
         {props.checked === "indeterminate" ? (
           <svg
-            width="9"
-            height="9"
+            className="size-2.5"
             viewBox="0 0 9 9"
             fill="currentcolor"
             xmlns="http://www.w3.org/2000/svg"
@@ -38,8 +38,7 @@ function Checkbox({
           </svg>
         ) : (
           <svg
-            width="9"
-            height="9"
+            className="size-2.5"
             viewBox="0 0 9 9"
             fill="currentcolor"
             xmlns="http://www.w3.org/2000/svg"

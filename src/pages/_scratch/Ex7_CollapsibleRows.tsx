@@ -1,20 +1,22 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { ChevronDownIcon, ChevronUpIcon, InfoIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -28,9 +30,44 @@ type Item = {
   flag: string
   status: "Active" | "Inactive" | "Pending"
   balance: number
+  note?: string
 }
 
 const columns: ColumnDef<Item>[] = [
+  {
+    id: "expander",
+    header: () => null,
+    cell: ({ row }) => {
+      return row.getCanExpand() ? (
+        <Button
+          {...{
+            className: "size-7 shadow-none text-muted-foreground",
+            onClick: row.getToggleExpandedHandler(),
+            "aria-expanded": row.getIsExpanded(),
+            "aria-label": row.getIsExpanded()
+              ? `Collapse details for ${row.original.name}`
+              : `Expand details for ${row.original.name}`,
+            size: "icon",
+            variant: "ghost",
+          }}
+        >
+          {row.getIsExpanded() ? (
+            <ChevronUpIcon
+              className="opacity-60"
+              size={16}
+              aria-hidden="true"
+            />
+          ) : (
+            <ChevronDownIcon
+              className="opacity-60"
+              size={16}
+              aria-hidden="true"
+            />
+          )}
+        </Button>
+      ) : undefined
+    },
+  },
   {
     id: "select",
     header: ({ table }) => (
@@ -100,7 +137,7 @@ const columns: ColumnDef<Item>[] = [
   },
 ]
 
-export function Ex5_BasicDataTable() {
+export function Ex7_CollapsibleRows() {
   const [data, setData] = useState<Item[]>([])
 
   useEffect(() => {
@@ -109,7 +146,7 @@ export function Ex5_BasicDataTable() {
         "https://res.cloudinary.com/dlzlfasou/raw/upload/users-01_fertyx.json"
       )
       const data = await res.json()
-      setData(data.slice(0, 10)) // Limit to 5 items
+      setData(data.slice(0, 5)) // Limit to 5 items
     }
     fetchPosts()
   }, [])
@@ -117,7 +154,9 @@ export function Ex5_BasicDataTable() {
   const table = useReactTable({
     data,
     columns,
+    getRowCanExpand: (row) => Boolean(row.original.note),
     getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
   })
 
   return (
@@ -144,16 +183,39 @@ export function Ex5_BasicDataTable() {
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
+              <Fragment key={row.id}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className="whitespace-nowrap [&:has([aria-expanded])]:w-px [&:has([aria-expanded])]:py-0 [&:has([aria-expanded])]:pr-0"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+                {row.getIsExpanded() && (
+                  <TableRow>
+                    <TableCell colSpan={row.getVisibleCells().length}>
+                      <div className="text-primary/80 flex items-start py-2 max-w-full">
+                        <span
+                          className="me-3 mt-0.5 flex w-7 shrink-0 justify-center"
+                          aria-hidden="true"
+                        >
+                          <InfoIcon className="opacity-60" size={16} />
+                        </span>
+                        <p className="text-sm flex-1-fix text-wrap">{row.original.note}</p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </Fragment>
             ))
           ) : (
             <TableRow>
@@ -163,20 +225,9 @@ export function Ex5_BasicDataTable() {
             </TableRow>
           )}
         </TableBody>
-        <TableFooter className="bg-transparent">
-          <TableRow className="hover:bg-transparent">
-            <TableCell colSpan={5}>Total</TableCell>
-            <TableCell className="text-right">
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(data.reduce((total, item) => total + item.balance, 0))}
-            </TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
       <p className="text-muted-foreground mt-4 text-center text-sm">
-        Basic data table made with{" "}
+        Expanding sub-row made with{" "}
         <a
           className="hover:text-foreground underline"
           href="https://tanstack.com/table"
