@@ -1,7 +1,15 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
+  CSSProperties,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState
+} from "react";
+import {
+  Column,
   ColumnDef,
   ColumnFiltersState,
   FilterFn,
@@ -18,6 +26,8 @@ import {
   VisibilityState
 } from "@tanstack/react-table";
 import {
+  ArrowLeftToLineIcon,
+  ArrowRightToLineIcon,
   ChevronDownIcon,
   ChevronFirstIcon,
   ChevronLastIcon,
@@ -30,6 +40,7 @@ import {
   EllipsisIcon,
   FilterIcon,
   ListFilterIcon,
+  PinOffIcon,
   PlusIcon,
   TrashIcon
 } from "lucide-react";
@@ -108,6 +119,18 @@ const multiColumnFilterFn: FilterFn<Item> = (row, columnId, filterValue) => {
     `${row.original.name} ${row.original.email}`.toLowerCase();
   const searchTerm = (filterValue ?? "").toLowerCase();
   return searchableRowContent.includes(searchTerm);
+};
+
+// Helper function to compute pinning styles for columns
+const getPinningStyles = (column: Column<Item>): CSSProperties => {
+  const isPinned = column.getIsPinned();
+  return {
+    left: isPinned === "left" ? `${column.getStart("left")}px` : undefined,
+    right: isPinned === "right" ? `${column.getAfter("right")}px` : undefined,
+    position: isPinned ? "sticky" : "relative",
+    width: column.getSize(),
+    zIndex: isPinned ? 1 : 0
+  };
 };
 
 const statusFilterFn: FilterFn<Item> = (
@@ -285,7 +308,8 @@ export function Ex9_Complex() {
       pagination,
       columnFilters,
       columnVisibility
-    }
+    },
+    columnResizeMode: "onChange"
   });
 
   // Get unique status values
@@ -515,7 +539,14 @@ export function Ex9_Complex() {
 
       {/* Table */}
       <div className='overflow-hidden rounded-md border bg-background'>
-        <Table className='table-fixed'>
+        {/* <Table className='table-fixed'> */}
+        <Table
+          className='table-fixed border-separate border-spacing-0 [&_td]:border-border [&_tfoot_td]:border-t [&_th]:border-b [&_th]:border-border [&_tr]:border-none [&_tr:not(:last-child)_td]:border-b'
+          style={{
+            // minWidth: "100%",
+            // width: table.getTotalSize()
+          }}
+        >
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id} className='bg-muted/50'>
