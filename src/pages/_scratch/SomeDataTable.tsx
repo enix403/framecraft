@@ -113,46 +113,6 @@ import {
 import { getFacetedMinMaxValues } from "@tanstack/react-table";
 import { TextFilter } from "./filters/TextFilter";
 
-/*
-{
-  id: "expander",
-  header: () => null,
-  cell: ({ row }) => {
-    return row.getCanExpand() ? (
-      <Button
-        {...{
-          className: "size-7 ml-1 shadow-none text-muted-foreground",
-          onClick: row.getToggleExpandedHandler(),
-          "aria-expanded": row.getIsExpanded(),
-          "aria-label": row.getIsExpanded()
-            ? `Collapse details for ${row.original.name}`
-            : `Expand details for ${row.original.name}`,
-          size: "icon",
-          variant: "ghost"
-        }}
-      >
-        {row.getIsExpanded() ? (
-          <ChevronUpIcon
-            className='opacity-60'
-            size={16}
-            aria-hidden='true'
-          />
-        ) : (
-          <ChevronDownIcon
-            className='opacity-60'
-            size={16}
-            aria-hidden='true'
-          />
-        )}
-      </Button>
-    ) : undefined;
-  },
-  size: 10,
-  enableSorting: false,
-  enableHiding: false
-},
-*/
-
 function selectBoxColumnDef<T>() {
   const def: ColumnDef<T> = {
     id: "select",
@@ -186,29 +146,70 @@ function selectBoxColumnDef<T>() {
   return def;
 }
 
+function expanderColumnDef<T>() {
+  const def: ColumnDef<T> = {
+    id: "expander",
+    header: () => null,
+    cell: ({ row }) => {
+      return row.getCanExpand() ? (
+        <Button
+          {...{
+            className: "size-7 ml-1 shadow-none text-muted-foreground",
+            onClick: row.getToggleExpandedHandler(),
+            "aria-expanded": row.getIsExpanded(),
+            size: "icon",
+            variant: "ghost"
+          }}
+        >
+          {row.getIsExpanded() ? (
+            <ChevronUpIcon
+              className='opacity-60'
+              size={16}
+              aria-hidden='true'
+            />
+          ) : (
+            <ChevronDownIcon
+              className='opacity-60'
+              size={16}
+              aria-hidden='true'
+            />
+          )}
+        </Button>
+      ) : undefined;
+    },
+    size: 10,
+    enableSorting: false,
+    enableHiding: false,
+    enableColumnFilter: false,
+    enableResizing: false
+  };
+  return def;
+}
+
 export function SomeDataTable<Item>({
   data,
   columns: originalColumns,
   renderFilters,
-  enableRowSelect = false,
   enableRowExpand = false,
+  enableRowSelect = false,
   canRowExpand,
   renderExpandedRow
 }: {
   data: Item[];
   columns: ColumnDef<Item>[];
   renderFilters?: (props: { table: TableInstance<Item> }) => ReactNode;
-  enableRowSelect?: boolean;
   enableRowExpand?: boolean;
+  enableRowSelect?: boolean;
   canRowExpand?: (row: Row<Item>) => boolean;
   renderExpandedRow?: (row: Row<Item>) => ReactNode;
 }) {
   const columns = useMemo(() => {
     return [
+      enableRowExpand && expanderColumnDef<Item>(),
       enableRowSelect && selectBoxColumnDef<Item>(),
       ...originalColumns
     ].filter(Boolean) as ColumnDef<Item>[];
-  }, [originalColumns, enableRowSelect, enableRowExpand]);
+  }, [originalColumns, enableRowExpand, enableRowSelect]);
 
   /* ========= Sorting ========= */
   const [sorting, setSorting] = useState<SortingState>([]);

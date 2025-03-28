@@ -135,6 +135,7 @@ export function SomeUseTable() {
     <SomeDataTable
       data={data}
       columns={columns}
+      enableRowExpand
       enableRowSelect
       renderFilters={({ table }) => (
         <div className='flex items-center gap-3'>
@@ -143,7 +144,7 @@ export function SomeUseTable() {
             columnName='name'
             placeholder='Filter by name or email...'
           />
-          <UniqueValuesFilter table={table} columnName='performance' />
+          <UniqueValuesFilter table={table} columnName='status' />
           <ColumnVisibilityControl table={table} />
         </div>
       )}
