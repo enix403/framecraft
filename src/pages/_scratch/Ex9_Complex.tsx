@@ -125,18 +125,6 @@ const multiColumnFilterFn: FilterFn<Item> = (row, columnId, filterValue) => {
   return searchableRowContent.includes(searchTerm);
 };
 
-// Helper function to compute pinning styles for columns
-const getPinningStyles = (column: Column<Item>): CSSProperties => {
-  const isPinned = column.getIsPinned();
-  return {
-    left: isPinned === "left" ? `${column.getStart("left")}px` : undefined,
-    right: isPinned === "right" ? `${column.getAfter("right")}px` : undefined,
-    position: isPinned ? "sticky" : "relative",
-    width: column.getSize(),
-    zIndex: isPinned ? 1 : 0
-  };
-};
-
 const statusFilterFn: FilterFn<Item> = (
   row,
   columnId,
