@@ -204,6 +204,16 @@ export const apiRoutes = {
   getPlan: jsonDecl((planId: string) => `/plan/${planId}`),
   updatePlan: payloadDecl((planId: string) => `/plan/${planId}`),
   updatePlanCanvas: payloadDecl((planId: string) => `/plan/canvas/${planId}`),
+
+  /* ========================== */
+  /* ========== Plan ========== */
+  /* ========================== */
+  getUsers: jsonDecl(wq`/users`),
+  getUser: jsonDecl((userId: string) => `/users/${userId}`),
+  updateUser: payloadDecl((userId: string) => `/users/${userId}`, { method: "PATCH" }),
+  deleteUser: payloadDecl((userId: string) => `/users/${userId}`, { method: "DELETE" }),
+  deleteUsersBatch: payloadDecl(`/users/batch-delete`, { method: "DELETE" }),
+
 } as const;
 
 if (typeof window !== "undefined") {
