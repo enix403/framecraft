@@ -12,6 +12,7 @@ import {
   uniqueFilterFn,
   UniqueValuesFilter
 } from "./filters/UniqueValuesFilter";
+import { ColumnVisibilityControl } from "./filters/ColumnVisibilityControl";
 
 type Item = {
   id: string;
@@ -206,6 +207,7 @@ export function SomeUseTable() {
             placeholder='Filter by name or email...'
           />
           <UniqueValuesFilter table={table} columnName='performance' />
+          <ColumnVisibilityControl table={table} />
         </div>
       )}
     />
