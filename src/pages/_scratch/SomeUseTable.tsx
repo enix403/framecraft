@@ -8,7 +8,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
 import { SomeDataTable } from "./SomeDataTable";
 import { TextFilter } from "./filters/TextFilter";
-import { UniqueValuesFilter } from "./filters/UniqueValuesFilter";
+import {
+  uniqueFilterFn,
+  UniqueValuesFilter
+} from "./filters/UniqueValuesFilter";
 
 type Item = {
   id: string;
@@ -149,15 +152,12 @@ const columns: ColumnDef<Item>[] = [
       </Badge>
     ),
     size: 100,
-    filterFn: (row, columnId, filterValue: string[]) => {
-      if (!filterValue?.length) return true;
-      const status = row.getValue(columnId) as string;
-      return filterValue.includes(status);
-    }
+    filterFn: uniqueFilterFn()
   },
   {
     header: "Performance",
-    accessorKey: "performance"
+    accessorKey: "performance",
+    filterFn: uniqueFilterFn()
   },
   {
     header: "Balance",

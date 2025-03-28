@@ -1,4 +1,8 @@
-import { flexRender, type Table as TableInstance } from "@tanstack/react-table";
+import {
+  FilterFn,
+  flexRender,
+  type Table as TableInstance
+} from "@tanstack/react-table";
 import { FilterIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,6 +13,19 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover";
 import { useId, useMemo } from "react";
+
+export function uniqueFilterFn<T>() {
+  const filterFn: FilterFn<T> = (
+    row,
+    columnId,
+    filterValue: string[]
+  ) => {
+    if (!filterValue?.length) return true;
+    const status = row.getValue(columnId) as string;
+    return filterValue.includes(status);
+  };
+  return filterFn;
+}
 
 export function UniqueValuesFilter<Item>({
   table,
@@ -63,7 +80,6 @@ export function UniqueValuesFilter<Item>({
       .getColumn(columnName)
       ?.setFilterValue(newFilterValue.length ? newFilterValue : undefined);
   };
-
 
   return (
     <Popover>
