@@ -117,12 +117,14 @@ export function SomeDataTable<Item>({
   data,
   columns,
   canRowExpand,
-  renderExpandedRow
+  renderExpandedRow,
+  renderFilters
 }: {
   data: Item[];
   columns: ColumnDef<Item>[];
   canRowExpand?: (row: Row<Item>) => boolean;
   renderExpandedRow?: (row: Row<Item>) => ReactNode;
+  renderFilters?: (props: { table: TableInstance<Item> }) => ReactNode;
 }) {
   /* ========= Sorting ========= */
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -153,7 +155,7 @@ export function SomeDataTable<Item>({
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
     // Filtering
-    // getFilteredRowModel: getFilteredRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     // Faceting
     // getFacetedRowModel: getFacetedRowModel(),
     // getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -169,18 +171,16 @@ export function SomeDataTable<Item>({
     }
   });
 
+  const filtersMarkup = renderFilters?.({ table });
+
   return (
     <div className='space-y-4'>
       {/* Filters */}
-      <div className='flex flex-wrap items-center justify-between gap-3'>
-        <div className='flex items-center gap-3'>
-          <TextFilter
-            table={table}
-            columnName='name'
-            placeholder='Filter by name or email...'
-          />
+      {filtersMarkup && (
+        <div className='flex flex-wrap items-center justify-between gap-3'>
+          {filtersMarkup}
         </div>
-      </div>
+      )}
 
       {/* Table */}
       <InnerTable

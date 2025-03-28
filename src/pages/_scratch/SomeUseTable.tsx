@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
 import { SomeDataTable } from "./SomeDataTable";
+import { TextFilter } from "./filters/TextFilter";
 
 type Item = {
   id: string;
@@ -108,8 +109,14 @@ const columns: ColumnDef<Item>[] = [
       </div>
     ),
     size: 180,
-    // filterFn: multiColumnFilterFn,
-    enableHiding: false
+    enableHiding: false,
+    // Filter on both name and email
+    filterFn: (row, columnId, filterValue) => {
+      const searchableRowContent =
+        `${row.original.name} ${row.original.email}`.toLowerCase();
+      const searchTerm = (filterValue ?? "").toLowerCase();
+      return searchableRowContent.includes(searchTerm);
+    }
   },
   {
     header: "Email",
@@ -182,5 +189,19 @@ export function SomeUseTable() {
     fetchPosts();
   }, []);
 
-  return <SomeDataTable data={data} columns={columns} />;
+  return (
+    <SomeDataTable
+      data={data}
+      columns={columns}
+      renderFilters={({ table }) => (
+        <div className='flex items-center gap-3'>
+          <TextFilter
+            table={table}
+            columnName='name'
+            placeholder='Filter by name or email...'
+          />
+        </div>
+      )}
+    />
+  );
 }
