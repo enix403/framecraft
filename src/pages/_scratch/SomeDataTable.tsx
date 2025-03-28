@@ -111,6 +111,7 @@ import {
   getFacetedRowModel
 } from "@tanstack/react-table";
 import { getFacetedMinMaxValues } from "@tanstack/react-table";
+import { TextFilter } from "./filters/TextFilter";
 
 export function SomeDataTable<Item>({
   data,
@@ -170,6 +171,17 @@ export function SomeDataTable<Item>({
 
   return (
     <div className='space-y-4'>
+      {/* Filters */}
+      <div className='flex flex-wrap items-center justify-between gap-3'>
+        <div className='flex items-center gap-3'>
+          <TextFilter
+            table={table}
+            columnName='name'
+            placeholder='Filter by name or email...'
+          />
+        </div>
+      </div>
+
       {/* Table */}
       <InnerTable
         table={table}
@@ -189,7 +201,6 @@ function InnerTable<Item>({
   columns
 }: {
   table: TableInstance<Item>;
-
   renderExpandedRow?: (row: Row<Item>) => ReactNode;
   columns: ColumnDef<Item>[];
 }) {
