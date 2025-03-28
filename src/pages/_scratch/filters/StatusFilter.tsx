@@ -1,4 +1,4 @@
-import { type Table as TableInstance } from "@tanstack/react-table";
+import { flexRender, type Table as TableInstance } from "@tanstack/react-table";
 import { FilterIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,34 +10,44 @@ import {
 } from "@/components/ui/popover";
 import { useId, useMemo } from "react";
 
-export function StatusFilter<Item>({ table }: { table: TableInstance<Item> }) {
+export function StatusFilter<Item>({
+  table,
+  columnName
+}: {
+  table: TableInstance<Item>;
+  columnName: string;
+}) {
   const id = useId();
 
-  // Get unique status values
-  const uniqueStatusValues = useMemo(() => {
-    const statusColumn = table.getColumn("status");
+  // Get unique values
+  const uniqueValues = useMemo(() => {
+    const col = table.getColumn(columnName);
+    if (!col) return [];
 
-    if (!statusColumn) return [];
+    return Array.from(col.getFacetedUniqueValues().keys()).sort();
+  }, [columnName, table.getColumn(columnName)?.getFacetedUniqueValues()]);
 
-    const values = Array.from(statusColumn.getFacetedUniqueValues().keys());
+  // Get counts for each unique value
+  const uniqueCounts = useMemo(() => {
+    const col = table.getColumn(columnName);
+    if (!col) return new Map();
 
-    return values.sort();
-  }, [table.getColumn("status")?.getFacetedUniqueValues()]);
+    return col.getFacetedUniqueValues();
+  }, [columnName, table.getColumn(columnName)?.getFacetedUniqueValues()]);
 
-  // Get counts for each status
-  const statusCounts = useMemo(() => {
-    const statusColumn = table.getColumn("status");
-    if (!statusColumn) return new Map();
-    return statusColumn.getFacetedUniqueValues();
-  }, [table.getColumn("status")?.getFacetedUniqueValues()]);
+  const selectedValues = useMemo(() => {
+    const filterValue = table
+      .getColumn(columnName)
+      ?.getFilterValue() as string[];
 
-  const selectedStatuses = useMemo(() => {
-    const filterValue = table.getColumn("status")?.getFilterValue() as string[];
     return filterValue ?? [];
-  }, [table.getColumn("status")?.getFilterValue()]);
+  }, [columnName, table.getColumn(columnName)?.getFilterValue()]);
 
-  const handleStatusChange = (checked: boolean, value: string) => {
-    const filterValue = table.getColumn("status")?.getFilterValue() as string[];
+  const handleCheckChange = (checked: boolean, value: string) => {
+    const filterValue = table
+      .getColumn(columnName)
+      ?.getFilterValue() as string[];
+
     const newFilterValue = filterValue ? [...filterValue] : [];
 
     if (checked) {
@@ -50,9 +60,11 @@ export function StatusFilter<Item>({ table }: { table: TableInstance<Item> }) {
     }
 
     table
-      .getColumn("status")
+      .getColumn(columnName)
       ?.setFilterValue(newFilterValue.length ? newFilterValue : undefined);
   };
+
+  const colObj = table.getColumn(columnName);
 
   return (
     <Popover>
@@ -63,10 +75,10 @@ export function StatusFilter<Item>({ table }: { table: TableInstance<Item> }) {
             size={16}
             aria-hidden='true'
           />
-          Status
-          {selectedStatuses.length > 0 && (
+          {table.getColumn(columnName)?.columnDef.header?.toString() ?? ""}
+          {selectedValues.length > 0 && (
             <span className='-me-1 inline-flex h-5 max-h-full items-center rounded border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70'>
-              {selectedStatuses.length}
+              {selectedValues.length}
             </span>
           )}
         </Button>
@@ -77,22 +89,22 @@ export function StatusFilter<Item>({ table }: { table: TableInstance<Item> }) {
             Filters
           </div>
           <div className='space-y-3'>
-            {uniqueStatusValues.map((value, i) => (
+            {uniqueValues.map((value, i) => (
               <div key={value} className='flex items-center gap-2'>
                 <Checkbox
                   id={`${id}-${i}`}
-                  checked={selectedStatuses.includes(value)}
+                  checked={selectedValues.includes(value)}
                   onCheckedChange={(checked: boolean) =>
-                    handleStatusChange(checked, value)
+                    handleCheckChange(checked, value)
                   }
                 />
                 <Label
                   htmlFor={`${id}-${i}`}
                   className='flex grow justify-between gap-2 font-normal'
                 >
-                  {value}{" "}
+                  {value}
                   <span className='ms-2 text-xs text-muted-foreground'>
-                    {statusCounts.get(value)}
+                    {uniqueCounts.get(value)}
                   </span>
                 </Label>
               </div>

@@ -205,7 +205,7 @@ export function SomeUseTable() {
             columnName='name'
             placeholder='Filter by name or email...'
           />
-          <StatusFilter table={table} />
+          <StatusFilter table={table} columnName='status' />
         </div>
       )}
     />
