@@ -1,5 +1,10 @@
-import { ColumnDef, FilterFn } from "@tanstack/react-table";
-import { ChevronDownIcon, ChevronUpIcon, InfoIcon } from "lucide-react";
+import { ColumnDef, FilterFn, Row } from "@tanstack/react-table";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  EllipsisIcon,
+  InfoIcon
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +19,17 @@ import {
 } from "./filters/UniqueValuesFilter";
 import { ColumnVisibilityControl } from "./filters/ColumnVisibilityControl";
 import { DeleteRowsButton } from "./filters/DeleteRowsButton";
+
+import {
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type Item = {
   id: string;
@@ -172,6 +188,48 @@ export function SomeUseTable() {
           </span>
           <p className='flex-1-fix text-sm text-wrap'>{row.original.note}</p>
         </div>
+      )}
+      renderActions={() => (
+        <>
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <span>Edit</span>
+              <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <span>Duplicate</span>
+              <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <span>Archive</span>
+              <DropdownMenuShortcut>⌘A</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>More</DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>Move to project</DropdownMenuItem>
+                  <DropdownMenuItem>Move to folder</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Advanced options</DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>Share</DropdownMenuItem>
+            <DropdownMenuItem>Add to favorites</DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className='text-destructive focus:text-destructive'>
+            <span>Delete</span>
+            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </>
       )}
     />
   );

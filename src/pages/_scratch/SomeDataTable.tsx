@@ -112,6 +112,7 @@ import {
 } from "@tanstack/react-table";
 import { getFacetedMinMaxValues } from "@tanstack/react-table";
 import { TextFilter } from "./filters/TextFilter";
+import { RowActions } from "./filters/RowActions";
 
 function selectBoxColumnDef<T>() {
   const def: ColumnDef<T> = {
@@ -193,7 +194,8 @@ export function SomeDataTable<Item>({
   enableRowExpand = false,
   enableRowSelect = false,
   canRowExpand,
-  renderExpandedRow
+  renderExpandedRow,
+  renderActions
 }: {
   data: Item[];
   columns: ColumnDef<Item>[];
@@ -202,14 +204,27 @@ export function SomeDataTable<Item>({
   enableRowSelect?: boolean;
   canRowExpand?: (row: Row<Item>) => boolean;
   renderExpandedRow?: (row: Row<Item>) => ReactNode;
+  renderActions?: (row: Row<Item>) => ReactNode;
 }) {
   const columns = useMemo(() => {
     return [
       enableRowExpand && expanderColumnDef<Item>(),
       enableRowSelect && selectBoxColumnDef<Item>(),
-      ...originalColumns
+      ...originalColumns,
+      renderActions
+        ? {
+            id: "actions",
+            header: () => <span className='sr-only'>Actions</span>,
+            cell: ({ row }) => <RowActions>{renderActions?.(row)}</RowActions>,
+            size: 10,
+            enableSorting: false,
+            enableHiding: false,
+            enableColumnFilter: false,
+            enableResizing: false
+          }
+        : undefined
     ].filter(Boolean) as ColumnDef<Item>[];
-  }, [originalColumns, enableRowExpand, enableRowSelect]);
+  }, [originalColumns, enableRowExpand, enableRowSelect, renderActions]);
 
   /* ========= Sorting ========= */
   const [sorting, setSorting] = useState<SortingState>([]);
