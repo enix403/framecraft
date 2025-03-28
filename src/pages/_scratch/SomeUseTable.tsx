@@ -27,7 +27,7 @@ const columns: ColumnDef<Item>[] = [
       return row.getCanExpand() ? (
         <Button
           {...{
-            className: "size-7 shadow-none text-muted-foreground",
+            className: "size-7 ml-1 shadow-none text-muted-foreground",
             onClick: row.getToggleExpandedHandler(),
             "aria-expanded": row.getIsExpanded(),
             "aria-label": row.getIsExpanded()
@@ -53,28 +53,32 @@ const columns: ColumnDef<Item>[] = [
         </Button>
       ) : undefined;
     },
-    size: 28,
+    size: 10,
     enableSorting: false,
     enableHiding: false
   },
   {
     id: "select",
     header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
+      <div className='pl-2'>
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          aria-label='Select all'
+        />
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={value => row.toggleSelected(!!value)}
-        aria-label='Select row'
-      />
+      <div className='pl-2'>
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={value => row.toggleSelected(!!value)}
+          aria-label='Select row'
+        />
+      </div>
     ),
     size: 28,
     enableSorting: false,

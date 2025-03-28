@@ -107,8 +107,10 @@ import {
   useReactTable,
   VisibilityState,
   type TableOptions,
-  type Table as TableInstance
+  type Table as TableInstance,
+  getFacetedRowModel
 } from "@tanstack/react-table";
+import { getFacetedMinMaxValues } from "@tanstack/react-table";
 
 export function SomeDataTable<Item>({
   data,
@@ -149,9 +151,12 @@ export function SomeDataTable<Item>({
     // Pagination
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
-    //
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getFilteredRowModel: getFilteredRowModel(),
+    // Filtering
+    // getFilteredRowModel: getFilteredRowModel(),
+    // Faceting
+    // getFacetedRowModel: getFacetedRowModel(),
+    // getFacetedUniqueValues: getFacetedUniqueValues(),
+    // getFacetedMinMaxValues: getFacetedMinMaxValues(),
 
     // onColumnFiltersChange: setColumnFilters,
     // onColumnVisibilityChange: setColumnVisibility,
