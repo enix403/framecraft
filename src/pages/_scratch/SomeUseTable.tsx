@@ -139,16 +139,20 @@ export function SomeUseTable() {
       enableRowExpand
       enableRowSelect
       renderFilters={({ table }) => (
-        <div className='flex items-center gap-3'>
-          <TextFilter
-            table={table}
-            columnName='name'
-            placeholder='Filter by name or email...'
-          />
-          <UniqueValuesFilter table={table} columnName='status' />
-          <ColumnVisibilityControl table={table} />
-          <DeleteRowsButton table={table} />
-        </div>
+        <>
+          <div className='flex items-center gap-3'>
+            <TextFilter
+              table={table}
+              columnName='name'
+              placeholder='Filter by name or email...'
+            />
+            <UniqueValuesFilter table={table} columnName='status' />
+            <ColumnVisibilityControl table={table} />
+          </div>
+          <div className='ml-auto'>
+            <DeleteRowsButton table={table} />
+          </div>
+        </>
       )}
       canRowExpand={row => Boolean(row.original.note)}
       renderExpandedRow={row => (
