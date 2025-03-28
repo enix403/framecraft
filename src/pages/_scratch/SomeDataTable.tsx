@@ -116,15 +116,15 @@ import { TextFilter } from "./filters/TextFilter";
 export function SomeDataTable<Item>({
   data,
   columns,
+  renderFilters,
   canRowExpand,
-  renderExpandedRow,
-  renderFilters
+  renderExpandedRow
 }: {
   data: Item[];
   columns: ColumnDef<Item>[];
+  renderFilters?: (props: { table: TableInstance<Item> }) => ReactNode;
   canRowExpand?: (row: Row<Item>) => boolean;
   renderExpandedRow?: (row: Row<Item>) => ReactNode;
-  renderFilters?: (props: { table: TableInstance<Item> }) => ReactNode;
 }) {
   /* ========= Sorting ========= */
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -286,7 +286,7 @@ function InnerTable<Item>({
                 {renderExpandedRow && row.getIsExpanded() && (
                   <TableRow>
                     <TableCell colSpan={row.getVisibleCells().length}>
-                      <div className='flex max-w-full'>
+                      <div className='max-w-full text-wrap'>
                         {renderExpandedRow?.(row)}
                       </div>
                     </TableCell>

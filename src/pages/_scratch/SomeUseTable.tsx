@@ -1,5 +1,5 @@
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, InfoIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -208,6 +208,18 @@ export function SomeUseTable() {
           />
           <UniqueValuesFilter table={table} columnName='performance' />
           <ColumnVisibilityControl table={table} />
+        </div>
+      )}
+      canRowExpand={row => Boolean(row.original.note)}
+      renderExpandedRow={row => (
+        <div className='flex max-w-full items-start py-2 text-primary/80'>
+          <span
+            className='me-3 mt-0.5 flex w-7 shrink-0 justify-center'
+            aria-hidden='true'
+          >
+            <InfoIcon className='opacity-60' size={16} />
+          </span>
+          <p className='flex-1-fix text-sm text-wrap'>{row.original.note}</p>
         </div>
       )}
     />
