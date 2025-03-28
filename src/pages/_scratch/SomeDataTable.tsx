@@ -157,8 +157,8 @@ export function SomeDataTable<Item>({
     // Filtering
     getFilteredRowModel: getFilteredRowModel(),
     // Faceting
-    // getFacetedRowModel: getFacetedRowModel(),
-    // getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     // getFacetedMinMaxValues: getFacetedMinMaxValues(),
 
     // onColumnFiltersChange: setColumnFilters,

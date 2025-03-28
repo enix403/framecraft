@@ -1,4 +1,4 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
 import { SomeDataTable } from "./SomeDataTable";
 import { TextFilter } from "./filters/TextFilter";
+import { StatusFilter } from "./filters/StatusFilter";
 
 type Item = {
   id: string;
@@ -147,8 +148,12 @@ const columns: ColumnDef<Item>[] = [
         {row.getValue("status")}
       </Badge>
     ),
-    size: 100
-    // filterFn: statusFilterFn
+    size: 100,
+    filterFn: (row, columnId, filterValue: string[]) => {
+      if (!filterValue?.length) return true;
+      const status = row.getValue(columnId) as string;
+      return filterValue.includes(status);
+    }
   },
   {
     header: "Performance",
@@ -200,6 +205,7 @@ export function SomeUseTable() {
             columnName='name'
             placeholder='Filter by name or email...'
           />
+          <StatusFilter table={table} />
         </div>
       )}
     />
