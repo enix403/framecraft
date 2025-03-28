@@ -13,6 +13,7 @@ import {
   UniqueValuesFilter
 } from "./filters/UniqueValuesFilter";
 import { ColumnVisibilityControl } from "./filters/ColumnVisibilityControl";
+import { DeleteRowsButton } from "./filters/DeleteRowsButton";
 
 type Item = {
   id: string;
@@ -146,6 +147,7 @@ export function SomeUseTable() {
           />
           <UniqueValuesFilter table={table} columnName='status' />
           <ColumnVisibilityControl table={table} />
+          <DeleteRowsButton table={table} />
         </div>
       )}
       canRowExpand={row => Boolean(row.original.note)}
