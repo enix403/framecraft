@@ -109,7 +109,7 @@ import {
   type TableOptions
 } from "@tanstack/react-table";
 
-export function DataTable<Item>({
+export function SomeDataTable<Item>({
   data,
   columns,
   canRowExpand,

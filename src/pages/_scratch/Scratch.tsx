@@ -7,11 +7,13 @@ import { Ex6_Filters } from "./ex/Ex6_Filters";
 import { Ex7_CollapsibleRows } from "./ex/Ex7_CollapsibleRows";
 import { Ex8_Pagination } from "./ex/Ex8_Pagination";
 import { Ex9_Complex } from "./ex/Ex9_Complex";
-// import { UserTable } from "./UserTable";
+import { SomeUseTable } from "./SomeUseTable";
+
 
 export function Scratch() {
   return (
     <div className='max-h-full w-full max-w-full space-y-7 overflow-y-auto p-8'>
+      <SomeUseTable />
       {/* <Ex1_BasicTable /> */}
       {/* <Ex2_TableWithImages /> */}
       {/* <Ex3_DenseTable /> */}
@@ -25,3 +27,5 @@ export function Scratch() {
     </div>
   );
 }
+
+
