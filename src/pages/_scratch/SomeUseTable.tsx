@@ -149,9 +149,16 @@ export function SomeUseTable() {
             <UniqueValuesFilter table={table} columnName='status' />
             <ColumnVisibilityControl table={table} />
           </div>
-          <div className='ml-auto'>
-            <DeleteRowsButton table={table} />
-          </div>
+          {table.getSelectedRowModel().rows.length > 0 && (
+            <div className='ml-auto'>
+              <DeleteRowsButton
+                table={table}
+                onDelete={() => {
+                  table.resetRowSelection();
+                }}
+              />
+            </div>
+          )}
         </>
       )}
       canRowExpand={row => Boolean(row.original.note)}

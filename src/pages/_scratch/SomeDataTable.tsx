@@ -256,6 +256,7 @@ export function SomeDataTable<Item>({
     }
   });
 
+  const hasSelectedRows = table.getSelectedRowModel().rows.length > 0;
   const filtersMarkup = renderFilters?.({ table });
 
   return (
