@@ -28,8 +28,9 @@ import {
   DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
+  DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
+import { ConfirmDialog } from "./filters/ConfirmDialog";
 
 type Item = {
   id: string;
@@ -225,10 +226,16 @@ export function SomeUseTable() {
             <DropdownMenuItem>Add to favorites</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className='text-destructive focus:text-destructive'>
-            <span>Delete</span>
-            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <ConfirmDialog>
+            <DropdownMenuItem
+              // Important
+              onSelect={e => e.preventDefault()}
+              className='text-destructive focus:text-destructive'
+            >
+              <span>Delete</span>
+              <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </ConfirmDialog>
         </>
       )}
     />
