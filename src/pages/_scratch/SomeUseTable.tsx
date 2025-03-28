@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
 import { SomeDataTable } from "./SomeDataTable";
 import { TextFilter } from "./filters/TextFilter";
-import { StatusFilter } from "./filters/StatusFilter";
+import { UniqueValuesFilter } from "./filters/UniqueValuesFilter";
 
 type Item = {
   id: string;
@@ -205,7 +205,7 @@ export function SomeUseTable() {
             columnName='name'
             placeholder='Filter by name or email...'
           />
-          <StatusFilter table={table} columnName='status' />
+          <UniqueValuesFilter table={table} columnName='performance' />
         </div>
       )}
     />

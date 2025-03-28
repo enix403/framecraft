@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/popover";
 import { useId, useMemo } from "react";
 
-export function StatusFilter<Item>({
+export function UniqueValuesFilter<Item>({
   table,
   columnName
 }: {
@@ -64,7 +64,6 @@ export function StatusFilter<Item>({
       ?.setFilterValue(newFilterValue.length ? newFilterValue : undefined);
   };
 
-  const colObj = table.getColumn(columnName);
 
   return (
     <Popover>
