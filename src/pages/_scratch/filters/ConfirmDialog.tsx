@@ -13,7 +13,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 export function ConfirmDialog({
   title = "Are you absolutely sure?",
@@ -28,11 +38,18 @@ export function ConfirmDialog({
   onConfirm?: () => unknown;
 } & PropsWithChildren) {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setLoading(false);
+    }
+  }, [open]);
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
         <div className='flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4'>
           <div
             className='flex size-9 shrink-0 items-center justify-center rounded-full border'
@@ -40,27 +57,34 @@ export function ConfirmDialog({
           >
             <CircleAlertIcon className='opacity-80' size={16} />
           </div>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{title}</AlertDialogTitle>
-            <AlertDialogDescription>{subtitle}</AlertDialogDescription>
-          </AlertDialogHeader>
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{subtitle}</DialogDescription>
+          </DialogHeader>
         </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
+        <DialogFooter className='mt-4'>
+          <Button variant='outline'>Cancel</Button>
+          <Button
             loading={loading}
-            onClick={() => {
+            onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
               let result: unknown = onConfirm?.();
               if (isPromise(result)) {
                 setLoading(true);
-                result.finally(() => setLoading(false));
+                result.finally(() => {
+                  setOpen(false);
+                });
+              }
+              else {
+                setOpen(false);
               }
             }}
           >
             {actionButton}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

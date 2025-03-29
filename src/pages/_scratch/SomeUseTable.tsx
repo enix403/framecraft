@@ -75,7 +75,7 @@ const columns: ColumnDef<Item>[] = [
     enableHiding: false,
     filterFn: (row, columnId, filterValue) => {
       const searchableRowContent =
-        `${row.original.name} ${row.original.email}`.toLowerCase();
+        `${row.original.fullName} ${row.original.email}`.toLowerCase();
       const searchTerm = (filterValue ?? "").toLowerCase();
       return searchableRowContent.includes(searchTerm);
     }
