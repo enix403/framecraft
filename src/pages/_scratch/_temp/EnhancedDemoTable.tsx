@@ -31,26 +31,22 @@ import {
   DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
 import { ConfirmDialog } from "./filters/ConfirmDialog";
-import { useQuery } from "@tanstack/react-query";
-import { apiRoutes } from "@/lib/api-routes";
 
-// type Item = {
-//   id: string;
-//   name: string;
-//   email: string;
-//   location: string;
-//   flag: string;
-//   status: "Active" | "Inactive" | "Pending";
-//   balance: number;
-//   note?: string;
-// };
-
-type Item = Record<string, any>;
+type Item = {
+  id: string;
+  name: string;
+  email: string;
+  location: string;
+  flag: string;
+  status: "Active" | "Inactive" | "Pending";
+  balance: number;
+  note?: string;
+};
 
 const columns: ColumnDef<Item>[] = [
   {
     header: "Name",
-    accessorKey: "fullName",
+    accessorKey: "name",
     cell: ({ row }) => (
       // <div className="font-medium">{row.getValue("name")}</div>
       <div className='flex items-center gap-3'>
@@ -64,15 +60,16 @@ const columns: ColumnDef<Item>[] = [
           alt={"User"}
         />
         <div>
-          <div className='font-medium'>{row.original.fullName}</div>
-          {/* <span className='mt-0.5 text-xs text-muted-foreground'>
+          <div className='font-medium'>{row.getValue("name")}</div>
+          <span className='mt-0.5 text-xs text-muted-foreground'>
             @alexthompson
-          </span> */}
+          </span>
         </div>
       </div>
     ),
-    size: 100,
+    size: 180,
     enableHiding: false,
+    // Filter on both name and email
     filterFn: (row, columnId, filterValue) => {
       const searchableRowContent =
         `${row.original.name} ${row.original.email}`.toLowerCase();
@@ -83,67 +80,74 @@ const columns: ColumnDef<Item>[] = [
   {
     header: "Email",
     accessorKey: "email",
+    size: 220
+  },
+  {
+    header: "Location",
+    accessorKey: "location",
+    cell: ({ row }) => (
+      <div>
+        <span className='text-lg leading-none'>{row.original.flag}</span>{" "}
+        {row.getValue("location")}
+      </div>
+    ),
+    size: 180
+  },
+  {
+    header: "Status",
+    accessorKey: "status",
+    cell: ({ row }) => (
+      <Badge
+        className={cn(
+          row.getValue("status") === "Inactive" &&
+            "bg-muted-foreground/60 text-primary-foreground"
+        )}
+      >
+        {row.getValue("status")}
+      </Badge>
+    ),
     size: 100,
-    // size: 220
-  },
-  {
-    header: "Role",
-    accessorKey: "role",
-    size: 40,
-    cell: ({ row }) => {
-      let role = row.getValue("role") as any;
-
-      const styles = {
-        admin: "bg-emerald-400/20 text-emerald-500",
-        user: "bg-amber-400/20 text-amber-500"
-      }[role];
-
-      return (
-        <div
-          className={cn(
-            "inline-flex items-center justify-center rounded px-2.5 py-1 font-medium",
-            "capitalize",
-            styles
-          )}
-        >
-          {role}
-        </div>
-      );
-    },
     filterFn: uniqueFilterFn()
   },
   {
-    header: "Gender",
-    accessorKey: "gender",
-    size: 40,
-    cell: ({ row }) => {
-      let gender = row.getValue("gender") as any;
-      return <span className='capitalize'>{gender}</span>;
-    },
+    header: "Performance",
+    accessorKey: "performance",
     filterFn: uniqueFilterFn()
   },
   {
-    header: "Address",
-    accessorKey: "address",
+    header: "Balance",
+    accessorKey: "balance",
     cell: ({ row }) => {
-      const user = row.original;
-
-      return (
-        <div className="text-ellipsis truncate">
-          {`${user.addressArea || ""}, ${user.addressCity || ""}, ${user.addressCountry || ""}, ${user.addressZip || ""}`.trim()}
-        </div>
-      );
+      const amount = parseFloat(row.getValue("balance"));
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD"
+      }).format(amount);
+      return formatted;
     },
-    size: 200
-  },
-
+    size: 120
+  }
+  // {
+  //   id: "actions",
+  //   header: () => <span className='sr-only'>Actions</span>,
+  //   cell: ({ row }) => <RowActions row={row} />,
+  //   size: 60,
+  //   enableHiding: false
+  // }
 ];
 
 export function SomeUseTable() {
-  const { data = [] } = useQuery({
-    queryKey: ["users", "list"],
-    queryFn: () => apiRoutes.getUsers()
-  });
+  const [data, setData] = useState<Item[]>([]);
+  useEffect(() => {
+    async function fetchPosts() {
+      const res = await fetch(
+        "https://res.cloudinary.com/dlzlfasou/raw/upload/users-01_fertyx.json"
+      );
+      const data = await res.json();
+      setData(data);
+    }
+    fetchPosts();
+  }, []);
 
   return (
     <SomeDataTable
@@ -155,16 +159,17 @@ export function SomeUseTable() {
       //     desc: false
       //   }
       // ]}
+      enableRowExpand
       enableRowSelect
       renderFilters={({ table }) => (
         <>
           <div className='flex items-center gap-3'>
             <TextFilter
               table={table}
-              columnName='fullName'
+              columnName='name'
               placeholder='Filter by name or email...'
             />
-            <UniqueValuesFilter table={table} columnName='role' />
+            <UniqueValuesFilter table={table} columnName='status' />
             <ColumnVisibilityControl table={table} />
           </div>
           {table.getSelectedRowModel().rows.length > 0 && (
@@ -179,9 +184,8 @@ export function SomeUseTable() {
           )}
         </>
       )}
-      // enableRowExpand
-      // canRowExpand={row => Boolean(row.original.note)}
-      /* renderExpandedRow={row => (
+      canRowExpand={row => Boolean(row.original.note)}
+      renderExpandedRow={row => (
         <div className='flex max-w-full items-start py-2 text-primary/80'>
           <span
             className='me-3 mt-0.5 flex w-7 shrink-0 justify-center'
@@ -191,7 +195,7 @@ export function SomeUseTable() {
           </span>
           <p className='flex-1-fix text-sm text-wrap'>{row.original.note}</p>
         </div>
-      )} */
+      )}
       renderActions={() => (
         <>
           <DropdownMenuGroup>

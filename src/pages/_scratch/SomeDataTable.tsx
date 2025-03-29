@@ -190,15 +190,17 @@ function expanderColumnDef<T>() {
 export function SomeDataTable<Item>({
   data,
   columns: originalColumns,
+  initialSort = [],
   renderFilters,
   enableRowExpand = false,
   enableRowSelect = false,
   canRowExpand,
   renderExpandedRow,
-  renderActions
+  renderActions,
 }: {
   data: Item[];
   columns: ColumnDef<Item>[];
+  initialSort?: SortingState;
   renderFilters?: (props: { table: TableInstance<Item> }) => ReactNode;
   enableRowExpand?: boolean;
   enableRowSelect?: boolean;
@@ -227,7 +229,7 @@ export function SomeDataTable<Item>({
   }, [originalColumns, enableRowExpand, enableRowSelect, renderActions]);
 
   /* ========= Sorting ========= */
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>(initialSort);
 
   /* ========= Pagination ========= */
   const [pagination, setPagination] = useState<PaginationState>({
