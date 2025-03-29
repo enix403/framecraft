@@ -71,11 +71,9 @@ interface User {
 
 // 📌 Validation Schema (Joi)
 const userSchema = Joi.object({
-  fullName: Joi.string().min(3).required(),
-  email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .required(),
-  role: Joi.string().valid("user", "admin").required(),
+  fullName: Joi.string().min(3).optional(),
+  email: Joi.string().email({ tlds: { allow: false } }),
+  role: Joi.string().valid("user", "admin"),
   gender: Joi.string().valid("male", "female").allow(null, ""),
   dateOfBirth: Joi.alternatives().try(Joi.string(), Joi.date()).allow(null, ""),
   phoneCountryCode: Joi.string().allow(null, ""),
@@ -85,35 +83,19 @@ const userSchema = Joi.object({
   addressArea: Joi.string().allow(null, ""),
   addressZip: Joi.string().allow(null, ""),
   bio: Joi.string().allow(null, ""),
-  isActive: Joi.boolean().required(),
-  isVerified: Joi.boolean().required()
-});
+  isActive: Joi.boolean(),
+  isVerified: Joi.boolean()
+}).unknown(true);
 
 const listQueryKey = ["users", "list"];
 
-// export const UserEditDialog({
-//   userId: string;
-//   renderEditTrigger: (id: string) => JSX.Element;
-// }> = ({ userId, renderEditTrigger }) => {
-
-function UserEditDialogInner() {
-
-}
-
-export function UserEditDialog({
-  userId,
-  children
-}: { userId } & PropsWithChildren) {
+// export function UserEditDialog({
+export function UserEditDialogInner({
+  user
+}: { user: User } & PropsWithChildren) {
+  /*
   const queryClient = useQueryClient();
-
-  // Fetch user data
-  const { data: user, isLoading } = useQuery<User>({
-    queryKey: ["user", userId],
-    queryFn: () => apiRoutes.getUser(userId),
-    enabled: !!userId
-  });
-
-  /* // Optimistic UI Mutation
+  // Optimistic UI Mutation
   const updateUserMutation = useMutation({
     mutationFn: (updatedFields: Partial<User>) =>
       apiRoutes.updateUser(updatedFields, userId),
@@ -145,7 +127,8 @@ export function UserEditDialog({
   */
   const onSubmit = (data: Partial<User>) => {
     // updateUserMutation.mutate(data);
-    toast("You submitted the following values:");
+    toast("You submitted the values");
+    console.log(data);
   };
 
   const form = useForm<User>({
@@ -154,17 +137,107 @@ export function UserEditDialog({
     mode: "onBlur"
   });
 
-  const {
-    reset,
-    control,
-    formState: { errors }
-  } = form;
+  const { reset, control } = form;
 
   // Reset form when user data loads
   useEffect(() => {
     if (user) reset(user);
-    if (user) console.log(user);
+    // if (user) console.log(user);
   }, [user, reset]);
+
+  /* TODO: loading */
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='contents'>
+        <div className='overflow-y-auto'>
+          <div className='space-y-4 p-6'>
+            {JSON.stringify(form.formState.errors)}
+            {/* Name */}
+            <FormField
+              control={control}
+              name='fullName'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Enter your name' {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Email */}
+            <FormField
+              control={control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Enter your email' {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Role */}
+            <FormField
+              control={form.control}
+              name='role'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Select a role' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='user'>User</SelectItem>
+                      <SelectItem value='admin'>Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+        <DialogFooter className='border-t px-6 py-4'>
+          <DialogClose asChild>
+            <Button type='button' variant='outline'>
+              Cancel
+            </Button>
+          </DialogClose>
+          <DialogClose asChild>
+            <Button type='submit'>Save changes</Button>
+          </DialogClose>
+        </DialogFooter>
+      </form>
+    </Form>
+  );
+}
+
+export function UserEditDialog({
+  userId,
+  children
+}: { userId } & PropsWithChildren) {
+  // Fetch user data
+  const { data: user, isError } = useQuery<User>({
+    queryKey: ["user", userId],
+    queryFn: () => apiRoutes.getUser(userId),
+    enabled: !!userId
+  });
 
   /* TODO: loading */
   return (
@@ -176,84 +249,7 @@ export function UserEditDialog({
             Edit profile
           </DialogTitle>
         </DialogHeader>
-        <div className='overflow-y-auto'>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4 p-6'
-            >
-              {/* Name */}
-              <FormField
-                control={control}
-                name='fullName'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Enter your name' {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {/* Email */}
-              <FormField
-                control={control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Enter your email' {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {/* Role */}
-              <FormField
-                control={form.control}
-                name='role'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Role</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder='Select a role' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='user'>User</SelectItem>
-                        <SelectItem value='admin'>Admin</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        </div>
-        <DialogFooter className='border-t px-6 py-4'>
-          <DialogClose asChild>
-            <Button type='button' variant='outline'>
-              Cancel
-            </Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <Button type='button'>Save changes</Button>
-          </DialogClose>
-        </DialogFooter>
+        {user && !isError && <UserEditDialogInner user={user} />}
       </DialogContent>
     </Dialog>
   );
