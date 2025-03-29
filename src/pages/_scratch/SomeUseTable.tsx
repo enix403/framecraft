@@ -83,7 +83,7 @@ const columns: ColumnDef<Item>[] = [
   {
     header: "Email",
     accessorKey: "email",
-    size: 100,
+    size: 100
     // size: 220
   },
   {
@@ -129,14 +129,13 @@ const columns: ColumnDef<Item>[] = [
       const user = row.original;
 
       return (
-        <div className="text-ellipsis truncate">
+        <div className='truncate text-ellipsis'>
           {`${user.addressArea || ""}, ${user.addressCity || ""}, ${user.addressCountry || ""}, ${user.addressZip || ""}`.trim()}
         </div>
       );
     },
     size: 200
-  },
-
+  }
 ];
 
 export function SomeUseTable() {
@@ -149,12 +148,12 @@ export function SomeUseTable() {
     <SomeDataTable
       data={data}
       columns={columns}
-      // initialSort={[
-      //   {
-      //     id: "name",
-      //     desc: false
-      //   }
-      // ]}
+      initialSort={[
+        {
+          id: "fullName",
+          desc: false
+        }
+      ]}
       enableRowSelect
       renderFilters={({ table }) => (
         <>
