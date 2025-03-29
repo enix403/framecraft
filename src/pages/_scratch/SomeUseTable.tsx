@@ -175,13 +175,15 @@ const useOptimisticDelete = (
 };
 
 export function SomeUseTable() {
-
   const { data = [] } = useQuery({
     queryKey: listQueryKey,
     queryFn: () => apiRoutes.getUsers()
   });
 
   const deleteMutation = useOptimisticDelete(apiRoutes.deleteUser);
+  const batchDeleteMutation = useOptimisticDelete((userIds: string[]) =>
+    apiRoutes.deleteUsersBatch({ ids: userIds })
+  );
 
   return (
     <SomeDataTable
@@ -210,7 +212,10 @@ export function SomeUseTable() {
               <DeleteRowsButton
                 table={table}
                 onDelete={() => {
+                  const rows = table.getSelectedRowModel().rows;
+                  const userIds = rows.map(row => row.original.id);
                   table.resetRowSelection();
+                  return batchDeleteMutation.mutate(userIds);
                 }}
               />
             </div>
