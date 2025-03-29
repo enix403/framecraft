@@ -8,19 +8,28 @@ import { Ex7_CollapsibleRows } from "./ex/Ex7_CollapsibleRows";
 import { Ex8_Pagination } from "./ex/Ex8_Pagination";
 import { Ex9_Complex } from "./ex/Ex9_Complex";
 import { SomeUseTable } from "./SomeUseTable";
-import { AddUserModal } from "./AddUserModal";
+// import { AddUserModal } from "./AddUserModal";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { UserEditDialog } from "./AddUserModal";
+
 
 export function Scratch() {
   return (
     <div className='max-h-full w-full max-w-full space-y-7 overflow-y-auto p-8'>
-      <AddUserModal>
+
+      <UserEditDialog userId="67e83ce8ac5dbb1149b77b94">
         <Button className='ml-auto' variant='outline'>
           <PlusIcon className='-ms-1 opacity-60' size={16} aria-hidden='true' />
           Add user
         </Button>
-      </AddUserModal>
+      </UserEditDialog>
+      {/* <AddUserModal>
+        <Button className='ml-auto' variant='outline'>
+          <PlusIcon className='-ms-1 opacity-60' size={16} aria-hidden='true' />
+          Add user
+        </Button>
+      </AddUserModal> */}
 
       {/* <SomeUseTable /> */}
       {/* <Ex9_Complex /> */}
