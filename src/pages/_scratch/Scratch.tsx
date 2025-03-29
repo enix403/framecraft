@@ -21,7 +21,7 @@ export function Scratch() {
       <UserEditDialog userId="67e83ce8ac5dbb1149b77b94">
         <Button className='ml-auto' variant='outline'>
           <PlusIcon className='-ms-1 opacity-60' size={16} aria-hidden='true' />
-          Add user
+          Edit User
         </Button>
       </UserEditDialog>
       {/* <AddUserModal>

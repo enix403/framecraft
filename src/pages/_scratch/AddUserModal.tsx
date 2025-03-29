@@ -6,10 +6,22 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form";
+import {
   Dialog,
   DialogContent,
   DialogTrigger,
-  DialogTitle
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+  DialogHeader
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import {
@@ -28,11 +40,14 @@ import {
   UserIcon,
   MailIcon,
   PhoneIcon,
-  MapPinIcon
+  MapPinIcon,
+  CheckIcon
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { apiRoutes } from "@/lib/api-routes";
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useId } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 // import { DatePicker } from "@/components/ui/date-picker";
 
 // 📌 User Type Definition
@@ -81,6 +96,10 @@ const listQueryKey = ["users", "list"];
 //   renderEditTrigger: (id: string) => JSX.Element;
 // }> = ({ userId, renderEditTrigger }) => {
 
+function UserEditDialogInner() {
+
+}
+
 export function UserEditDialog({
   userId,
   children
@@ -91,10 +110,10 @@ export function UserEditDialog({
   const { data: user, isLoading } = useQuery<User>({
     queryKey: ["user", userId],
     queryFn: () => apiRoutes.getUser(userId),
-    enabled: !!userId,
+    enabled: !!userId
   });
 
-  // Optimistic UI Mutation
+  /* // Optimistic UI Mutation
   const updateUserMutation = useMutation({
     mutationFn: (updatedFields: Partial<User>) =>
       apiRoutes.updateUser(updatedFields, userId),
@@ -123,151 +142,118 @@ export function UserEditDialog({
     }
   });
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    reset,
-    formState: { errors }
-  } = useForm<User>({
+  */
+  const onSubmit = (data: Partial<User>) => {
+    // updateUserMutation.mutate(data);
+    toast("You submitted the following values:");
+  };
+
+  const form = useForm<User>({
     resolver: joiResolver(userSchema),
     defaultValues: user,
     mode: "onBlur"
   });
 
+  const {
+    reset,
+    control,
+    formState: { errors }
+  } = form;
+
   // Reset form when user data loads
   useEffect(() => {
     if (user) reset(user);
     if (user) console.log(user);
-
   }, [user, reset]);
 
-  const onSubmit = (data: Partial<User>) => {
-    updateUserMutation.mutate(data);
-  };
-
+  /* TODO: loading */
   return (
-    <Dialog>
+    <Dialog open={true}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-3xl">
-        <DialogTitle>Edit User</DialogTitle>
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
-            {/* Full Name */}
-            <div>
-              <label>Full Name</label>
-              <Input {...register("fullName")} icon={<UserIcon />} />
-              {errors.fullName && (
-                <p className='text-red-500'>{errors.fullName.message}</p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div>
-              <label>Email</label>
-              <Input {...register("email")} icon={<MailIcon />} />
-              {errors.email && (
-                <p className='text-red-500'>{errors.email.message}</p>
-              )}
-            </div>
-
-            {/* Role */}
-            <div>
-              <Label>Role</Label>
-              <Select {...register("role")}>
-                <SelectTrigger>
-                  <SelectValue placeholder='Role' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='user'>User</SelectItem>
-                  <SelectItem value='admin'>Admin</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Gender */}
-            <div>
-              <Label>Gender</Label>
-              <Select {...register("gender")}>
-                <SelectTrigger>
-                  <SelectValue placeholder='Gender' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='male'>Male</SelectItem>
-                  <SelectItem value='female'>Female</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Date of Birth */}
-            {/*  <div>
-              <label>Date of Birth</label>
-              <DatePicker
-                selected={
-                  watch("dateOfBirth")
-                    ? new Date(watch("dateOfBirth") as string)
-                    : undefined
-                }
-                onChange={date => setValue("dateOfBirth", date?.toISOString())}
-                icon={<CalendarIcon />}
+      <DialogContent className='flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-lg [&>button:last-child]:top-3.5'>
+        <DialogHeader className='contents space-y-0 text-left'>
+          <DialogTitle className='border-b px-6 py-4 text-base'>
+            Edit profile
+          </DialogTitle>
+        </DialogHeader>
+        <div className='overflow-y-auto'>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className='space-y-4 p-6'
+            >
+              {/* Name */}
+              <FormField
+                control={control}
+                name='fullName'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder='Enter your name' {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This is your public display name.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div> */}
-
-            {/* Phone */}
-            <div className='flex space-x-2'>
-              <Input
-                {...register("phoneCountryCode")}
-                placeholder='+1'
-                className='w-1/4'
+              {/* Email */}
+              <FormField
+                control={control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder='Enter your email' {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This is your public display name.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <Input
-                {...register("phoneNumber")}
-                icon={<PhoneIcon />}
-                className='w-3/4'
+              {/* Role */}
+              <FormField
+                control={form.control}
+                name='role'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Role</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select a role' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value='user'>User</SelectItem>
+                        <SelectItem value='admin'>Admin</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-
-            {/* Address */}
-            <div>
-              <label>Address</label>
-              <Input
-                {...register("addressCountry")}
-                placeholder='Country'
-                icon={<MapPinIcon />}
-              />
-              <Input {...register("addressCity")} placeholder='City' />
-              <Input {...register("addressArea")} placeholder='Street/Area' />
-              <Input {...register("addressZip")} placeholder='Zip Code' />
-            </div>
-
-            {/* Bio */}
-            <div>
-              <label>Bio</label>
-              <textarea
-                {...register("bio")}
-                className='h-24 w-full rounded-md border p-2'
-              />
-            </div>
-
-            {/* Status Toggles */}
-            <div className='flex justify-between'>
-              <label>Active</label>
-              <Switch {...register("isActive")} />
-            </div>
-            <div className='flex justify-between'>
-              <label>Verified</label>
-              <Switch {...register("isVerified")} />
-            </div>
-
-            {/* Submit Button */}
-            <Button type='submit' disabled={updateUserMutation.isPending}>
-              {updateUserMutation.isPending ? "Saving..." : "Save Changes"}
+            </form>
+          </Form>
+        </div>
+        <DialogFooter className='border-t px-6 py-4'>
+          <DialogClose asChild>
+            <Button type='button' variant='outline'>
+              Cancel
             </Button>
-          </form>
-        )}
+          </DialogClose>
+          <DialogClose asChild>
+            <Button type='button'>Save changes</Button>
+          </DialogClose>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
