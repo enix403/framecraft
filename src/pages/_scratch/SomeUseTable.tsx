@@ -140,30 +140,30 @@ const columns: ColumnDef<Item>[] = [
 
 const listQueryKey = ["users", "list"];
 
-export function SomeUseTable() {
+const useOptimisticDelete = (
+  mutationFn: (payload: any) => Promise<unknown>
+) => {
   const queryClient = useQueryClient();
 
-  const { data = [] } = useQuery({
-    queryKey: listQueryKey,
-    queryFn: () => apiRoutes.getUsers()
-  });
-
-  // Mutation for deleting a user
-  const deleteMutation = useMutation({
-    mutationFn: (userId: string) => apiRoutes.deleteUser(userId),
-    onMutate: async userId => {
+  return useMutation({
+    mutationFn,
+    onMutate: async userIds => {
       await queryClient.cancelQueries({ queryKey: listQueryKey });
 
       const previousUsers = queryClient.getQueryData(listQueryKey);
 
+      // Ensure userIds is always an array (supports both single & batch deletes)
+      const idsToDelete = Array.isArray(userIds) ? userIds : [userIds];
+
       queryClient.setQueryData<Item[]>(
         listQueryKey,
-        oldUsers => oldUsers?.filter(user => user.id !== userId) || []
+        oldUsers =>
+          oldUsers?.filter(user => !idsToDelete.includes(user.id)) || []
       );
 
       return { previousUsers };
     },
-    onError: (err, userId, context) => {
+    onError: (_err, _userIds, context) => {
       if (context?.previousUsers) {
         queryClient.setQueryData(listQueryKey, context.previousUsers);
       }
@@ -172,6 +172,16 @@ export function SomeUseTable() {
       queryClient.invalidateQueries({ queryKey: listQueryKey });
     }
   });
+};
+
+export function SomeUseTable() {
+
+  const { data = [] } = useQuery({
+    queryKey: listQueryKey,
+    queryFn: () => apiRoutes.getUsers()
+  });
+
+  const deleteMutation = useOptimisticDelete(apiRoutes.deleteUser);
 
   return (
     <SomeDataTable
