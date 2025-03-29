@@ -8,13 +8,22 @@ import { Ex7_CollapsibleRows } from "./ex/Ex7_CollapsibleRows";
 import { Ex8_Pagination } from "./ex/Ex8_Pagination";
 import { Ex9_Complex } from "./ex/Ex9_Complex";
 import { SomeUseTable } from "./SomeUseTable";
+import { AddUserModal } from "./AddUserModal";
+import { Button } from "@/components/ui/button";
+import { PlusIcon } from "lucide-react";
 
 export function Scratch() {
   return (
     <div className='max-h-full w-full max-w-full space-y-7 overflow-y-auto p-8'>
-      <SomeUseTable />
-      <hr />
-      <Ex9_Complex />
+      <AddUserModal>
+        <Button className='ml-auto' variant='outline'>
+          <PlusIcon className='-ms-1 opacity-60' size={16} aria-hidden='true' />
+          Add user
+        </Button>
+      </AddUserModal>
+
+      {/* <SomeUseTable /> */}
+      {/* <Ex9_Complex /> */}
       {/* <Ex1_BasicTable /> */}
       {/* <Ex2_TableWithImages /> */}
       {/* <Ex3_DenseTable /> */}
