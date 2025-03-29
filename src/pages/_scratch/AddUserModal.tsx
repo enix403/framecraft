@@ -211,6 +211,39 @@ export function UserEditDialogInner({
                 </FormItem>
               )}
             />
+            {/* Gender */}
+            <FormField
+              control={form.control}
+              name='gender'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gender</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Select a role' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='male'>Male</SelectItem>
+                      <SelectItem value='female'>Female</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className='flex space-x-2'>
+              <Input
+                {...form.register("phoneCountryCode")}
+                placeholder='+1'
+                className='w-1/4'
+              />
+              <Input {...form.register("phoneNumber")} className='w-3/4' />
+            </div>
           </div>
         </div>
         <DialogFooter className='border-t px-6 py-4'>
@@ -243,7 +276,7 @@ export function UserEditDialog({
   return (
     <Dialog open={true}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className='flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-lg [&>button:last-child]:top-3.5'>
+      <DialogContent className='flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-2xl [&>button:last-child]:top-3.5'>
         <DialogHeader className='contents space-y-0 text-left'>
           <DialogTitle className='border-b px-6 py-4 text-base'>
             Edit profile
