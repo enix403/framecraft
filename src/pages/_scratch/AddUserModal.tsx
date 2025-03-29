@@ -45,7 +45,7 @@ import {
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { apiRoutes } from "@/lib/api-routes";
-import { PropsWithChildren, useEffect, useId } from "react";
+import { PropsWithChildren, ReactNode, useEffect, useId } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 // import { DatePicker } from "@/components/ui/date-picker";
@@ -88,6 +88,32 @@ const userSchema = Joi.object({
 }).unknown(true);
 
 const listQueryKey = ["users", "list"];
+
+function SimpleFormItem({
+  label,
+  children,
+  desc,
+  noControl = false
+}: {
+  label: ReactNode;
+  desc?: ReactNode;
+  noControl?: boolean;
+} & PropsWithChildren) {
+  if (!noControl) {
+    children = <FormControl>{children}</FormControl>;
+  }
+
+  return (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      {children}
+      {desc && (
+        <FormDescription>This is your public display name.</FormDescription>
+      )}
+      <FormMessage />
+    </FormItem>
+  );
+}
 
 // export function UserEditDialog({
 export function UserEditDialogInner({
@@ -152,47 +178,30 @@ export function UserEditDialogInner({
         <div className='overflow-y-auto'>
           <div className='space-y-4 p-6'>
             {JSON.stringify(form.formState.errors)}
+            <br />
             {/* Name */}
             <FormField
-              control={control}
               name='fullName'
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Enter your name' {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
+                <SimpleFormItem label='Username'>
+                  <Input placeholder='Enter your name' {...field} />
+                </SimpleFormItem>
               )}
             />
             {/* Email */}
             <FormField
-              control={control}
               name='email'
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Enter your email' {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
+                <SimpleFormItem label='Email'>
+                  <Input placeholder='Enter your email' {...field} />
+                </SimpleFormItem>
               )}
             />
             {/* Role */}
             <FormField
-              control={form.control}
               name='role'
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
+                <SimpleFormItem label='Role' noControl>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -207,17 +216,14 @@ export function UserEditDialogInner({
                       <SelectItem value='admin'>Admin</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
-                </FormItem>
+                </SimpleFormItem>
               )}
             />
             {/* Gender */}
             <FormField
-              control={form.control}
               name='gender'
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Gender</FormLabel>
+                <SimpleFormItem label='Gender' noControl>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -232,8 +238,7 @@ export function UserEditDialogInner({
                       <SelectItem value='female'>Female</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
-                </FormItem>
+                </SimpleFormItem>
               )}
             />
             <div className='flex space-x-2'>
@@ -264,7 +269,7 @@ export function UserEditDialogInner({
 export function UserEditDialog({
   userId,
   children
-}: { userId } & PropsWithChildren) {
+}: { userId: string } & PropsWithChildren) {
   // Fetch user data
   const { data: user, isError } = useQuery<User>({
     queryKey: ["user", userId],
@@ -272,7 +277,6 @@ export function UserEditDialog({
     enabled: !!userId
   });
 
-  /* TODO: loading */
   return (
     <Dialog open={true}>
       <DialogTrigger asChild>{children}</DialogTrigger>
