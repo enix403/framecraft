@@ -63,7 +63,9 @@ export function ConfirmDialog({
           </DialogHeader>
         </div>
         <DialogFooter className='mt-4'>
-          <Button variant='outline'>Cancel</Button>
+          <Button variant='outline' onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
           <Button
             loading={loading}
             onClick={e => {
@@ -75,8 +77,7 @@ export function ConfirmDialog({
                 result.finally(() => {
                   setOpen(false);
                 });
-              }
-              else {
+              } else {
                 setOpen(false);
               }
             }}
