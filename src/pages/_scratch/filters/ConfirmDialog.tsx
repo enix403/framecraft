@@ -1,3 +1,4 @@
+import isPromise from "p-is-promise";
 import { type Table as TableInstance } from "@tanstack/react-table";
 import { CircleAlertIcon, TrashIcon } from "lucide-react";
 
@@ -12,8 +13,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { VoidCallback } from "@/lib/utils";
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode, useState } from "react";
 
 export function ConfirmDialog({
   title = "Are you absolutely sure?",
@@ -25,8 +25,10 @@ export function ConfirmDialog({
   title?: ReactNode;
   subtitle?: ReactNode;
   actionButton?: ReactNode;
-  onConfirm?: VoidCallback;
+  onConfirm?: () => unknown;
 } & PropsWithChildren) {
+  const [loading, setLoading] = useState(false);
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -45,7 +47,16 @@ export function ConfirmDialog({
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>
+          <AlertDialogAction
+            loading={loading}
+            onClick={() => {
+              let result: unknown = onConfirm?.();
+              if (isPromise(result)) {
+                setLoading(true);
+                result.finally(() => setLoading(false));
+              }
+            }}
+          >
             {actionButton}
           </AlertDialogAction>
         </AlertDialogFooter>

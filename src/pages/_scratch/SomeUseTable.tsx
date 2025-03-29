@@ -6,7 +6,7 @@ import {
   InfoIcon
 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn, delay } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,7 +31,7 @@ import {
   DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
 import { ConfirmDialog } from "./filters/ConfirmDialog";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
 
 // type Item = {
@@ -138,10 +138,39 @@ const columns: ColumnDef<Item>[] = [
   }
 ];
 
+const listQueryKey = ["users", "list"];
+
 export function SomeUseTable() {
+  const queryClient = useQueryClient();
+
   const { data = [] } = useQuery({
-    queryKey: ["users", "list"],
+    queryKey: listQueryKey,
     queryFn: () => apiRoutes.getUsers()
+  });
+
+  // Mutation for deleting a user
+  const deleteMutation = useMutation({
+    mutationFn: (userId: string) => apiRoutes.deleteUser(userId),
+    onMutate: async userId => {
+      await queryClient.cancelQueries({ queryKey: listQueryKey });
+
+      const previousUsers = queryClient.getQueryData(listQueryKey);
+
+      queryClient.setQueryData<Item[]>(
+        listQueryKey,
+        oldUsers => oldUsers?.filter(user => user.id !== userId) || []
+      );
+
+      return { previousUsers };
+    },
+    onError: (err, userId, context) => {
+      if (context?.previousUsers) {
+        queryClient.setQueryData(listQueryKey, context.previousUsers);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: listQueryKey });
+    }
   });
 
   return (
@@ -178,20 +207,7 @@ export function SomeUseTable() {
           )}
         </>
       )}
-      // enableRowExpand
-      // canRowExpand={row => Boolean(row.original.note)}
-      /* renderExpandedRow={row => (
-        <div className='flex max-w-full items-start py-2 text-primary/80'>
-          <span
-            className='me-3 mt-0.5 flex w-7 shrink-0 justify-center'
-            aria-hidden='true'
-          >
-            <InfoIcon className='opacity-60' size={16} />
-          </span>
-          <p className='flex-1-fix text-sm text-wrap'>{row.original.note}</p>
-        </div>
-      )} */
-      renderActions={() => (
+      renderActions={row => (
         <>
           <DropdownMenuGroup>
             <DropdownMenuItem>
@@ -227,9 +243,10 @@ export function SomeUseTable() {
             <DropdownMenuItem>Add to favorites</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <ConfirmDialog>
+          <ConfirmDialog
+            onConfirm={() => deleteMutation.mutate(row.original.id)}
+          >
             <DropdownMenuItem
-              // Important
               onSelect={e => e.preventDefault()}
               className='text-destructive focus:text-destructive'
             >
@@ -242,3 +259,17 @@ export function SomeUseTable() {
     />
   );
 }
+
+// enableRowExpand
+// canRowExpand={row => Boolean(row.original.note)}
+/* renderExpandedRow={row => (
+  <div className='flex max-w-full items-start py-2 text-primary/80'>
+    <span
+      className='me-3 mt-0.5 flex w-7 shrink-0 justify-center'
+      aria-hidden='true'
+    >
+      <InfoIcon className='opacity-60' size={16} />
+    </span>
+    <p className='flex-1-fix text-sm text-wrap'>{row.original.note}</p>
+  </div>
+)} */

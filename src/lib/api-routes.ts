@@ -211,7 +211,7 @@ export const apiRoutes = {
   getUsers: jsonDecl(wq`/users`),
   getUser: jsonDecl((userId: string) => `/users/${userId}`),
   updateUser: payloadDecl((userId: string) => `/users/${userId}`, { method: "PATCH" }),
-  deleteUser: payloadDecl((userId: string) => `/users/${userId}`, { method: "DELETE" }),
+  deleteUser: jsonDecl((userId: string) => `/users/${userId}`, { method: "DELETE" }),
   deleteUsersBatch: payloadDecl(`/users/batch-delete`, { method: "DELETE" }),
 
 } as const;
