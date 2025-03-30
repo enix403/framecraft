@@ -1,6 +1,7 @@
 import {
   FormControl,
-  FormDescription, FormItem,
+  FormDescription,
+  FormItem,
   FormLabel,
   FormMessage
 } from "@/components/ui/form";
@@ -27,9 +28,7 @@ export function SimpleFormItem({
     <FormItem className={className}>
       {label && <FormLabel>{label}</FormLabel>}
       {children}
-      {desc && (
-        <FormDescription>This is your public display name.</FormDescription>
-      )}
+      {desc && <FormDescription>{desc}</FormDescription>}
       <FormMessage />
     </FormItem>
   );

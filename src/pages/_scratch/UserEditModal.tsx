@@ -139,7 +139,10 @@ export function UserEditDialogInner({
             <FormField
               name='fullName'
               render={({ field }) => (
-                <SimpleFormItem label='Full Name'>
+                <SimpleFormItem
+                  label='Full Name'
+                  desc='This is your public display name'
+                >
                   <Input placeholder='Enter your name' {...field} />
                 </SimpleFormItem>
               )}
