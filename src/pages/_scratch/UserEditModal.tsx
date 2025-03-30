@@ -93,19 +93,21 @@ function SimpleFormItem({
   label,
   children,
   desc,
-  noControl = false
+  noControl = false,
+  className
 }: {
-  label: ReactNode;
+  label?: ReactNode;
   desc?: ReactNode;
   noControl?: boolean;
+  className?: string;
 } & PropsWithChildren) {
   if (!noControl) {
     children = <FormControl>{children}</FormControl>;
   }
 
   return (
-    <FormItem>
-      <FormLabel>{label}</FormLabel>
+    <FormItem className={className}>
+      {label && <FormLabel>{label}</FormLabel>}
       {children}
       {desc && (
         <FormDescription>This is your public display name.</FormDescription>
@@ -115,42 +117,33 @@ function SimpleFormItem({
   );
 }
 
-// export function UserEditDialog({
+/*
+
+{
+  "id": "67e83ce8ac5dbb1149b77b94",
+  "email": "user29@gmail.com",
+  "role": "user",
+  "fullName": "Stanley Daniel",
+
+  "gender": "female",
+  "phoneCountryCode": "+14",
+  "phoneNumber": "457625847",
+
+
+  "isActive": true,
+  "isVerified": true,
+  "bio": "Audax auctor odio conforto arcus tepesco vita volubilis quo depereo.",
+  "dateOfBirth": "Sat Apr 21 2001 02:58:07 GMT+0500 (Pakistan Standard Time)",
+  "addressCountry": "Democratic Republic of the Congo",
+  "addressCity": "Giovanishire",
+  "addressArea": "Bramble Close",
+  "addressZip": "12333",
+}
+*/
+
 export function UserEditDialogInner({
   user
 }: { user: User } & PropsWithChildren) {
-  /*
-  const queryClient = useQueryClient();
-  // Optimistic UI Mutation
-  const updateUserMutation = useMutation({
-    mutationFn: (updatedFields: Partial<User>) =>
-      apiRoutes.updateUser(updatedFields, userId),
-    onMutate: async (updatedFields: Partial<User>) => {
-      await queryClient.cancelQueries({ queryKey: listQueryKey });
-      const previousUsers = queryClient.getQueryData<User[]>(listQueryKey);
-
-      queryClient.setQueryData(
-        listQueryKey,
-        (oldUsers?: User[]) =>
-          oldUsers?.map(u =>
-            u.id === userId ? { ...u, ...updatedFields } : u
-          ) ?? []
-      );
-
-      return { previousUsers };
-    },
-    onError: (_err, _updatedFields, context) => {
-      if (context?.previousUsers) {
-        queryClient.setQueryData(listQueryKey, context.previousUsers);
-      }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: listQueryKey });
-      queryClient.invalidateQueries({ queryKey: ["user", userId] });
-    }
-  });
-
-  */
   const onSubmit = (data: Partial<User>) => {
     // updateUserMutation.mutate(data);
     toast("You submitted the values");
@@ -168,10 +161,8 @@ export function UserEditDialogInner({
   // Reset form when user data loads
   useEffect(() => {
     if (user) reset(user);
-    // if (user) console.log(user);
   }, [user, reset]);
 
-  /* TODO: loading */
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='contents'>
@@ -241,13 +232,25 @@ export function UserEditDialogInner({
                 </SimpleFormItem>
               )}
             />
-            <div className='flex space-x-2'>
-              <Input
-                {...form.register("phoneCountryCode")}
-                placeholder='+1'
-                className='w-1/4'
+            {/* Phone */}
+            <FormLabel>Phone</FormLabel>
+            <div className='mt-1 flex space-x-2'>
+              <FormField
+                name='phoneCountryCode'
+                render={({ field }) => (
+                  <SimpleFormItem className='w-20'>
+                    <Input {...field} placeholder='+1' />
+                  </SimpleFormItem>
+                )}
               />
-              <Input {...form.register("phoneNumber")} className='w-3/4' />
+              <FormField
+                name='phoneNumber'
+                render={({ field }) => (
+                  <SimpleFormItem className='flex-1'>
+                    <Input {...field} placeholder='+1' />
+                  </SimpleFormItem>
+                )}
+              />
             </div>
           </div>
         </div>
@@ -291,3 +294,36 @@ export function UserEditModal({
     </Dialog>
   );
 }
+
+/*
+const queryClient = useQueryClient();
+// Optimistic UI Mutation
+const updateUserMutation = useMutation({
+  mutationFn: (updatedFields: Partial<User>) =>
+    apiRoutes.updateUser(updatedFields, userId),
+  onMutate: async (updatedFields: Partial<User>) => {
+    await queryClient.cancelQueries({ queryKey: listQueryKey });
+    const previousUsers = queryClient.getQueryData<User[]>(listQueryKey);
+
+    queryClient.setQueryData(
+      listQueryKey,
+      (oldUsers?: User[]) =>
+        oldUsers?.map(u =>
+          u.id === userId ? { ...u, ...updatedFields } : u
+        ) ?? []
+    );
+
+    return { previousUsers };
+  },
+  onError: (_err, _updatedFields, context) => {
+    if (context?.previousUsers) {
+      queryClient.setQueryData(listQueryKey, context.previousUsers);
+    }
+  },
+  onSettled: () => {
+    queryClient.invalidateQueries({ queryKey: listQueryKey });
+    queryClient.invalidateQueries({ queryKey: ["user", userId] });
+  }
+});
+
+*/
