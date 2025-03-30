@@ -125,19 +125,10 @@ function SimpleFormItem({
   "role": "user",
   "fullName": "Stanley Daniel",
 
-  "gender": "female",
-  "phoneCountryCode": "+14",
-  "phoneNumber": "457625847",
-
-
   "isActive": true,
   "isVerified": true,
-  "bio": "Audax auctor odio conforto arcus tepesco vita volubilis quo depereo.",
   "dateOfBirth": "Sat Apr 21 2001 02:58:07 GMT+0500 (Pakistan Standard Time)",
-  "addressCountry": "Democratic Republic of the Congo",
-  "addressCity": "Giovanishire",
-  "addressArea": "Bramble Close",
-  "addressZip": "12333",
+
 }
 */
 
@@ -210,6 +201,19 @@ export function UserEditDialogInner({
                 </SimpleFormItem>
               )}
             />
+            {/* Bio */}
+            {/* TODO: Character Limit */}
+            <FormField
+              name='bio'
+              render={({ field }) => (
+                <SimpleFormItem label='bio'>
+                  <Textarea
+                    placeholder='Write a few sentences about yourself'
+                    {...field}
+                  />
+                </SimpleFormItem>
+              )}
+            />
             {/* Gender */}
             <FormField
               name='gender'
@@ -252,6 +256,47 @@ export function UserEditDialogInner({
                 )}
               />
             </div>
+
+            {/* Address */}
+            <FormLabel className='font-bold'>Address</FormLabel>
+            <div className='mt-2 flex space-x-2'>
+              <FormField
+                name='addressCountry'
+                render={({ field }) => (
+                  <SimpleFormItem className='flex-1' label='Country'>
+                    <Input {...field} />
+                  </SimpleFormItem>
+                )}
+              />
+              <FormField
+                name='addressCity'
+                render={({ field }) => (
+                  <SimpleFormItem className='flex-1' label='City'>
+                    <Input {...field} />
+                  </SimpleFormItem>
+                )}
+              />
+            </div>
+            <div className='mt-1 flex space-x-2'>
+              <FormField
+                name='addressArea'
+                render={({ field }) => (
+                  <SimpleFormItem className='flex-1' label='Area'>
+                    <Input {...field} />
+                  </SimpleFormItem>
+                )}
+              />
+              <FormField
+                name='addressZip'
+                render={({ field }) => (
+                  <SimpleFormItem className='w-40' label='Zip'>
+                    <Input {...field} />
+                  </SimpleFormItem>
+                )}
+              />
+            </div>
+
+            {/*  */}
           </div>
         </div>
         <DialogFooter className='border-t px-6 py-4'>
