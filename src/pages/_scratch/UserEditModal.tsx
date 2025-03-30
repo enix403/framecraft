@@ -135,8 +135,6 @@ function SimpleFormItem({
 
   "isActive": true,
   "isVerified": true,
-  "dateOfBirth": "Sat Apr 21 2001 02:58:07 GMT+0500 (Pakistan Standard Time)",
-
 }
 */
 
@@ -273,7 +271,7 @@ export function UserEditDialogInner({
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className='w-auto p-0 !z-[5000]' align='start'>
+                    <PopoverContent className='w-auto p-0' align='start'>
                       <Calendar
                         mode='single'
                         selected={field.value}
