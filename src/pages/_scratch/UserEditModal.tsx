@@ -107,6 +107,7 @@ export function UserEditDialogInner({
   const updateUserMutation = useMutation({
     mutationFn: (updatedFields: Partial<User>) =>
       apiRoutes.updateUser(updatedFields, user.id),
+
     onMutate: async (updatedFields: Partial<User>) => {
       await Promise.all([
         queryClient.cancelQueries({ queryKey: listQueryKey }),
