@@ -34,6 +34,11 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "@/components/ui/popover";
 
 import {
   CalendarIcon,
@@ -48,7 +53,10 @@ import { apiRoutes } from "@/lib/api-routes";
 import { PropsWithChildren, ReactNode, useEffect, useId } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-// import { DatePicker } from "@/components/ui/date-picker";
+import { format } from "date-fns";
+import clsx from "clsx";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
 
 // 📌 User Type Definition
 interface User {
@@ -236,6 +244,51 @@ export function UserEditDialogInner({
                 </SimpleFormItem>
               )}
             />
+
+            {/* Date Of Birth */}
+            <FormField
+              name='dateOfBirth'
+              render={({ field }) => (
+                <FormItem className='flex flex-col'>
+                  <FormLabel>Date of birth</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className='w-auto p-0' align='start'>
+                      <Calendar
+                        mode='single'
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={date =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormDescription>
+                    Your date of birth is used to calculate your age.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             {/* Phone */}
             <FormLabel>Phone</FormLabel>
             <div className='mt-1 flex space-x-2'>
@@ -299,7 +352,7 @@ export function UserEditDialogInner({
             {/*  */}
           </div>
         </div>
-        <DialogFooter className='border-t px-6 py-4'>
+        {/* <DialogFooter className='border-t px-6 py-4'>
           <DialogClose asChild>
             <Button type='button' variant='outline'>
               Cancel
@@ -308,7 +361,7 @@ export function UserEditDialogInner({
           <DialogClose asChild>
             <Button type='submit'>Save changes</Button>
           </DialogClose>
-        </DialogFooter>
+        </DialogFooter> */}
       </form>
     </Form>
   );
@@ -324,6 +377,8 @@ export function UserEditModal({
     queryFn: () => apiRoutes.getUser(userId),
     enabled: !!userId
   });
+
+  return <>{user && !isError && <UserEditDialogInner user={user} />}</>;
 
   return (
     <Dialog open={true}>
