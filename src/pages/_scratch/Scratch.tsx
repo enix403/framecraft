@@ -15,7 +15,6 @@ export function Scratch() {
         </Button>
       </UserEditModal>
 
-      {/* <DemoTable /> */}
 
     </div>
   );

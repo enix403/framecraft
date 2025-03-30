@@ -7,11 +7,10 @@ export interface OptimisticUpdateFlowContext<T> {
 
 export interface OptimisticUpdateFlowOptions<T, U extends Partial<T>> {
   queryClient: QueryClient;
-
   itemId: string;
   itemKey: QueryKey;
   listKey: QueryKey;
-  onMutate?: (updatedFields: U) => void;
+  onMutate?: (updatedFields: U) => unknown | Promise<unknown>;
   onError?: (
     err: unknown,
     updatedFields: U,
@@ -87,7 +86,7 @@ export function optimisticUpdateFlow<T, U extends Partial<T> = Partial<T>>(
 
       // Optional external onMutate callback
       if (externalOnMutate) {
-        externalOnMutate(updatedFields);
+        await externalOnMutate(updatedFields);
       }
 
       return { previousList, previousItem };
@@ -105,7 +104,7 @@ export function optimisticUpdateFlow<T, U extends Partial<T> = Partial<T>>(
         queryClient.setQueryData<T>(itemKey, context.previousItem);
       }
       if (externalOnError) {
-        externalOnError(err, updatedFields, context);
+        return externalOnError(err, updatedFields, context);
       }
     },
 
@@ -113,7 +112,7 @@ export function optimisticUpdateFlow<T, U extends Partial<T> = Partial<T>>(
       queryClient.invalidateQueries({ queryKey: listKey });
       queryClient.invalidateQueries({ queryKey: itemKey });
       if (externalOnSettled) {
-        externalOnSettled();
+        return externalOnSettled();
       }
     },
 

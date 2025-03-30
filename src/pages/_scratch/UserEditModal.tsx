@@ -42,10 +42,11 @@ import { PropsWithChildren, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { cn, VoidCallback } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { SimpleFormItem } from "./cmp/form/SimpleFormItem";
 import { optimisticUpdateFlow } from "./cmp/form/optim-update-flow";
+import { delay } from "@/lib/utils";
 
 // 📌 User Type Definition
 interface User {
@@ -88,8 +89,12 @@ const listQueryKey = ["users", "list"];
 const userQueryKey = (userId: string) => ["users", userId];
 
 export function UserEditDialogInner({
-  user
-}: { user: User } & PropsWithChildren) {
+  user,
+  closeModal
+}: {
+  user: User;
+  closeModal: VoidCallback;
+} & PropsWithChildren) {
   const form = useForm<User>({
     resolver: joiResolver(userSchema),
     defaultValues: user,
@@ -117,7 +122,11 @@ export function UserEditDialogInner({
       onError: () => {
         toast.error("Failed to update user");
       },
+      onMutate: () => {
+        return delay(5000);
+      },
       onSuccess: () => {
+        closeModal();
         toast.success("User updated successfully");
       }
     })
@@ -341,11 +350,10 @@ export function UserEditDialogInner({
           </div>
         </div>
         <DialogFooter className='border-t px-6 py-4'>
-          <DialogClose asChild>
-            <Button type='button' variant='outline'>
-              Cancel
-            </Button>
-          </DialogClose>
+          <Button onClick={closeModal} type='button' variant='outline'>
+            Cancel
+          </Button>
+
           <DialogClose asChild>
             <Button type='submit'>Save changes</Button>
           </DialogClose>
@@ -367,7 +375,7 @@ export function UserEditModal({
   });
 
   return (
-    <Dialog open={true}>
+    <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className='flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-2xl [&>button:last-child]:top-3.5'>
         <DialogHeader className='contents space-y-0 text-left'>
@@ -375,8 +383,9 @@ export function UserEditModal({
             Edit profile
           </DialogTitle>
         </DialogHeader>
-        {/* @ts-ignore */}
-        {user && !isError && <UserEditDialogInner user={user} />}
+        {user && !isError && (
+          <UserEditDialogInner user={user} closeModal={() => {}} />
+        )}
       </DialogContent>
     </Dialog>
   );
