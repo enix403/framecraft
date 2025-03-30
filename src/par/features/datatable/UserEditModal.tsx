@@ -44,8 +44,8 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import { cn, VoidCallback } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import { SimpleFormItem } from "./cmp/form/SimpleFormItem";
-import { optimisticUpdateFlow } from "./cmp/form/optim-update-flow";
+import { SimpleFormItem } from "@/par/cmp/form/SimpleFormItem";
+import { optimisticUpdateFlow } from "@/par/cmp/form/optim-update-flow";
 
 // 📌 User Type Definition
 interface User {

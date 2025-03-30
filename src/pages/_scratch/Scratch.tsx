@@ -1,4 +1,5 @@
-import { DemoTable } from "./DemoTable";
+import { DemoTable } from "@/par/features/datatable/DemoTable";
+
 export function Scratch() {
   return (
     <div className='max-h-full w-full max-w-full space-y-7 overflow-y-auto p-8'>

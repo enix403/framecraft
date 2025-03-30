@@ -1,18 +1,6 @@
 import isPromise from "p-is-promise";
-import { type Table as TableInstance } from "@tanstack/react-table";
-import { CircleAlertIcon, TrashIcon } from "lucide-react";
+import { CircleAlertIcon } from "lucide-react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from "@/components/ui/alert-dialog";
 import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import {
   Dialog,

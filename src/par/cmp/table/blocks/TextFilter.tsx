@@ -1,4 +1,4 @@
-import { FilterFn, type Table as TableInstance } from "@tanstack/react-table";
+import { type Table as TableInstance } from "@tanstack/react-table";
 import { useId, useRef } from "react";
 import { CircleXIcon, ListFilterIcon } from "lucide-react";
 

@@ -1,7 +1,5 @@
 import {
-  FilterFn,
-  flexRender,
-  type Table as TableInstance
+  FilterFn, type Table as TableInstance
 } from "@tanstack/react-table";
 import { FilterIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";

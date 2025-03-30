@@ -1,14 +1,14 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { cn } from "@/lib/utils";
-import { AppDataTable } from "./cmp/table/AppDataTable";
-import { TextFilter } from "./cmp/table/blocks/TextFilter";
+import { AppDataTable } from "@/par/cmp/table/AppDataTable";
+import { TextFilter } from "@/par/cmp/table/blocks/TextFilter";
 import {
   uniqueValuesFilterFn,
   UniqueValuesFilter
-} from "./cmp/table/blocks/UniqueValuesFilter";
-import { ColumnVisibilityControl } from "./cmp/table/blocks/ColumnVisibilityControl";
-import { DeleteRowsButton } from "./cmp/table/blocks/DeleteRowsButton";
+} from "@/par/cmp/table/blocks/UniqueValuesFilter";
+import { ColumnVisibilityControl } from "@/par/cmp/table/blocks/ColumnVisibilityControl";
+import { DeleteRowsButton } from "@/par/cmp/table/blocks/DeleteRowsButton";
 
 import {
   DropdownMenuGroup,
@@ -20,7 +20,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
-import { ConfirmDialog } from "./cmp/ConfirmDialog";
+import { ConfirmDialog } from "@/par/cmp/ConfirmDialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
 import { UserEditModal } from "./UserEditModal";
