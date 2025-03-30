@@ -92,7 +92,7 @@ export function optimisticUpdateFlow<T, U extends Partial<T> = Partial<T>>(
       return { previousList, previousItem };
     },
 
-    onError: (
+    onError: async (
       err: unknown,
       updatedFields: U,
       context: OptimisticUpdateFlowContext<T> | undefined
@@ -108,9 +108,9 @@ export function optimisticUpdateFlow<T, U extends Partial<T> = Partial<T>>(
       }
     },
 
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: listKey });
-      queryClient.invalidateQueries({ queryKey: itemKey });
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: listKey });
+      await queryClient.invalidateQueries({ queryKey: itemKey });
       if (externalOnSettled) {
         return externalOnSettled();
       }

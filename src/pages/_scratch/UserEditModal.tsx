@@ -38,7 +38,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { apiRoutes } from "@/lib/api-routes";
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { format } from "date-fns";
@@ -121,9 +121,6 @@ export function UserEditDialogInner({
       listKey: listQueryKey,
       onError: () => {
         toast.error("Failed to update user");
-      },
-      onMutate: () => {
-        return delay(5000);
       },
       onSuccess: () => {
         closeModal();
@@ -350,13 +347,15 @@ export function UserEditDialogInner({
           </div>
         </div>
         <DialogFooter className='border-t px-6 py-4'>
-          <Button onClick={closeModal} type='button' variant='outline'>
-            Cancel
-          </Button>
-
           <DialogClose asChild>
-            <Button type='submit'>Save changes</Button>
+            <Button type='button' variant='outline'>
+              Cancel
+            </Button>
           </DialogClose>
+
+          <Button type='submit' loading={updateUserMutation.isPending}>
+            Save changes
+          </Button>
         </DialogFooter>
       </form>
     </Form>
@@ -367,7 +366,8 @@ export function UserEditModal({
   userId,
   children
 }: { userId: string } & PropsWithChildren) {
-  // Fetch user data
+  const [open, setOpen] = useState(false);
+
   const { data: user, isError } = useQuery<User>({
     queryKey: ["users", userId],
     queryFn: () => apiRoutes.getUser(userId),
@@ -375,7 +375,7 @@ export function UserEditModal({
   });
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className='flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-2xl [&>button:last-child]:top-3.5'>
         <DialogHeader className='contents space-y-0 text-left'>
@@ -384,7 +384,7 @@ export function UserEditModal({
           </DialogTitle>
         </DialogHeader>
         {user && !isError && (
-          <UserEditDialogInner user={user} closeModal={() => {}} />
+          <UserEditDialogInner user={user} closeModal={() => setOpen(false)} />
         )}
       </DialogContent>
     </Dialog>
