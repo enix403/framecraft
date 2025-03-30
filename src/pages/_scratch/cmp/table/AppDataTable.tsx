@@ -1,78 +1,24 @@
 "use client";
 
+import { Fragment, ReactNode, useId, useMemo, useState } from "react";
 import {
-  CSSProperties,
-  Fragment,
-  ReactNode,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState
-} from "react";
-import {
-  ArrowLeftToLineIcon,
-  ArrowRightToLineIcon,
   ChevronDownIcon,
   ChevronFirstIcon,
   ChevronLastIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  ChevronUpIcon,
-  CircleAlertIcon,
-  CircleXIcon,
-  Columns3Icon,
-  EllipsisIcon,
-  FilterIcon,
-  InfoIcon,
-  ListFilterIcon,
-  PinOffIcon,
-  PlusIcon,
-  TrashIcon
+  ChevronUpIcon
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Pagination,
   PaginationContent,
   PaginationItem
 } from "@/components/ui/pagination";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -90,10 +36,7 @@ import {
 } from "@/components/ui/table";
 
 import {
-  Column,
   ColumnDef,
-  ColumnFiltersState,
-  FilterFn,
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
@@ -105,14 +48,10 @@ import {
   Row,
   SortingState,
   useReactTable,
-  VisibilityState,
-  type TableOptions,
   type Table as TableInstance,
   getFacetedRowModel
 } from "@tanstack/react-table";
-import { getFacetedMinMaxValues } from "@tanstack/react-table";
-import { TextFilter } from "./filters/TextFilter";
-import { RowActions } from "./filters/RowActions";
+import { RowActions } from "./blocks/RowActions";
 
 function selectBoxColumnDef<T>() {
   const def: ColumnDef<T> = {
@@ -187,7 +126,21 @@ function expanderColumnDef<T>() {
   return def;
 }
 
-export function SomeDataTable<Item>({
+function rowActionsDef<T>(renderActions?: (row: Row<T>) => ReactNode) {
+  const def: ColumnDef<T> = {
+    id: "actions",
+    header: () => <span className='sr-only'>Actions</span>,
+    cell: ({ row }) => <RowActions>{renderActions?.(row)}</RowActions>,
+    size: 10,
+    enableSorting: false,
+    enableHiding: false,
+    enableColumnFilter: false,
+    enableResizing: false
+  };
+  return def;
+}
+
+export function AppDataTable<Item>({
   data,
   columns: originalColumns,
   initialSort = [],
@@ -196,7 +149,7 @@ export function SomeDataTable<Item>({
   enableRowSelect = false,
   canRowExpand,
   renderExpandedRow,
-  renderActions,
+  renderActions
 }: {
   data: Item[];
   columns: ColumnDef<Item>[];
@@ -213,18 +166,7 @@ export function SomeDataTable<Item>({
       enableRowExpand && expanderColumnDef<Item>(),
       enableRowSelect && selectBoxColumnDef<Item>(),
       ...originalColumns,
-      renderActions
-        ? {
-            id: "actions",
-            header: () => <span className='sr-only'>Actions</span>,
-            cell: ({ row }) => <RowActions>{renderActions?.(row)}</RowActions>,
-            size: 10,
-            enableSorting: false,
-            enableHiding: false,
-            enableColumnFilter: false,
-            enableResizing: false
-          }
-        : undefined
+      renderActions ? rowActionsDef<Item>(renderActions) : undefined
     ].filter(Boolean) as ColumnDef<Item>[];
   }, [originalColumns, enableRowExpand, enableRowSelect, renderActions]);
 
@@ -246,18 +188,23 @@ export function SomeDataTable<Item>({
 
     // Core
     getCoreRowModel: getCoreRowModel(),
+
     // Sorting
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     enableSortingRemoval: false,
+
     // row collapse/expand
     getExpandedRowModel: getExpandedRowModel(),
     getRowCanExpand: row => canRowExpand?.(row) ?? false,
+
     // Pagination
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+
     // Filtering
     getFilteredRowModel: getFilteredRowModel(),
+
     // Faceting
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -273,7 +220,6 @@ export function SomeDataTable<Item>({
     }
   });
 
-  const hasSelectedRows = table.getSelectedRowModel().rows.length > 0;
   const filtersMarkup = renderFilters?.({ table });
 
   return (

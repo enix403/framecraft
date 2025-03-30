@@ -163,7 +163,7 @@ export function UserEditDialogInner({
     mode: "onBlur"
   });
 
-  const { reset, control } = form;
+  const { reset } = form;
 
   // Reset form when user data loads
   useEffect(() => {
@@ -266,7 +266,7 @@ export function UserEditDialogInner({
   );
 }
 
-export function UserEditDialog({
+export function UserEditModal({
   userId,
   children
 }: { userId: string } & PropsWithChildren) {

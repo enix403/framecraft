@@ -14,12 +14,8 @@ import {
 } from "@/components/ui/popover";
 import { useId, useMemo } from "react";
 
-export function uniqueFilterFn<T>() {
-  const filterFn: FilterFn<T> = (
-    row,
-    columnId,
-    filterValue: string[]
-  ) => {
+export function uniqueValuesFilterFn<T>() {
+  const filterFn: FilterFn<T> = (row, columnId, filterValue: string[]) => {
     if (!filterValue?.length) return true;
     const status = row.getValue(columnId) as string;
     return filterValue.includes(status);

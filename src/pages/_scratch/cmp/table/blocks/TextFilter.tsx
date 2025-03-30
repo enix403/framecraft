@@ -1,9 +1,18 @@
-import { type Table as TableInstance } from "@tanstack/react-table";
+import { FilterFn, type Table as TableInstance } from "@tanstack/react-table";
 import { useId, useRef } from "react";
 import { CircleXIcon, ListFilterIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+
+/*
+filterFn: (row, columnId, filterValue) => {
+  const searchableRowContent =
+    `${row.original.fullName} ${row.original.email}`.toLowerCase();
+  const searchTerm = (filterValue ?? "").toLowerCase();
+  return searchableRowContent.includes(searchTerm);
+}
+*/
 
 export function TextFilter<Item>({
   table,

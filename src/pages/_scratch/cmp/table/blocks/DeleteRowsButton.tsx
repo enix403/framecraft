@@ -3,7 +3,7 @@ import { TrashIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { VoidCallback } from "@/lib/utils";
-import { ConfirmDialog } from "./ConfirmDialog";
+import { ConfirmDialog } from "./../../ConfirmDialog";
 
 export function DeleteRowsButton<Item>({
   table,

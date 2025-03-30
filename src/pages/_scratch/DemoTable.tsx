@@ -1,24 +1,14 @@
-import { ColumnDef, FilterFn, Row } from "@tanstack/react-table";
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  EllipsisIcon,
-  InfoIcon
-} from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
 
-import { cn, delay } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useEffect, useState } from "react";
-import { SomeDataTable } from "./SomeDataTable";
-import { TextFilter } from "./filters/TextFilter";
+import { cn } from "@/lib/utils";
+import { AppDataTable } from "./cmp/table/AppDataTable";
+import { TextFilter } from "./cmp/table/blocks/TextFilter";
 import {
-  uniqueFilterFn,
+  uniqueValuesFilterFn,
   UniqueValuesFilter
-} from "./filters/UniqueValuesFilter";
-import { ColumnVisibilityControl } from "./filters/ColumnVisibilityControl";
-import { DeleteRowsButton } from "./filters/DeleteRowsButton";
+} from "./cmp/table/blocks/UniqueValuesFilter";
+import { ColumnVisibilityControl } from "./cmp/table/blocks/ColumnVisibilityControl";
+import { DeleteRowsButton } from "./cmp/table/blocks/DeleteRowsButton";
 
 import {
   DropdownMenuGroup,
@@ -30,7 +20,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
-import { ConfirmDialog } from "./filters/ConfirmDialog";
+import { ConfirmDialog } from "./cmp/table/blocks/ConfirmDialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
 
@@ -110,7 +100,7 @@ const columns: ColumnDef<Item>[] = [
         </div>
       );
     },
-    filterFn: uniqueFilterFn()
+    filterFn: uniqueValuesFilterFn()
   },
   {
     header: "Gender",
@@ -120,7 +110,7 @@ const columns: ColumnDef<Item>[] = [
       let gender = row.getValue("gender") as any;
       return <span className='capitalize'>{gender}</span>;
     },
-    filterFn: uniqueFilterFn()
+    filterFn: uniqueValuesFilterFn()
   },
   {
     header: "Address",
@@ -174,7 +164,7 @@ const useOptimisticDelete = (
   });
 };
 
-export function SomeUseTable() {
+export function DemoTable() {
   const { data = [] } = useQuery({
     queryKey: listQueryKey,
     queryFn: () => apiRoutes.getUsers()
@@ -186,7 +176,7 @@ export function SomeUseTable() {
   );
 
   return (
-    <SomeDataTable
+    <AppDataTable
       data={data}
       columns={columns}
       initialSort={[
