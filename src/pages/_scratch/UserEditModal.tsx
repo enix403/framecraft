@@ -244,14 +244,17 @@ export function UserEditDialogInner({
                 </SimpleFormItem>
               )}
             />
-
             {/* Date Of Birth */}
             <FormField
               name='dateOfBirth'
               render={({ field }) => (
-                <FormItem className='flex flex-col'>
-                  <FormLabel>Date of birth</FormLabel>
-                  <Popover>
+                <SimpleFormItem
+                  noControl
+                  label='Date of birth'
+                  desc='Your date of birth is used to calculate your age.'
+                >
+                  {/* model={true} is important for usage in dialogs */}
+                  <Popover modal>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -270,7 +273,7 @@ export function UserEditDialogInner({
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className='w-auto p-0' align='start'>
+                    <PopoverContent className='w-auto p-0 !z-[5000]' align='start'>
                       <Calendar
                         mode='single'
                         selected={field.value}
@@ -282,11 +285,7 @@ export function UserEditDialogInner({
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>
-                    Your date of birth is used to calculate your age.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
+                </SimpleFormItem>
               )}
             />
             {/* Phone */}
@@ -352,7 +351,7 @@ export function UserEditDialogInner({
             {/*  */}
           </div>
         </div>
-        {/* <DialogFooter className='border-t px-6 py-4'>
+        <DialogFooter className='border-t px-6 py-4'>
           <DialogClose asChild>
             <Button type='button' variant='outline'>
               Cancel
@@ -361,7 +360,7 @@ export function UserEditDialogInner({
           <DialogClose asChild>
             <Button type='submit'>Save changes</Button>
           </DialogClose>
-        </DialogFooter> */}
+        </DialogFooter>
       </form>
     </Form>
   );
@@ -378,7 +377,7 @@ export function UserEditModal({
     enabled: !!userId
   });
 
-  return <>{user && !isError && <UserEditDialogInner user={user} />}</>;
+  // return <>{user && !isError && <UserEditDialogInner user={user} />}</>;
 
   return (
     <Dialog open={true}>
@@ -389,6 +388,7 @@ export function UserEditModal({
             Edit profile
           </DialogTitle>
         </DialogHeader>
+        {/* @ts-ignore */}
         {user && !isError && <UserEditDialogInner user={user} />}
       </DialogContent>
     </Dialog>
