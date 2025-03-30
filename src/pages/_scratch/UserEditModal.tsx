@@ -11,8 +11,7 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage
+  FormLabel
 } from "@/components/ui/form";
 import {
   Dialog,
@@ -23,14 +22,10 @@ import {
   DialogClose,
   DialogHeader
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
-  SelectSeparator,
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
@@ -40,23 +35,16 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover";
 
-import {
-  CalendarIcon,
-  UserIcon,
-  MailIcon,
-  PhoneIcon,
-  MapPinIcon,
-  CheckIcon
-} from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { apiRoutes } from "@/lib/api-routes";
-import { PropsWithChildren, ReactNode, useEffect, useId } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import clsx from "clsx";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
+import { SimpleFormItem } from "./cmp/form/SimpleFormItem";
 
 // 📌 User Type Definition
 interface User {
@@ -94,37 +82,6 @@ const userSchema = Joi.object({
   isActive: Joi.boolean(),
   isVerified: Joi.boolean()
 }).unknown(true);
-
-function SimpleFormItem({
-  label,
-  children,
-  desc,
-  noControl = false,
-  className
-}: {
-  label?: ReactNode;
-  desc?: ReactNode;
-  noControl?: boolean;
-  className?: string;
-} & PropsWithChildren) {
-  if (!noControl) {
-    children = <FormControl>{children}</FormControl>;
-  }
-
-  return (
-    <FormItem className={className}>
-      {label && <FormLabel>{label}</FormLabel>}
-      {children}
-      {desc && (
-        <FormDescription>This is your public display name.</FormDescription>
-      )}
-      <FormMessage />
-    </FormItem>
-  );
-}
-
-// updateUserMutation.mutate(data);
-// toast("You submitted the values");
 
 const listQueryKey = ["users", "list"];
 const userQueryKey = (userId: string) => ["users", userId];
@@ -436,8 +393,6 @@ export function UserEditModal({
     enabled: !!userId
   });
 
-  // return <>{user && !isError && <UserEditDialogInner user={user} />}</>;
-
   return (
     <Dialog open={true}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -453,8 +408,3 @@ export function UserEditModal({
     </Dialog>
   );
 }
-
-/*
-
-
-*/
