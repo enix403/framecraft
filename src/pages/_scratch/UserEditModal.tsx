@@ -95,8 +95,6 @@ const userSchema = Joi.object({
   isVerified: Joi.boolean()
 }).unknown(true);
 
-const listQueryKey = ["users", "list"];
-
 function SimpleFormItem({
   label,
   children,
@@ -125,28 +123,15 @@ function SimpleFormItem({
   );
 }
 
-/*
+// updateUserMutation.mutate(data);
+// toast("You submitted the values");
 
-{
-  "id": "67e83ce8ac5dbb1149b77b94",
-  "email": "user29@gmail.com",
-  "role": "user",
-  "fullName": "Stanley Daniel",
-
-  "isActive": true,
-  "isVerified": true,
-}
-*/
+const listQueryKey = ["users", "list"];
+const userQueryKey = (userId: string) => ["users", userId];
 
 export function UserEditDialogInner({
   user
 }: { user: User } & PropsWithChildren) {
-  const onSubmit = (data: Partial<User>) => {
-    // updateUserMutation.mutate(data);
-    toast("You submitted the values");
-    console.log(data);
-  };
-
   const form = useForm<User>({
     resolver: joiResolver(userSchema),
     defaultValues: user,
@@ -160,13 +145,69 @@ export function UserEditDialogInner({
     if (user) reset(user);
   }, [user, reset]);
 
+  const queryClient = useQueryClient();
+  // Optimistic UI Mutation
+  const updateUserMutation = useMutation({
+    mutationFn: (updatedFields: Partial<User>) =>
+      apiRoutes.updateUser(updatedFields, user.id),
+    onMutate: async (updatedFields: Partial<User>) => {
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: listQueryKey }),
+        queryClient.cancelQueries({ queryKey: userQueryKey(user.id) })
+      ]);
+
+      const previousList = queryClient.getQueryData<User[]>(listQueryKey);
+      const previousItem = queryClient.getQueryData<User>(
+        userQueryKey(user.id)
+      );
+
+      // Optimistically update the list data
+      queryClient.setQueryData(
+        listQueryKey,
+        (oldUsers?: User[]) =>
+          oldUsers?.map(u =>
+            u.id === user.id ? { ...u, ...updatedFields } : u
+          ) ?? []
+      );
+
+      // Optimistically update the individual item query
+      queryClient.setQueryData(userQueryKey(user.id), (oldUser?: User) =>
+        oldUser ? { ...oldUser, ...updatedFields } : oldUser
+      );
+
+      return { previousList, previousItem };
+    },
+    onError: (_err, _updatedFields, context) => {
+      if (context?.previousList) {
+        queryClient.setQueryData(listQueryKey, context.previousList);
+      }
+      if (context?.previousItem) {
+        queryClient.setQueryData(userQueryKey(user.id), context.previousItem);
+      }
+      toast.error("Failed to update user");
+    },
+    onSuccess: () => {
+      toast.success("User updated successfully");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: listQueryKey });
+      queryClient.invalidateQueries({ queryKey: userQueryKey(user.id) });
+    }
+  });
+
+  const onSubmit = (updates: Partial<User>) => {
+    delete updates["email"];
+    delete updates["isVerified"];
+    // console.log(updates);
+
+    updateUserMutation.mutate(updates);
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='contents'>
         <div className='overflow-y-auto'>
           <div className='space-y-4 p-6'>
-            {JSON.stringify(form.formState.errors)}
-            <br />
             {/* Name */}
             <FormField
               name='fullName'
@@ -390,7 +431,7 @@ export function UserEditModal({
 }: { userId: string } & PropsWithChildren) {
   // Fetch user data
   const { data: user, isError } = useQuery<User>({
-    queryKey: ["user", userId],
+    queryKey: ["users", userId],
     queryFn: () => apiRoutes.getUser(userId),
     enabled: !!userId
   });
@@ -414,34 +455,6 @@ export function UserEditModal({
 }
 
 /*
-const queryClient = useQueryClient();
-// Optimistic UI Mutation
-const updateUserMutation = useMutation({
-  mutationFn: (updatedFields: Partial<User>) =>
-    apiRoutes.updateUser(updatedFields, userId),
-  onMutate: async (updatedFields: Partial<User>) => {
-    await queryClient.cancelQueries({ queryKey: listQueryKey });
-    const previousUsers = queryClient.getQueryData<User[]>(listQueryKey);
 
-    queryClient.setQueryData(
-      listQueryKey,
-      (oldUsers?: User[]) =>
-        oldUsers?.map(u =>
-          u.id === userId ? { ...u, ...updatedFields } : u
-        ) ?? []
-    );
-
-    return { previousUsers };
-  },
-  onError: (_err, _updatedFields, context) => {
-    if (context?.previousUsers) {
-      queryClient.setQueryData(listQueryKey, context.previousUsers);
-    }
-  },
-  onSettled: () => {
-    queryClient.invalidateQueries({ queryKey: listQueryKey });
-    queryClient.invalidateQueries({ queryKey: ["user", userId] });
-  }
-});
 
 */

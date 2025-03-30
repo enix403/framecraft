@@ -20,7 +20,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
-import { ConfirmDialog } from "./cmp/table/blocks/ConfirmDialog";
+import { ConfirmDialog } from "./cmp/ConfirmDialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
 
