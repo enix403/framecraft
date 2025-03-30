@@ -45,6 +45,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { SimpleFormItem } from "./cmp/form/SimpleFormItem";
+import { optimisticUpdateFlow } from "./cmp/form/optim-update-flow";
 
 // 📌 User Type Definition
 interface User {
@@ -103,60 +104,28 @@ export function UserEditDialogInner({
   }, [user, reset]);
 
   const queryClient = useQueryClient();
-  // Optimistic UI Mutation
+
   const updateUserMutation = useMutation({
     mutationFn: (updatedFields: Partial<User>) =>
       apiRoutes.updateUser(updatedFields, user.id),
 
-    onMutate: async (updatedFields: Partial<User>) => {
-      await Promise.all([
-        queryClient.cancelQueries({ queryKey: listQueryKey }),
-        queryClient.cancelQueries({ queryKey: userQueryKey(user.id) })
-      ]);
-
-      const previousList = queryClient.getQueryData<User[]>(listQueryKey);
-      const previousItem = queryClient.getQueryData<User>(
-        userQueryKey(user.id)
-      );
-
-      // Optimistically update the list data
-      queryClient.setQueryData(
-        listQueryKey,
-        (oldUsers?: User[]) =>
-          oldUsers?.map(u =>
-            u.id === user.id ? { ...u, ...updatedFields } : u
-          ) ?? []
-      );
-
-      // Optimistically update the individual item query
-      queryClient.setQueryData(userQueryKey(user.id), (oldUser?: User) =>
-        oldUser ? { ...oldUser, ...updatedFields } : oldUser
-      );
-
-      return { previousList, previousItem };
-    },
-    onError: (_err, _updatedFields, context) => {
-      if (context?.previousList) {
-        queryClient.setQueryData(listQueryKey, context.previousList);
+    ...optimisticUpdateFlow<User>({
+      queryClient,
+      itemId: user.id,
+      itemKey: userQueryKey(user.id),
+      listKey: listQueryKey,
+      onError: () => {
+        toast.error("Failed to update user");
+      },
+      onSettled: () => {
+        toast.success("User updated successfully");
       }
-      if (context?.previousItem) {
-        queryClient.setQueryData(userQueryKey(user.id), context.previousItem);
-      }
-      toast.error("Failed to update user");
-    },
-    onSuccess: () => {
-      toast.success("User updated successfully");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: listQueryKey });
-      queryClient.invalidateQueries({ queryKey: userQueryKey(user.id) });
-    }
+    })
   });
 
   const onSubmit = (updates: Partial<User>) => {
     delete updates["email"];
     delete updates["isVerified"];
-    // console.log(updates);
 
     updateUserMutation.mutate(updates);
   };
