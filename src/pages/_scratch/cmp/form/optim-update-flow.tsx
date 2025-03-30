@@ -18,6 +18,7 @@ export interface OptimisticUpdateFlowOptions<T, U extends Partial<T>> {
     context: OptimisticUpdateFlowContext<T> | undefined
   ) => void;
   onSettled?: () => void;
+  onSuccess?: () => void;
 }
 
 /**
@@ -51,7 +52,8 @@ export function optimisticUpdateFlow<T, U extends Partial<T> = Partial<T>>(
     listKey,
     onMutate: externalOnMutate,
     onError: externalOnError,
-    onSettled: externalOnSettled
+    onSettled: externalOnSettled,
+    onSuccess
   } = options;
 
   return {
@@ -113,6 +115,9 @@ export function optimisticUpdateFlow<T, U extends Partial<T> = Partial<T>>(
       if (externalOnSettled) {
         externalOnSettled();
       }
-    }
+    },
+
+    // Just for convenience
+    onSuccess
   };
 }

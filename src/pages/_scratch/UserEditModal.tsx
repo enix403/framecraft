@@ -68,7 +68,7 @@ interface User {
 
 // 📌 Validation Schema (Joi)
 const userSchema = Joi.object({
-  fullName: Joi.string().min(3).optional(),
+  fullName: Joi.string().min(3),
   email: Joi.string().email({ tlds: { allow: false } }),
   role: Joi.string().valid("user", "admin"),
   gender: Joi.string().valid("male", "female").allow(null, ""),
@@ -117,7 +117,7 @@ export function UserEditDialogInner({
       onError: () => {
         toast.error("Failed to update user");
       },
-      onSettled: () => {
+      onSuccess: () => {
         toast.success("User updated successfully");
       }
     })
@@ -139,7 +139,7 @@ export function UserEditDialogInner({
             <FormField
               name='fullName'
               render={({ field }) => (
-                <SimpleFormItem label='Username'>
+                <SimpleFormItem label='Full Name'>
                   <Input placeholder='Enter your name' {...field} />
                 </SimpleFormItem>
               )}
