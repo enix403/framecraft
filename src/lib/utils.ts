@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { ChangeEvent } from "react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -39,11 +40,35 @@ export function toNumOrNull(
 export const delay = (ms: number) =>
   new Promise<void>(resolve => setTimeout(resolve, ms));
 
-
 export function unslashStart(str: string) {
   return str.replace(/^\/+/, "");
 }
 
 export function unslashEnd(str: string) {
   return str.replace(/\/+$/, "");
+}
+
+export function setIfNumeric(
+  e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  setFunc: (val: string) => void
+) {
+  let input = e.target.value;
+  if (/^\d*\.?\d*$/.test(input)) {
+    setFunc(input);
+  }
+}
+
+export function parseNumber(str: any): number | null;
+export function parseNumber<T>(str: any, defaultValue: T): number | T;
+export function parseNumber(str: any, defaultValue: any = null) {
+  if (typeof str === "number") return str;
+
+  if (typeof str !== "string") return defaultValue;
+
+  let result = parseFloat(str);
+
+  if (Number.isNaN(result)) {
+    return defaultValue;
+  }
+  return result;
 }

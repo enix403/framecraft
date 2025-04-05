@@ -1,5 +1,5 @@
-import { atom, useAtom, useAtomValue } from "jotai";
-import { useLayoutEffect } from "react";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useLayoutEffect, useMemo } from "react";
 
 const planAtom = atom<any>(null);
 
@@ -11,7 +11,7 @@ export function useRegisterPlan(initialPlan) {
     return () => {
       setPlan(null);
     };
-  }, [initialPlan]);
+  }, []);
 
   const isReady = Boolean(plan);
   return isReady;
@@ -21,8 +21,13 @@ export function usePlan() {
   return useAtomValue(planAtom);
 }
 
+export function useSetPlan() {
+  return useSetAtom(planAtom);
+}
+
 export function usePlanComponents() {
-  return usePlan().canvas.canvasData;
+  const plan = usePlan();
+  return useMemo(() => plan.canvas.canvasData, [plan.canvas.canvasData]);
 }
 
 /* ========== Selections ========== */
@@ -36,5 +41,3 @@ const selectedObjectAtom = atom<SelectedObject | null>(null);
 export function useSelectedObject() {
   return useAtom(selectedObjectAtom);
 }
-
-

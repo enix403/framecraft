@@ -1,4 +1,3 @@
-import { GeneralSettings } from "./panes/GeneralSettings";
 import { useCallback, useState } from "react";
 
 import { NodeDragSource } from "./panes/NodeDragSource";
@@ -6,10 +5,11 @@ import { GraphPresets } from "./panes/GraphPresets";
 import { LayoutGraphTitle } from "./panes/LayoutGraphTitle";
 import { Toolbar } from "./panes/Toolbar";
 
+import { PlanName, PlotDimensions } from "./panes/GeneralSettings";
 import { LayoutNode } from "@/components/layout-editor/LayoutNode";
 import { LayoutEdge } from "@/components/layout-editor/LayoutEdge";
 import { LayoutGraphEditor } from "@/components/layout-editor/LayoutGraphEditor";
-import { StateSet } from "@/lib/utils";
+import { parseNumber, setIfNumeric, StateSet } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, MousePointerClick } from "lucide-react";
 import { Link, useNavigate } from "react-router";
@@ -88,15 +88,20 @@ export function GenerateDesign() {
 
   const [nodes, setNodes] = useState<LayoutNode[]>(initialNodes);
   const [edges, setEdges] = useState<LayoutEdge[]>(initialEdges);
+  const [planName, setPlanName] = useState("");
+  const [unit, setUnit] = useState("ft");
+  const [plotWidth, setPlotWidth] = useState<string>("");
+  const [plotLength, setPlotLength] = useState<string>("");
 
   const generateMut = useMutation({
     mutationFn: () => {
       const layout = packLayout(nodes, edges);
+
       const generationSettings = {
-        name: "My Plan 16",
-        plotWidth: 100,
-        plotLength: 116,
-        plotMeasureUnit: "ft",
+        name: planName,
+        plotWidth: parseNumber(plotWidth, 0),
+        plotLength: parseNumber(plotLength, 0),
+        plotMeasureUnit: unit,
         layout
       };
       console.log(generationSettings);
@@ -112,11 +117,32 @@ export function GenerateDesign() {
     }
   });
 
+  function handleGenerate() {
+    if (!planName.trim()) {
+      toast.error("Please enter the plan name");
+      return;
+    }
+
+    if (!parseNumber(plotWidth, 0)) {
+      toast.error("Please enter a valid plot width");
+      return;
+    }
+
+    if (!parseNumber(plotLength, 0)) {
+      toast.error("Please enter a valid plot length");
+      return;
+    }
+
+    generateMut.mutate();
+  }
+
   return (
     <div className='flex h-full max-h-full flex-col overflow-hidden'>
       <AppTopNav />
       <div className='flex flex-1-fix'>
+        {/* Left Pane */}
         <div className='flex w-[22rem] flex-col gap-y-3 border-r-2 p-4'>
+          {/* Back Button */}
           <Button
             size='lg'
             variant='outline'
@@ -130,18 +156,38 @@ export function GenerateDesign() {
           </Button>
 
           <div className='flex-1-y'>
-            <GeneralSettings />
+            <h2 className='mb-4 text-xl font-bold tracking-tight'>
+              General Settings
+            </h2>
+            <PlanName
+              value={planName}
+              onChange={e => setPlanName(e.target.value)}
+            />
+            <PlotDimensions
+              unit={unit}
+              onUnitChange={setUnit}
+              widthProps={{
+                value: plotWidth,
+                onChange: e => setIfNumeric(e, setPlotWidth)
+              }}
+              lengthProps={{
+                value: plotLength,
+                onChange: e => setIfNumeric(e, setPlotLength)
+              }}
+            />
           </div>
+
           <Button
             size='lg'
             className='mt-auto atext-ls'
             loading={generateMut.isPending}
-            onClick={() => generateMut.mutate()}
+            onClick={handleGenerate}
           >
             Generate
             <MousePointerClick />
           </Button>
         </div>
+        {/* Right Pane */}
         <div className='flex flex-1-fix flex-col'>
           <LayoutGraphPanes
             nodes={nodes}
