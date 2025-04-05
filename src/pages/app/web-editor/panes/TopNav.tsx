@@ -6,22 +6,9 @@ import {
   Box,
   ChevronDownIcon,
   Map,
-  Settings,
-  Sparkle,
-  Waypoints
+  Settings, Waypoints
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
 
-import { LogOutIcon, PinIcon } from "lucide-react";
-import { Link } from "react-router";
 import { AvatarDropdown } from "@/components/topnav/AvatarDropdown";
 import { Separator } from "@/components/ui/separator";
 import { usePlan, useSetPlan } from "../plan-state";
@@ -31,14 +18,10 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-import { FormEvent, useEffect, useLayoutEffect, useState } from "react";
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import { FormEvent, useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { delay } from "@/lib/utils";
 import { apiRoutes } from "@/lib/api-routes";
-import { produce } from "immer";
-
-export const activeTabAtom = atom<"layout" | "2d" | "3d">("2d");
 
 function PlanNameDropdown() {
   const queryClient = useQueryClient();
@@ -142,6 +125,8 @@ function PlanNameDropdown() {
   );
 }
 
+export const activeTabAtom = atom<"layout" | "2d" | "3d">("2d");
+
 export function TopNav() {
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);
 
@@ -157,7 +142,7 @@ export function TopNav() {
           className='inline-flex'
           type='single'
           value={activeTab}
-          onValueChange={setActiveTab as any}
+          onValueChange={value => value ? setActiveTab(value as any) : undefined}
         >
           <ToggleGroupItem value='layout'>
             Layout Graph <Waypoints />
@@ -174,9 +159,9 @@ export function TopNav() {
         <Button size='lg' className='mr-2'>
           Export
         </Button>
-        <Button variant='outline' size='icon' className='mr-0.5'>
+        {/* <Button variant='outline' size='icon' className='mr-0.5'>
           <Settings />
-        </Button>
+        </Button> */}
         <Separator orientation='vertical' className='mx-3 !h-6 bg-[#d8dae2]' />
         <AvatarDropdown />
       </div>

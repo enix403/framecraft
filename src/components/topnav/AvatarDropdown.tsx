@@ -11,7 +11,7 @@ import {
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useClearAuthState } from "@/stores/auth-store";
 
-import { LogOutIcon, PinIcon, UserPenIcon } from "lucide-react";
+import { LayoutDashboard, LogOutIcon, PinIcon, UserPenIcon, UserRound } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { Spinner } from "../ui/spinner";
 
@@ -69,12 +69,12 @@ export function AvatarDropdown() {
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link to='/app'>
-              <PinIcon size={16} className='opacity-60' aria-hidden='true' />
+              <LayoutDashboard size={16} className='opacity-60' aria-hidden='true' />
               <span>Dashboard</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <PinIcon size={16} className='opacity-60' aria-hidden='true' />
+            <UserRound size={16} className='opacity-60' aria-hidden='true' />
             <span>Profile</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
