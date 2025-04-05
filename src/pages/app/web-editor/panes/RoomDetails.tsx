@@ -1,6 +1,6 @@
 import { Stat } from "@/components/Stat";
 import { RectPreview } from "@/components/RectPreview";
-import { useSelectedObject } from "../plan-state";
+import { usePlan, useSelectedObject, useSetPlan } from "../plan-state";
 import { DoorOpen } from "lucide-react";
 import { RoomIdentityInput } from "@/components/RoomIdentityInput";
 import { appNodeStyle } from "@/lib/node-styles";
@@ -9,6 +9,7 @@ import { CELL_PHYSICAL_LENGTH, unitFactor } from "@/lib/units";
 import { useCallback } from "react";
 import { produce } from "immer";
 import { usePlanComponents } from "../plan-state";
+import { apiRoutes } from "@/lib/api-routes";
 
 type PlanComponents = any;
 
@@ -46,9 +47,9 @@ function useRoomSize(room: PlanComponents["rooms"][number] | null) {
 
   return [length, width];
 }
+/*
 
-export function RoomDetails() {
-  const plan = usePlanComponents();
+const components = usePlanComponents();
   // const setPlanComponents = useSetPlanComponents();
   const updatePlan = useCallback(
     (fn: (old: PlanComponents) => void) => {
@@ -63,15 +64,45 @@ export function RoomDetails() {
     []
   );
 
+*/
+
+export function RoomDetails() {
   const { unit } = useSettings();
+
+  const plan = usePlan();
+  const components = usePlanComponents();
+  const setPlan = useSetPlan();
 
   const [selectedObj] = useSelectedObject();
 
-  const room = selectedObj ? plan.rooms[selectedObj.index] : null;
+  const room = selectedObj ? components.rooms[selectedObj.index] : null;
   const style = room ? appNodeStyle[room.typeId] : null;
 
   const [length, width] = useRoomSize(room);
   const area = length * width;
+
+  const updateRoom = useCallback(
+    (fn: (room: any) => void) => {
+      const updatedComponents: any = produce(components, (components: any) => {
+        let room = components.rooms[selectedObj!.index];
+        fn(room);
+      });
+
+      setPlan(plan => ({
+        ...plan,
+        canvas: {
+          ...plan.canvas,
+          canvasData: updatedComponents
+        }
+      }));
+
+      apiRoutes.updatePlanCanvas(
+        { canvasData: updatedComponents },
+        plan.canvas.id
+      );
+    },
+    [selectedObj, plan, setPlan, components]
+  );
 
   return (
     <div className='h-full p-4'>
@@ -84,13 +115,13 @@ export function RoomDetails() {
             initialName={room.label}
             initialTypeId={room.typeId}
             onUpdateName={name => {
-              updatePlan(plan => {
-                plan.rooms[selectedObj!.index].label = name;
+              updateRoom(room => {
+                room.label = name;
               });
             }}
             onUpdateNodeType={typeId => {
-              updatePlan(plan => {
-                plan.rooms[selectedObj!.index].typeId = typeId;
+              updateRoom(room => {
+                room.typeId = typeId;
               });
             }}
           />
