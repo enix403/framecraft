@@ -1,58 +1,86 @@
 import { Button } from "@/components/ui/button";
 import DxfWriter from "dxf-writer";
 import { saveAs } from "file-saver";
+import { usePlanComponents } from "../plan-state";
 
-export function exportPlanToDXF(plan: any) {
+export function exportPlanToDXF(components: any) {
   const dxf = new DxfWriter();
-
-  // Set units to meters (or whatever is appropriate)
   dxf.setUnits("Meters");
 
-  // Add layers with the correct signature: addLayer(name, colorNumber, lineTypeName)
-  // Color numbers: e.g., 5 (blue), 3 (green), 1 (red) – adjust as needed.
+  // Create layers (using addLayer(name, colorNumber, lineTypeName))
+  // Color numbers: here we use blue (5) for walls, green (3) for doors, red (1) for rooms.
   dxf.addLayer("Walls", 5, "CONTINUOUS");
   dxf.addLayer("Doors", 3, "DASHED");
   dxf.addLayer("Rooms", 1, "CONTINUOUS");
 
+
+
+  // --------------------
   // Export Walls
+  // --------------------
   dxf.setActiveLayer("Walls");
-  plan.walls.forEach(wall => {
-    // Draw a line for each wall using drawLine(x1, y1, x2, y2)
-    dxf.drawLine(wall.start.x, wall.start.y, wall.end.x, wall.end.y);
-    // For semantic purposes, the wall's metadata is implicitly attached by its layer and its ID can be recorded
-    // via naming conventions or later extension if needed.
+  components.walls.forEach(wall => {
+    if (wall.direction === "h") {
+      // For horizontal walls, start at (col, row) and end at (col + length, row)
+      dxf.drawLine(wall.col, wall.row, wall.col + wall.length, wall.row);
+    } else if (wall.direction === "v") {
+      // For vertical walls, start at (col, row) and end at (col, row + length)
+      dxf.drawLine(wall.col, wall.row, wall.col, wall.row + wall.length);
+    }
+    // Note: You can later extend this to add XData if needed.
   });
 
+  // --------------------
   // Export Doors
+  // --------------------
   dxf.setActiveLayer("Doors");
-  plan.doors.forEach(door => {
-    dxf.drawLine(door.start.x, door.start.y, door.end.x, door.end.y);
+  components.doors.forEach(door => {
+    if (door.direction === "h") {
+      dxf.drawLine(door.col, door.row, door.col + door.length, door.row);
+    } else if (door.direction === "v") {
+      dxf.drawLine(door.col, door.row, door.col, door.row + door.length);
+    }
   });
 
-  // Export Rooms as text labels.
+  // --------------------
+  // Export Room Labels
+  // --------------------
   dxf.setActiveLayer("Rooms");
-  plan.rooms.forEach(room => {
-    // drawText(x1, y1, height, rotation, value, horizontalAlignment?, verticalAlignment?)
-    // Here, we assume a text height of 0.2, no rotation, centered horizontally and vertically.
-    dxf.drawText(
-      room.center.x,
-      room.center.y,
-      0.2,
-      0,
-      room.label,
-      "center",
-      "middle"
-    );
+  components.rooms.forEach(room => {
+    // Compute the bounding box of all rects in the room.
+    let minRow = Infinity,
+      minCol = Infinity;
+    let maxRow = -Infinity,
+      maxCol = -Infinity;
+    room.rects.forEach(rect => {
+      minRow = Math.min(minRow, rect.row);
+      minCol = Math.min(minCol, rect.col);
+      maxRow = Math.max(maxRow, rect.row + rect.height);
+      maxCol = Math.max(maxCol, rect.col + rect.width);
+    });
+    const centerX = (minCol + maxCol) / 2;
+    const centerY = (minRow + maxRow) / 2;
+    // Draw text: using drawText(x, y, height, rotation, value, horizontalAlignment, verticalAlignment)
+    // Here we use text height 0.2, no rotation, and center alignment.
+    dxf.drawText(centerX, centerY, 0.2, 0, room.label, "center", "middle");
   });
 
-  // Generate the DXF string and create a downloadable Blob.
-  const blob = new Blob([dxf.toDxfString()], { type: "application/dxf" });
+  // Generate the DXF string and trigger download.
+  const dxfString = dxf.toDxfString();
+  const blob = new Blob([dxfString], { type: "application/dxf" });
   saveAs(blob, "floor-plan.dxf");
 }
 
 export function ExportButton() {
+  const components = usePlanComponents();
   return (
-    <Button size='lg' className='mr-2'>
+    <Button
+      onClick={() => {
+        exportPlanToDXF(components);
+      }}
+      size='lg'
+      className='mr-2'
+    >
       Export
     </Button>
   );
