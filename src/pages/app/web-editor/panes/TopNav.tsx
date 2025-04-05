@@ -22,6 +22,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { apiRoutes } from "@/lib/api-routes";
+import { ExportButton } from "../exporter/ExportButton";
 
 function PlanNameDropdown() {
   const queryClient = useQueryClient();
@@ -156,9 +157,7 @@ export function TopNav() {
         </ToggleGroup>
       </div>
       <div className='flex flex-1 items-center justify-end'>
-        <Button size='lg' className='mr-2'>
-          Export
-        </Button>
+        <ExportButton />
         {/* <Button variant='outline' size='icon' className='mr-0.5'>
           <Settings />
         </Button> */}
