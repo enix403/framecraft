@@ -1,3 +1,4 @@
+import { saveAs } from "file-saver";
 import { ExportStrategy } from "./ExportStrategy";
 import { stageRef } from "../world2d/state/settings";
 import { exportStageSVG } from "react-konva-to-svg";
@@ -84,6 +85,7 @@ export class PDFExportStrategy implements ExportStrategy {
       height: newHeight
     });
 
-    pdf.save((fileName?.trim() || "floor-plan") + ".pdf");
+    const blob = pdf.output("blob");
+    saveAs(blob, (fileName?.trim() || "floor-plan") + ".pdf");
   }
 }
