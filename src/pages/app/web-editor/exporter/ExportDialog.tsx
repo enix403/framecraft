@@ -24,6 +24,7 @@ import { ExportStrategy } from "./ExportStrategy";
 import { DXFExportStrategy } from "./DXFExportStrategy";
 import { usePlan } from "../plan-state";
 import { SVGExportStrategy } from "./SVGExportStrategy";
+import { PDFExportStrategy } from "./PDFExportStrategy";
 
 type ExportStrategyOption = {
   id: string;
@@ -44,6 +45,12 @@ const exportStrategies: ExportStrategyOption[] = [
     strategy: new SVGExportStrategy(),
     label: "SVG",
     desc: "For detailed visualization"
+  },
+  {
+    id: "pdf",
+    strategy: new PDFExportStrategy(),
+    label: "PDF",
+    desc: "For quick printing and visualization"
   }
 ];
 
