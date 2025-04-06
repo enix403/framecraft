@@ -20,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { delay } from "@/lib/utils";
 import { ExportStrategy } from "./ExportStrategy";
 import { DXFExportStrategy } from "./DXFExportStrategy";
 import { usePlan } from "../plan-state";

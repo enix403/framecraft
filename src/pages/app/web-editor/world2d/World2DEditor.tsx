@@ -1,9 +1,9 @@
 import Konva from "konva";
-import { useEffect, useRef } from "react";
+import { createRef, useEffect, useRef } from "react";
 import { Stage, Layer } from "react-konva";
 import { useMeasure } from "@uidotdev/usehooks";
 
-import { useSettings, useSetZoomLevel } from "./state/settings";
+import { stageRef, useSettings, useSetZoomLevel } from "./state/settings";
 import { useWheelZoomListener } from "./hooks/useWheelZoomListener";
 import { commandsSubject } from "./state/commands";
 import { useCamera, useInitialRecenter } from "@/lib/camera";
@@ -22,7 +22,6 @@ export function World2DEditor() {
   const components = usePlanComponents();
 
   const [containerRef, containerSize] = useMeasure();
-  const stageRef = useRef<Konva.Stage | null>(null);
 
   const setZoomLevel = useSetZoomLevel();
   const camera = useCamera(stageRef, containerSize, components, setZoomLevel);

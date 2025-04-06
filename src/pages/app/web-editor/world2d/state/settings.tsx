@@ -1,5 +1,6 @@
 import { atom, getDefaultStore, useAtomValue, useSetAtom } from "jotai";
-import { useCallback, useMemo } from "react";
+import Konva from "konva";
+import { createRef, useCallback, useMemo } from "react";
 
 export type EditorSettings = {
   unit: "ft" | "in" | "m";
@@ -40,3 +41,21 @@ export function useZoomLevel() {
 export function useSetZoomLevel() {
   return useSetAtom(zoomLevelAtom);
 }
+
+/* ===================== */
+
+// The 2D stage is stored in a "global" react RefObject created using
+// createRef(...) instead of the usual useRef(...) function, since
+// there is always ever going to be only a single editor stage
+// mounted on the editor page
+//
+// This is because the stage object is needed in other parts of the editor
+// such as exporting the plan, and it is not practical to re-architect the
+// app currently.
+//
+// Forgive me for this.
+//
+// TODO: Clean this mess up
+export const stageRef = createRef<Konva.Stage | null>();
+stageRef.current = null;
+(window as any).stageRef = stageRef;
