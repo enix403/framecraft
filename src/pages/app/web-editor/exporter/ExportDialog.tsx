@@ -1,5 +1,5 @@
-import { PropsWithChildren, useId, useState } from "react";
-import { StoreIcon } from "lucide-react";
+import { PropsWithChildren, useEffect, useId, useState } from "react";
+import { DownloadIcon, StoreIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +23,7 @@ import {
 import { delay } from "@/lib/utils";
 import { ExportStrategy } from "./ExportStrategy";
 import { DXFExportStrategy } from "./DXFExportStrategy";
+import { usePlan } from "../plan-state";
 
 type ExportStrategyOption = {
   id: string;
@@ -50,16 +51,25 @@ export function ExportDialog({ children }: PropsWithChildren) {
   const [open, setOpen] = useState(false);
 
   const [strategyId, setStrategyId] = useState(exportStrategies[0].id);
+  const strategyOption = exportStrategies.find(s => s.id === strategyId)!;
+
+  const plan = usePlan();
   const [fileName, setFileName] = useState("");
 
-  const strategyOption = exportStrategies.find(s => s.id === strategyId)!;
+  useEffect(() => {
+    setFileName(plan.name);
+  }, [plan]);
+
+  useEffect(() => {
+    if (open) setFileName(plan.name);
+  }, [open]);
 
   const [loading, setLoading] = useState(false);
 
   function handleExport() {
     setLoading(true);
     strategyOption.strategy
-      .exportPlan({}, fileName)
+      .exportPlan(plan, fileName)
       .then(() => {
         setOpen(false);
       })
@@ -78,20 +88,21 @@ export function ExportDialog({ children }: PropsWithChildren) {
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
-        <div
-          className='flex size-11 shrink-0 items-center justify-center rounded-full border'
-          aria-hidden='true'
-        >
-          <StoreIcon className='opacity-80' size={16} />
-        </div>
+        <div className='flex flex-col items-center space-y-4'>
+          <div
+            className='flex size-11 shrink-0 items-center justify-center rounded-full border'
+            aria-hidden='true'
+          >
+            <DownloadIcon className='opacity-80' size={16} />
+          </div>
 
-        <DialogHeader>
-          <DialogTitle className='text-left'>Export Plan</DialogTitle>
-          <DialogDescription className='text-left'>
-            Get the plans exported in other formats for importing into other
-            compatible softwares
-          </DialogDescription>
-        </DialogHeader>
+          <DialogHeader>
+            <DialogTitle className='text-center'>Export Plan</DialogTitle>
+            <DialogDescription className='text-center'>
+              Take your plan anywhere in standard formats.
+            </DialogDescription>
+          </DialogHeader>
+        </div>
 
         <div className='space-y-5'>
           <div className='space-y-4'>
@@ -139,7 +150,7 @@ export function ExportDialog({ children }: PropsWithChildren) {
             type='button'
             className='w-full'
           >
-            Export
+            Download
           </Button>
         </div>
       </DialogContent>
