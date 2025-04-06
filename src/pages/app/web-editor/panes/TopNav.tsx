@@ -23,6 +23,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { apiRoutes } from "@/lib/api-routes";
 import { ExportButton } from "../exporter/ExportButton";
+import { ExportDialog } from "../exporter/ExportDialog";
 
 function PlanNameDropdown() {
   const queryClient = useQueryClient();
@@ -158,6 +159,7 @@ export function TopNav() {
       </div>
       <div className='flex flex-1 items-center justify-end'>
         <ExportButton />
+        <ExportDialog />
         {/* <Button variant='outline' size='icon' className='mr-0.5'>
           <Settings />
         </Button> */}

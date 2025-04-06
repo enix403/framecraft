@@ -8,7 +8,7 @@ export function exportPlanToDXF(components: any) {
   dxf.setUnits("Meters");
 
   // Create layers (using addLayer(name, colorNumber, lineTypeName))
-  // Color numbers: here we use blue (5) for walls, green (3) for doors, red (1) for rooms.
+  // Color numbers: here we use blue (5), green (3) and red (1).
   dxf.addLayer("Walls", 5, "continuous");
   dxf.addLayer("Doors", 1, "dashed");
   dxf.addLayer("Rooms", 3, "continuous");
@@ -32,11 +32,16 @@ export function exportPlanToDXF(components: any) {
   // --------------------
   dxf.setActiveLayer("Walls");
   components.walls.forEach(wall => {
-   if (wall.direction === 'h') {
+    if (wall.direction === "h") {
       const y = flipY(wall.row);
       dxf.drawLine(wall.col, y, wall.col + wall.length, y);
     } else {
-      dxf.drawLine(wall.col, flipY(wall.row), wall.col, flipY(wall.row + wall.length));
+      dxf.drawLine(
+        wall.col,
+        flipY(wall.row),
+        wall.col,
+        flipY(wall.row + wall.length)
+      );
     }
   });
 
@@ -45,11 +50,16 @@ export function exportPlanToDXF(components: any) {
   // --------------------
   dxf.setActiveLayer("Doors");
   components.doors.forEach(door => {
-    if (door.direction === 'h') {
+    if (door.direction === "h") {
       const y = flipY(door.row);
       dxf.drawLine(door.col, y, door.col + door.length, y);
     } else {
-      dxf.drawLine(door.col, flipY(door.row), door.col, flipY(door.row + door.length));
+      dxf.drawLine(
+        door.col,
+        flipY(door.row),
+        door.col,
+        flipY(door.row + door.length)
+      );
     }
   });
 
