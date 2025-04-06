@@ -23,6 +23,7 @@ import {
 import { ExportStrategy } from "./ExportStrategy";
 import { DXFExportStrategy } from "./DXFExportStrategy";
 import { usePlan } from "../plan-state";
+import { SVGExportStrategy } from "./SVGExportStrategy";
 
 type ExportStrategyOption = {
   id: string;
@@ -39,10 +40,10 @@ const exportStrategies: ExportStrategyOption[] = [
     desc: "For use in AutoCAD softwares"
   },
   {
-    id: "pdf",
-    strategy: new DXFExportStrategy(),
-    label: "PDF",
-    desc: "Best for quick printing and visualization"
+    id: "svg",
+    strategy: new SVGExportStrategy(),
+    label: "SVG",
+    desc: "For detailed visualization"
   }
 ];
 

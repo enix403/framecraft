@@ -55,6 +55,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
     "react-konva": "^19.0.3",
+    "react-konva-to-svg": "^1.0.2",
     "react-payment-inputs": "^1.2.0",
     "react-resizable-panels": "^2.1.7",
     "react-router": "^7.2.0",
