@@ -2,10 +2,11 @@ import ky, { HTTPError } from "ky";
 import { getAuthState } from "@/stores/auth-store";
 import { unslashStart, unslashEnd } from "./utils";
 
-export const API_BASE_URL: string = "http://localhost:3001";
+export const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL as any;
+(window as any).API_BASE_URL = API_BASE_URL;
 
 if (!API_BASE_URL) {
-  throw new Error("Env variable `NEXT_PUBLIC_API_URL` not set");
+  throw new Error("Env variable `VITE_API_BASE_URL` not set");
 }
 
 export class ApiReplyError extends HTTPError {
