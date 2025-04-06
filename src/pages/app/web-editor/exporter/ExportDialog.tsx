@@ -1,6 +1,4 @@
-"use client";
-
-import { useId, useState } from "react";
+import { PropsWithChildren, useId, useState } from "react";
 import { StoreIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -22,21 +20,43 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { delay } from "@/lib/utils";
 
 const exportStrategies = [
   { id: "dxf", label: "DXF", desc: "For use in AutoCAD softwares" },
   { id: "pdf", label: "PDF", desc: "Best for quick printing and visualization" }
 ];
 
-export function ExportDialog() {
+export function ExportDialog({ children }: PropsWithChildren) {
+  const [open, setOpen] = useState(false);
+
   const [strategyId, setStrategyId] = useState(exportStrategies[0].id);
   const [fileName, setFileName] = useState("");
 
   const strategy = exportStrategies.find(s => s.id === strategyId)!;
 
+  const [loading, setLoading] = useState(false);
+
+  function handleExport() {
+    setLoading(true);
+    delay(5000)
+      .then(() => {
+        setOpen(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
   return (
-    <Dialog open={true}>
-      <DialogTrigger asChild></DialogTrigger>
+    <Dialog
+      open={open}
+      onOpenChange={open => {
+        if (!open && loading) return;
+        setOpen(open);
+      }}
+    >
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <div
           className='flex size-11 shrink-0 items-center justify-center rounded-full border'
@@ -58,7 +78,11 @@ export function ExportDialog() {
             {/* Export Type select */}
             <div className='*:not-first:mt-2'>
               <Label>Format</Label>
-              <Select value={strategyId} onValueChange={setStrategyId}>
+              <Select
+                disabled={loading}
+                value={strategyId}
+                onValueChange={setStrategyId}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder='Select framework' />
                 </SelectTrigger>
@@ -80,6 +104,7 @@ export function ExportDialog() {
               <Input
                 type='text'
                 placeholder='Enter file name'
+                disabled={loading}
                 value={fileName}
                 onChange={e => setFileName(e.target.value)}
               />
@@ -88,7 +113,12 @@ export function ExportDialog() {
               </p>
             </div>
           </div>
-          <Button type='button' className='w-full'>
+          <Button
+            onClick={handleExport}
+            loading={loading}
+            type='button'
+            className='w-full'
+          >
             Export
           </Button>
         </div>

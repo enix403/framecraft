@@ -2,12 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { atom, useAtom } from "jotai";
 
-import {
-  Box,
-  ChevronDownIcon,
-  Map,
-  Settings, Waypoints
-} from "lucide-react";
+import { Box, ChevronDownIcon, Map, Settings, Waypoints } from "lucide-react";
 
 import { AvatarDropdown } from "@/components/topnav/AvatarDropdown";
 import { Separator } from "@/components/ui/separator";
@@ -144,7 +139,9 @@ export function TopNav() {
           className='inline-flex'
           type='single'
           value={activeTab}
-          onValueChange={value => value ? setActiveTab(value as any) : undefined}
+          onValueChange={value =>
+            value ? setActiveTab(value as any) : undefined
+          }
         >
           <ToggleGroupItem value='layout'>
             Layout Graph <Waypoints />
@@ -158,8 +155,12 @@ export function TopNav() {
         </ToggleGroup>
       </div>
       <div className='flex flex-1 items-center justify-end'>
-        <ExportButton />
-        <ExportDialog />
+        {/* <ExportButton /> */}
+        <ExportDialog>
+          <Button size='lg' className='mr-2'>
+            Export
+          </Button>
+        </ExportDialog>
         {/* <Button variant='outline' size='icon' className='mr-0.5'>
           <Settings />
         </Button> */}
