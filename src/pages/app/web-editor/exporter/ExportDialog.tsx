@@ -21,10 +21,29 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { delay } from "@/lib/utils";
+import { ExportStrategy } from "./ExportStrategy";
+import { DXFExportStrategy } from "./DXFExportStrategy";
 
-const exportStrategies = [
-  { id: "dxf", label: "DXF", desc: "For use in AutoCAD softwares" },
-  { id: "pdf", label: "PDF", desc: "Best for quick printing and visualization" }
+type ExportStrategyOption = {
+  id: string;
+  label: string;
+  strategy: ExportStrategy;
+  desc: string;
+};
+
+const exportStrategies: ExportStrategyOption[] = [
+  {
+    id: "dxf",
+    strategy: new DXFExportStrategy(),
+    label: "DXF",
+    desc: "For use in AutoCAD softwares"
+  },
+  {
+    id: "pdf",
+    strategy: new DXFExportStrategy(),
+    label: "PDF",
+    desc: "Best for quick printing and visualization"
+  }
 ];
 
 export function ExportDialog({ children }: PropsWithChildren) {
@@ -33,13 +52,14 @@ export function ExportDialog({ children }: PropsWithChildren) {
   const [strategyId, setStrategyId] = useState(exportStrategies[0].id);
   const [fileName, setFileName] = useState("");
 
-  const strategy = exportStrategies.find(s => s.id === strategyId)!;
+  const strategyOption = exportStrategies.find(s => s.id === strategyId)!;
 
   const [loading, setLoading] = useState(false);
 
   function handleExport() {
     setLoading(true);
-    delay(5000)
+    strategyOption.strategy
+      .exportPlan({}, fileName)
       .then(() => {
         setOpen(false);
       })
@@ -95,7 +115,7 @@ export function ExportDialog({ children }: PropsWithChildren) {
                 </SelectContent>
               </Select>
               <p className='ps-3 text-sm text-muted-foreground'>
-                <strong>{strategy.label}</strong>: {strategy.desc}
+                <strong>{strategyOption.label}</strong>: {strategyOption.desc}
               </p>
             </div>
             {/* File name input */}
