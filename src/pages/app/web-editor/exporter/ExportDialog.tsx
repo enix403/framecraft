@@ -25,6 +25,7 @@ import { DXFExportStrategy } from "./DXFExportStrategy";
 import { usePlan } from "../plan-state";
 import { SVGExportStrategy } from "./SVGExportStrategy";
 import { PDFExportStrategy } from "./PDFExportStrategy";
+import { toast } from "sonner";
 
 type ExportStrategyOption = {
   id: string;
@@ -79,6 +80,9 @@ export function ExportDialog({ children }: PropsWithChildren) {
       .exportPlan(plan, fileName)
       .then(() => {
         setOpen(false);
+      })
+      .catch(() => {
+        toast.error("Failed to export plan.");
       })
       .finally(() => {
         setLoading(false);
