@@ -1,128 +1,64 @@
-# FrameCraft Prototype
+# 📁 FrameCraft Web
 
-This repository contains the frontend of the FrameCraft prototype, a web application built using **Vite**, **React**, and **TypeScript**. This setup ensures a fast development experience, modern JavaScript features, and type safety.
+FrameCraft Web is the frontend React application for the FrameCraft platform.
 
-## Live Demo
+---
 
-Visit the app at [https://framecraft-prototype.vercel.app](https://framecraft-prototype.vercel.app)
-
-## Table of Contents
-
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Scripts](#scripts)
-- [Development](#development)
-- [Building and Previewing](#building-and-previewing)
-- [Code Quality](#code-quality)
-- [Folder Structure](#folder-structure)
-
-## Getting Started
-
-Follow the instructions below to set up and run the project locally.
+## 🚀 Getting Started
 
 ### Prerequisites
-
 Ensure you have the following installed on your system:
 
-- [Node.js](https://nodejs.org/) (v20 or newer recommended)
-- `npm`, `yarn` or `pnpm`
+- Node.js (v20 or newer recommended)
+  - > The project is tested on Node `v23.9.0`
+- pnpm (recommended), npm or yarn
 
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/enix403/framecraft-prototype/
-   cd framecraft-prototype
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-## Scripts
-
-The `package.json` includes several scripts to streamline development and deployment:
-
-- `dev`: Starts the development server with hot module reloading.
-
-  ```bash
-  npm run dev
-  ```
-
-- `build`: Builds the project for production. This script also runs TypeScript type checks before building.
-
-  ```bash
-  npm run build
-  ```
-
-- `preview`: Previews the production build locally.
-
-  ```bash
-  npm run preview
-  ```
-
-- `format`: Formats the codebase using Prettier.
-  ```bash
-  npm run format
-  ```
-
-## Development
-
-To start the development server:
+### Install dependencies
 
 ```bash
-npm run dev
+pnpm install
 ```
 
-This will start the Vite development server, which supports hot module reloading and fast builds. Open the application in your browser at the URL provided in the terminal output (currently `http://localhost:3000`).
+### Environment Variables
 
-## Building and Previewing
+Make sure the React app knows where to find the backend API. Configure the appropriate `.env` file and set the `VITE_API_BASE_URL` variable:
 
-To create a production build:
+```
+VITE_API_BASE_URL=http://localhost:3001
+```
+
+### Start the development server
 
 ```bash
-npm run build
+pnpm run dev
 ```
 
-To preview the production build locally:
+The app will be available at [http://localhost:3000](http://localhost:3000).
+
+### Build the app
 
 ```bash
-npm run preview
+pnpm run build
 ```
 
-## Code Quality
+---
 
-### TypeScript Type Checking
+## 🐳 Running with Docker
 
-Ensure type correctness across the codebase by running:
+If you'd like to serve the production build using Docker:
+
+### 1. Build the React app
 
 ```bash
-npm run typecheck
+ppnpm build
 ```
 
-### Formatting
-
-Format all files in the project using Prettier:
+### 2. Build and run the container
 
 ```bash
-npm run format
+podman build -t @framecraft/web .
+podman run --rm -it -p 3000:80 @framecraft/web
 ```
 
-## Folder Structure
+The app will be available at [http://localhost:3000](http://localhost:3000).
 
-Below is an overview of the folder structure:
-
-```
-framecraft-prototype/
-├── public/              # Static assets
-├── src/                 # Source files
-│   ├── components/      # React components
-│   ├── pages/           # Pages
-│   ├── styles/          # CSS files
-│   ├── App.tsx          # React app root
-│   └── main.tsx         # Application entry point
-```
