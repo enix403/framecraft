@@ -9,6 +9,7 @@ import { RenderObjectsProvider } from "@/components/plan2d-render-objects/Render
 import { RenderRooms } from "@/components/plan2d-render-objects/RenderRooms";
 import { RenderWalls } from "@/components/plan2d-render-objects/RenderWalls";
 import { RenderDoors } from "@/components/plan2d-render-objects/RenderDoors";
+import { useResolvedTheme } from "@/components/theme-provider";
 
 export function PlanPreview({ plan }: { plan: any }) {
   const [containerRef, containerSize] = useMeasure();
@@ -17,13 +18,16 @@ export function PlanPreview({ plan }: { plan: any }) {
   const components = plan.canvas.canvasData;
   const camera = useCamera(stageRef, containerSize, components);
   useInitialRecenter(camera);
+
+  const isDark = useResolvedTheme() === "dark";
+
   return (
     <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
       <Stage
         ref={stageRef}
         width={containerSize.width || 0}
         height={containerSize.height || 0}
-        style={{ background: "#F6F6F6" }}
+        style={{ background: isDark ? "#101115FF" : "#F6F6F6" }}
       >
         <RenderObjectsProvider planComponents={components}>
           <Layer>
