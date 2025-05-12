@@ -27,7 +27,7 @@ export function NodeSlab({
     <div
       {...divProps}
       className={clsx(
-        "flex flex-row items-center gap-x-2.5 rounded-[8px] border bg-white p-2.5 pr-6",
+        "flex flex-row items-center gap-x-2.5 rounded-[8px] border bg-background p-2.5 pr-6",
         "transition-colors",
         className
       )}
@@ -46,11 +46,11 @@ export function NodeSlab({
       </div>
 
       <div className='flex-1-fit space-y-1.5 font-graph-editor'>
-        <p className='text-sm leading-[1] font-semibold text-[color:#1B1B2E]'>
+        <p className='text-sm leading-[1] font-semibold text-foreground texdt-[color:#1B1B2E]'>
           {title}
         </p>
         {subtitle && (
-          <p className='text-[size:0.7rem] leading-[1] font-medium text-[color:#7C7D87]'>
+          <p className='text-[size:0.7rem] leading-[1] font-medium text-muted-foreground texdt-[color:#7C7D87]'>
             {subtitle}
           </p>
         )}

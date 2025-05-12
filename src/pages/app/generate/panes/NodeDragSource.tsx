@@ -27,7 +27,11 @@ export function NodeDragSource() {
       <h2 className='mb-2 font-semibold'>Available Rooms</h2>
 
       <div
-        className='mb-4 rounded-lg border border-blue-300 bg-blue-50 p-4 text-sm text-blue-800'
+        className={clsx(
+          "mb-4 rounded-lg border p-4 text-sm",
+          "border-blue-300 bg-blue-50 text-blue-800",
+          "dark:border-blue-300 dark:bg-blue-300/20 dark:text-blue-300"
+        )}
         role='alert'
       >
         Drag rooms from here and drop into the editor!
