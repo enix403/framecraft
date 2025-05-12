@@ -2,7 +2,14 @@ import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { atom, useAtom } from "jotai";
 
-import { Box, ChevronDownIcon, Map, Settings, Waypoints } from "lucide-react";
+import {
+  Box,
+  ChevronDownIcon,
+  FolderDownIcon,
+  Map,
+  Settings,
+  Waypoints
+} from "lucide-react";
 
 import { AvatarDropdown } from "@/components/topnav/AvatarDropdown";
 import { Separator } from "@/components/ui/separator";
@@ -156,7 +163,7 @@ export function TopNav() {
       <div className='flex flex-1 items-center justify-end'>
         {/* <ExportButton /> */}
         <ExportDialog>
-          <Button size='lg' className='mr-2'>
+          <Button size='lg' className='mr-2' icon={FolderDownIcon}>
             Export
           </Button>
         </ExportDialog>

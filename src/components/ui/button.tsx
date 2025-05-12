@@ -5,11 +5,12 @@ import { cn } from "@/lib/utils";
 import { Spinner } from "./spinner";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground font-bold hover:bg-primary/90",
+        default:
+          "bg-primary text-primary-foreground font-bold hover:bg-primary/90",
         destructive:
           "bg-destructive text-primary-foreground hover:bg-destructive/90",
         outline:
@@ -41,7 +42,7 @@ const buttonVariants = cva(
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        lg: "h-11 rounded-md px-6 text-[0.95rem]",
         icon: "h-10 w-10"
       }
     },
@@ -54,13 +55,15 @@ const buttonVariants = cva(
 
 interface IconProps {
   // icon: React.ElementType;
-  icon: React.ComponentType;
+  icon: React.ComponentType<{ className?: string }>;
   iconPlacement?: "left" | "right";
+  iconClassName?: string;
 }
 
 interface IconRefProps {
   icon?: never;
   iconPlacement?: undefined;
+  iconClassName?: undefined;
 }
 
 export interface ButtonProps
@@ -84,6 +87,7 @@ const Button = React.forwardRef<
       size,
       icon: Icon,
       iconPlacement,
+      iconClassName,
       asChild = false,
       loading = false,
       ...props
@@ -96,7 +100,7 @@ const Button = React.forwardRef<
       props.children = <Spinner />;
     }
 
-    iconPlacement = iconPlacement ?? "left";
+    iconPlacement = iconPlacement ?? "right";
 
     return (
       <Comp
@@ -108,20 +112,20 @@ const Button = React.forwardRef<
           iconPlacement === "left" &&
           (effect === "expandIcon" ? (
             <div className='w-0 translate-x-[0%] pr-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-100 group-hover:pr-2 group-hover:opacity-100'>
-              <Icon />
+              <Icon className={cn("size-5", iconClassName)} />
             </div>
           ) : (
-            <Icon />
+            <Icon className={cn("size-5", iconClassName)} />
           ))}
         <Slottable>{props.children}</Slottable>
         {Icon &&
           iconPlacement === "right" &&
           (effect === "expandIcon" ? (
             <div className='w-0 translate-x-[100%] pl-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-0 group-hover:pl-2 group-hover:opacity-100'>
-              <Icon />
+              <Icon className={cn("size-5", iconClassName)} />
             </div>
           ) : (
-            <Icon />
+            <Icon className={cn("size-5", iconClassName)} />
           ))}
       </Comp>
     );

@@ -1,7 +1,8 @@
 /* Default app styles (non-color) */
 :root {
   /* --radius: 0.625rem; */
-  --radius: 0.5rem;
+  --radius: 0.925rem;
+  /* --radius: 0.5rem; */
 }
 
 /* (Default) light theme */
@@ -15,9 +16,16 @@
   /* black */
   /* --primary: oklch(0.21 0.006 285.885);
   --primary-foreground: oklch(0.985 0 0); */
-  /* yellow */
-  --primary: oklch(0.723 0.219 149.579);
-  --primary-foreground: oklch(0.982 0.018 155.826);
+
+  /* green */
+  /* --primary: oklch(0.723 0.219 149.579); */
+  /* --primary-foreground: oklch(0.982 0.018 155.826); */
+
+  /* --primary: #ed9e00; */
+  --primary: #ffb624;
+  /* --primary-foreground: #000000; */
+  --primary-foreground: #211f1f;
+
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);

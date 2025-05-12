@@ -160,6 +160,9 @@ export function ExportDialog({ children }: PropsWithChildren) {
             loading={loading}
             type='button'
             className='w-full'
+            icon={DownloadIcon}
+            iconPlacement="right"
+            effect="expandIcon"
           >
             Download
           </Button>
