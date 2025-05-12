@@ -73,7 +73,7 @@ export function MyPlanCard({ plan }: { plan: any }) {
       </CardContent>
       <CardFooter className='flex gap-2'>
         <Link to={planLink} className='contents'>
-          <Button className='flex-1' variant="secondary" icon={MapIcon} iconPlacement='left'>
+          <Button className='flex-1' icon={MapIcon} iconPlacement='left'>
             View
           </Button>
         </Link>
@@ -119,11 +119,16 @@ export function DashboardPage() {
       </h2>
 
       <div className='mb-6'>
-        <Link to='/app/new-plan'>
-          <button className='inline-flex h-32 w-36 items-center justify-center rounded-xl bg-zinc-100 tc hover:bg-zinc-200'>
-            <Plus className='size-16 text-green-500' strokeWidth={1} />
-          </button>
-        </Link>
+        <Button
+          asChild
+          variant='outline'
+          size='icon'
+          className='flex h-32 w-36 bg-accent/60'
+        >
+          <Link to='/app/new-plan'>
+            <Plus className='!size-20 text-(color:--primary)' strokeWidth={1} />
+          </Link>
+        </Button>
       </div>
 
       {!isError && plans != null
