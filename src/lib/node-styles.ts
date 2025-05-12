@@ -23,7 +23,6 @@ export const wallStyles = {
   }
 };
 
-
 export const appNodeStyle: Record<string, NodeStyle> = {
   living: {
     Icon: Tv,
@@ -40,6 +39,7 @@ export const appNodeStyle: Record<string, NodeStyle> = {
     Icon: Grape,
     iconColor: "#76bf43",
     mapRectColor: "#caf2aa"
+    // mapRectColor: "rgb(197, 255, 150, 0.7)"
   },
   bathroom: {
     Icon: Droplet,

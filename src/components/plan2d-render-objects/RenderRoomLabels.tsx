@@ -1,9 +1,14 @@
 import { Text } from "react-konva";
 import { useRenderObjectComponents } from "./RenderObjectsProvider";
 import { CELL_SIZE } from "@/lib/units";
+import { useSettings } from "@/pages/app/web-editor/world2d/state/settings";
+import { useResolvedTheme } from "../theme-provider";
 
 export function RenderRoomLabels() {
   const components = useRenderObjectComponents();
+  const settings = useSettings();
+  const wireframeMode = settings.viewMode === "wireframe";
+  const isDark = useResolvedTheme() === "dark";
 
   return components.rooms.map((room, i) => {
     let largestRectIndex = -1;
@@ -38,7 +43,8 @@ export function RenderRoomLabels() {
         verticalAlign='middle'
         text={label}
         fontSize={13}
-        fill={"black"}
+        // fill={"var(--color-primary)"}
+        fill={wireframeMode && isDark ? "white" : "black"}
       />
     );
   });
