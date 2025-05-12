@@ -56,7 +56,7 @@ export function RoomList() {
                 className={clsx(
                   "flex w-full items-center gap-x-2 px-4 py-3 last:mb-8",
                   isSelected
-                    ? "bg-[#DDEDFE]"
+                    ? "bg-secondary text-secondary-foreground"
                     : "hover:bg-accent-foreground/[0.07]"
                 )}
                 onClick={() => {
