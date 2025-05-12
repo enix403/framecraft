@@ -186,7 +186,7 @@ function Inner({
         className={clsx(
           "h-full max-h-full w-full max-w-full",
           "[--dots-bg:#FAFAFA] [--dots-color:#CACACA]",
-          "dark:[--dots-bg:#0F0E0EFF] dark:[--dots-color:#2E2B2BFF]",
+          "dark:[--dots-bg:#0F0E0EFF] dark:[--dots-color:#2E2B2BFF]"
         )}
       >
         <ReactFlow
@@ -213,7 +213,16 @@ function Inner({
             gap={18}
             size={2.5}
           />
-          <Controls />
+          <Controls
+            className={clsx(
+              "[--xy-controls-button-background-color-default:var(--background)]",
+              "[--xy-controls-button-background-color-hover-default:var(--secondary)]",
+              "[--xy-controls-button-color-default:var(--foreground)]",
+              "[--xy-controls-button-color-hover-default:var(--secondary-foreground)]",
+              "[--xy-controls-button-border-color-default:var(--border)]",
+              "[--xy-controls-box-shadow-default:var(--shadow-xl)]"
+            )}
+          />
         </ReactFlow>
       </div>
     </LayoutEditorSettingsContext.Provider>
