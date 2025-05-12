@@ -1,5 +1,5 @@
 import { AppLayout } from "@/components/app-layout/AppLayout";
-import { Plus } from "lucide-react";
+import { MapIcon, Plus, WorkflowIcon } from "lucide-react";
 import { Link } from "react-router";
 
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,8 @@ import clsx from "clsx";
 import { useQuery } from "@tanstack/react-query";
 import { apiRoutes } from "@/lib/api-routes";
 import { PlanPreview } from "./PlanPreview/PlanPreview";
+import { delay } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 function DimensionDisplay({ length, width, unit }) {
   return `${length} ${unit} x ${width} ${unit}`;
@@ -71,7 +73,9 @@ export function MyPlanCard({ plan }: { plan: any }) {
       </CardContent>
       <CardFooter className='flex gap-2'>
         <Link to={planLink} className='contents'>
-          <Button className='flex-1'>View</Button>
+          <Button className='flex-1' icon={MapIcon} iconPlacement='left'>
+            View
+          </Button>
         </Link>
       </CardFooter>
     </Card>
@@ -99,7 +103,11 @@ function MyPlans({ plans }: { plans: any[] }) {
 }
 
 export function DashboardPage() {
-  const { data: plans, isError } = useQuery({
+  const {
+    data: plans,
+    isError,
+    isLoading
+  } = useQuery({
     queryKey: ["plan", "list"],
     queryFn: apiRoutes.getPlans
   });
@@ -118,7 +126,13 @@ export function DashboardPage() {
         </Link>
       </div>
 
-      {!isError && plans && plans.length > 0 && <MyPlans plans={plans} />}
+      {!isError && plans != null
+        ? plans.length > 0 && <MyPlans plans={plans} />
+        : isLoading && (
+            <div className='flex'>
+              <Spinner className='size-12' />
+            </div>
+          )}
     </AppLayout>
   );
 }
