@@ -28,7 +28,7 @@ export function ZoomControl() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='secondary'>
+        <Button variant='ghost' className="bg-accent/60">
           <ZoomIn className='me-1' size={18} />
           <p className='w-10'>{Math.round(zoomLevel * 100)}%</p>
           <ChevronDownIcon

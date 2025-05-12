@@ -14,15 +14,10 @@ function SearchInput(props: ComponentProps<"input">) {
       </div>
       <Input
         {...props}
-        className='bg-[#F4F8F9] ps-9 pe-11'
+        className='bg-accent/90 ps-9 pe-11'
         placeholder='Search...'
         type='search'
       />
-      <div className='pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-2 text-muted-foreground'>
-        <kbd className='inline-flex h-5 max-h-full items-center rounded border bg-primary-foreground px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70'>
-          ⌘K
-        </kbd>
-      </div>
     </div>
   );
 }
@@ -46,7 +41,8 @@ export function RoomList() {
       <div className='-mx-4 mt-2 flex-1-y'>
         {rooms
           .filter(
-            (room: any) => !searchTerm || room.label.toLowerCase().includes(searchTerm)
+            (room: any) =>
+              !searchTerm || room.label.toLowerCase().includes(searchTerm)
           )
           .map((room, index) => {
             // const roomType = roomInfoFromNodeType(room.type);

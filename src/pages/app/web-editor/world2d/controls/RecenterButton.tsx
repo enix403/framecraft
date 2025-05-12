@@ -11,9 +11,9 @@ export function RecenterButton({ ...props }: ComponentProps<"button">) {
         sendEditorCommand({ type: "recenter" });
       }}
       size='icon'
-      className='rounded-full bg-white p-7 text-black shadow-2xl shadow-black hover:bg-accent/90 active:bg-accent/70'
+      className='rounded-full bg-background p-7 text-foreground shadow-2xl shadow-background hover:bg-accent/90 active:bg-accent/70'
     >
-      <LocateFixed className="size-7" />
+      <LocateFixed className='size-7' />
     </Button>
   );
 }
