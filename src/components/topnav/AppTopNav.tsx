@@ -13,7 +13,7 @@ export function AppTopNav() {
     <nav className='flex shrink-0 items-center bg-[#1D212C] px-4 py-2.5 text-white'>
       <Link to={isLoggedIn ? "/app" : "/"}>
         <h1 className='font-graph-editor text-xl tracking-tighter'>
-          <span className='font-extrabold text-[#FFF331]'>frame</span>
+          <span className='font-bold text-(color:--color-primary)'>frame</span>
           <span className=''>craft</span>
         </h1>
       </Link>

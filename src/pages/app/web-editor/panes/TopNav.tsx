@@ -133,6 +133,11 @@ export const activeTabAtom = atom<"layout" | "2d" | "3d">("2d");
 export function TopNav() {
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);
 
+  // Make sure to reset tab after a new plan is loaded
+  useEffect(() => {
+    setActiveTab("2d");
+  }, []);
+
   return (
     <nav className='flex border-b px-4 py-4'>
       <div className='flex flex-1 items-center'>

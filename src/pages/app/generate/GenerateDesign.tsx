@@ -182,9 +182,11 @@ export function GenerateDesign() {
             className='mt-auto atext-ls'
             loading={generateMut.isPending}
             onClick={handleGenerate}
+            icon={MousePointerClick}
+            iconClassName='size-6'
+            effect='ringHover'
           >
             Generate
-            <MousePointerClick />
           </Button>
         </div>
         {/* Right Pane */}

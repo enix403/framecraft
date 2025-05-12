@@ -21,9 +21,8 @@
   /* --primary: oklch(0.723 0.219 149.579); */
   /* --primary-foreground: oklch(0.982 0.018 155.826); */
 
-  /* --primary: #ed9e00; */
-  --primary: #ffb624;
-  /* --primary-foreground: #000000; */
+  /* --primary: #ffb624; */
+  --primary: #ffd736;
   --primary-foreground: #211f1f;
 
   --secondary: oklch(0.967 0.001 286.375);

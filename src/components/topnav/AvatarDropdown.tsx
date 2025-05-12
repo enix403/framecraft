@@ -11,7 +11,13 @@ import {
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useClearAuthState } from "@/stores/auth-store";
 
-import { LayoutDashboard, LogOutIcon, PinIcon, UserPenIcon, UserRound } from "lucide-react";
+import {
+  LayoutDashboard,
+  LogOutIcon,
+  PinIcon,
+  UserPenIcon,
+  UserRound
+} from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { Spinner } from "../ui/spinner";
 
@@ -52,7 +58,7 @@ export function AvatarDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className='relative cursor-pointer'>
-          <Avatar className='size-10 border-2 border-[#FFF331]'>
+          <Avatar className='size-10 border-2 border-(color:--color-primary)'>
             <AvatarImage src='/profile_img_01.png' alt='Kelly King' />
             <AvatarFallback className='text-black'>U</AvatarFallback>
           </Avatar>
@@ -69,7 +75,11 @@ export function AvatarDropdown() {
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link to='/app'>
-              <LayoutDashboard size={16} className='opacity-60' aria-hidden='true' />
+              <LayoutDashboard
+                size={16}
+                className='opacity-60'
+                aria-hidden='true'
+              />
               <span>Dashboard</span>
             </Link>
           </DropdownMenuItem>
