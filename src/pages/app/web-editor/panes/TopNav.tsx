@@ -7,7 +7,6 @@ import {
   ChevronDownIcon,
   FolderDownIcon,
   Map,
-  Settings,
   Waypoints
 } from "lucide-react";
 

@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
+import { ThemeProvider } from "./components/theme-provider";
 
 (window as any).toast = toast;
 
@@ -24,11 +25,13 @@ const queryClient = new QueryClient({
 
 export function Providers({ children }: PropsWithChildren) {
   return (
-    <TooltipProvider delayDuration={0}>
-      <QueryClientProvider client={queryClient}>
-        <>{children}</>
-        <Toaster />
-      </QueryClientProvider>
-    </TooltipProvider>
+    <ThemeProvider defaultTheme='light' storageKey='ui-theme'>
+      <TooltipProvider delayDuration={0}>
+        <QueryClientProvider client={queryClient}>
+          <>{children}</>
+          <Toaster />
+        </QueryClientProvider>
+      </TooltipProvider>
+    </ThemeProvider>
   );
 }

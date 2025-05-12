@@ -14,12 +14,15 @@ import { useClearAuthState } from "@/stores/auth-store";
 import {
   LayoutDashboard,
   LogOutIcon,
+  MoonIcon,
   PinIcon,
+  SunIcon,
   UserPenIcon,
   UserRound
 } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { Spinner } from "../ui/spinner";
+import { useThemeToggle } from "../ui/theme-toggle-button";
 
 function UserInfo() {
   const { user, isError } = useCurrentUser();
@@ -54,6 +57,8 @@ function UserInfo() {
 }
 
 export function AvatarDropdown() {
+  const toggleTheme = useThemeToggle({});
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -75,17 +80,23 @@ export function AvatarDropdown() {
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link to='/app'>
-              <LayoutDashboard
-                size={16}
-                className='opacity-60'
-                aria-hidden='true'
-              />
+              <LayoutDashboard size={16} />
               <span>Dashboard</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <UserRound size={16} className='opacity-60' aria-hidden='true' />
+            <UserRound size={16} />
             <span>Profile</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={e => {
+              e.preventDefault();
+              toggleTheme();
+            }}
+          >
+            <SunIcon className='size-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
+            <MoonIcon className='absolute size-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
+            <span>Toggle Theme</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
