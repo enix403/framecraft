@@ -26,6 +26,11 @@ export function resolveSystemTheme(theme: string) {
     : "light";
 }
 
+export function useResolvedTheme() {
+  const { theme } = useTheme();
+  return resolveSystemTheme(theme);
+}
+
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({

@@ -15,6 +15,7 @@ import { RenderWalls } from "@/components/plan2d-render-objects/RenderWalls";
 import { RenderDoors } from "@/components/plan2d-render-objects/RenderDoors";
 import { RenderRoomLabels } from "@/components/plan2d-render-objects/RenderRoomLabels";
 import { RenderWallMeasures } from "@/components/plan2d-render-objects/RenderWallMeasures";
+import { useResolvedTheme } from "@/components/theme-provider";
 
 /* ============================================= */
 
@@ -45,6 +46,8 @@ export function World2DEditor() {
 
   const wallColor = settings.viewMode === "color" ? "#000000" : "#919191";
 
+  const isDark = useResolvedTheme() === "dark";
+
   return (
     <div ref={containerRef} className='h-full max-h-full w-full max-w-full'>
       <Stage
@@ -52,8 +55,7 @@ export function World2DEditor() {
         width={containerSize.width || 0}
         height={containerSize.height || 0}
         draggable
-        style={{ background: "#F6F6F6" }}
-        // style={{ background: "#101115FF" }}
+        style={{ background: isDark ? "#101115FF" : "#F6F6F6" }}
       >
         <RenderObjectsProvider planComponents={components}>
           <Layer>
