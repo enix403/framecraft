@@ -2,14 +2,17 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { Stage, Layer, Rect, Line } from "react-konva";
 
-import { polygon, featureCollection } from "@turf/helpers";
-import { union } from "@turf/union";
+import polygonClipping from "polygon-clipping";
 
 interface Rect {
   left: number;
   top: number;
   width: number;
   height: number;
+}
+
+function flat(arr: [number, number][]) {
+  return arr.flatMap(x => x);
 }
 
 export function RectPreview({
@@ -36,8 +39,7 @@ export function RectPreview({
   const [scaledRects, setScaledRects] = useState<Rect[]>([]);
   const [canvasHeight, setCanvasHeight] = useState(0);
   const [canvasWidth, setCanvasWidth] = useState(0);
-  // const [outline, setOutline] = useState<number[]>([]);
-  const [outline, setOutline] = useState<any>([]);
+  const [outline, setOutline] = useState<[number, number][]>([]);
 
   useEffect(() => {
     if (rectangles.length === 0) return;
@@ -76,27 +78,25 @@ export function RectPreview({
     }));
     setScaledRects(scaledRects);
 
-    const polys = scaledRects.map(r =>
-      polygon([
-        [
-          [r.left, r.top],
-          [r.left + r.width, r.top],
-          [r.left + r.width, r.top + r.height],
-          [r.left, r.top + r.height],
-          [r.left, r.top]
-        ]
-      ])
-    );
+    const polys = scaledRects.map(r => [
+      [
+        [r.left, r.top],
+        [r.left + r.width, r.top],
+        [r.left + r.width, r.top + r.height],
+        [r.left, r.top + r.height],
+        [r.left, r.top]
+      ]
+    ]) as [number, number][][][];
 
     if (polys.length > 1) {
-      const outlinePoly = union(featureCollection(polys));
-
-      if (outlinePoly) {
-        let coords = outlinePoly.geometry.coordinates.flat(2) as number[];
+      const unioned = polygonClipping.union(polys[0], ...polys.slice(1));
+      if (unioned) {
+        let coords = unioned[0][0] as [number, number][];
         setOutline(coords);
       }
     } else {
-      setOutline(polys[0].geometry.coordinates.flat(2) as number[]);
+      let coords = polys[0][0];
+      setOutline(coords);
     }
   }, [rectangles, canvasHeight]);
 
@@ -125,7 +125,7 @@ export function RectPreview({
 
           {outline.length > 0 && (
             <Line
-              points={outline}
+              points={flat(outline)}
               stroke={outStrokeColor}
               strokeWidth={outStrokeWidth}
               closed
@@ -140,36 +140,3 @@ export function RectPreview({
     </div>
   );
 }
-
-/*
-
-https://www.npmjs.com/package/@turf/union
-
-const scaledRects = [
-  {
-    "left": 0,
-    "top": 0,
-    "width": 90,
-    "height": 140
-  },
-  {
-    "left": 0,
-    "top": 140,
-    "width": 50,
-    "height": 10
-  }
-]
-
-const polys = scaledRects.map(r => polygon([
-  [
-    [r.left, r.top],
-    [r.left + r.width, r.top],
-    [r.left + r.width, r.top + r.height],
-    [r.left, r.top + r.height],
-    [r.left, r.top],
-  ]
-]));
-
-const outlinePoly = union(featureCollection(polys))
-
-*/
