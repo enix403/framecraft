@@ -30,7 +30,7 @@ export function NodeDragSource() {
         className={clsx(
           "mb-4 rounded-lg border p-4 text-sm",
           "border-blue-300 bg-blue-50 text-blue-800",
-          "dark:border-blue-300 dark:bg-blue-300/20 dark:text-blue-300"
+          "dark:border-blue-300 dark:bg-blue-300/15 dark:text-blue-200"
         )}
         role='alert'
       >

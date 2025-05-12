@@ -25,6 +25,7 @@ import { LayoutNode } from "./LayoutNode";
 import { LayoutEditorSettingsContext } from "./LayoutEditorSettings";
 import { canAddEdge, getNewNodeId, getNewNodeName } from "./add-node";
 import { StateSet } from "@/lib/utils";
+import clsx from "clsx";
 
 /* =================================== */
 
@@ -181,7 +182,13 @@ function Inner({
 
   return (
     <LayoutEditorSettingsContext.Provider value={settings}>
-      <div className='h-full max-h-full w-full max-w-full'>
+      <div
+        className={clsx(
+          "h-full max-h-full w-full max-w-full",
+          "[--dots-bg:#FAFAFA] [--dots-color:#CACACA]",
+          "dark:[--dots-bg:#0F0E0EFF] dark:[--dots-color:#2E2B2BFF]",
+        )}
+      >
         <ReactFlow
           {...(readOnly ? {} : interactionHandlers)}
           nodeTypes={nodeTypes}
@@ -200,8 +207,8 @@ function Inner({
           proOptions={{ hideAttribution: true }}
         >
           <Background
-            bgColor='#FAFAFA'
-            color='#CACACA'
+            bgColor='var(--dots-bg)'
+            color='var(--dots-color)'
             variant={BackgroundVariant.Dots}
             gap={18}
             size={2.5}
