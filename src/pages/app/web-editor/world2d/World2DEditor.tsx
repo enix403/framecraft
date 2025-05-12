@@ -52,7 +52,8 @@ export function World2DEditor() {
         width={containerSize.width || 0}
         height={containerSize.height || 0}
         draggable
-        style={{ background: "#F6F6F6" }}
+        // style={{ background: "#F6F6F6" }}
+        style={{ background: "#101115FF" }}
       >
         <RenderObjectsProvider planComponents={components}>
           <Layer>

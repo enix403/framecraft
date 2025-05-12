@@ -41,7 +41,7 @@ export function World2DPane() {
   return (
     <div className='relative flex flex-1-fix flex-col'>
       <Toolbar />
-      <div className='flex-1-fix bg-[#F6F6F6]'>
+      <div className='flex-1-fix'>
         <World2DEditor />
       </div>
       <div className='absolute bottom-6 left-6'>
