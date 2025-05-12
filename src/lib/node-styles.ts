@@ -12,6 +12,18 @@ interface NodeStyle {
   mapRectColor: string;
 }
 
+export const wallStyles = {
+  light: {
+    normalColor: "#000000",
+    wireframeColor: "#919191"
+  },
+  dark: {
+    normalColor: "#000000",
+    wireframeColor: "#B8B8B8FF"
+  }
+};
+
+
 export const appNodeStyle: Record<string, NodeStyle> = {
   living: {
     Icon: Tv,

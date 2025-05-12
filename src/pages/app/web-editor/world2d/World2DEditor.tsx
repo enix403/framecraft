@@ -16,6 +16,7 @@ import { RenderDoors } from "@/components/plan2d-render-objects/RenderDoors";
 import { RenderRoomLabels } from "@/components/plan2d-render-objects/RenderRoomLabels";
 import { RenderWallMeasures } from "@/components/plan2d-render-objects/RenderWallMeasures";
 import { useResolvedTheme } from "@/components/theme-provider";
+import { wallStyles } from "@/lib/node-styles";
 
 /* ============================================= */
 
@@ -43,9 +44,6 @@ export function World2DEditor() {
   }, [camera]);
 
   const settings = useSettings();
-
-  const wallColor = settings.viewMode === "color" ? "#000000" : "#919191";
-
   const isDark = useResolvedTheme() === "dark";
 
   return (
@@ -60,7 +58,7 @@ export function World2DEditor() {
         <RenderObjectsProvider planComponents={components}>
           <Layer>
             {settings.viewMode === "color" && <RenderRooms />}
-            <RenderWalls fill={wallColor} />
+            <RenderWalls wireframeMode={settings.viewMode === "wireframe"} />
             <RenderDoors />
             {settings.enableRoomLabels && <RenderRoomLabels />}
             {settings.enableWallMeasure && (

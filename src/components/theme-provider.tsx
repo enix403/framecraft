@@ -18,7 +18,7 @@ const initialState: ThemeProviderState = {
   setTheme: () => null
 };
 
-export function resolveSystemTheme(theme: string) {
+export function resolveSystemTheme(theme: "light" | "dark" | "system") {
   if (theme !== "system") return theme;
 
   return window.matchMedia("(prefers-color-scheme: dark)").matches
