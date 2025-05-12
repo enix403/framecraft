@@ -73,7 +73,7 @@ export function MyPlanCard({ plan }: { plan: any }) {
       </CardContent>
       <CardFooter className='flex gap-2'>
         <Link to={planLink} className='contents'>
-          <Button className='flex-1' icon={MapIcon} iconPlacement='left'>
+          <Button className='flex-1' variant="secondary" icon={MapIcon} iconPlacement='left'>
             View
           </Button>
         </Link>
