@@ -132,6 +132,13 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  /* for home page */
+  --color-framecraft-blue: #3B82F6;
+  --color-framecraft-blue-dark: #1E40AF;
+  --color-framecraft-blue-light: #93C5FD;
+  --color-framecraft-gray: #F3F4F6;
+  --color-framecraft-gray-dark: #1F2937;
+
   /*  */
   --font-graph-editor: "Quicksand Variable", sans-serif;
 }

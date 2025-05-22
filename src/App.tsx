@@ -1,5 +1,6 @@
 import "./styles/load-fonts";
 import "./styles/global.css";
+import './App.css';
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { Providers } from "./Providers";
@@ -24,6 +25,7 @@ import { VerifyEmail } from "./pages/auth/VerifyEmail";
 import { useEffect, useLayoutEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { OAuthSuccess } from "./pages/auth/OAuthSuccess";
+import { LandingPage } from "./pages/home/Landing";
 
 function ResetUserQueries() {
   const queryClient = useQueryClient();
@@ -62,7 +64,8 @@ export function App() {
         {/* prettier-ignore */}
         <Routes>
           {import.meta.env.DEV && <Route path='/s' element={<Scratch />} />}
-          <Route path='/' element={<HomePage />} />
+          {/* <Route path='/' element={<HomePage />} /> */}
+          <Route path='/' element={<LandingPage />} />
           <Route path="/auth">
             <Route
               path='sign-up'
