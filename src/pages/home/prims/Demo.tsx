@@ -74,39 +74,40 @@ export const Demo: React.FC = () => {
                         <path d="m4.93 19.07 2.83-2.83"></path>
                         <path d="m16.24 7.76 2.83-2.83"></path>
                       </svg>
+                      <span>Start creating a new project</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-framecraft-blue">
+                        <path d="M12 2v4"></path>
+                        <path d="M12 18v4"></path>
+                        <path d="m4.93 4.93 2.83 2.83"></path>
+                        <path d="m16.24 16.24 2.83 2.83"></path>
+                        <path d="M2 12h4"></path>
+                        <path d="M18 12h4"></path>
+                        <path d="m4.93 19.07 2.83-2.83"></path>
+                        <path d="m16.24 7.76 2.83-2.83"></path>
+                      </svg>
+                      <span>Give it a name</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-framecraft-blue">
+                        <path d="M12 2v4"></path>
+                        <path d="M12 18v4"></path>
+                        <path d="m4.93 4.93 2.83 2.83"></path>
+                        <path d="m16.24 16.24 2.83 2.83"></path>
+                        <path d="M2 12h4"></path>
+                        <path d="M18 12h4"></path>
+                        <path d="m4.93 19.07 2.83-2.83"></path>
+                        <path d="m16.24 7.76 2.83-2.83"></path>
+                      </svg>
                       <span>Define plot dimensions</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-framecraft-blue">
-                        <path d="M12 2v4"></path>
-                        <path d="M12 18v4"></path>
-                        <path d="m4.93 4.93 2.83 2.83"></path>
-                        <path d="m16.24 16.24 2.83 2.83"></path>
-                        <path d="M2 12h4"></path>
-                        <path d="M18 12h4"></path>
-                        <path d="m4.93 19.07 2.83-2.83"></path>
-                        <path d="m16.24 7.76 2.83-2.83"></path>
-                      </svg>
-                      <span>Set minimum room sizes</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-framecraft-blue">
-                        <path d="M12 2v4"></path>
-                        <path d="M12 18v4"></path>
-                        <path d="m4.93 4.93 2.83 2.83"></path>
-                        <path d="m16.24 16.24 2.83 2.83"></path>
-                        <path d="M2 12h4"></path>
-                        <path d="M18 12h4"></path>
-                        <path d="m4.93 19.07 2.83-2.83"></path>
-                        <path d="m16.24 7.76 2.83-2.83"></path>
-                      </svg>
-                      <span>Specify number of rooms</span>
                     </li>
                   </ul>
                 </div>
                 <div className="bg-framecraft-gray rounded-lg p-4 flex items-center justify-center">
-                  <div className="w-full h-full min-h-[200px] flex items-center justify-center border-2 border-dashed border-framecraft-blue/30 rounded-md">
-                    <span className="text-muted-foreground">Constraint Interface Preview</span>
+                  <div className="w-full h-full min-h-[200px] flex items-center justify-center border-2 border-dashed border-framecraft-blue/30 rounded-md overflow-hidden">
+                    {/* <span className="text-muted-foreground">Constraint Interface Preview</span> */}
+                    <img src="/workflow/one.png" />
                   </div>
                 </div>
               </div>
@@ -162,8 +163,10 @@ export const Demo: React.FC = () => {
                   </ul>
                 </div>
                 <div className="bg-framecraft-gray rounded-lg p-4 flex items-center justify-center">
-                  <div className="w-full h-full min-h-[200px] flex items-center justify-center border-2 border-dashed border-framecraft-blue/30 rounded-md">
-                    <span className="text-muted-foreground">Graph Editor Preview</span>
+                  <div className="w-full h-full min-h-[200px] flex items-center justify-center border-2 border-dashed border-framecraft-blue/30 rounded-md overflow-hidden">
+                    {/* <span className="text-muted-foreground">Graph Editor Preview</span> */}
+                    <img src="/workflow/two.png" />
+
                   </div>
                 </div>
               </div>
@@ -219,8 +222,8 @@ export const Demo: React.FC = () => {
                   </ul>
                 </div>
                 <div className="bg-framecraft-gray rounded-lg p-4 flex items-center justify-center">
-                  <div className="w-full h-full min-h-[200px] flex items-center justify-center border-2 border-dashed border-framecraft-blue/30 rounded-md">
-                    <span className="text-muted-foreground">Floor Plan Preview</span>
+                  <div className="w-full h-full min-h-[200px] flex items-center justify-center border-2 border-dashed border-framecraft-blue/30 rounded-md overflow-hidden">
+                    <img src="/workflow/three.png" />
                   </div>
                 </div>
               </div>

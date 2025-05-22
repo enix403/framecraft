@@ -5,7 +5,6 @@ import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { Providers } from "./Providers";
 
-import { HomePage } from "./pages/home/HomePage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { useAuthState } from "./stores/auth-store";
 import {
@@ -22,7 +21,7 @@ import { LogoutHandler } from "./pages/auth/LogoutHandler";
 import { SignUpPage } from "./pages/auth/SignUpPage";
 import { SignUpCompletedPage } from "./pages/auth/SignUpCompletedPage";
 import { VerifyEmail } from "./pages/auth/VerifyEmail";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { OAuthSuccess } from "./pages/auth/OAuthSuccess";
 import { LandingPage } from "./pages/home/Landing";

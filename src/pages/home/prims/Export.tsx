@@ -70,13 +70,13 @@ export const Export: React.FC = () => {
 
           <div className="relative aspect-square md:aspect-auto md:h-[600px] overflow-hidden rounded-xl border bg-white p-2 shadow-xl">
             <div className="absolute inset-0 bg-framecraft-gray/50 flex flex-col">
-              <div className="h-10 bg-framecraft-gray-dark flex items-center px-4">
+              <div className="h-10 bg-framecraft-gray-dark flex items-center px-4 py-4">
                 <div className="flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-400"></div>
                   <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                   <div className="w-3 h-3 rounded-full bg-green-400"></div>
                 </div>
-                <div className="flex-1 text-center text-white text-xs">Floor Plan Export</div>
+                <div className="flex-1 text-center text-white text-xs font-bold">Floor Plan Export</div>
               </div>
 
               <div className="flex-1 p-6 grid grid-cols-2 gap-6">
