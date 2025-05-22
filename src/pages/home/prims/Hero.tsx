@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 export const Hero: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -11,7 +12,7 @@ export const Hero: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const container = containerRef.current;
@@ -23,11 +24,17 @@ export const Hero: React.FC = () => {
       canvas.height = container.clientHeight;
     };
 
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
     // House blueprint lines
-    const lines: {x1: number, y1: number, x2: number, y2: number, color: string}[] = [];
+    const lines: {
+      x1: number;
+      y1: number;
+      x2: number;
+      y2: number;
+      color: string;
+    }[] = [];
 
     // Create house blueprint effect
     for (let i = 0; i < 15; i++) {
@@ -53,23 +60,31 @@ export const Hero: React.FC = () => {
 
       // Create a room (rectangle)
       lines.push({
-        x1: x, y1: y,
-        x2: x + size, y2: y,
+        x1: x,
+        y1: y,
+        x2: x + size,
+        y2: y,
         color: `rgba(59, 130, 246, ${0.8 + Math.random() * 0.15})`
       });
       lines.push({
-        x1: x + size, y1: y,
-        x2: x + size, y2: y + size,
+        x1: x + size,
+        y1: y,
+        x2: x + size,
+        y2: y + size,
         color: `rgba(59, 130, 246, ${0.8 + Math.random() * 0.15})`
       });
       lines.push({
-        x1: x + size, y1: y + size,
-        x2: x, y2: y + size,
+        x1: x + size,
+        y1: y + size,
+        x2: x,
+        y2: y + size,
         color: `rgba(59, 130, 246, ${0.8 + Math.random() * 0.15})`
       });
       lines.push({
-        x1: x, y1: y + size,
-        x2: x, y2: y,
+        x1: x,
+        y1: y + size,
+        x2: x,
+        y2: y,
         color: `rgba(59, 130, 246, ${0.8 + Math.random() * 0.15})`
       });
     }
@@ -112,71 +127,84 @@ export const Hero: React.FC = () => {
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener("resize", resizeCanvas);
       cancelAnimationFrame(frameId);
     };
   }, []);
 
   return (
-    <div className="relative min-h-[90vh] flex items-center">
-      <div className="absolute inset-0 overflow-hidden" ref={containerRef}>
-        <canvas ref={canvasRef} className="w-full h-full opacity-40" />
+    <div className='relative flex min-h-[90vh] items-center'>
+      <div className='absolute inset-0 overflow-hidden' ref={containerRef}>
+        <canvas ref={canvasRef} className='h-full w-full opacity-40' />
       </div>
 
-      <div className="grid px-5 md:px-8 xl:px-18 gap-8 pt-16 lg:grid-cols-2 relative z-10">
-        <div className="flex flex-col justify-center space-y-6">
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            <span className="block text-gradient">Design Your Dream</span>
-            <span className="block">With AI-Powered Architecture</span>
+      <div className='relative z-10 grid gap-8 px-5 pt-16 md:px-8 lg:grid-cols-2 xl:px-18'>
+        <div className='flex flex-col justify-center space-y-6'>
+          <h1 className='text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl'>
+            <span className='text-gradient block'>Design Your Dream</span>
+            <span className='block'>With AI-Powered Architecture</span>
           </h1>
 
-          <p className="text-xl text-muted-foreground max-w-prose">
-            Define constraints, create layout graphs, and generate beautiful, functional floor plans instantly with FrameCraft's AI technology.
+          <p className='max-w-prose text-xl text-muted-foreground'>
+            Define constraints, create layout graphs, and generate beautiful,
+            functional floor plans instantly with FrameCraft's AI technology.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Button size="lg" className="text-lg">
-              Start Designing Now
+          <div className='flex flex-col gap-4 pt-4 sm:flex-row'>
+            <Button asChild size='lg' className='text-lg'>
+              <Link to='/app'>Start Designing Now</Link>
             </Button>
-            <Button variant="outline" size="lg" className="text-lg">
+            {/* <Button variant="outline" size="lg" className="text-lg">
               View Examples
-            </Button>
+            </Button> */}
           </div>
 
-          <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
+          {/* <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-green-500">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
             <span>No credit card required</span>
-          </div>
+          </div> */}
         </div>
 
-        <div className="relative w-full h-[400px] lg:h-[600px] flex items-center justify-center">
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-framecraft-blue/10 rounded-xl blur-xl"></div>
-          <div className="relative w-[80%] h-[80%] bg-white rounded-lg shadow-xl overflow-hidden border">
-            <div className="absolute top-0 left-0 right-0 h-8 bg-framecraft-gray border-b flex items-center px-4">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
+        <div className='relative flex h-[400px] w-full items-center justify-center lg:h-[600px]'>
+          <div className='absolute top-1/2 left-1/2 h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 transform rounded-xl bg-framecraft-blue/10 blur-xl'></div>
+          <div className='relative h-[80%] w-[80%] overflow-hidden rounded-lg border bg-white shadow-xl'>
+            <div className='absolute top-0 right-0 left-0 flex h-8 items-center border-b bg-framecraft-gray px-4'>
+              <div className='flex gap-2'>
+                <div className='h-3 w-3 rounded-full bg-red-400'></div>
+                <div className='h-3 w-3 rounded-full bg-yellow-400'></div>
+                <div className='h-3 w-3 rounded-full bg-green-400'></div>
               </div>
             </div>
-            <div className="pt-8 h-full bg-framecraft-gray">
+            <div className='h-full bg-framecraft-gray pt-8'>
               <img
-                src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"
-                alt="House floor plan"
-                className="w-full h-full object-cover"
+                src='https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
+                alt='House floor plan'
+                className='h-full w-full object-cover'
               />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
-        <span className="text-sm text-muted-foreground mb-2">Scroll to explore</span>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-          <path d="M12 5v14"></path>
-          <path d="m19 12-7 7-7-7"></path>
+      <div className='absolute bottom-6 left-1/2 flex -translate-x-1/2 transform animate-bounce flex-col items-center'>
+        <span className='mb-2 text-sm text-muted-foreground'>
+          Scroll to explore
+        </span>
+        <svg
+          width='24'
+          height='24'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          className='h-6 w-6'
+        >
+          <path d='M12 5v14'></path>
+          <path d='m19 12-7 7-7-7'></path>
         </svg>
       </div>
     </div>
