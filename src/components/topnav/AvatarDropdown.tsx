@@ -84,10 +84,10 @@ export function AvatarDropdown() {
               <span>Dashboard</span>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <UserRound size={16} />
             <span>Profile</span>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem
             onClick={e => {
               e.preventDefault();
