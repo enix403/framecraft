@@ -193,9 +193,10 @@ export const Hero: React.FC = () => {
             </div>
             <div className='h-full bg-framecraft-gray pt-8'>
               <img
-                src='https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
+                // src='https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
+                src='https://image.lexica.art/full_webp/056eeabf-d24d-4dfe-a28a-3c68a5e0be09'
                 alt='House floor plan'
-                className='h-full w-full object-cover'
+                className='h-full w-full object-cover object-top'
               />
             </div>
           </div>

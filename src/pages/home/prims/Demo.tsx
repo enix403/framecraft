@@ -36,9 +36,10 @@ export const Demo: React.FC = () => {
                 </Button>
               )}
               <img
-                src="https://images.unsplash.com/photo-1721322800607-8c38375eef04?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                // src="https://images.unsplash.com/photo-1721322800607-8c38375eef04?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                src="https://image.lexica.art/full_webp/5aa928ec-d620-4465-9d2c-fb0742e2c924"
                 alt="Demo video thumbnail"
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover object-top"
               />
             </div>
           </div>
