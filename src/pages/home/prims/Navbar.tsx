@@ -15,7 +15,7 @@ export const Navbar: React.FC = () => {
         </div> */}
 
         <Link to="/">
-          <h1 className='font-graph-editor text-2xl bg-amber-900 px-2 py-1 rounded-xs text-white tracking-tighter'>
+          <h1 className='font-graph-editor text-2xl bg-amber-950 px-2 py-1 rounded-xs text-white tracking-tighter'>
             <span className='font-bold text-(color:--color-primary)'>
               frame
             </span>

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { ArrowBigRight, ArrowRight } from "lucide-react";
+import { AuroraText } from "@/components/magicui/aurora-text";
 
 export const Hero: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -141,7 +143,13 @@ export const Hero: React.FC = () => {
       <div className='relative z-10 grid gap-8 px-5 pt-16 md:px-8 lg:grid-cols-2 xl:px-18'>
         <div className='flex flex-col justify-center space-y-6'>
           <h1 className='text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl'>
-            <span className='text-gradient block'>Design Your Dream</span>
+            {/* <span className='text-gradient block'>Design Your Dream</span> */}
+            <AuroraText
+              className='font-pjs font-bold'
+              colors={["#81A7EB", "#956ED4", "#FE605D", "#F3C44D"]}
+            >
+              Design Your Dream
+            </AuroraText>{" "}
             <span className='block'>With AI-Powered Architecture</span>
           </h1>
 
@@ -151,7 +159,13 @@ export const Hero: React.FC = () => {
           </p>
 
           <div className='flex flex-col gap-4 pt-4 sm:flex-row'>
-            <Button asChild size='lg' className='text-lg'>
+            <Button
+              asChild
+              size='lg'
+              effect='expandIcon'
+              icon={ArrowRight}
+              className='text-lg'
+            >
               <Link to='/app'>Start Designing Now</Link>
             </Button>
             {/* <Button variant="outline" size="lg" className="text-lg">
